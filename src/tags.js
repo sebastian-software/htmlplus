@@ -1,0 +1,185 @@
+import { uniqueTags } from "./validation.js";
+const tagsTemplate = document.createElement("template");
+tagsTemplate.innerHTML = `<style>
+  :host { display: block; font: inherit; }
+  [part=control] { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; min-height: 48px; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--h6-border, #d8d3e3); border-radius: var(--h6-radius, 9px); background: var(--h6-surface, white); }
+  :host(:focus-within) [part=control] { border-color: var(--h6-accent, #6540cb); outline: 3px solid var(--h6-focus-soft, #6540cb15); }
+  [part=tokens] { display: contents; }
+  [part=tag] { display: inline-flex; align-items: center; gap: 5px; padding: 4px 5px 4px 9px; border-radius: var(--h6-tag-radius, 5px); background: var(--h6-tag-background, #eee8fc); color: var(--h6-tag-color, #4c2d9c); font-size: 13px; max-width: 100%; overflow-wrap: anywhere; }
+  [part=remove-button] { display: grid; place-items: center; flex: 0 0 auto; width: 24px; height: 24px; padding: 0; border: none; border-radius: 3px; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: 17px; }
+  [part=remove-button]:hover { background: #6540cb15; }
+  [part=remove-button]:focus-visible { outline: 2px solid var(--h6-accent, #6540cb); outline-offset: 1px; }
+  [part=input] { flex: 1; min-width: 100px; width: 100px; border: 0; outline: none; background: transparent; color: inherit; font: inherit; font-size: 14px; padding: 5px 3px; }
+  [part=input]::placeholder { color: var(--h6-placeholder, #888192); }
+  :host(:disabled) { opacity: .55; }
+  :host([data-visited]:invalid) [part=control] { border-color: var(--h6-danger, #af3c41); }
+</style><div part="control"><div part="tokens"></div><input part="input" type="text" autocomplete="off" placeholder="Add a tag…"></div>`;
+export class H6Tags extends HTMLElement {
+    static formAssociated = true;
+    static observedAttributes = ["value", "name", "disabled", "required", "readonly", "placeholder", "aria-label"];
+    #internals = this.attachInternals();
+    #input;
+    #tokens;
+    #values = [];
+    #dirty = false;
+    #formDisabled = false;
+    #customError = "";
+    constructor() {
+        super();
+        const root = this.attachShadow({ mode: "open", delegatesFocus: true });
+        root.append(tagsTemplate.content.cloneNode(true));
+        this.#input = root.querySelector("input");
+        this.#tokens = root.querySelector('[part="tokens"]');
+        this.#internals.role = "group";
+        this.#input.addEventListener("keydown", this.#onKeyDown);
+        this.#input.addEventListener("blur", () => { this.setAttribute("data-visited", ""); this.#commit(); });
+        this.#input.addEventListener("input", (event) => { event.stopPropagation(); });
+        this.#input.addEventListener("change", (event) => { event.stopPropagation(); });
+        root.addEventListener("click", (event) => {
+            const button = event.target.closest("button[data-index]");
+            if (!button || this.#isDisabled || this.readOnly)
+                return;
+            const index = Number(button.dataset.index);
+            const next = this.#values.filter((_, item) => item !== index);
+            this.#change(next);
+            this.#input.focus();
+        });
+    }
+    connectedCallback() { this.#sync(); queueMicrotask(() => this.#label()); }
+    attributeChangedCallback(name) {
+        if (name === "value" && !this.#dirty)
+            this.#values = this.defaultValue;
+        this.#sync();
+    }
+    get value() { return [...this.#values]; }
+    set value(values) {
+        if (!Array.isArray(values) || !values.every((value) => typeof value === "string"))
+            throw new TypeError("h6-tags.value must be an array of strings.");
+        this.#dirty = true;
+        this.#values = uniqueTags(values);
+        this.#input.value = "";
+        this.#render();
+        this.#sync();
+    }
+    get defaultValue() {
+        try {
+            const value = JSON.parse(this.getAttribute("value") ?? "[]");
+            return Array.isArray(value) && value.every((item) => typeof item === "string") ? uniqueTags(value) : [];
+        }
+        catch {
+            return [];
+        }
+    }
+    set defaultValue(values) { this.setAttribute("value", JSON.stringify(uniqueTags(values))); }
+    get name() { return this.getAttribute("name") ?? ""; }
+    set name(value) { this.setAttribute("name", value); }
+    get disabled() { return this.hasAttribute("disabled"); }
+    set disabled(value) { this.toggleAttribute("disabled", Boolean(value)); }
+    get required() { return this.hasAttribute("required"); }
+    set required(value) { this.toggleAttribute("required", Boolean(value)); }
+    get readOnly() { return this.hasAttribute("readonly"); }
+    set readOnly(value) { this.toggleAttribute("readonly", Boolean(value)); }
+    get form() { return this.#internals.form; }
+    get labels() { return this.#internals.labels; }
+    get validity() { return this.#internals.validity; }
+    get validationMessage() { return this.#internals.validationMessage; }
+    get willValidate() { return this.#internals.willValidate; }
+    checkValidity() { return this.#internals.checkValidity(); }
+    reportValidity() { return this.#internals.reportValidity(); }
+    setCustomValidity(message) { this.#customError = String(message); this.#sync(); }
+    focus(options) { this.#input.focus(options); }
+    formDisabledCallback(disabled) { this.#formDisabled = disabled; this.#sync(); }
+    formResetCallback() {
+        this.#dirty = false;
+        this.#values = this.defaultValue;
+        this.#input.value = "";
+        this.removeAttribute("data-visited");
+        this.#render();
+        this.#sync();
+    }
+    formStateRestoreCallback(state) {
+        try {
+            const value = JSON.parse(state);
+            if (Array.isArray(value) && value.every((item) => typeof item === "string"))
+                this.value = value;
+        }
+        catch { /* Ignore an incompatible state from an earlier component version. */ }
+    }
+    get #isDisabled() { return this.disabled || this.#formDisabled; }
+    #label() {
+        const text = this.getAttribute("aria-label") || Array.from(this.labels).map((label) => label.textContent?.trim()).filter(Boolean).join(" ") || "Tags";
+        this.#input.setAttribute("aria-label", text);
+        this.#input.setAttribute("aria-required", String(this.required));
+    }
+    #sync() {
+        const data = new FormData();
+        if (this.name)
+            for (const value of this.#values)
+                data.append(this.name, value);
+        this.#internals.setFormValue(this.name ? data : null, JSON.stringify(this.#values));
+        this.#input.disabled = this.#isDisabled;
+        this.#input.readOnly = this.readOnly;
+        this.#input.placeholder = this.getAttribute("placeholder") ?? "Add a tag…";
+        this.#internals.ariaDisabled = String(this.#isDisabled);
+        this.#internals.ariaRequired = String(this.required);
+        if (this.#customError)
+            this.#internals.setValidity({ customError: true }, this.#customError, this.#input);
+        else if (this.required && !this.#values.length)
+            this.#internals.setValidity({ valueMissing: true }, "Add at least one tag.", this.#input);
+        else
+            this.#internals.setValidity({});
+        this.#input.setAttribute("aria-invalid", String(!this.validity.valid));
+        this.#label();
+        this.#render();
+    }
+    #render() {
+        const focusedIndex = this.shadowRoot?.activeElement instanceof HTMLButtonElement ? Number(this.shadowRoot.activeElement.dataset.index) : -1;
+        const tags = this.#values.map((value, index) => {
+            const tag = document.createElement("span");
+            tag.part.add("tag");
+            const label = document.createElement("span");
+            label.part.add("tag-label");
+            label.textContent = value;
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.part.add("remove-button");
+            remove.dataset.index = String(index);
+            remove.setAttribute("aria-label", `Remove ${value}`);
+            remove.disabled = this.#isDisabled || this.readOnly;
+            remove.textContent = "×";
+            tag.append(label, remove);
+            return tag;
+        });
+        this.#tokens.replaceChildren(...tags);
+        if (focusedIndex >= 0)
+            this.#tokens.querySelector(`button[data-index="${focusedIndex}"]`)?.focus();
+    }
+    #change(values) {
+        this.value = values;
+        this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
+        this.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    #commit() {
+        if (this.#isDisabled || this.readOnly)
+            return;
+        const pending = this.#input.value.trim();
+        if (!pending)
+            return;
+        this.#input.value = "";
+        if (this.#values.includes(pending))
+            return;
+        this.#change([...this.#values, pending]);
+    }
+    #onKeyDown = (event) => {
+        if (event.isComposing || this.#isDisabled || this.readOnly)
+            return;
+        if (event.key === "Enter" || event.key === ",") {
+            event.preventDefault();
+            this.#commit();
+        }
+        else if (event.key === "Backspace" && !this.#input.value) {
+            this.#tokens.querySelector("[part=tag]:last-child button")?.focus();
+            event.preventDefault();
+        }
+    };
+}

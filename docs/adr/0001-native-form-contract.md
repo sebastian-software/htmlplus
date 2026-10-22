@@ -4,13 +4,13 @@
 - Created: 2026-10-22
 - Updated: 2026-10-22
 - Lifecycle: living
-- Implementation: not started
+- Implementation: five-control prototype and live playground
 
 ## Context and decision
 
 html6 exists to make richer controls usable in ordinary forms without repeating value synchronization in every application. Form submission, `FormData`, validation, labels, disabled state, and reset are the shared integration contract.
 
-Use the platform's form mechanisms. Existing native inputs may remain the submission owner; new composite controls can use form-associated custom elements and `ElementInternals`. Applications should not need hidden proxy inputs or framework-specific form adapters for basic integration. The exact implementation boundary is proposed in [ADR-0003](0003-specialized-native-inputs.md).
+Use the platform's form mechanisms. Existing native inputs may remain the submission owner; new composite controls can use form-associated custom elements and `ElementInternals`. Applications should not need hidden proxy inputs or framework-specific form adapters for basic integration. The specialized text-field boundary is recorded in [ADR-0003](0003-specialized-native-inputs.md).
 
 ## Consequences
 
@@ -30,4 +30,4 @@ Revisit the mechanism if a supported browser cannot provide reliable submission,
 
 ## Changes
 
-- 2026-10-22: Recorded the project's defining ordinary-form integration goal. Implementation mechanisms remain subject to the component spikes.
+- 2026-10-22: Recorded the project's defining ordinary-form integration goal. The first implementation uses form-associated hosts; specialized editors are separated from their canonical submission values in ADR-0003.

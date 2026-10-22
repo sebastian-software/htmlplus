@@ -9,7 +9,7 @@ When a decision changes, edit the same record, update its date and change notes,
 | Record | Status | Subject |
 | --- | --- | --- |
 | [0001](0001-native-form-contract.md) | accepted | Ordinary HTML forms are the integration contract |
-| [0002](0002-css-styling-contract.md) | proposed | Expose styling through platform CSS mechanisms |
-| [0003](0003-specialized-native-inputs.md) | proposed | Preserve native editing for specialized text fields |
+| [0002](0002-css-styling-contract.md) | accepted | Expose styling through platform CSS mechanisms |
+| [0003](0003-specialized-native-inputs.md) | accepted | Separate native text editing from canonical form submission |
 
-Acceptance of a design constraint is distinct from implementation completion. No component implementation exists yet.
+Acceptance of a design constraint is distinct from implementation completion. Five controls and a local playground are implemented; compatibility limits are documented in the project README.

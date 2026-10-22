@@ -1,48 +1,44 @@
-# ADR-0003: Preserve native editing in specialized text fields
+# ADR-0003: Preserve native editing while separating submitted values
 
-- Status: proposed
+- Status: accepted
 - Created: 2026-10-22
 - Updated: 2026-10-22
 - Lifecycle: living
+- Scope: initial prototype
 
-## Context and proposed decision
+## Context and decision
 
-IBAN, BIC, and OTP are specialized text fields. Their additional value comes from entry assistance, normalization, and domain-specific format checks. Replacing native editing would add obligations around selection, undo, paste, autofill, mobile keyboards, and assistive technology.
+IBAN, BIC, and OTP are text fields with domain-specific normalization. The first spike enhanced a light-DOM input and rewrote its value after each input event. A manual undo check showed that transformed characters could no longer be undone. Keeping a native input alone does not preserve native editing if the component repeatedly replaces its text.
 
-Propose enhancing an author-supplied native text input in the light DOM for these fields. It remains the form's sole submission owner. Use form-associated hosts for controls that genuinely need an independent value model, such as tags and intervals. Do not require one shadow-DOM or form-association strategy across the catalog.
+Keep one native input in the component's shadow root, and make the custom host the form-associated submission owner. Let the editor retain exactly the text being edited. Derive the canonical value and supply it through `ElementInternals.setFormValue(canonical, displayText)`. For example, a lowercase, spaced IBAN can remain visible while the form receives uppercase text without whitespace.
 
-The first IBAN and BIC spike keeps the native input value canonical; visually grouped editing is a separate experiment. OTP retains one logical text input even if its presentation resembles individual character cells. A code is a string, including leading zeros. The application controls submission and verification.
+Constraints, defaults, disabled state, labels, and canonical `.value` live on the host. The raw `.displayValue` is readable separately. Programmatic `.value` assignment may replace the editor's text, as native programmatic assignment does; user input processing does not. Native editor events update form values without a second application state object.
 
-## Consequences and validation
+## Consequences
 
-- This permits ordinary native-input fallback before component upgrade. Authoring markup is more explicit than a self-contained empty custom tag.
-- The component must preserve the input's native label, constraints, events, and form ownership, including ownership inherited from a surrounding form.
-- Format validation is separate from verification. A checksum or structural match does not establish account ownership, BIC registration, or code correctness. No implicit network lookup is part of the field.
-- Pin the financial-format data source and review its update and licensing requirements. Do not describe a BIC field as a generic routing-number field.
-- Verify native versus enhanced OTP entry on supported mobile browsers and password managers. Historical Safari shadow-input autofill bugs are marked fixed; they justify testing, not a claim that current Safari lacks shadow-input autofill.
-- Revisit if native-input ownership cannot provide canonical submission and accessible formatting together. Any alternative must still produce one value and preserve reliable editing.
+- Native selection, paste, and undo stay with one real text input. OTP is a string, including leading zeros. A browser test protects restoration of the original text after normalized edits without assuming identical undo grouping across engines.
+- The shadow editor does not independently submit. The host participates in validation and form submission; no hidden input or duplicate submission owner is needed.
+- The original light-DOM authoring sketch and its no-JavaScript input fallback are superseded within this living record. A no-JavaScript fallback is deferred explicitly.
+- Associate visible labels with the host and delegate focus into the editor. The editor receives its accessible name from those labels. Expose its styling through `::part(input)`.
+- Format validation stays separate from verification. No implicit account lookup, BIC directory lookup, OTP delivery, expiry, or verification service is included.
+- This settles the prototype mechanism, not universal autofill support. Physical mobile browsers and password managers still need direct verification before a compatibility claim.
 
-## Proposed authoring example
+## Review triggers and evidence
 
-This is a design sketch, not an implemented component API. The contained input already supports ordinary form submission without enhancement.
+Check label activation, defaults, reset, fieldset disabling, canonical submission, custom errors, and undo in the integrated browser suite. Revisit the shadow boundary if actual target-device autofill fails or a reliable native-ownership approach can preserve canonical submission and undo together.
 
-```html
-<label for="verification-code">Verification code</label>
-<h6-otp>
-  <input id="verification-code" name="code" type="text"
-    inputmode="numeric" autocomplete="one-time-code"
-    pattern="[0-9]{6}" maxlength="6" required>
-</h6-otp>
-```
+The initial host's Firefox automation fails before page load; that engine is unverified. Historical Safari shadow-input autofill bugs are marked fixed and do not establish a current Safari defect.
 
 ## References
 
+- [Text-field implementation](../../src/text-fields.ts)
+- [Browser contract tests](../../test/playground.spec.mjs)
 - [Swift: IBAN](https://www.swift.com/standards/data-standards/iban-international-bank-account-number)
 - [Swift: BIC](https://www.swift.com/standards/data-standards/bic-business-identifier-code)
-- [web.dev: OTP text inputs, numeric input mode, and autocomplete](https://web.dev/articles/sms-otp-form)
+- [web.dev: native OTP input behavior](https://web.dev/articles/sms-otp-form)
 - [WebKit: resolved shadow-input autofill issue](https://bugs.webkit.org/show_bug.cgi?id=172567)
-- [Glossary](../../GLOSSARY.md)
 
 ## Changes
 
-- 2026-10-22: Added IBAN, BIC/SWIFT, and OTP as specialized fields and proposed preserving native text editing. Mobile behavior and formatted editing remain unverified.
+- 2026-10-22: Initially proposed enhancing a native light-DOM input as its own submission owner.
+- 2026-10-22: The typing spike exposed lost undo history during normalization. Changed to a native shadow editor with canonical values submitted by the host; deferred the no-JavaScript fallback.

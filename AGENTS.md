@@ -11,3 +11,7 @@ Architecture decision records live in `docs/adr/`. Follow the lifecycle and inde
 ADRs are living documents. Update the current record in place when its decision changes, including after acceptance. Update its date and add a short dated change note explaining the change. Keep proposals distinct from accepted decisions; do not turn an open question into an accepted decision without supporting project direction.
 
 Keep the plan and ADR index consistent with changed decisions. Record rationale and tradeoffs in ADRs; keep delivery tasks in the project plan.
+
+## Commits
+
+Use Conventional Commits for project history, for example `feat: add tag input` or `fix: preserve native undo during normalization`. Keep commit messages in US English.

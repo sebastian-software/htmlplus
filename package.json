@@ -1,0 +1,20 @@
+{
+  "name": "html6",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Native-feeling form controls and a live FormData playground.",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "tsc -p tsconfig.json",
+    "preview": "node scripts/serve.mjs",
+    "test": "node scripts/check.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.1",
+    "typescript": "^7.0.2"
+  }
+}

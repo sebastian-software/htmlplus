@@ -1,13 +1,14 @@
 # ADR-0002: Expose a deliberate CSS styling contract
 
-- Status: proposed
+- Status: accepted
+- Scope: initial prototype
 - Created: 2026-10-22
 - Updated: 2026-10-22
 - Lifecycle: living
 
-## Context and proposed decision
+## Context and decision
 
-The controls should fit existing visual systems while remaining usable on first insertion. Propose a restrained default appearance, inheritable CSS custom properties, documented `::part(...)` hooks for shadow internals, and custom states where they express actual interaction state. Native light-DOM inputs remain directly styleable. Slots may expose meaningful content customization.
+The controls should fit existing visual systems while remaining usable on first insertion. Use a restrained default appearance, inheritable CSS custom properties, documented `::part(...)` hooks for shadow internals, and custom states where they express actual interaction state. The specialized native editors expose `::part(input)`. Slots may expose meaningful content customization.
 
 This gives consumers stable styling surfaces while allowing internal markup to evolve. A fully opaque theme API would restrict integration; treating all internal markup as public would make maintenance costly.
 
@@ -16,13 +17,16 @@ This gives consumers stable styling surfaces while allowing internal markup to e
 - Part names, state names, and custom properties are public API once released. Keep the initial surface small and document which hooks each component actually supports.
 - Do not apply `::part` to native light-DOM children or assume arbitrary descendants of a part are selectable from outside the shadow root.
 - Build two substantially different themes using the same component behavior and public hooks. Preserve focus indication, contrast, and usable disabled and invalid states.
-- Validate the public styling surface in the target browsers before accepting this proposal. Revisit when a consumer needs private DOM access to achieve a reasonable design.
+- The playground implements Studio and Utility themes with public parts and custom properties. Desktop and mobile screenshots are reviewed. Firefox remains unverified on this host; complete that engine check before a release support claim. Revisit when a consumer needs private DOM access to achieve a reasonable design.
 
 ## References
+
+- [Playground design](../PLAYGROUND.md)
+- [Demo styles](../../demo/styles.css)
 
 - [MDN: CSS shadow parts](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::part)
 - [MDN: custom state selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:state)
 
 ## Changes
 
-- 2026-10-22: Proposed a platform CSS contract and a two-theme validation experiment. No final part or token names are established.
+- 2026-10-22: Proposed a platform CSS contract and a two-theme validation experiment. The prototype now exercises the styling surface through Studio and Utility themes; the surface can still change before publication.

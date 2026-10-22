@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en-US" data-theme="studio">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="An interactive playground for html6 form controls. Edit native-feeling fields and inspect the actual FormData, live.">
+  <title>html6 — Form playground</title>
+  <link rel="icon" href="/demo/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/demo/styles.css">
+  <script type="module" src="/dist/demo/playground.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#playground">Skip to the playground</a>
+  <header class="masthead">
+    <a class="wordmark" href="/" aria-label="html6 home">html<span>6</span><i aria-hidden="true"></i></a>
+    <span class="masthead-label">Form playground</span>
+    <div class="masthead-actions">
+      <label class="theme-picker" for="theme">Appearance <select id="theme"><option value="studio">Studio</option><option value="utility">Utility</option></select></label>
+      <a class="text-link" href="#how-it-works">How it works <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+
+  <main id="playground">
+    <div class="intro">
+      <div><h1>Let HTML do the form work.</h1><p>Five small additions to the platform. Change a field and see what the browser would send.</p></div>
+      <span class="preview-label"><span aria-hidden="true"></span> Early preview</span>
+    </div>
+
+    <div class="playground-grid">
+      <section class="form-pane" aria-labelledby="form-heading">
+        <div class="pane-heading"><h2 id="form-heading">The form</h2><button class="quiet-button" id="load-example" type="button"><span aria-hidden="true">↻</span> Load example</button></div>
+        <form id="demo-form">
+          <fieldset id="demo-fields">
+            <legend class="visually-hidden">Component examples</legend>
+            <div class="field">
+              <div class="field-heading"><label for="iban-field">IBAN</label><code>&lt;h6-iban&gt;</code></div>
+              <h6-iban id="iban-field" name="iban" value="DE89370400440532013000" placeholder="DE89 3704 0044 0532 0130 00" aria-describedby="iban-feedback" required></h6-iban>
+              <p class="feedback" id="iban-feedback">Country format and checksum validation.</p>
+            </div>
+
+            <div class="paired-fields">
+              <div class="field">
+                <div class="field-heading"><label for="bic-field">BIC / SWIFT</label><code>&lt;h6-bic&gt;</code></div>
+                <h6-bic id="bic-field" name="bic" value="COBADEFFXXX" placeholder="COBADEFFXXX" aria-describedby="bic-feedback"></h6-bic>
+                <p class="feedback" id="bic-feedback">8 or 11 characters.</p>
+              </div>
+              <div class="field">
+                <div class="field-heading"><label for="otp-field">Verification code</label><code>&lt;h6-otp&gt;</code></div>
+                <h6-otp id="otp-field" name="code" value="004271" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" placeholder="000000" aria-describedby="otp-feedback" required></h6-otp>
+                <p class="feedback" id="otp-feedback">A six-digit code, including leading zeros.</p>
+              </div>
+            </div>
+
+            <div class="field tags-field">
+              <div class="field-heading"><label for="topics">Topics</label><code>&lt;h6-tags&gt;</code></div>
+              <h6-tags id="topics" name="topics" value='["html", "web-components"]' required aria-describedby="topics-feedback"></h6-tags>
+              <p class="feedback" id="topics-feedback">Enter or comma adds a tag. Each tag is a separate form entry.</p>
+            </div>
+
+            <div class="switch-field">
+              <div><label for="updates">Product updates</label><p class="feedback" id="updates-help">An unchecked switch sends no value.</p></div>
+              <div class="switch-control"><code>&lt;h6-switch&gt;</code><h6-switch id="updates" name="updates" value="email" checked aria-describedby="updates-help"></h6-switch></div>
+            </div>
+          </fieldset>
+
+          <div class="form-actions"><button class="primary-button" type="submit">Submit demo <span aria-hidden="true">↗</span></button><button class="secondary-button" type="reset">Reset form</button></div>
+          <p class="submission-status" id="submission-status" role="status">Sample values stay in this browser.</p>
+        </form>
+        <div class="experiment-bar"><label><input id="disable-fields" type="checkbox"> Disable the fieldset</label><span>Watch the entries disappear.</span></div>
+      </section>
+
+      <aside class="inspector-column" aria-labelledby="data-heading">
+        <section class="inspector">
+          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">6 entries</span></div>
+          <div class="inspector-toolbar"><div class="view-switch" role="group" aria-label="Data format"><button type="button" data-view="entries" aria-pressed="true">Entries</button><button type="button" data-view="json" aria-pressed="false">JSON</button></div><span class="reading-label">new FormData(form)</span></div>
+          <div id="entries-view" class="data-view"><table><caption class="visually-hidden">Current form entries, preserving repeated field names</caption><thead><tr><th scope="col">Name</th><th scope="col">Value</th></tr></thead><tbody id="entries-body"></tbody></table><p id="empty-data" class="empty-data" hidden>No entries. Disabled fields are left out of FormData.</p></div>
+          <div id="json-view" class="data-view" hidden><pre class="json-code" id="json-output" aria-label="Current form data as JSON"></pre><p class="json-note">Repeated names become arrays in this JSON view.</p></div>
+          <div class="inspector-status"><span id="validity-status"><span class="status-dot" aria-hidden="true"></span> All fields valid</span><span id="last-event">Ready to edit</span></div>
+        </section>
+
+        <div class="inspector-note"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m6 5-4 5 4 5m8-10 4 5-4 5m-3-12-2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><p>These are the actual form entries. No separate state object, no hidden proxy inputs.</p></div>
+        <details class="last-submission" id="last-submission" hidden><summary>Last submitted data</summary><pre id="submitted-output"></pre></details>
+      </aside>
+    </div>
+
+    <section class="explanation" id="how-it-works" aria-labelledby="how-heading">
+      <div class="explanation-copy"><h2 id="how-heading">A regular form, with a little more vocabulary.</h2><p>Every control participates through the browser’s form APIs. Specialized fields keep a real text input inside, while their normalized value goes into the form.</p><p class="scope-note">This preview checks ten IBAN country formats and their check digits, plus BIC structure. It does not verify bank accounts, BIC registration, or authentication codes.</p></div>
+      <div class="markup-example"><div class="markup-title">The entire integration</div><pre><code>&lt;form&gt;
+  &lt;h6-iban name="iban" required&gt;&lt;/h6-iban&gt;
+  &lt;h6-tags name="topics"&gt;&lt;/h6-tags&gt;
+  &lt;h6-switch name="updates"&gt;&lt;/h6-switch&gt;
+  &lt;button&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</code></pre></div>
+    </section>
+    <noscript><p class="noscript-note">JavaScript is needed for this playground and its custom controls. A no-JavaScript fallback is not implemented yet.</p></noscript>
+  </main>
+  <footer><span>html6 is an experiment in extending HTML.</span><span>Built on the web platform.</span></footer>
+</body>
+</html>

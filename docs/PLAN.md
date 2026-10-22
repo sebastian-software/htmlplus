@@ -1,6 +1,6 @@
 # Project plan
 
-Updated: 2026-10-22. Status: initial proposal; no implementation or browser verification yet.
+Updated: 2026-10-22. Status: local prototype available. Chromium and WebKit contract checks are in place; Firefox cannot launch on this macOS host. Physical-device autofill remains unverified.
 
 ## Intended outcome
 
@@ -33,7 +33,7 @@ Later candidates include file collections and hierarchical selections. Rich-text
 - Accept pasted whitespace and lowercase letters; normalize deliberately without silently deleting arbitrary invalid characters.
 - Validate country-specific length and structure against a versioned national-format source, plus the IBAN check digits.
 - Distinguish incomplete input, invalid format, and application-supplied errors.
-- Keep the underlying input value canonical in the first spike. Explore grouped presentation only if caret movement, selection, paste, and submission remain reliable.
+- Preserve the native editor's text. Derive the canonical submitted value separately through ElementInternals so normalization does not rewrite native edit history. See ADR-0003.
 - A successful local check says nothing about account existence, ownership, or payment reachability. The application owns those checks.
 - Review the registry's licensing and update process before bundling national-format data.
 
@@ -51,7 +51,7 @@ Later candidates include file collections and hierarchical selections. Rich-text
 - Treat length and allowed characters as configuration; six numeric characters can be a demo profile rather than a universal rule.
 - Optional segmented visuals must preserve one logical input and accessible label.
 - Do not submit the form automatically when the field becomes complete. Code generation, delivery, expiry, verification, and retry limits belong to the application.
-- Check autofill on actual supported mobile browsers and password managers. WebOTP can be a later, separate opt-in integration.
+- The shadow editor has native autofill hints; check autofill on actual supported mobile browsers and password managers. WebOTP can be a later, separate opt-in integration.
 
 ## Shared behavior to prove
 
@@ -64,7 +64,7 @@ Later candidates include file collections and hierarchical selections. Rich-text
 - User edits emit appropriate `input` and `change` events without duplicate notifications across component boundaries.
 - No hidden proxy input is required. An enhanced native input and its host never both submit the same logical value.
 
-## Proposed implementation slices
+## Implementation checkpoints
 
 | Slice | Outcome and completion criterion | Dependency |
 | --- | --- | --- |
@@ -74,20 +74,22 @@ Later candidates include file collections and hierarchical selections. Rich-text
 | 4. Combobox | Separate label from identifier with accessible selection and caller-supplied options. Reuse proven primitives only where behavior matches. | Shared form contract; combobox interaction design |
 | 5. First release decision | Review actual integration effort and supported-browser evidence. Choose a small release set; defer fields that still require application workarounds. | Evidence from implemented slices |
 
+The initial playground, five controls, two CSS themes, and a focused browser suite are implemented. The specialized editor mechanism changed after a native undo experiment; ADR-0003 records why. Text normalization uses a submitted value separate from the editor text. Tag editing in place and physical-device checks remain open.
+
 These are learning checkpoints, not dated delivery promises. The switch is a bounded reference implementation; the specialized fields and tags demonstrate the project's broader value.
 
-## Technical direction to evaluate
+## Current technical direction
 
-Prefer TypeScript sources and individually importable browser ES modules, with no framework requirement for consumers. Start with a small implementation spike before choosing a rendering dependency or publishing package structure. Browser support initially targets current stable Chromium, Firefox, and Safari; exact minimum versions remain unverified.
+Use strict TypeScript compiled to browser ES modules and native custom elements, with no runtime framework dependency. The npm project is private; a public package structure is not settled. Browser support initially targets current stable Chromium, Firefox, and Safari; exact minimum versions remain unverified.
 
-Provide a restrained default appearance, inheritable CSS variables, and documented styling hooks. Native light-DOM inputs remain directly styleable; shadow internals expose deliberate parts. Avoid one large base class until shared behavior has been demonstrated by multiple fields.
+Provide a restrained default appearance, inheritable CSS variables, and documented styling hooks. Native shadow editors expose an input part, and other shadow internals expose deliberate parts. Avoid one large base class until shared behavior has been demonstrated by multiple fields.
 
 ## Open decisions
 
 - Final element prefix, package name, and registration strategy.
-- The list-value property and declarative initial-value syntax for tags.
-- Whether any specialized field needs a separate canonical submission mechanism after the native-input spike.
-- No-JavaScript behavior for composite controls; native-input enhancements retain their ordinary input fallback.
+- Reassess the initial tag API: `.value` and `.defaultValue` arrays, with JSON declarative defaults; existing-tag editing remains pending.
+- Verify the separate canonical submission mechanism on additional devices and password managers.
+- No-JavaScript fallback and server-side rendering integration for all five controls.
 - Exact browser versions, manual assistive-technology coverage, and the first package's release set.
 
 ## Sources
