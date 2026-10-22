@@ -1,0 +1,33 @@
+# ADR-0001: Make ordinary HTML forms the integration contract
+
+- Status: accepted
+- Created: 2026-10-22
+- Updated: 2026-10-22
+- Lifecycle: living
+- Implementation: not started
+
+## Context and decision
+
+html6 exists to make richer controls usable in ordinary forms without repeating value synchronization in every application. Form submission, `FormData`, validation, labels, disabled state, and reset are the shared integration contract.
+
+Use the platform's form mechanisms. Existing native inputs may remain the submission owner; new composite controls can use form-associated custom elements and `ElementInternals`. Applications should not need hidden proxy inputs or framework-specific form adapters for basic integration. The exact implementation boundary is proposed in [ADR-0003](0003-specialized-native-inputs.md).
+
+## Consequences
+
+- Each field has one clearly defined submission owner and documented serialization. Collections can produce repeated names; compound values need explicit naming.
+- Form association does not implement keyboard interaction, focus, constraints, reset callbacks, or restoration behavior automatically. These remain component responsibilities where the native control does not provide them.
+- Framework convenience bindings may be added later without becoming necessary to submit a form.
+- Compare implementations with a real HTML form before expanding the catalog. Separate current behavior from intended support claims.
+
+## Review trigger
+
+Revisit the mechanism if a supported browser cannot provide reliable submission, validation, labels, or reset for a proposed control. Preserve the ordinary-form integration goal while changing the component's implementation strategy.
+
+## References
+
+- [HTML: form-associated custom elements](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face-example)
+- [Project plan](../PLAN.md)
+
+## Changes
+
+- 2026-10-22: Recorded the project's defining ordinary-form integration goal. Implementation mechanisms remain subject to the component spikes.
