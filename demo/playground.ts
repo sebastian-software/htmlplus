@@ -88,7 +88,7 @@ function schedule(): void {
   requestAnimationFrame(() => { scheduled = false; render(); });
 }
 
-for (const type of ["input", "change"]) form.addEventListener(type, (event) => {
+for (const type of ["input", "change", "valuechange"]) form.addEventListener(type, (event) => {
   const target = event.target as HTMLInputElement;
   lastEvent = `${target.name || target.id || target.localName} / ${type}`;
   schedule();
@@ -124,6 +124,10 @@ document.querySelector("#load-example")!.addEventListener("click", () => {
   document.querySelector("h6-segmented")!.value = "standard";
   tags.value = ["html", "web-components"];
   updates.checked = true;
+  document.querySelector("h6-toggle")!.pressed = false;
+  document.querySelector("h6-tabs")!.value = "profile";
+  document.querySelector("h6-accordion")!.value = ["delivery"];
+  for (const input of form.querySelectorAll<HTMLInputElement>(".native-field input")) input.value = input.defaultValue;
   lastEvent = "Example loaded";
   status.textContent = "Example values loaded. Try editing or disabling a field.";
   schedule();
@@ -144,5 +148,5 @@ for (const button of document.querySelectorAll<HTMLButtonElement>("[data-view]")
   document.querySelector<HTMLElement>("#json-view")!.hidden = view !== "json";
 });
 
-await Promise.all(["h6-switch", "h6-tags", "h6-iban", "h6-bic", "h6-otp", "h6-duration", "h6-interval", "h6-segmented"].map((name) => customElements.whenDefined(name)));
+await Promise.all(["h6-switch", "h6-tags", "h6-iban", "h6-bic", "h6-otp", "h6-duration", "h6-interval", "h6-segmented", "h6-toggle", "h6-tabs", "h6-accordion"].map((name) => customElements.whenDefined(name)));
 render();

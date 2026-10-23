@@ -1,10 +1,11 @@
 # ADR-0005: Use headless interaction logic behind native custom elements
 
-- Status: proposed
+- Status: accepted
 - Created: 2026-10-23
 - Updated: 2026-10-23
 - Lifecycle: living
-- Implementation: isolated combobox compatibility probe; production dependencies unchanged
+- Scope: Toggle, Accordion, and Tabs; future popup/slider/calendar integrations require their own evidence
+- Implementation: three Zag-backed elements, split browser modules, live examples, and eleven styling recipes
 
 ## Context
 
@@ -12,13 +13,13 @@ The requested expansion adds Accordion, Toggle, Tabs, Slider, Range Slider, Rati
 
 The existing contract remains ordinary HTML forms, native custom elements, shadow DOM, and platform CSS hooks. [ADR-0001](0001-native-form-contract.md) requires one submission owner, while [ADR-0003](0003-specialized-native-inputs.md) protects native editing. A headless library must fit those boundaries rather than dictate a framework, hidden form proxies, or application-level value synchronization.
 
-## Proposed direction
+## Decision
 
-Use Zag as the preferred candidate for complex interaction logic, through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, array-shaped internal state, generated IDs, and callback names stay implementation details.
+Use Zag 1.46.0 for Toggle, Accordion, and Tabs through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, generated IDs, and callback names stay implementation details.
 
-Adopt per component after checking its actual DOM assumptions. Prefer native controls when they provide the required interaction: compare `details`/`summary` for disclosures, a native pressed button for toggle, native range input for one numeric slider, and native select/date inputs for their respective scopes. Do not migrate the eight implemented controls simply to standardize on one engine.
+Adopt per component after checking its actual DOM assumptions. This slice follows the explicit direction to implement the three interactions with Zag. Toggle retains a native button; Accordion/Tabs generate native button triggers in shadow DOM and project caller-owned light-DOM sections. Native details/summary would be a smaller disclosure baseline but would not exercise the requested common behavior foundation and deliberate shadow styling surface. Continue comparing native range/select/date controls for later work. Do not migrate the earlier eight controls simply to standardize on one engine.
 
-Responsibilities would be divided as follows:
+Responsibilities are divided as follows:
 
 | Boundary | Responsibility |
 | --- | --- |
@@ -29,9 +30,17 @@ Responsibilities would be divided as follows:
 
 Keep related popup controls and ARIA references within the same shadow root initially. Investigate clipping and native top-layer integration before choosing a production popup strategy; copying a document-body portal is not sufficient. Pass `getRootNode` explicitly. Internal Zag data attributes can aid implementation, but they do not replace public CSS parts across a shadow boundary.
 
-Production adoption is not accepted yet. The probe below establishes feasibility for one machine, not a universal adapter contract.
+Adoption is accepted for these three machines. Their fields and content do not require hidden form proxies. A narrow DOM-binding owner applies and removes the official adapter's props/listeners; it does not implement a machine interpreter. Controlled host state keeps programmatic assignments separate from user events. Accordion/Tabs emit `valuechange` for view changes, while Toggle emits the form field's `input`/`change` pair.
 
-## Evidence: 2026-10-23
+Keep section content in its original light DOM and form. Generated triggers and content wrappers share one shadow root and explicit ID relationships. Revealing a section does not clone, rewrite, disable, or reset its native editors. Invalid-event handling reveals the first invalid section, including nested custom fields; other hidden invalid fields suppress only their own native validation UI for that validation task. This preserves native submission blocking and avoids hidden focus targets. [The interaction guide](../INTERACTIONS.md) defines the public markup and values.
+
+TypeScript emits declarations, and esbuild bundles split browser modules with explicit per-element entry points. The dev command watches types and bundles; the static export includes all shared JS chunks. Applications can import the built modules without an import map or framework adapter. The current browser checks exercise that exact exported artifact under a repository subpath.
+
+## Evidence: integrated elements, 2026-10-23
+
+Sixty-six browser checks pass across Chromium and WebKit, plus five validation unit tests. The added integration checks cover pressed values and user-event counts; defaults, custom errors, external labels, and fieldsets; keyboard modes, RTL and vertical tabs; fields in hidden panels; nested and simultaneous invalid fields with native focus; native undo across panel changes; dynamic sections; reconnection cleanup; built-in styles, text scaling, and mobile recipes. The earlier eight fields retain their existing contract checks. Assistive-technology usability, physical touch devices, Firefox on this host, and real history restoration remain unverified.
+
+## Earlier evidence: isolated combobox, 2026-10-23
 
 Official sources provide all nine requested interaction patterns. Range Slider is the multi-thumb configuration of `@zag-js/slider`; Rating uses `@zag-js/rating-group`. The vanilla package exports `VanillaMachine`, `normalizeProps`, and `spreadProps`, so no React or other component runtime is necessary. The date-picker uses `@internationalized/date`; using that date model does not require adopting React Aria's component layer.
 
@@ -46,7 +55,7 @@ The [isolated probe](../../experiments/zag/README.md) pins the combobox and vani
 
 The minified production-mode probe bundle is 101,462 bytes, or 33,180 bytes with Node's default gzip, including the fixture class. This is a single-combobox experiment, not an incremental cost for html+, a benchmark, or a release size budget. No other component bundle sizes have been measured.
 
-Important limits: external label forwarding, native undo/IME, full user-event semantics, real browser history restoration, touch interaction, assistive technologies, and a clipping-safe production popup are not established by this probe. Firefox remains untested on this host because its existing launch failure occurs before navigation. The nine expansion elements are not implemented in the production library.
+Important limits: external label forwarding, native undo/IME, full user-event semantics, real browser history restoration, touch interaction, assistive technologies, and a clipping-safe production popup are not established by this combobox probe. Its implementation is separate from the three integrated interaction elements. Combobox, Select, Slider, Range Slider, Rating, and Date Picker remain planned. Firefox remains untested on this host because its existing launch failure occurs before navigation.
 
 ## Tradeoffs and alternatives
 
@@ -57,11 +66,11 @@ Important limits: external label forwarding, native undo/IME, full user-event se
 
 Zag's Select, Slider, and Rating examples include hidden native controls. Their prop getters and effects must be inspected independently. A passing Combobox without a proxy does not prove those machines can omit their hidden controls unchanged. If an internal native control is needed for behavior, it must not become a second submission owner; do not add light-DOM proxy fields to satisfy a template.
 
-The current `tsc` build emits browser modules without resolving bare package specifiers. The probe uses esbuild, establishing that bundling works for the tested case. Before production integration, select a build path that preserves explicit per-element imports and browser-ready demo output. Keep the existing eight controls independent of Zag until there is a reason to change them.
+The former `tsc`-only build could not resolve bare package specifiers for browser use. The integrated build now bundles those dependencies with esbuild. Individual earlier field modules keep their native implementations; importing the all-elements registration entry also imports the new Zag-backed elements and their dependency chunks.
 
-## Acceptance and review triggers
+## Review triggers
 
-Accept or revise this proposal after a production-sized component proves the actual DOM binding, public events, external labels, editable text preservation, popup placement, reset/fieldset behavior, and browser-ready build. Inspect each additional machine's form assumptions before using it. Keep delivery tasks and candidate value contracts in the [project plan](../PLAN.md).
+Inspect each additional machine's form assumptions before using it. Popup placement, editable query handling, date parsing, and multi-thumb behavior remain gates for their respective components; this decision does not claim those are solved by the current three machines. Keep delivery tasks and candidate value contracts in the [project plan](../PLAN.md).
 
 Revisit on an adapter/machine contract change, a supported-browser failure, editing or accessibility regressions, or a dependency cost that outweighs the behavior reused. Upgrade the machine and adapter versions together and rerun the compatibility probe.
 
@@ -82,3 +91,5 @@ Revisit on an adapter/machine contract change, a supported-browser failure, edit
 - 2026-10-23: Proposed selective reuse of Zag behind html+'s platform contracts. Recorded a passing isolated vanilla/shadow/FACE combobox probe and its limits; added Range Slider and Rating to the assessment.
 
 - 2026-10-23: Updated the project name to html+ following ADR-0006; the proposal and compatibility evidence are unchanged.
+
+- 2026-10-23: Accepted the bounded Zag integration for Toggle, Accordion, and Tabs after the explicit implementation direction and passing integrated browser checks. Added split module bundling, light-DOM content ownership, and first-invalid-field revelation. Future popup/calendar/slider behavior remains a separate acceptance gate.

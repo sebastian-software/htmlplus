@@ -16,6 +16,10 @@ Terminology for form controls, their values, and specialized input fields.
 
 **Segmented choice:** A single selection from a small set of visible, mutually exclusive options.
 
+**Accordion:** A collection of labeled sections that can be expanded or collapsed.
+
+**Tabs:** A collection of related panels with one selected panel visible at a time; the selected panel is view state.
+
 **Switch:** An on/off control representing whether a setting is enabled.
 
 **Toggle:** A button with a persistent pressed or unpressed state, such as a formatting choice or filter.

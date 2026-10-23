@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 for (const args of [
-  ['node_modules/typescript/bin/tsc', '-p', 'tsconfig.json'],
+  ['scripts/build.mjs'],
   ['scripts/build-demo.mjs', '--skip-build'],
   ['--test', 'test/validation.test.mjs', 'test/duration.test.mjs'],
   ['node_modules/playwright/cli.js', 'test', ...process.argv.slice(2)],

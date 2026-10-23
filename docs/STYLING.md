@@ -66,6 +66,9 @@ The [recipe definitions](../demo/recipes.ts) are the single source for the galle
 | `h6-tags` | Outlined, rounded tokens | `control`, `tokens`, `input`, `tag`, `tag-label`, `remove-button`, `remove-icon` |
 | `h6-switch` | Square track and thumb | `track`, `thumb` |
 | `h6-segmented` | Outlined choices with a dark selected option | `control`, `option`, `selected-option` |
+| `h6-toggle` | Pill with a light pressed state | `button` |
+| `h6-accordion` | Boxed disclosure sections | `root`, `item`, `heading`, `trigger`, `label`, `indicator`, `content` |
+| `h6-tabs` | Underlined selected tab | `root`, `list`, `tab`, `selected-tab`, `panels`, `panel` |
 
 Target a public part directly. Shadow descendants are intentionally not a styling API:
 
@@ -77,10 +80,12 @@ h6-tags.outlined::part(tag) {
 }
 ```
 
+Toggles expose `:state(pressed)`; Tabs expose `selected-tab` alongside `tab`. Their recipes follow those live states. Accordion and Tabs project author-owned sections; native inputs inside them are styled with ordinary application CSS, not shadow parts. See the [interaction guide](INTERACTIONS.md).
+
 Switches expose their live checked state through `:state(checked)`. Use it instead of `[checked]`, which describes the initial default. Segmented choices expose `selected-option` on the currently selected option; it moves when selection changes by pointer, keyboard, assignment, or reset. It is also an `option` part. `::part(option):checked` cannot observe the adjacent private radio input.
 
 Stateful styles should preserve visible keyboard focus, disabled states, invalid borders, and readable text. Avoid changing a switch's geometry without adjusting its thumb travel. The default switch keeps its thumb travel in step with its root-relative track dimensions. OTP styling retains one real input and does not introduce separate character boxes or automatic submission.
 
 ## Verification
 
-The browser suite checks all eight elements without any document stylesheet, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct public overrides. It also visits all eight recipes, compares base and variation form entries, checks deep links and matching source, exercises selection with the keyboard, and verifies copy success and failure paths. The clipboard tests stub the browser API; actual clipboard permission remains a browser decision. Desktop and mobile screenshots cover the neutral theme and gallery. The Pages check loads the gallery and base stylesheet under `/htmlplus/`.
+The browser suite checks all eleven elements without any document stylesheet, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct public overrides. It also visits all eleven recipes, compares base and variation form entries, checks deep links and matching source, exercises selection with the keyboard, and verifies copy success and failure paths. The clipboard tests stub the browser API; actual clipboard permission remains a browser decision. Desktop and mobile screenshots cover the neutral theme and gallery. The Pages check loads the gallery and base stylesheet under `/htmlplus/`.

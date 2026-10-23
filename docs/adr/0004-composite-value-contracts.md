@@ -17,6 +17,8 @@ Segmented choices use caller-supplied direct `<option>` children and submit one 
 
 ## Consequences and evidence
 
+Toggle contributes a named string while pressed and no entry while unpressed, with a separate boolean current/default state. Accordion and Tabs expose view state through their properties but contribute no host entries. Their light-DOM fields retain their individual serialization and constraints. The [interaction guide](../INTERACTIONS.md) owns those public APIs.
+
 - The application must agree with the documented units and field names. These representations cannot change casually after publication.
 - The duration reuses the proven native-text mechanism. Interval and selection behavior stay in separate classes; a universal base class would obscure their different value shapes and native interactions.
 - Browser tests cover named boundaries, order, native numeric constraints, required choices, native radio keys, label focus, repeated-value safety, reset, explicit restoration callbacks, and disabled fieldsets. Exercising a callback is distinct from verifying browser history restoration.
@@ -25,3 +27,5 @@ Segmented choices use caller-supplied direct `<option>` children and submit one 
 ## Changes
 
 - 2026-10-23: Added duration, interval, and segmented choice to test three distinct value contracts in the ordinary-form playground.
+
+- 2026-10-23: Added Toggle as a named string while pressed; Accordion/Tabs view values are not form entries. Their contained fields retain their own serialization.

@@ -4,7 +4,7 @@
 - Created: 2026-10-22
 - Updated: 2026-10-23
 - Lifecycle: living
-- Implementation: eight-control prototype and live playground
+- Implementation: nine form controls, two companion elements, and a live playground
 
 ## Context and decision
 
@@ -18,6 +18,8 @@ Use the platform's form mechanisms. Existing native inputs may remain the submis
 - Form association does not implement keyboard interaction, focus, constraints, reset callbacks, or restoration behavior automatically. These remain component responsibilities where the native control does not provide them.
 - Framework convenience bindings may be added later without becoming necessary to submit a form.
 - Compare implementations with a real HTML form before expanding the catalog. Separate current behavior from intended support claims.
+
+Accordion and Tabs are companion elements rather than submission owners. Their sections stay in light DOM so contained inputs preserve their original form association. Hidden panels retain their values and constraints. Interactive validation reveals the first invalid section; secondary hidden invalid fields suppress only their native validation UI during that attempt, not submission blocking. See the [interaction guide](../INTERACTIONS.md).
 
 ## Review trigger
 
@@ -35,3 +37,5 @@ Revisit the mechanism if a supported browser cannot provide reliable submission,
 - 2026-10-23: Extended the ordinary-form contract to elapsed durations, numeric boundary pairs, and native radio selections; ADR-0004 defines their serialization.
 
 - 2026-10-23: Updated the project name to html+ following ADR-0006; the form contract is unchanged.
+
+- 2026-10-23: Added the form-associated Toggle and light-DOM Accordion/Tabs contract, including nested and multiple-invalid-field revelation.

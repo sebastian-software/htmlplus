@@ -2,7 +2,7 @@
 
 Form controls that extend HTML's vocabulary and participate in ordinary web forms.
 
-**Status:** working prototype. Eight controls, a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
+**Status:** working prototype. Eleven elements (nine form controls, Accordion, and Tabs), a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
 
 ## Run the playground
 
@@ -19,9 +19,9 @@ The playground shows actual `new FormData(form)` entries as fields change. Switc
 
 ## Styling examples
 
-Open **Styling** in the playground, or click an element's name beside a field. Each of the eight controls has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `base.css` adapter connects semantic application tokens; the gallery shows the built-in base without it. The gallery uses semantic tokens inspired by shadcn/ui, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
+Open **Styling** in the playground, or click an element's name beside a field. Each of the eleven elements has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `base.css` adapter connects semantic application tokens; the gallery shows the built-in base without it. The gallery uses semantic tokens inspired by shadcn/ui, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
 
-## Implemented controls
+## Implemented elements
 
 | Element | Behavior |
 | --- | --- |
@@ -33,14 +33,17 @@ Open **Styling** in the playground, or click an element's name beside a field. E
 | `h6-interval` | Two native numeric editors, explicit boundary names, order and numeric constraints, optional open ends |
 | `h6-segmented` | Compact single selection using native radio inputs and caller-supplied options |
 | `h6-tags` | Add with Enter or comma, remove individual tags, trim and deduplicate, submit repeated names, and reset |
+| `h6-toggle` | Native pressed button, checkbox-like form contribution, labels, required state, fieldsets, and reset; Zag behavior |
+| `h6-accordion` | Zag disclosure navigation, one/multiple open sections, light-DOM content, and invalid-field revelation |
+| `h6-tabs` | Zag automatic/manual activation, horizontal/vertical and RTL keys, linked panels, and contained form fields |
 
 Every control includes a neutral base appearance, with consistent editor typography and centered SVG icons. No external component stylesheet is required. Override inherited `--h6-*` tokens or public parts to customize it.
 
-Every control uses `ElementInternals` for form participation. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: typing `de89 3704 0044 0532 0130 00` leaves that text untouched while the form receives `DE89370400440532013000`. This separation preserves native text editing and undo.
+The nine form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: typing `de89 3704 0044 0532 0130 00` leaves that text untouched while the form receives `DE89370400440532013000`. This separation preserves native text editing and undo.
 
 ## Use a control
 
-After building, import `dist/src/index.js` as a browser ES module. It registers the eight elements and exports their classes. There is no runtime framework dependency. Source modules also export their individual classes for explicit registration. CSS parts and inherited `--h6-*` custom properties are the styling surface; the demo demonstrates both.
+After building, import `dist/src/index.js` as a browser ES module. It registers the eleven elements and exports their classes. Toggle, Accordion, and Tabs use Zag's vanilla adapter internally; there is no runtime component framework dependency. The build type-checks TypeScript, emits declarations, and bundles browser modules with shared chunks using esbuild. Deploy the complete `dist/` tree so those chunks remain available. Source modules also export their individual classes for explicit registration. CSS parts and inherited `--h6-*` custom properties are the styling surface; the demo demonstrates both.
 
 ```html
 <script type="module" src="/dist/src/index.js"></script>
@@ -57,11 +60,14 @@ After building, import `dist/src/index.js` as a browser ES module. It registers 
 
 These are JavaScript-dependent controls. A no-JavaScript fallback and server-side rendering integration are not implemented.
 
+The bundled runtime dependencies' [third-party notices](THIRD_PARTY_NOTICES.txt) are copied into `dist/` and the static export. Keep them with the distributed browser modules.
+
 ## Current value contract
 
 - Text fields expose canonical `.value`, raw `.displayValue`, and `.defaultValue`. Setting `.value` is programmatic and emits no user events. User edits keep the native editor's text intact.
 - Tags expose `.value` and `.defaultValue` as string arrays. Declarative defaults use a JSON array in the `value` attribute. Entries are trimmed and deduplicated with case-sensitive equality; their order is preserved. Enter, comma, or blur commits pending text. Backspace in an empty editor focuses the last remove button. Editing an existing tag in place is not implemented.
 - Switches expose `.checked`, `.defaultChecked`, and `.value`. An unchecked switch contributes no entry. Text fields and tags support `readonly`; switches use `disabled`.
+- Toggles expose `.pressed`, `.defaultPressed`, and the submitted string `.value` (default `on`). An unpressed toggle contributes no entry. User activation emits one `input`/`change` pair; assignment and reset emit no user events.
 - Reset restores defaults. Explicit custom errors remain until cleared with `setCustomValidity("")`, as with native fields.
 - Format checks are local. They do not establish account ownership, BIC registration, or authentication-code validity. The IBAN profiles cover AT, BE, CH, DE, ES, FR, GB, IE, IT, and NL; they are hand-authored factual format rules checked against [Swift Registry release 103](https://www.swift.com/swift-resource/9606/download), not a bundled copy of the registry. Full registry coverage and its ongoing data-management requirements remain future work.
 
@@ -119,8 +125,9 @@ Firefox behavior remains unverified here. Physical-device OTP autofill, assistiv
 
 ## Project documents
 
-- [Project plan](docs/PLAN.md): current scope, proposed value contracts, and delivery order. The next candidates are Accordion, Toggle, Tabs, Slider, Range Slider, Rating, Select, Combobox, and Date Picker; these are not implemented exports yet.
-- [Headless interaction assessment](docs/adr/0005-headless-interaction-logic.md): Zag as a proposed internal behavior layer, with a reproducible shadow DOM and native-form compatibility probe.
+- [Project plan](docs/PLAN.md): current scope and delivery order. Slider, Range Slider, Rating, Select, Combobox, and Date Picker remain planned.
+- [Interaction elements](docs/INTERACTIONS.md): Toggle, Accordion, and Tabs APIs, section markup, events, native form behavior, and validation.
+- [Headless interaction decision](docs/adr/0005-headless-interaction-logic.md): accepted Zag integration for the three interaction elements, build boundaries, and remaining popup work.
 - [Living architecture decisions](docs/adr/README.md): current rationale and browser evidence.
 - [Project identity](docs/adr/0006-project-identity.md): the html+ name, htmlplus.dev domain, and technical naming boundary.
 - [Playground design](docs/PLAYGROUND.md): layout and styling intent.

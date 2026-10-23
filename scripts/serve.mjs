@@ -7,7 +7,7 @@ const siteMode = process.argv.includes('--site');
 const root = fileURLToPath(new URL(siteMode ? '../site/' : '../', import.meta.url));
 const portArgument = process.argv.indexOf('--port');
 const port = Number(portArgument >= 0 ? process.argv[portArgument + 1] : process.env.PORT || 4173);
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.map': 'application/json' };
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.map': 'application/json', '.txt': 'text/plain; charset=utf-8' };
 
 export const server = createServer(async (request, response) => {
   try {

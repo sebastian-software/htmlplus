@@ -1,6 +1,6 @@
 # Project plan
 
-Updated: 2026-10-23. Status: eight implemented controls, nine expansion candidates, and a static Pages workflow. An isolated Zag combobox probe passes in Chromium and WebKit. Firefox cannot launch on this macOS host; physical-device autofill remains unverified.
+Updated: 2026-10-23. Status: eleven implemented elements, six expansion candidates, and a static Pages workflow. Toggle, Accordion, and Tabs use Zag; their integrated Chromium/WebKit checks pass. Firefox cannot launch on this macOS host; physical-device autofill remains unverified.
 
 ## Intended outcome
 
@@ -22,16 +22,16 @@ Names are provisional. The first table describes the implemented prototype; the 
 | `h6-interval` | Two related numeric boundaries entered through numeric editors | Two explicitly named numeric values |
 | `h6-duration` | Flexible elapsed-time notation with a native editor | Whole, nonnegative seconds |
 | `h6-segmented` | Compact choice with native radio keyboard behavior | The selected identifier |
+| `h6-toggle` | Persistent pressed button using Zag and native form association | Named string while pressed; no entry otherwise |
+| `h6-accordion` | Zag disclosure sections containing ordinary form fields | No host entry; contained fields retain their entries |
+| `h6-tabs` | Zag keyboard navigation between panels containing ordinary form fields | No host entry; inactive panels retain their field entries |
 
 ### Requested expansion
 
-All nine candidates below are planned. Their value contracts are proposals until implementation evidence resolves them. Zag has a machine for every requested interaction; the range slider uses the same `@zag-js/slider` package as the single slider. [ADR-0005](adr/0005-headless-interaction-logic.md) records the foundation assessment and the completed compatibility probe.
+The six candidates below remain planned. Toggle, Accordion, and Tabs are implemented; their current contracts are in the [interaction guide](INTERACTIONS.md). Their value contracts are proposals until implementation evidence resolves them. Zag has a machine for every requested interaction; the range slider uses the same `@zag-js/slider` package as the single slider. [ADR-0005](adr/0005-headless-interaction-logic.md) records the accepted integration and the earlier compatibility probe.
 
 | Candidate | First useful scope | Proposed form contribution | Foundation to assess |
 | --- | --- | --- | --- |
-| `h6-accordion` | Labeled disclosure sections; single or multiple sections open | None; contained fields retain their own values | Native `details`/`summary` first; Zag accordion for richer group behavior |
-| `h6-toggle` | A persistent pressed/unpressed button with a stable label | Named value while pressed; omitted while unpressed | Native button with `aria-pressed`; Zag toggle if shared behavior helps |
-| `h6-tabs` | One selected panel, horizontal/vertical keyboard navigation | None; selected panel is view state | Zag tabs; native buttons and explicit tab/panel relationships |
 | `h6-slider` | One numeric value with `min`, `max`, and `step` | One numeric string | Native `input[type=range]` first; compare Zag slider |
 | `h6-range-slider` | Two independently labeled thumbs selecting a bounded interval | Two entries, defaulting to `name.min` and `name.max` | Zag slider in two-thumb mode |
 | `h6-rating` | Labeled, clearable rating; whole steps first, five items by default | One numeric string; no entry until selected | Zag rating-group; compare native radios for whole steps |
@@ -94,15 +94,15 @@ Every new element needs the built-in neutral base, deliberate CSS parts/tokens/s
 
 | Slice | Outcome and completion criterion | Dependency |
 | --- | --- | --- |
-| Baseline: available | Eight form controls, live FormData, reset/validation/fieldset checks, and two styling examples per element. Existing-tag editing and device/assistive-technology checks remain open. | ADR-0001 through ADR-0004 |
-| 0. Foundation probe | Assess Zag's official vanilla adapter, shadow-root lookup, lifecycle, serialization ownership, and build cost. A bounded combobox probe now passes in two engines. Resolve the remaining adoption questions before integrating a production dependency. | ADR-0005 |
-| 1. Companion interactions | Implement toggle, accordion, and tabs with focused native semantics, keyboard behavior, and form-in-panel examples. Verify visibility and invalid-field focus together. | Expansion contracts; choose native/Zag per component |
+| Baseline: available | Nine form controls and two companion elements, live FormData, reset/validation/fieldset checks, and two styling examples per element. Existing-tag editing and device/assistive-technology checks remain open. | ADR-0001 through ADR-0004 |
+| 0. Foundation: complete for this slice | Use Zag 1.46.0 through its official vanilla adapter with native hosts and bundled browser modules. Popup-machine assumptions remain separate work. | ADR-0005 |
+| 1. Companion interactions: implemented | Toggle, Accordion, and Tabs have neutral bases, individual recipes, and live-form examples. Browser checks cover keys, fields in inactive panels, nested validation, native undo, and lifecycle. | [Interaction guide](INTERACTIONS.md) |
 | 2. Numeric choices | Implement slider, range slider, and rating; show current values, keyboard/pointer editing, clearing where meaningful, and exact form entries. | Boundary/value contracts; touch and RTL checks |
 | 3. Popup selections | Implement select and combobox with caller-supplied options, identifier submission, reliable editing, focus/dismissal, and reset. | Production-ready DOM binding and popup strategy |
 | 4. Calendar date | Implement a single date picker with explicit date-only serialization and locale-aware editing/calendar behavior. Date range follows separately. | Popup selection evidence; parsing and date model |
 | 5. First release decision | Review actual integration effort, build output, and supported-browser evidence. Choose the release set and publish only supported behavior. | Evidence from implemented slices |
 
-The playground now contains eight controls and two CSS themes. Forty-eight checks pass across Chromium and WebKit, plus five validation unit tests. The static Pages export is tested under a repository subpath; the Actions workflow gates deployment on the full three-engine Linux matrix. The specialized editor mechanism changed after a native undo experiment; ADR-0003 records why. Text normalization uses a submitted value separate from the editor text. Tag editing in place and physical-device checks remain open.
+The playground now contains eleven elements and two CSS themes. Sixty-six checks pass across Chromium and WebKit, plus five validation unit tests. The static Pages export is tested under a repository subpath; the Actions workflow gates deployment on the full three-engine Linux matrix. The specialized editor mechanism changed after a native undo experiment; ADR-0003 records why. Text normalization uses a submitted value separate from the editor text. Tag editing in place and physical-device checks remain open.
 
 These are learning checkpoints, not dated delivery promises. The switch is a bounded reference implementation; the specialized fields and tags demonstrate the project's broader value.
 
@@ -110,13 +110,13 @@ These are learning checkpoints, not dated delivery promises. The switch is a bou
 
 Implemented duration, numeric interval, and segmented choice to test text normalization, related field names, and native radio semantics side by side. [ADR-0004](adr/0004-composite-value-contracts.md) records the public units and value shapes. The duration reuses the narrow text-field class. The two composite controls keep their native interactions in focused implementations; no runtime framework or universal component base is introduced.
 
-All eight elements now have a neutral Base preview and an individual styling variation with copyable CSS and HTML. The gallery uses built-in defaults and public part overrides. The downloadable stylesheet is now an optional token adapter; shared shadow styles provide the complete base without application CSS. Tag text/icon alignment, native editor metrics, and root text scaling have explicit browser checks. Violet defaults have been removed from both the demo and component fallbacks. ADR-0002 and the [styling guide](STYLING.md) document the current surface.
+All eleven elements now have a neutral Base preview and an individual styling variation with copyable CSS and HTML. The gallery uses built-in defaults and public part overrides. The downloadable stylesheet is now an optional token adapter; shared shadow styles provide the complete base without application CSS. Tag text/icon alignment, native editor metrics, and root text scaling have explicit browser checks. Violet defaults have been removed from both the demo and component fallbacks. ADR-0002 and the [styling guide](STYLING.md) document the current surface.
 
-The next expansion covers the nine requested elements above. Zag is the preferred headless candidate for complex interactions, with a passing isolated combobox probe; production adoption is still proposed. Keep the eight existing implementations until a concrete benefit justifies changing one. Browser back/forward restoration, manual screen-reader coverage, and physical-device autofill remain separate evidence tasks.
+Toggle, Accordion, and Tabs complete the first requested Zag slice. The next expansion covers the six remaining elements above. Keep the earlier eight field implementations until a concrete benefit justifies changing one. Browser back/forward restoration, manual screen-reader coverage, and physical-device autofill remain separate evidence tasks.
 
 ## Current technical direction
 
-Use strict TypeScript compiled to browser ES modules and native custom elements, with no runtime framework dependency. The production entry point currently has no runtime dependencies. Zag could supply internal behavior through its vanilla adapter without introducing React, Lit, or another component runtime. This would add library dependencies and require browser-resolvable build output; the current `tsc`-only application build does not bundle bare package imports. The isolated experiment uses esbuild to examine that cost without changing production tooling. The npm project is private; a public package structure is not settled. Browser support initially targets current stable Chromium, Firefox, and Safari; exact minimum versions remain unverified.
+Use native custom elements and strict TypeScript, with Zag 1.46.0 as an internal behavior dependency for Toggle, Accordion, and Tabs. No runtime component framework is required. The build emits declarations and uses esbuild for split browser ES modules, including individual element entries. The static exporter copies their shared chunks; the source dev command watches both types and bundles. The npm project is private; a public package structure is not settled. Browser support initially targets current stable Chromium, Firefox, and Safari; exact minimum versions remain unverified.
 
 Provide a restrained default appearance, inheritable CSS variables, and documented styling hooks. Native shadow editors expose an input part, and other shadow internals expose deliberate parts. Avoid one large base class until shared behavior has been demonstrated by multiple fields.
 
@@ -125,9 +125,9 @@ Provide a restrained default appearance, inheritable CSS variables, and document
 - Final element prefix, public package publication/namespacing, and registration strategy. The private package uses `htmlplus`; registry availability and publication are not implied.
 - Reassess the initial tag API: `.value` and `.defaultValue` arrays, with JSON declarative defaults; existing-tag editing remains pending.
 - Verify the separate canonical submission mechanism on additional devices and password managers.
-- No-JavaScript fallback and server-side rendering integration for all eight controls.
+- No-JavaScript fallback for form controls and server-side rendering integration. Accordion/Tabs retain their original content before enhancement.
 - Exact browser versions, manual assistive-technology coverage, and the first package's release set.
-- Zag adoption scope, popup placement within the shadow root, editor preservation, and bundling strategy; see ADR-0005. A successful combobox probe does not validate every machine's hidden-control assumptions.
+- Popup placement within the shadow root and each future Zag machine's editing/hidden-control assumptions; see ADR-0005. The three implemented machines do not require proxy inputs.
 
 ## Sources
 

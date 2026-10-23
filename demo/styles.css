@@ -87,7 +87,7 @@
   .view-switch button { padding:5px 10px; background:transparent; border:1px solid transparent; border-radius:5px; color:var(--inspector-muted); font-size:11px; }
   .view-switch button[aria-pressed=true] { border-color:#ffffff15; color:var(--inspector-ink); background:#ffffff0a; }
   .reading-label { color:var(--inspector-muted); font-family:var(--mono); font-size:9px; white-space:nowrap; }
-  .data-view { padding:10px 24px 20px; min-height:302px; overflow-x:auto; }
+  .data-view { padding:10px 24px 20px; min-height:302px; max-height:min(58vh,560px); overflow:auto; }
   .data-view table { border-collapse:collapse; text-align:left; width:100%; font-family:var(--mono); font-size:11px; }
   .data-view th { font:10px var(--font); font-weight:500; color:var(--inspector-muted); padding:10px 0; }
   .data-view td { padding:13px 0; border-top:1px solid #ffffff0a; vertical-align:top; }
@@ -142,4 +142,12 @@
 .field-section { display: flex; align-items: center; gap: 10px; margin: 8px 0 22px; font: 11px var(--mono); color: var(--accent, #171717); }
 .field-section span { font: 11px var(--font); letter-spacing: .05em; text-transform: uppercase; color: var(--muted-foreground, #666666); }
 .field-section:not(:first-of-type) { margin-top: 26px; padding-top: 24px; border-top: 1px solid var(--border, #d4d4d4); }
+}
+
+@layer components {
+  .component-label, .recipe-label { font-size: 14px; line-height: 20px; font-weight: 500; }
+  .recipe-label { margin-bottom: 8px; }
+  .native-field { display: grid; gap: 6px; min-width: 0; font-size: 14px; line-height: 20px; font-weight: 500; }
+  .native-field input { display: block; min-width: 0; width: 100%; height: 40px; border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 12px; background: var(--surface); color: var(--ink); font-size: 14px; line-height: 20px; font-weight: 400; }
+  .native-field input:disabled { opacity: .5; }
 }

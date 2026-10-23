@@ -36,3 +36,5 @@ This gives consumers stable styling surfaces while allowing internal markup to e
 - 2026-10-23: Replaced violet defaults with a neutral Base palette. Added copyable recipes for all eight elements, a shared semantic-token adapter, and the stateful segmented-option part.
 
 - 2026-10-23: Moved the complete base into shadow styles, reduced the external CSS to a theme adapter, aligned type and editor metrics, and replaced font glyphs with centered SVG icons. Added the `remove-icon` part and checks without application CSS.
+
+- 2026-10-23: Added built-in styles and Pill, Boxed, and Underline recipes for Toggle, Accordion, and Tabs; selected-tab and pressed state expose live styling hooks.

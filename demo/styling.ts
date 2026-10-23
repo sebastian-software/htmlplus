@@ -24,7 +24,7 @@ for (const recipe of recipes) {
 
 function markup(recipe: StylingRecipe, variant: string, id: string): string {
   const control = recipe.markup.replace(`<${recipe.element} `, `<${recipe.element} id="${id}"${variant ? ` class="${variant}"` : ""} `);
-  return `<label for="${id}">${recipe.label}</label>\n${control}`;
+  return `${recipe.field === false ? `<p class="recipe-label">${recipe.label}</p>` : `<label for="${id}">${recipe.label}</label>`}\n${control}`;
 }
 
 function renderSource(): void {

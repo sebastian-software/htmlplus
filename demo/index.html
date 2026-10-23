@@ -25,7 +25,7 @@
 
   <main id="playground">
     <div class="intro">
-      <div><h1>Let HTML do the form work.</h1><p>Eight small additions to the platform. Change a field and see what the browser would send.</p></div>
+      <div><h1>Let HTML do the form work.</h1><p>Eleven components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
       <span class="preview-label"><span aria-hidden="true"></span> Early preview</span>
     </div>
 
@@ -35,7 +35,37 @@
         <form id="demo-form">
           <fieldset id="demo-fields">
             <legend class="visually-hidden">Component examples</legend>
-            <p class="field-section">01 <span>Identifiers & verification</span></p>
+            <p class="field-section">01 <span>State & sections</span></p>
+            <div class="field">
+              <div class="field-heading"><span class="component-label">Toggle</span><a class="recipe-link" href="./styling.html#h6-toggle" aria-label="Style h6-toggle"><code>&lt;h6-toggle&gt;</code></a></div>
+              <h6-toggle id="priority-field" name="priority" value="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg>Priority handling</h6-toggle>
+              <p class="feedback">A pressed button submits its value. Try Space or Enter.</p>
+            </div>
+            <div class="field">
+              <div class="field-heading"><span class="component-label">Contact details</span><a class="recipe-link" href="./styling.html#h6-tabs" aria-label="Style h6-tabs"><code>&lt;h6-tabs&gt;</code></a></div>
+              <h6-tabs id="contact-tabs" value="profile" aria-label="Contact details">
+                <section data-value="profile" data-label="Profile">
+                  <label class="native-field">Display name<input name="display_name" value="Ada Lovelace" required></label>
+                </section>
+                <section data-value="receipts" data-label="Receipts">
+                  <label class="native-field">Receipt email<input name="receipt_email" type="email" value="ada@example.test" required></label>
+                </section>
+              </h6-tabs>
+              <p class="feedback">Both panels contribute their fields. Arrow keys move between tabs.</p>
+            </div>
+            <div class="field">
+              <div class="field-heading"><span class="component-label">Delivery instructions</span><a class="recipe-link" href="./styling.html#h6-accordion" aria-label="Style h6-accordion"><code>&lt;h6-accordion&gt;</code></a></div>
+              <h6-accordion id="delivery-accordion" value='["delivery"]'>
+                <section data-value="delivery" data-label="Delivery">
+                  <label class="native-field">Delivery note<input name="delivery_note" value="Ring the bell" required></label>
+                </section>
+                <section data-value="gift" data-label="Gift">
+                  <label class="native-field">Gift message<input name="gift_message" value="Enjoy your gift!"></label>
+                </section>
+              </h6-accordion>
+              <p class="feedback">Closed sections keep their form values. Invalid fields reveal their section.</p>
+            </div>
+            <p class="field-section">02 <span>Identifiers & verification</span></p>
             <div class="field">
               <div class="field-heading"><label for="iban-field">IBAN</label><a class="recipe-link" href="./styling.html#h6-iban" aria-label="Style h6-iban"><code>&lt;h6-iban&gt;</code></a></div>
               <h6-iban id="iban-field" name="iban" value="DE89370400440532013000" placeholder="DE89 3704 0044 0532 0130 00" aria-describedby="iban-feedback" required></h6-iban>
@@ -55,7 +85,7 @@
               </div>
             </div>
 
-            <p class="field-section">02 <span>Values with more to say</span></p>
+            <p class="field-section">03 <span>Values with more to say</span></p>
             <div class="field">
               <div class="field-heading"><label for="duration-field">Session duration</label><a class="recipe-link" href="./styling.html#h6-duration" aria-label="Style h6-duration"><code>&lt;h6-duration&gt;</code></a></div>
               <h6-duration id="duration-field" name="duration" value="1h 30m" min="60" max="86400" required aria-describedby="duration-feedback" placeholder="1h 30m"></h6-duration>
@@ -66,7 +96,7 @@
               <h6-interval id="budget-field" name="budget" lower-name="budget_min" upper-name="budget_max" value="[200,800]" min="0" max="10000" step="50" required aria-describedby="budget-feedback"></h6-interval>
               <p class="feedback" id="budget-feedback">One control, two named values. The lower boundary cannot exceed the upper.</p>
             </div>
-            <p class="field-section">03 <span>Choices & collections</span></p>
+            <p class="field-section">04 <span>Choices & collections</span></p>
             <div class="field">
               <div class="field-heading"><label for="delivery-field">Delivery speed</label><a class="recipe-link" href="./styling.html#h6-segmented" aria-label="Style h6-segmented"><code>&lt;h6-segmented&gt;</code></a></div>
               <h6-segmented id="delivery-field" name="delivery" value="standard" required aria-describedby="delivery-feedback">
@@ -94,7 +124,7 @@
 
       <aside class="inspector-column" aria-labelledby="data-heading">
         <section class="inspector">
-          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">10 entries</span></div>
+          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">14 entries</span></div>
           <div class="inspector-toolbar"><div class="view-switch" role="group" aria-label="Data format"><button type="button" data-view="entries" aria-pressed="true">Entries</button><button type="button" data-view="json" aria-pressed="false">JSON</button></div><span class="reading-label">new FormData(form)</span></div>
           <div id="entries-view" class="data-view"><table><caption class="visually-hidden">Current form entries, preserving repeated field names</caption><thead><tr><th scope="col">Name</th><th scope="col">Value</th></tr></thead><tbody id="entries-body"></tbody></table><p id="empty-data" class="empty-data" hidden>No entries. Disabled fields are left out of FormData.</p></div>
           <div id="json-view" class="data-view" hidden><pre class="json-code" id="json-output" aria-label="Current form data as JSON"></pre><p class="json-note">Repeated names become arrays in this JSON view.</p></div>

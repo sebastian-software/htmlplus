@@ -8,10 +8,82 @@ export interface StylingRecipe {
   markup: string;
   css: string;
   parts: string[];
+  field?: boolean;
 }
 
 /** Trusted, static authoring examples. This CSS is both shown and used by the previews. */
 export const recipes: readonly StylingRecipe[] = [
+  {
+    element: "h6-toggle", title: "Toggle", label: "Priority handling", variant: "Pill", className: "toggle-pill",
+    description: "A pressed button submits one value. Restyle its public button part; :state(pressed) follows the same state.",
+    markup: '<h6-toggle name="priority" value="yes" pressed>Priority handling</h6-toggle>', parts: ["button"],
+    css: `h6-toggle.toggle-pill::part(button) {
+  border-radius: 999px;
+  padding-inline: 1rem;
+}
+h6-toggle.toggle-pill:state(pressed)::part(button) {
+  background: var(--h6-track, #f5f5f5);
+  border-color: var(--h6-accent, #171717);
+  color: var(--h6-accent, #171717);
+}`,
+  },
+  {
+    element: "h6-accordion", title: "Accordion", label: "Delivery instructions", variant: "Boxed", className: "accordion-boxed", field: false,
+    description: "Style the disclosure headers and content. Both ordinary inputs submit, including the field in a closed section.",
+    markup: `<h6-accordion value='["delivery"]'>
+  <section data-value="delivery" data-label="Delivery">
+    <label class="native-field">Delivery note<input name="delivery_note" value="Ring the bell"></label>
+  </section>
+  <section data-value="gift" data-label="Gift">
+    <label class="native-field">Gift message<input name="gift_message" value="Enjoy your gift!"></label>
+  </section>
+</h6-accordion>`, parts: ["root", "item", "heading", "trigger", "label", "indicator", "content"],
+    css: `h6-accordion.accordion-boxed::part(root) {
+  border: 1px solid var(--h6-border, #d4d4d4);
+  border-radius: var(--h6-radius, .5rem);
+}
+h6-accordion.accordion-boxed::part(item) {
+  border: 0;
+}
+h6-accordion.accordion-boxed::part(trigger) {
+  padding-inline: 1rem;
+}
+h6-accordion.accordion-boxed::part(content) {
+  padding: .25rem 1rem 1rem;
+}`,
+  },
+  {
+    element: "h6-tabs", title: "Tabs", label: "Contact details", variant: "Underline", className: "tabs-underline", field: false,
+    description: "A stateful part styles the selected tab. Panel selection is view state; both panels' inputs stay in FormData.",
+    markup: `<h6-tabs value="profile" aria-label="Contact details">
+  <section data-value="profile" data-label="Profile">
+    <label class="native-field">Display name<input name="display_name" value="Ada Lovelace"></label>
+  </section>
+  <section data-value="receipts" data-label="Receipts">
+    <label class="native-field">Receipt email<input name="receipt_email" type="email" value="ada@example.test"></label>
+  </section>
+</h6-tabs>`, parts: ["root", "list", "tab", "selected-tab", "panels", "panel"],
+    css: `h6-tabs.tabs-underline::part(list) {
+  width: 100%;
+  padding: 0;
+  gap: 1rem;
+  border-bottom: 1px solid var(--h6-border, #d4d4d4);
+  border-radius: 0;
+  background: transparent;
+}
+h6-tabs.tabs-underline::part(tab) {
+  min-height: 40px;
+  padding-inline: .25rem;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+h6-tabs.tabs-underline::part(selected-tab) {
+  border-bottom-color: var(--h6-accent, #171717);
+  color: var(--h6-accent, #171717);
+}`,
+  },
   {
     element: "h6-iban", title: "IBAN", label: "Bank account", variant: "Underlined", className: "iban-underlined",
     description: "Change the editor's presentation while the form keeps its canonical, whitespace-free IBAN.",
