@@ -17,9 +17,10 @@ export const server = createServer(async (request, response) => {
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
     const base = siteMode ? '/html6/' : '/';
     if (!pathname.startsWith(base)) { response.writeHead(404); response.end('Not found'); return; }
-    const relative = pathname === base ? siteMode ? 'index.html' : 'demo/index.html' : pathname.slice(base.length);
+    let relative = pathname === base ? siteMode ? 'index.html' : 'demo/index.html' : pathname.slice(base.length);
+    if (!siteMode && relative === 'styling.html') relative = 'demo/styling.html';
     const path = resolve(root, relative);
-    if (!path.startsWith(root.endsWith(sep) ? root : root + sep) || !(siteMode && relative === 'index.html' || /^(demo|dist)\//.test(relative)) || !types[extname(path)]) {
+    if (!path.startsWith(root.endsWith(sep) ? root : root + sep) || !(siteMode && ['index.html', 'styling.html'].includes(relative) || /^(demo|dist)\//.test(relative)) || !types[extname(path)]) {
       response.writeHead(404); response.end('Not found'); return;
     }
     const content = await readFile(path);

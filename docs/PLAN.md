@@ -76,13 +76,15 @@ Later candidates include file collections and hierarchical selections. Rich-text
 | 4. Combobox | Separate label from identifier with accessible selection and caller-supplied options. Reuse proven primitives only where behavior matches. | Shared form contract; combobox interaction design |
 | 5. First release decision | Review actual integration effort and supported-browser evidence. Choose a small release set; defer fields that still require application workarounds. | Evidence from implemented slices |
 
-The playground now contains eight controls and two CSS themes. Thirty checks pass across Chromium and WebKit, plus five validation unit tests. The static Pages export is tested under a repository subpath; the Actions workflow gates deployment on the full three-engine Linux matrix. The specialized editor mechanism changed after a native undo experiment; ADR-0003 records why. Text normalization uses a submitted value separate from the editor text. Tag editing in place and physical-device checks remain open.
+The playground now contains eight controls and two CSS themes. Forty checks pass across Chromium and WebKit, plus five validation unit tests. The static Pages export is tested under a repository subpath; the Actions workflow gates deployment on the full three-engine Linux matrix. The specialized editor mechanism changed after a native undo experiment; ADR-0003 records why. Text normalization uses a submitted value separate from the editor text. Tag editing in place and physical-device checks remain open.
 
 These are learning checkpoints, not dated delivery promises. The switch is a bounded reference implementation; the specialized fields and tags demonstrate the project's broader value.
 
 ## Current expansion
 
 Implemented duration, numeric interval, and segmented choice to test text normalization, related field names, and native radio semantics side by side. [ADR-0004](adr/0004-composite-value-contracts.md) records the public units and value shapes. The duration reuses the narrow text-field class. The two composite controls keep their native interactions in focused implementations; no runtime framework or universal component base is introduced.
+
+All eight elements now have a neutral Base preview and an individual styling variation with copyable CSS and HTML. The gallery and downloadable base stylesheet use public parts and semantic tokens. Violet defaults have been removed from both the demo and component fallbacks. ADR-0002 and the [styling guide](STYLING.md) document the current surface.
 
 Next, assess a searchable combobox and date range using the same ordinary-form contract. Preserve browser editing behavior and test real integration before introducing shared abstractions. Browser back/forward restoration, manual screen-reader coverage, and physical-device autofill remain separate evidence tasks.
 

@@ -3,15 +3,15 @@ import { uniqueTags } from "./validation.js";
 const tagsTemplate = document.createElement("template");
 tagsTemplate.innerHTML = `<style>
   :host { display: block; font: inherit; }
-  [part=control] { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; min-height: 48px; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--h6-border, #d8d3e3); border-radius: var(--h6-radius, 9px); background: var(--h6-surface, white); }
-  :host(:focus-within) [part=control] { border-color: var(--h6-accent, #6540cb); outline: 3px solid var(--h6-focus-soft, #6540cb15); }
+  [part=control] { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; min-height: 48px; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--h6-border, #d4d4d4); border-radius: var(--h6-radius, 9px); background: var(--h6-surface, white); }
+  :host(:focus-within) [part=control] { border-color: var(--h6-accent, #171717); outline: 3px solid var(--h6-focus-soft, #0000000a); }
   [part=tokens] { display: contents; }
-  [part=tag] { display: inline-flex; align-items: center; gap: 5px; padding: 4px 5px 4px 9px; border-radius: var(--h6-tag-radius, 5px); background: var(--h6-tag-background, #eee8fc); color: var(--h6-tag-color, #4c2d9c); font-size: 13px; max-width: 100%; overflow-wrap: anywhere; }
+  [part=tag] { display: inline-flex; align-items: center; gap: 5px; padding: 4px 5px 4px 9px; border-radius: var(--h6-tag-radius, 5px); background: var(--h6-tag-background, #f5f5f5); color: var(--h6-tag-color, #262626); font-size: 13px; max-width: 100%; overflow-wrap: anywhere; }
   [part=remove-button] { display: grid; place-items: center; flex: 0 0 auto; width: 24px; height: 24px; padding: 0; border: none; border-radius: 3px; background: transparent; color: inherit; cursor: pointer; font: inherit; font-size: 17px; }
-  [part=remove-button]:hover { background: #6540cb15; }
-  [part=remove-button]:focus-visible { outline: 2px solid var(--h6-accent, #6540cb); outline-offset: 1px; }
+  [part=remove-button]:hover { background: var(--h6-tag-hover, #e5e5e5); }
+  [part=remove-button]:focus-visible { outline: 2px solid var(--h6-accent, #171717); outline-offset: 1px; }
   [part=input] { flex: 1; min-width: 100px; width: 100px; border: 0; outline: none; background: transparent; color: inherit; font: inherit; font-size: 14px; padding: 5px 3px; }
-  [part=input]::placeholder { color: var(--h6-placeholder, #888192); }
+  [part=input]::placeholder { color: var(--h6-placeholder, #737373); }
   :host(:disabled) { opacity: .55; }
   :host([data-visited]:invalid) [part=control] { border-color: var(--h6-danger, #af3c41); }
 </style><div part="control"><div part="tokens"></div><input part="input" type="text" autocomplete="off" placeholder="Add a tag…"></div>`;

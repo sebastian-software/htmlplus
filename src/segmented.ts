@@ -1,12 +1,12 @@
 const template = document.createElement("template");
 template.innerHTML = `<style>
   :host { display: block; font: inherit; }
-  [part=control] { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border: 1px solid var(--h6-border,#d8d3e3); border-radius: var(--h6-radius,9px); background: var(--h6-track,#f0edf5); }
+  [part=control] { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border: 1px solid var(--h6-border,#d4d4d4); border-radius: var(--h6-radius,9px); background: var(--h6-track,#f5f5f5); }
   label { flex: 1; position: relative; min-width: 72px; }
   input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-  [part=option] { box-sizing: border-box; display: block; padding: 10px 12px; border-radius: max(0px,calc(var(--h6-radius,9px) - 4px)); text-align: center; font-size: 13px; cursor: pointer; }
-  input:checked + span { background: var(--h6-surface,white); color: var(--h6-accent,#6540cb); box-shadow: 0 1px 4px #29233516; font-weight: 600; }
-  input:focus-visible + span { outline: 2px solid var(--h6-accent,#6540cb); outline-offset: -2px; }
+  [part~=option] { box-sizing: border-box; display: block; padding: 10px 12px; border-radius: max(0px,calc(var(--h6-radius,9px) - 4px)); text-align: center; font-size: 13px; cursor: pointer; }
+  input:checked + span { background: var(--h6-surface,white); color: var(--h6-accent,#171717); box-shadow: 0 1px 4px #00000010; font-weight: 600; }
+  input:focus-visible + span { outline: 2px solid var(--h6-focus,#737373); outline-offset: 2px; }
   input:disabled + span { opacity: .5; cursor: default; }
   :host([data-touched]:invalid) [part=control] { border-color: var(--h6-danger,#af3c41); }
 </style><div part="control"></div>`;
@@ -93,6 +93,7 @@ export class H6Segmented extends HTMLElement {
     const enabledValue = option && !option.disabled ? option.value : null;
     for (const input of this.#control.querySelectorAll("input")) {
       input.checked = input.value === this.value;
+      input.nextElementSibling!.part.toggle("selected-option", input.checked);
       input.disabled = this.disabled || this.#formDisabled || Boolean(this.#options.find((item) => item.value === input.value)?.disabled);
       input.setAttribute("aria-required", String(this.required));
     }

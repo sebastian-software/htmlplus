@@ -8,11 +8,11 @@ const template = document.createElement("template");
 template.innerHTML = `<style>
   :host { display: block; font: inherit; }
   [part=control] { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 10px; align-items: center; }
-  label { min-width: 0; display: grid; gap: 5px; font-size: 11px; color: var(--h6-placeholder, #77717f); }
-  input { width: 100%; min-width: 0; box-sizing: border-box; height: 47px; border: 1px solid var(--h6-border,#d8d3e3); border-radius: var(--h6-radius,9px); background: var(--h6-surface,white); padding: 11px 13px; color: var(--h6-text, #292335); font: inherit; font-size: 14px; outline: none; }
-  input:focus { border-color: var(--h6-accent,#6540cb); box-shadow: 0 0 0 3px var(--h6-focus-soft,#eee8fc); }
+  label { min-width: 0; display: grid; gap: 5px; font-size: 11px; color: var(--h6-placeholder, #666666); }
+  input { width: 100%; min-width: 0; box-sizing: border-box; height: 47px; border: 1px solid var(--h6-border,#d4d4d4); border-radius: var(--h6-radius,9px); background: var(--h6-surface,white); padding: 11px 13px; color: var(--h6-text, #171717); font: inherit; font-size: 14px; outline: none; }
+  input:focus { border-color: var(--h6-accent,#171717); box-shadow: 0 0 0 3px var(--h6-focus-soft,#f5f5f5); }
   input:disabled { opacity: .5; }
-  [part=separator] { padding-top: 16px; color: var(--h6-placeholder,#77717f); }
+  [part=separator] { padding-top: 16px; color: var(--h6-placeholder,#666666); }
   :host([data-touched]:invalid) input { border-color: var(--h6-danger,#af3c41); }
 </style><div part="control"><label><span part="lower-label">From</span><input part="input lower-input" type="number"></label><span part="separator" aria-hidden="true">–</span><label><span part="upper-label">To</span><input part="input upper-input" type="number"></label></div>`;
 

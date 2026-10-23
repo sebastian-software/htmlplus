@@ -12,7 +12,8 @@ const site = join(root, 'site');
 await rm(site, { recursive: true, force: true });
 await mkdir(join(site, 'demo'), { recursive: true });
 await copyFile(join(root, 'demo/index.html'), join(site, 'index.html'));
-for (const name of ['styles.css', 'favicon.svg']) await copyFile(join(root, 'demo', name), join(site, 'demo', name));
+await copyFile(join(root, 'demo/styling.html'), join(site, 'styling.html'));
+for (const name of ['styles.css', 'base.css', 'styling.css', 'favicon.svg']) await copyFile(join(root, 'demo', name), join(site, 'demo', name));
 for (const folder of ['src', 'demo']) {
   const destination = join(site, 'dist', folder);
   await mkdir(destination, { recursive: true });

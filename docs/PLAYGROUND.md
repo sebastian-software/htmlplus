@@ -10,12 +10,16 @@ The eight fields are grouped into identifiers and verification, values with more
 
 ## Visual direction
 
-Studio uses a pale lavender canvas (`#f5f4f9`), white field surface (`#ffffff`), plum text (`#292335`), violet accent (`#6540cb`), neutral border (`#dedbe7`), and a deep plum inspector (`#252034`). Humanist Avenir Next/system sans is the interface face; system monospace identifies code and submitted values. No remote fonts or image assets are required.
+Base uses a neutral canvas (`#fafafa`), white field surface (`#ffffff`), dark text and primary actions (`#171717`), gray borders (`#d4d4d4`), and a charcoal inspector (`#171717`). System sans is the interface face; system monospace identifies code and submitted values. Component fallbacks are also neutral. No remote fonts or image assets are required.
 
 The inspector is the main visual contrast. Surrounding controls stay quiet, with clear labels, normal sentence case, limited motion, and visible focus. The second Utility theme uses blue, tighter corners, and different control parts to demonstrate the public styling surface with unchanged markup and form behavior. This directly tests the library's styling goal.
+
+## Styling gallery
+
+The playground links to `styling.html`, with direct fragment links from each element annotation. A compact element navigation leads to two live previews, their actual form entries, documented parts, and selectable CSS/HTML source. The downloadable neutral `base.css` and its token adapter follow the general shadcn/ui idea of a useful, editable starting point. Recipe CSS has one source shared by the live preview and copy panel. Mobile layouts stack the previews and wrap component navigation; source scrolls inside its own panel. Clipboard failure leaves the source selectable and explains how to copy it manually.
 
 ## Required states and evidence
 
 Check populated and invalid fields, repeated keys, omitted unchecked values, disabled fieldsets, restored defaults, local submission feedback, and both data views. Verify narrow-screen overflow, keyboard access, and reduced motion. Keep error and submission feedback separate from the changing data panel; do not announce every keystroke as a live region.
 
-Automated tests save desktop Studio and mobile Utility screenshots for visual review. Mobile viewport checks are layout evidence, not physical-device or OTP autofill certification.
+Automated tests save desktop Base, mobile Utility, and styling-gallery screenshots for visual review. Mobile viewport checks are layout evidence, not physical-device or OTP autofill certification.

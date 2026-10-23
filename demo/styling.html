@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en-US" data-theme="base">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Copyable CSS styling recipes for every html6 form element. Neutral defaults, live variations, and public CSS parts.">
+  <title>html6 — Styling recipes</title>
+  <link rel="icon" href="./demo/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./demo/base.css">
+  <link rel="stylesheet" href="./demo/styles.css">
+  <link rel="stylesheet" href="./demo/styling.css">
+  <script type="module" src="./dist/demo/styling.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#recipes">Skip to the recipes</a>
+  <header class="masthead">
+    <a class="wordmark" href="./" aria-label="html6 home">html<span>6</span><i aria-hidden="true"></i></a>
+    <span class="masthead-label">Styling recipes</span>
+    <div class="masthead-actions"><a class="text-link recipes-link" href="./">Form playground <span aria-hidden="true">↗</span></a></div>
+  </header>
+  <main id="recipes">
+    <div class="intro"><div><h1>Style every element.</h1><p>A neutral base, a variation for each control, and the CSS that makes it work.</p></div><a class="secondary-button download-base" href="./demo/base.css" download="html6-base.css">Download base.css <span aria-hidden="true">↓</span></a></div>
+    <div class="recipe-layout">
+      <nav class="recipe-navigation" aria-label="Components"><p>Elements</p><div id="recipe-links"></div></nav>
+      <section class="recipe-content" aria-labelledby="recipe-heading">
+        <div class="recipe-heading"><h2 id="recipe-heading">IBAN</h2><code id="recipe-element">&lt;h6-iban&gt;</code></div>
+        <p class="recipe-description" id="recipe-description"></p>
+        <div class="recipe-previews" id="recipe-previews"></div>
+        <div class="recipe-parts"><span>Public parts</span><div id="recipe-parts"></div></div>
+        <section class="recipe-source" aria-label="Example source">
+          <div class="source-toolbar"><div class="source-tabs" role="group" aria-label="Source format"><button type="button" data-source="css" aria-pressed="true">Variant CSS</button><button type="button" data-source="html" aria-pressed="false">HTML</button><button type="button" data-source="base" aria-pressed="false">Base CSS</button></div><button class="copy-button" id="copy-source" type="button">Copy CSS</button></div>
+          <pre tabindex="0" aria-label="Example code"><code id="recipe-code"></code></pre>
+          <p class="copy-status" id="copy-status" role="status"></p>
+        </section>
+        <details class="base-explanation"><summary>How the base styles work</summary><p>Load <code>base.css</code> and add <code>class="h6-base"</code> to a wrapper or an individual control. The neutral palette uses semantic tokens in the spirit of <a href="https://ui.shadcn.com/docs/theming">shadcn/ui</a>. Change those tokens or copy a recipe to override a specific part. The components keep their native form behavior.</p><pre><code>&lt;link rel="stylesheet" href="./html6-base.css"&gt;
+&lt;form class="h6-base"&gt;
+  &lt;!-- Labeled html6 controls go here. --&gt;
+&lt;/form&gt;</code></pre><p>These examples use plain CSS. They do not require React, Tailwind, or shadcn/ui.</p></details>
+      </section>
+    </div>
+    <noscript><p class="noscript-note">JavaScript is needed for the interactive recipes. The base CSS file is available directly from the download link.</p></noscript>
+  </main>
+  <footer><span>html6 is an experiment in extending HTML.</span><span>CSS variables. Shadow parts. Your styles.</span></footer>
+</body>
+</html>

@@ -1,11 +1,11 @@
 const switchTemplate = document.createElement("template");
 switchTemplate.innerHTML = `<style>
   :host { display: inline-flex; vertical-align: middle; cursor: pointer; border-radius: var(--h6-radius, 9px); outline: none; -webkit-tap-highlight-color: transparent; }
-  [part=track] { display: block; box-sizing: border-box; width: 46px; height: 28px; padding: 3px; border: 1px solid var(--h6-border, #d2ccdf); border-radius: 99px; background: var(--h6-muted, #e9e5f0); transition: background .15s; }
-  [part=thumb] { display: block; width: 20px; height: 20px; border-radius: 50%; background: white; box-shadow: 0 1px 3px #20142a25; transition: transform .15s; }
-  :host(:state(checked)) [part=track] { border-color: var(--h6-accent, #6540cb); background: var(--h6-accent, #6540cb); }
+  [part=track] { display: block; box-sizing: border-box; width: 46px; height: 28px; padding: 3px; border: 1px solid var(--h6-border, #d4d4d4); border-radius: 99px; background: var(--h6-muted, #e5e5e5); transition: background .15s; }
+  [part=thumb] { display: block; width: 20px; height: 20px; border-radius: 50%; background: white; box-shadow: 0 1px 3px #00000025; transition: transform .15s; }
+  :host(:state(checked)) [part=track] { border-color: var(--h6-accent, #171717); background: var(--h6-accent, #171717); }
   :host(:state(checked)) [part=thumb] { transform: translateX(18px); }
-  :host(:focus-visible) { outline: 3px solid var(--h6-focus, #b5a1ec); outline-offset: 4px; }
+  :host(:focus-visible) { outline: 3px solid var(--h6-focus, #737373); outline-offset: 4px; }
   :host(:disabled) { opacity: .5; cursor: not-allowed; }
   :host(:invalid) [part=track] { border-color: var(--h6-danger, #af3c41); }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

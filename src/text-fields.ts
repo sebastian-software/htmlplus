@@ -4,9 +4,9 @@ import type { FieldValidation } from "./validation.js";
 const template = document.createElement("template");
 template.innerHTML = `<style>
   :host { display: block; font: inherit; }
-  input { box-sizing: border-box; display: block; width: 100%; min-width: 0; height: 47px; padding: 11px 13px; border: 1px solid var(--h6-border, #d8d3e3); border-radius: var(--h6-radius, 9px); background: var(--h6-surface, white); color: inherit; outline: none; font: inherit; font-size: 14px; }
-  input:focus { border-color: var(--h6-accent, #6540cb); box-shadow: 0 0 0 3px var(--h6-focus-soft, #eee8fc); }
-  input::placeholder { color: var(--h6-placeholder, #96909e); }
+  input { box-sizing: border-box; display: block; width: 100%; min-width: 0; height: 47px; padding: 11px 13px; border: 1px solid var(--h6-border, #d4d4d4); border-radius: var(--h6-radius, 9px); background: var(--h6-surface, white); color: inherit; outline: none; font: inherit; font-size: 14px; }
+  input:focus { border-color: var(--h6-accent, #171717); box-shadow: 0 0 0 3px var(--h6-focus-soft, #f5f5f5); }
+  input::placeholder { color: var(--h6-placeholder, #737373); }
   input:disabled { opacity: .5; }
   :host([data-touched]:invalid) input { border-color: var(--h6-danger, #af3c41); }
 </style><input part="input" type="text">`;

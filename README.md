@@ -15,7 +15,11 @@ npm run dev
 
 Open [http://127.0.0.1:4173](http://127.0.0.1:4173). The dev command compiles TypeScript, watches source changes, and starts a local server. Refresh the page after source changes. Stop it with Ctrl+C.
 
-The playground shows actual `new FormData(form)` entries as fields change. Switch between an entry table and a JSON view, submit locally, reset defaults, disable the fieldset, or compare the Studio and Utility CSS themes. Repeated field names remain separate entries; the JSON view groups repeated names into arrays. Demo submissions are captured in the browser and do not make a network request.
+The playground shows actual `new FormData(form)` entries as fields change. Switch between an entry table and a JSON view, submit locally, reset defaults, disable the fieldset, or compare the neutral Base and blue Utility CSS themes. Repeated field names remain separate entries; the JSON view groups repeated names into arrays. Demo submissions are captured in the browser and do not make a network request.
+
+## Styling examples
+
+Open **Styling** in the playground, or click an element's name beside a field. Each of the eight controls has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. Download the shared neutral `base.css` as a starting point. The gallery uses semantic tokens inspired by shadcn/ui, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
 
 ## Implemented controls
 

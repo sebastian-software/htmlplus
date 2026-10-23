@@ -104,7 +104,7 @@ test('programmatic defaults and external form association keep native semantics'
 
 test('the mobile layout and alternate CSS theme preserve the same form values', async ({ page }) => {
   const before = await data(page);
-  await page.screenshot({ path: test.info().outputPath('studio-desktop.png'), fullPage: true });
+  await page.screenshot({ path: test.info().outputPath('base-desktop.png'), fullPage: true });
   await page.getByLabel('Appearance').selectOption('utility');
   expect(await data(page)).toEqual(before);
   await page.setViewportSize({ width: 390, height: 844 });
