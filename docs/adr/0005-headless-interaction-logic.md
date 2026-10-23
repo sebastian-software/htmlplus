@@ -4,8 +4,8 @@
 - Created: 2026-10-23
 - Updated: 2026-10-24
 - Lifecycle: living
-- Scope: Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, and Combobox; Date Picker still requires its own evidence
-- Implementation: eight Zag-backed elements, split browser modules, live examples, and sixteen styling recipes
+- Scope: Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, and Date Picker
+- Implementation: nine Zag-backed elements, split browser modules, live examples, and seventeen styling recipes
 
 ## Context
 
@@ -15,9 +15,9 @@ The existing contract remains ordinary HTML forms, native custom elements, shado
 
 ## Decision
 
-Use Zag 1.46.0 for Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, and Combobox through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, generated IDs, and callback names stay implementation details.
+Use Zag 1.46.0 for Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, and Date Picker through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, generated IDs, and callback names stay implementation details.
 
-Adopt per component after checking its actual DOM assumptions. The initial slice implemented Toggle, Accordion, and Tabs; the numeric slice adds Slider, Range Slider, and Rating. Toggle retains a native button; Accordion/Tabs generate native button triggers in shadow DOM and project caller-owned light-DOM sections. Native details/summary would be a smaller disclosure baseline but would not exercise the requested common behavior foundation and deliberate shadow styling surface. Native range remains a smaller single-thumb alternative; the explicit Zag direction shares the slider machine across one and two thumbs. ADR-0008 records the Select/Combobox slice; continue comparing native date controls for Date Picker. Do not migrate the earlier eight controls simply to standardize on one engine.
+Adopt per component after checking its actual DOM assumptions. The initial slice implemented Toggle, Accordion, and Tabs; the numeric slice adds Slider, Range Slider, and Rating. Toggle retains a native button; Accordion/Tabs generate native button triggers in shadow DOM and project caller-owned light-DOM sections. Native details/summary would be a smaller disclosure baseline but would not exercise the requested common behavior foundation and deliberate shadow styling surface. Native range remains a smaller single-thumb alternative; the explicit Zag direction shares the slider machine across one and two thumbs. ADR-0008 records the Select/Combobox slice; ADR-0009 records the Date Picker slice and its native-input boundary. Do not migrate the earlier eight controls simply to standardize on one engine.
 
 Responsibilities are divided as follows:
 
@@ -58,7 +58,7 @@ The [isolated probe](../../experiments/zag/README.md) pins the combobox and vani
 
 The minified production-mode probe bundle is 101,462 bytes, or 33,180 bytes with Node's default gzip, including the fixture class. This is a single-combobox experiment, not an incremental cost for html+, a benchmark, or a release size budget. No other component bundle sizes have been measured.
 
-Important limits: external label forwarding, native undo/IME, full user-event semantics, real browser history restoration, touch interaction, assistive technologies, and a clipping-safe production popup are not established by this combobox probe. Its implementation is separate from the integrated interaction elements. Select and Combobox have since completed their integrated slice under [ADR-0008](0008-selection-popups.md); Date Picker remains planned. The numeric controls also completed their separate integration checks. Firefox remains untested on this host because its existing launch failure occurs before navigation.
+Important limits: external label forwarding, native undo/IME, full user-event semantics, real browser history restoration, touch interaction, assistive technologies, and a clipping-safe production popup are not established by this combobox probe. Its implementation is separate from the integrated interaction elements. Select and Combobox have since completed their integrated slice under [ADR-0008](0008-selection-popups.md); Date Picker has since completed its integrated slice under ADR-0009. The numeric controls also completed their separate integration checks. Firefox remains untested on this host because its existing launch failure occurs before navigation.
 
 ## Tradeoffs and alternatives
 
@@ -80,6 +80,10 @@ Rating needs a narrow semantic adaptation: upstream item checked state can follo
 ## Integrated selection controls, 2026-10-24
 
 Select and Combobox complete the next accepted slice, with host-owned forms and no hidden proxies. Shadow-local manual popovers preserve theme inheritance and ARIA root relationships while Zag/Floating UI handles fixed placement and collisions. Select effects guard their missing hidden select. Combobox keeps a stable native editor, excludes normalized default-value binding, and separates controlled query from committed identifier. [ADR-0008](0008-selection-popups.md) owns the integration and evidence.
+
+## Integrated Date Picker, 2026-10-24
+
+Date Picker completes the requested catalog using Zag calendar views and the shared top-layer popup strategy. A host-owned native editor remains outside Zag's input lookup so selected-value effects and blur correction cannot rewrite raw drafts. Missing-editor actions are guarded and final focus returns to the calendar trigger. ADR-0009 records the date model, locale policy, and evidence.
 
 ## Review triggers
 
@@ -112,3 +116,5 @@ Revisit on an adapter/machine contract change, a supported-browser failure, edit
 - 2026-10-23: Connected the Zag/html+/application responsibilities to the product scope in ADR-0007.
 
 - 2026-10-24: Accepted the integrated Select/Combobox slice under ADR-0008: guarded missing hidden-select effects, native top-layer popups, and stable native query editing.
+
+- 2026-10-24: Accepted Date Picker under ADR-0009, with strict calendar dates, a native editor outside machine input synchronization, and scoped top-layer rendering.

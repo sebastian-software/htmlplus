@@ -1,6 +1,6 @@
 # Styling html+ controls
 
-The playground and styling gallery share independent Light/Dark appearances and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the sixteen elements also has its own Base preview, part-based variation, actual form entries, and copyable source. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
+The playground and styling gallery share independent Light/Dark appearances and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the seventeen elements also has its own Base preview, part-based variation, actual form entries, and copyable source. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
 
 ## Built-in base
 
@@ -24,7 +24,7 @@ Token suffixes and roles follow [shadcn/ui's current theming contract](https://u
 | --- | --- |
 | `--hp-background`, `--hp-foreground` | Editors, selected tab/segment surfaces, and default component text |
 | `--hp-primary`, `--hp-primary-foreground` | Pressed toggles, checked switches, slider ranges/thumbs, and highlighted rating items |
-| `--hp-popover`, `--hp-popover-foreground` | Select and Combobox popup surfaces and text |
+| `--hp-popover`, `--hp-popover-foreground` | Select, Combobox, and Date Picker popup surfaces and text |
 | `--hp-secondary`, `--hp-secondary-foreground` | Tag tokens |
 | `--hp-muted`, `--hp-muted-foreground` | Tab/segmented tracks, inactive tabs, placeholders, and interval labels |
 | `--hp-accent`, `--hp-accent-foreground` | Toggle and remove-button hover; highlighted Select/Combobox options |
@@ -99,7 +99,7 @@ This is an intentional pre-release CSS API change. Element names remain `h6-*`; 
 | `--h6-border` | `--hp-input` for controls, `--hp-border` for separators |
 | `--h6-focus`, `--h6-placeholder`, `--h6-danger` | `--hp-ring`, `--hp-muted-foreground`, `--hp-destructive` |
 | `--h6-track`, `--h6-muted` | `--hp-muted`, `--hp-input` |
-| `--h6-tag-background`, `--h6-tag-color`, `--h6-tag-hover` | `--hp-popover`, `--hp-popover-foreground` | Select and Combobox popup surfaces and text |
+| `--h6-tag-background`, `--h6-tag-color`, `--h6-tag-hover` | `--hp-popover`, `--hp-popover-foreground` | Select, Combobox, and Date Picker popup surfaces and text |
 | `--hp-secondary`, `--hp-secondary-foreground`, `--hp-accent` |
 | `--h6-radius`, `--h6-tag-radius` | `--hp-radius`, `--hp-radius-sm` |
 | `--h6-font-*`, `--h6-line-height`, `--h6-control-height` | Same suffixes under `--hp-` |
@@ -112,6 +112,7 @@ The [recipe definitions](../demo/recipes.ts) are the single source for the galle
 
 | Element | Included variation | Public parts |
 | --- | --- | --- |
+| `h6-date-picker` | Framed calendar | `root`, `control`, `input`, `trigger`, `clear-button`, `positioner`, `content`, `navigation`, `prev-button`, `view-button`, `next-button`, `view`, `day-view`, `month-view`, `year-view`, `grid`, `weekday`, `day`, `selected-day`, `today`, `month`, `year` |
 | `h6-select` | Quiet surface | `root`, `control`, `trigger`, `value-text`, `indicator`, `clear-button`, `positioner`, `content`, `option`, `selected-option`, `option-label`, `option-indicator`, `empty` |
 | `h6-combobox` | Underlined search | Select parts with `input` instead of `value-text` |
 | `h6-slider` | Slim rail | `root`, `value-text`, `control`, `track`, `range`, `thumb` |
@@ -147,6 +148,8 @@ Stateful styles should preserve visible keyboard focus, disabled states, invalid
 
 ## Verification
 
-The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, and unchanged edited FormData while switching themes on mobile. Gallery tests cover all sixteen recipes, shared displayed source, deep links, and clipboard success/failure. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.
+The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, and unchanged edited FormData while switching themes on mobile. Gallery tests cover all seventeen recipes, shared displayed source, deep links, and clipboard success/failure. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.
 
-Select and Combobox keep their popup in shadow DOM while entering the native top layer. Inherited theme tokens, the shadcn bridge, and public popup parts still apply. Use `--hp-popover` and `--hp-popover-foreground` for its surface and text, and accent tokens for highlighted options. `:state(selected)` and `:state(open)` expose current state. See the [selection guide](SELECTION-CONTROLS.md).
+Select, Combobox, and Date Picker keep their popup in shadow DOM while entering the native top layer. Inherited theme tokens, the shadcn bridge, and public popup parts still apply. Use `--hp-popover` and `--hp-popover-foreground` for its surface and text, and accent tokens for highlighted options. `:state(selected)` and `:state(open)` expose current state. See the [selection guide](SELECTION-CONTROLS.md).
+
+Date Picker uses primary tokens for its selected day and accent tokens for calendar hover. `selected-day` and `today` parts expose independent live states. Calendar navigation buttons use the common ring and radius contract. The [Date Picker guide](DATE-PICKER.md) records input and popup behavior.

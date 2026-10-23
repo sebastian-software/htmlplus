@@ -4,7 +4,7 @@
 
 html+ provides framework-independent form controls and core UI primitives. Components handle interaction, value formats, and form participation. Your application supplies the data, business rules, and workflows.
 
-**Status:** working prototype. Sixteen elements (fourteen form controls, Accordion, and Tabs), a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
+**Status:** working prototype. Seventeen elements (fifteen form controls, Accordion, and Tabs), a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
 
 ## What belongs in html+
 
@@ -35,7 +35,7 @@ The playground shows actual `new FormData(form)` entries as fields change. Switc
 
 ## Styling examples
 
-Open **Styling** in the playground, or click an element's name beside a field. Each of the sixteen elements has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `themes.css` supplies prefixed light/dark palettes; `shadcn.css` connects an existing shadcn palette through the `hp-shadcn` class. Both files are copied into `dist/` at build time. Semantic token suffixes and roles match the documented shadcn theme contract, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
+Open **Styling** in the playground, or click an element's name beside a field. Each of the seventeen elements has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `themes.css` supplies prefixed light/dark palettes; `shadcn.css` connects an existing shadcn palette through the `hp-shadcn` class. Both files are copied into `dist/` at build time. Semantic token suffixes and roles match the documented shadcn theme contract, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
 
 ## Implemented elements
 
@@ -55,16 +55,17 @@ Open **Styling** in the playground, or click an element's name beside a field. E
 | `h6-slider` | Zag pointer/keyboard selection of one bounded number, with native form participation |
 | `h6-range-slider` | Two stable Zag thumbs, ordered boundaries, and explicitly named form entries |
 | `h6-select` | Zag single selection, supplied options, clearable identifier, and a themed top-layer listbox |
+| `h6-date-picker` | Native localized editor and Zag calendar views, strict date-only submission, inclusive bounds, and a themed top-layer popup |
 | `h6-combobox` | Zag searchable selection with a native editor, separate query, and no free-text form entry |
 | `h6-rating` | Clearable whole score, separate hover preview, and an unanswered required state; Zag behavior |
 
 Every control includes a neutral base appearance, with consistent editor typography and centered SVG icons. No external component stylesheet is required. Override inherited `--hp-*` tokens or public parts to customize it.
 
-The fourteen form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: typing `de89 3704 0044 0532 0130 00` leaves that text untouched while the form receives `DE89370400440532013000`. This separation preserves native text editing and undo.
+The fifteen form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: typing `de89 3704 0044 0532 0130 00` leaves that text untouched while the form receives `DE89370400440532013000`. This separation preserves native text editing and undo.
 
 ## Use a control
 
-After building, import `dist/src/index.js` as a browser ES module. It registers the sixteen elements and exports their classes. Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, and Combobox use Zag's vanilla adapter internally; there is no runtime component framework dependency. The build type-checks TypeScript, emits declarations, and bundles browser modules with shared chunks using esbuild. Deploy the complete `dist/` tree so those chunks remain available. Source modules also export their individual classes for explicit registration. CSS parts and inherited `--hp-*` custom properties are the styling surface; the demo demonstrates both.
+After building, import `dist/src/index.js` as a browser ES module. It registers the seventeen elements and exports their classes. Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, and Date Picker use Zag's vanilla adapter internally; there is no runtime component framework dependency. The build type-checks TypeScript, emits declarations, and bundles browser modules with shared chunks using esbuild. Deploy the complete `dist/` tree so those chunks remain available. Source modules also export their individual classes for explicit registration. CSS parts and inherited `--hp-*` custom properties are the styling surface; the demo demonstrates both.
 
 ```html
 <script type="module" src="/dist/src/index.js"></script>
@@ -79,7 +80,7 @@ After building, import `dist/src/index.js` as a browser ES module. It registers 
 </form>
 ```
 
-These are JavaScript-dependent controls. Select and Combobox also require the native Popover API; see the [selection guide](docs/SELECTION-CONTROLS.md) for their popup and browser boundaries. A no-JavaScript fallback and server-side rendering integration are not implemented.
+These are JavaScript-dependent controls. Select, Combobox, and Date Picker also require the native Popover API; see the [selection guide](docs/SELECTION-CONTROLS.md) for their popup and browser boundaries. A no-JavaScript fallback and server-side rendering integration are not implemented.
 
 The bundled runtime dependencies' [third-party notices](THIRD_PARTY_NOTICES.txt) are copied into `dist/` and the static export. Keep them with the distributed browser modules.
 
@@ -147,10 +148,11 @@ Firefox behavior remains unverified here. Physical-device OTP autofill, assistiv
 ## Project documents
 
 - [Component and application boundary](docs/adr/0007-component-application-boundary.md): the guiding principle, reusable component logic, and application responsibilities.
-- [Project plan](docs/PLAN.md): current scope and delivery order. Date Picker remains planned.
+- [Project plan](docs/PLAN.md): current scope and delivery order. The initial requested catalog is implemented; later candidates are recorded in the plan.
+- [Date Picker](docs/DATE-PICKER.md): ISO values, explicit locale parsing, raw drafts, constraints, calendar navigation, and styling.
 - [Select and Combobox](docs/SELECTION-CONTROLS.md): identifiers, queries, options, form events, popup behavior, and styling.
 - [Interaction elements](docs/INTERACTIONS.md): Toggle, Accordion, and Tabs APIs, section markup, events, native form behavior, and validation.
-- [Headless interaction decision](docs/adr/0005-headless-interaction-logic.md): accepted Zag integration for eight interaction elements, build boundaries, and remaining popup work.
+- [Headless interaction decision](docs/adr/0005-headless-interaction-logic.md): accepted Zag integration for nine interaction elements, build boundaries, and remaining popup work.
 - [Living architecture decisions](docs/adr/README.md): current rationale and browser evidence.
 - [Project identity](docs/adr/0006-project-identity.md): the html+ name, htmlplus.dev domain, and technical naming boundary.
 - [Playground design](docs/PLAYGROUND.md): layout and styling intent.

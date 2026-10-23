@@ -20,8 +20,10 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@internationalized/date": "3.12.4",
     "@zag-js/accordion": "1.46.0",
     "@zag-js/combobox": "1.46.0",
+    "@zag-js/date-picker": "1.46.0",
     "@zag-js/rating-group": "1.46.0",
     "@zag-js/select": "1.46.0",
     "@zag-js/slider": "1.46.0",

@@ -21,6 +21,8 @@ Ratings expose a whole score or null for unanswered. Hover is separate preview s
 
 Select and Combobox use the same label/identifier distinction: an enabled selected identifier contributes one string, and an unanswered selection contributes no entry. Combobox query text remains separate; editing invalidates a prior selection, and exact label text alone does not commit. [The selection guide](../SELECTION-CONTROLS.md) owns the detailed contract.
 
+Date Picker uses one Gregorian `YYYY-MM-DD` string or an unanswered state, separately from localized editor text. Complete out-of-range dates retain their ISO value with range validity errors; invalid drafts have no canonical entry. [ADR-0009](0009-calendar-date-picker.md) records the locale and date-model decisions.
+
 ## Consequences and evidence
 
 Toggle contributes a named string while pressed and no entry while unpressed, with a separate boolean current/default state. Accordion and Tabs expose view state through their properties but contribute no host entries. Their light-DOM fields retain their individual serialization and constraints. The [interaction guide](../INTERACTIONS.md) owns those public APIs.
@@ -39,3 +41,5 @@ Toggle contributes a named string while pressed and no entry while unpressed, wi
 - 2026-10-23: Accepted bounded slider numbers, nonnullable range pairs with explicit names and stable thumb identities, and nullable whole ratings with separate hover preview.
 
 - 2026-10-24: Added selected identifiers for Select/Combobox and separate non-submitted query state with immediate invalidation on user editing.
+
+- 2026-10-24: Added the Date Picker calendar-date contract, without a time component, timestamp conversion, or inferred locale order.

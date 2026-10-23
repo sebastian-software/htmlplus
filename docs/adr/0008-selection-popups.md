@@ -4,7 +4,7 @@
 - Created: 2026-10-24
 - Updated: 2026-10-24
 - Lifecycle: living
-- Scope: Select and Combobox; Date Picker remains planned
+- Scope: Select and Combobox; Date Picker reuses the popup strategy under ADR-0009
 
 ## Context and decision
 
@@ -34,7 +34,7 @@ Rendering and integration still own accessibility. Headless behavior and native 
 
 Integrated Chromium and WebKit checks exercise form values and event counts, known/disabled/duplicate/dynamic options, dirty defaults, reset/restoration callbacks, readonly and disabled fieldsets, external forms, reconnect cleanup, labels/descriptions, native undo and composition, query-only omission, no results, invalid fields in Tabs, popup clipping/collision, Escape/outside/Tab dismissal, local shadcn popover tokens, and Light/Dark mobile recipes. The repository plan records the current complete-suite result.
 
-Firefox remains blocked by the existing pre-navigation macOS profile failure; Linux CI is configured for all three engines. Physical-device interaction/autofill, manual assistive-technology coverage, and real history restoration remain unverified. Date Picker has its own date, editing, and popup acceptance gate.
+Firefox remains blocked by the existing pre-navigation macOS profile failure; Linux CI is configured for all three engines. Physical-device interaction/autofill, manual assistive-technology coverage, and real history restoration remain unverified. Date Picker has since completed its separate integration under ADR-0009.
 
 Revisit on changes to Zag's omitted-hidden-control assumptions, Popover API behavior, focus/dismissal regressions, theme inheritance, or supported-browser requirements. Multiple selection, remote integration, grouped options, and virtualization require explicit additional scope and evidence.
 
@@ -53,3 +53,5 @@ Revisit on changes to Zag's omitted-hidden-control assumptions, Popover API beha
 ## Changes
 
 - 2026-10-24: Accepted single-selection Select and Combobox with ElementInternals, explicit query invalidation, stable native editing, shadow-local manual popovers, scoped theming, and integrated browser evidence.
+
+- 2026-10-24: Linked the Date Picker successor integration in ADR-0009; the Select/Combobox contract is unchanged.

@@ -10,10 +10,12 @@ import { H6Slider, H6RangeSlider } from "./slider.js";
 import { H6Rating } from "./rating.js";
 import { H6Tabs } from "./tabs.js";
 import { H6Select, H6Combobox } from "./selection.js";
+import { H6DatePicker } from "./date-picker.js";
 
 export { H6Switch, H6Tags, H6Bic, H6Iban, H6Otp, H6Duration, H6Interval, H6Segmented, H6Toggle, H6Accordion, H6Tabs, H6Slider, H6RangeSlider, H6Rating };
 export type { RangeSliderValue } from "./slider.js";
 export { H6Select, H6Combobox };
+export { H6DatePicker };
 export type { IntervalValue } from "./interval.js";
 
 for (const [name, definition] of [
@@ -21,6 +23,7 @@ for (const [name, definition] of [
   ["h6-duration", H6Duration], ["h6-interval", H6Interval], ["h6-segmented", H6Segmented],
   ["h6-toggle", H6Toggle], ["h6-accordion", H6Accordion], ["h6-tabs", H6Tabs], ["h6-slider", H6Slider], ["h6-range-slider", H6RangeSlider], ["h6-rating", H6Rating],
   ["h6-select", H6Select], ["h6-combobox", H6Combobox],
+  ["h6-date-picker", H6DatePicker],
 ] as const) {
   if (!customElements.get(name)) customElements.define(name, definition);
 }
@@ -43,5 +46,6 @@ declare global {
     "h6-rating": H6Rating;
     "h6-select": H6Select;
     "h6-combobox": H6Combobox;
+    "h6-date-picker": H6DatePicker;
   }
 }

@@ -4,7 +4,7 @@
 - Created: 2026-10-22
 - Updated: 2026-10-24
 - Lifecycle: living
-- Implementation: fourteen form controls, two companion elements, and a live playground
+- Implementation: fifteen form controls, two companion elements, and a live playground
 
 ## Context and decision
 
@@ -24,6 +24,8 @@ Use the platform's form mechanisms. Existing native inputs may remain the submis
 Accordion and Tabs are companion elements rather than submission owners. Their sections stay in light DOM so contained inputs preserve their original form association. Hidden panels retain their values and constraints. Interactive validation reveals the first invalid section; secondary hidden invalid fields suppress only their native validation UI during that attempt, not submission blocking. See the [interaction guide](../INTERACTIONS.md).
 
 Select and Combobox submit only enabled selected identifiers. Query edits invalidate selection, and query-only text does not become a form value. Their form and popup contracts are recorded in [ADR-0008](0008-selection-popups.md).
+
+Date Picker submits one Gregorian ISO date independently of its localized native editor. Invalid drafts remain visible and do not submit a stale date; constraints and popup behavior follow [ADR-0009](0009-calendar-date-picker.md).
 
 ## Review trigger
 
@@ -49,3 +51,5 @@ Revisit the mechanism if a supported browser cannot provide reliable submission,
 - 2026-10-23: Linked ADR-0007's component/application boundary and native-HTML comparison rule to the ordinary-form contract.
 
 - 2026-10-24: Added Select and Combobox as form-associated hosts with one selected identifier and no hidden proxy. ADR-0008 records popup and query behavior.
+
+- 2026-10-24: Added Date Picker with host-owned native editing, date-only submission, explicit locale parsing, and inclusive constraints under ADR-0009.

@@ -26,7 +26,7 @@
 
   <main id="playground">
     <div class="intro">
-      <div><h1>Let HTML do the form work.</h1><p>Sixteen components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
+      <div><h1>Let HTML do the form work.</h1><p>Seventeen components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
       <span class="preview-label"><span aria-hidden="true"></span> Early preview</span>
     </div>
 
@@ -110,6 +110,11 @@
                 <option value="US">United States</option>
               </h6-combobox>
               <p class="feedback" id="country-feedback">Type to filter, then choose. Search text alone contributes no form entry.</p>
+            </div>
+            <div class="field" id="date-example">
+              <div class="field-heading"><label for="date-field">Delivery date</label><a class="recipe-link" href="./styling.html#h6-date-picker" aria-label="Style h6-date-picker"><code>&lt;h6-date-picker&gt;</code></a></div>
+              <h6-date-picker id="date-field" name="delivery_date" value="2026-10-28" min="2026-10-01" max="2027-12-31" locale="en-US" aria-describedby="date-feedback" required></h6-date-picker>
+              <p class="feedback" id="date-feedback">Enter MM/DD/YYYY or choose a day. The form receives YYYY-MM-DD without a time zone.</p>
             </div>
             <p class="field-section">04 <span>Numeric choices</span></p>
             <div class="field">

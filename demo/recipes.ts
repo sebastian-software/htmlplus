@@ -14,6 +14,26 @@ export interface StylingRecipe {
 /** Trusted, static authoring examples. This CSS is both shown and used by the previews. */
 export const recipes: readonly StylingRecipe[] = [
   {
+    element: "h6-date-picker", title: "Date Picker", label: "Delivery date", variant: "Framed calendar", className: "date-framed",
+    description: "A native text editor and Zag calendar share one date-only form value. Localized text stays separate from YYYY-MM-DD submission.",
+    markup: '<h6-date-picker name="delivery_date" value="2026-10-28" min="2026-10-01" max="2027-12-31" locale="en-US" required></h6-date-picker>',
+    parts: ["root", "control", "input", "trigger", "clear-button", "positioner", "content", "navigation", "prev-button", "view-button", "next-button", "view", "day-view", "month-view", "year-view", "grid", "weekday", "day", "selected-day", "today", "month", "year"],
+    css: `h6-date-picker.date-framed::part(control) {
+  background: var(--hp-muted, #f5f5f5);
+  box-shadow: none;
+}
+h6-date-picker.date-framed::part(content) {
+  border-radius: var(--hp-radius, .625rem);
+  border-width: 2px;
+}
+h6-date-picker.date-framed::part(selected-day) {
+  border-radius: 999px;
+}
+h6-date-picker.date-framed::part(weekday) {
+  font-weight: 600;
+}`,
+  },
+  {
     element: "h6-select", title: "Select", label: "Shipping method", variant: "Quiet surface", className: "select-quiet",
     description: "A Zag listbox selects a supplied identifier. Its top-layer popup shares inherited theme tokens.",
     markup: `<h6-select name="shipping" value="standard" required>
