@@ -8,11 +8,14 @@ export default defineConfig({
   retries: 0,
   workers: 3,
   reporter: 'list',
-  use: { baseURL: 'http://127.0.0.1:4174', trace: 'retain-on-failure', screenshot: 'only-on-failure' },
+  use: { baseURL: 'http://127.0.0.1:48164', trace: 'retain-on-failure', screenshot: 'only-on-failure' },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
-  webServer: { command: 'node scripts/serve.mjs --port 4174', url: 'http://127.0.0.1:4174', reuseExistingServer: !process.env.CI },
+  webServer: [
+    { command: 'node scripts/serve.mjs --port 48164', url: 'http://127.0.0.1:48164', reuseExistingServer: false },
+    { command: 'node scripts/serve.mjs --site --port 48165', url: 'http://127.0.0.1:48165/html6/', reuseExistingServer: false },
+  ],
 });

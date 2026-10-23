@@ -2,13 +2,13 @@
 
 - Status: accepted
 - Created: 2026-10-22
-- Updated: 2026-10-22
+- Updated: 2026-10-23
 - Lifecycle: living
 - Scope: initial prototype
 
 ## Context and decision
 
-IBAN, BIC, and OTP are text fields with domain-specific normalization. The first spike enhanced a light-DOM input and rewrote its value after each input event. A manual undo check showed that transformed characters could no longer be undone. Keeping a native input alone does not preserve native editing if the component repeatedly replaces its text.
+IBAN, BIC, OTP, and duration are text fields with domain-specific normalization. The first spike enhanced a light-DOM input and rewrote its value after each input event. A manual undo check showed that transformed characters could no longer be undone. Keeping a native input alone does not preserve native editing if the component repeatedly replaces its text.
 
 Keep one native input in the component's shadow root, and make the custom host the form-associated submission owner. Let the editor retain exactly the text being edited. Derive the canonical value and supply it through `ElementInternals.setFormValue(canonical, displayText)`. For example, a lowercase, spaced IBAN can remain visible while the form receives uppercase text without whitespace.
 
@@ -42,3 +42,5 @@ The initial host's Firefox automation fails before page load; that engine is unv
 
 - 2026-10-22: Initially proposed enhancing a native light-DOM input as its own submission owner.
 - 2026-10-22: The typing spike exposed lost undo history during normalization. Changed to a native shadow editor with canonical values submitted by the host; deferred the no-JavaScript fallback.
+
+- 2026-10-23: Reused the same native editor for duration notation with canonical whole seconds. User input still leaves the editor text untouched.

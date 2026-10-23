@@ -69,12 +69,16 @@ function render(): void {
   validityStatus.replaceChildren(dot, document.createTextNode(fields.disabled ? "Fields disabled" : invalid ? `${invalid} ${invalid === 1 ? "field needs" : "fields need"} attention` : "All fields valid"));
   document.querySelector("#last-event")!.textContent = lastEvent;
 
-  for (const [id, feedbackId] of [["iban-field", "iban-feedback"], ["bic-field", "bic-feedback"], ["otp-field", "otp-feedback"]] as const) {
+  for (const [id, feedbackId] of [["iban-field", "iban-feedback"], ["bic-field", "bic-feedback"], ["otp-field", "otp-feedback"], ["duration-field", "duration-feedback"]] as const) {
     const field = document.getElementById(id) as H6TextField;
     const feedback = document.getElementById(feedbackId)!;
     feedback.dataset.state = fields.disabled || !field.value ? "neutral" : field.validity?.valid ? "valid" : "invalid";
     feedback.textContent = field.validationMessage && field.hasAttribute("data-touched") ? field.validationMessage : field.detail;
   }
+  const interval = document.querySelector("h6-interval")!;
+  const intervalFeedback = document.querySelector<HTMLElement>("#budget-feedback")!;
+  intervalFeedback.dataset.state = !fields.disabled && !interval.validity.valid && interval.hasAttribute("data-touched") ? "invalid" : "neutral";
+  intervalFeedback.textContent = intervalFeedback.dataset.state === "invalid" ? interval.validationMessage : "One control, two named values. The lower boundary cannot exceed the upper.";
 }
 
 function schedule(): void {
@@ -114,6 +118,9 @@ document.querySelector("#load-example")!.addEventListener("click", () => {
   document.querySelector("h6-iban")!.value = "de89 3704 0044 0532 0130 00";
   document.querySelector("h6-bic")!.value = "cobadeffxxx";
   document.querySelector("h6-otp")!.value = "004271";
+  document.querySelector("h6-duration")!.value = "1h 30m";
+  document.querySelector("h6-interval")!.value = [200, 800];
+  document.querySelector("h6-segmented")!.value = "standard";
   tags.value = ["html", "web-components"];
   updates.checked = true;
   lastEvent = "Example loaded";
@@ -136,5 +143,5 @@ for (const button of document.querySelectorAll<HTMLButtonElement>("[data-view]")
   document.querySelector<HTMLElement>("#json-view")!.hidden = view !== "json";
 });
 
-await Promise.all(["h6-switch", "h6-tags", "h6-iban", "h6-bic", "h6-otp"].map((name) => customElements.whenDefined(name)));
+await Promise.all(["h6-switch", "h6-tags", "h6-iban", "h6-bic", "h6-otp", "h6-duration", "h6-interval", "h6-segmented"].map((name) => customElements.whenDefined(name)));
 render();

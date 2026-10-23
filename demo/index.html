@@ -6,14 +6,14 @@
   <meta name="color-scheme" content="light">
   <meta name="description" content="An interactive playground for html6 form controls. Edit native-feeling fields and inspect the actual FormData, live.">
   <title>html6 — Form playground</title>
-  <link rel="icon" href="/demo/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/demo/styles.css">
-  <script type="module" src="/dist/demo/playground.js"></script>
+  <link rel="icon" href="./demo/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./demo/styles.css">
+  <script type="module" src="./dist/demo/playground.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#playground">Skip to the playground</a>
   <header class="masthead">
-    <a class="wordmark" href="/" aria-label="html6 home">html<span>6</span><i aria-hidden="true"></i></a>
+    <a class="wordmark" href="./" aria-label="html6 home">html<span>6</span><i aria-hidden="true"></i></a>
     <span class="masthead-label">Form playground</span>
     <div class="masthead-actions">
       <label class="theme-picker" for="theme">Appearance <select id="theme"><option value="studio">Studio</option><option value="utility">Utility</option></select></label>
@@ -23,7 +23,7 @@
 
   <main id="playground">
     <div class="intro">
-      <div><h1>Let HTML do the form work.</h1><p>Five small additions to the platform. Change a field and see what the browser would send.</p></div>
+      <div><h1>Let HTML do the form work.</h1><p>Eight small additions to the platform. Change a field and see what the browser would send.</p></div>
       <span class="preview-label"><span aria-hidden="true"></span> Early preview</span>
     </div>
 
@@ -33,6 +33,7 @@
         <form id="demo-form">
           <fieldset id="demo-fields">
             <legend class="visually-hidden">Component examples</legend>
+            <p class="field-section">01 <span>Identifiers & verification</span></p>
             <div class="field">
               <div class="field-heading"><label for="iban-field">IBAN</label><code>&lt;h6-iban&gt;</code></div>
               <h6-iban id="iban-field" name="iban" value="DE89370400440532013000" placeholder="DE89 3704 0044 0532 0130 00" aria-describedby="iban-feedback" required></h6-iban>
@@ -52,6 +53,25 @@
               </div>
             </div>
 
+            <p class="field-section">02 <span>Values with more to say</span></p>
+            <div class="field">
+              <div class="field-heading"><label for="duration-field">Session duration</label><code>&lt;h6-duration&gt;</code></div>
+              <h6-duration id="duration-field" name="duration" value="1h 30m" min="60" max="86400" required aria-describedby="duration-feedback" placeholder="1h 30m"></h6-duration>
+              <p class="feedback" id="duration-feedback">Try 1h 30m, 90m, or 01:30. Submitted in seconds.</p>
+            </div>
+            <div class="field">
+              <div class="field-heading"><label for="budget-field">Budget range (USD)</label><code>&lt;h6-interval&gt;</code></div>
+              <h6-interval id="budget-field" name="budget" lower-name="budget_min" upper-name="budget_max" value="[200,800]" min="0" max="10000" step="50" required aria-describedby="budget-feedback"></h6-interval>
+              <p class="feedback" id="budget-feedback">One control, two named values. The lower boundary cannot exceed the upper.</p>
+            </div>
+            <p class="field-section">03 <span>Choices & collections</span></p>
+            <div class="field">
+              <div class="field-heading"><label for="delivery-field">Delivery speed</label><code>&lt;h6-segmented&gt;</code></div>
+              <h6-segmented id="delivery-field" name="delivery" value="standard" required aria-describedby="delivery-feedback">
+                <option value="economy">Economy</option><option value="standard">Standard</option><option value="express">Express</option>
+              </h6-segmented>
+              <p class="feedback" id="delivery-feedback">Native radio keys. The form receives the selected identifier.</p>
+            </div>
             <div class="field tags-field">
               <div class="field-heading"><label for="topics">Topics</label><code>&lt;h6-tags&gt;</code></div>
               <h6-tags id="topics" name="topics" value='["html", "web-components"]' required aria-describedby="topics-feedback"></h6-tags>
@@ -72,7 +92,7 @@
 
       <aside class="inspector-column" aria-labelledby="data-heading">
         <section class="inspector">
-          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">6 entries</span></div>
+          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">10 entries</span></div>
           <div class="inspector-toolbar"><div class="view-switch" role="group" aria-label="Data format"><button type="button" data-view="entries" aria-pressed="true">Entries</button><button type="button" data-view="json" aria-pressed="false">JSON</button></div><span class="reading-label">new FormData(form)</span></div>
           <div id="entries-view" class="data-view"><table><caption class="visually-hidden">Current form entries, preserving repeated field names</caption><thead><tr><th scope="col">Name</th><th scope="col">Value</th></tr></thead><tbody id="entries-body"></tbody></table><p id="empty-data" class="empty-data" hidden>No entries. Disabled fields are left out of FormData.</p></div>
           <div id="json-view" class="data-view" hidden><pre class="json-code" id="json-output" aria-label="Current form data as JSON"></pre><p class="json-note">Repeated names become arrays in this JSON view.</p></div>
@@ -88,6 +108,7 @@
       <div class="explanation-copy"><h2 id="how-heading">A regular form, with a little more vocabulary.</h2><p>Every control participates through the browser’s form APIs. Specialized fields keep a real text input inside, while their normalized value goes into the form.</p><p class="scope-note">This preview checks ten IBAN country formats and their check digits, plus BIC structure. It does not verify bank accounts, BIC registration, or authentication codes.</p></div>
       <div class="markup-example"><div class="markup-title">The entire integration</div><pre><code>&lt;form&gt;
   &lt;h6-iban name="iban" required&gt;&lt;/h6-iban&gt;
+  &lt;h6-duration name="seconds"&gt;&lt;/h6-duration&gt;
   &lt;h6-tags name="topics"&gt;&lt;/h6-tags&gt;
   &lt;h6-switch name="updates"&gt;&lt;/h6-switch&gt;
   &lt;button&gt;Submit&lt;/button&gt;

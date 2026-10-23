@@ -10,6 +10,12 @@ Terminology for form controls, their values, and specialized input fields.
 
 **Composite control:** A single field interaction that manages a collection of values or several related values, such as tags or the boundaries of a date range.
 
+**Duration:** An amount of elapsed time, independent of a start date or time zone.
+
+**Interval:** A lower and an upper boundary describing a numeric range. An open-ended interval omits one or both boundaries.
+
+**Segmented choice:** A single selection from a small set of visible, mutually exclusive options.
+
 **Specialized input field:** A field for a particular kind of information whose entry, formatting, or validation benefits from domain-specific behavior.
 
 **IBAN:** International Bank Account Number, an account identifier with a country-specific structure and check digits.

@@ -2,9 +2,9 @@
 
 - Status: accepted
 - Created: 2026-10-22
-- Updated: 2026-10-22
+- Updated: 2026-10-23
 - Lifecycle: living
-- Implementation: five-control prototype and live playground
+- Implementation: eight-control prototype and live playground
 
 ## Context and decision
 
@@ -31,3 +31,5 @@ Revisit the mechanism if a supported browser cannot provide reliable submission,
 ## Changes
 
 - 2026-10-22: Recorded the project's defining ordinary-form integration goal. The first implementation uses form-associated hosts; specialized editors are separated from their canonical submission values in ADR-0003.
+
+- 2026-10-23: Extended the ordinary-form contract to elapsed durations, numeric boundary pairs, and native radio selections; ADR-0004 defines their serialization.

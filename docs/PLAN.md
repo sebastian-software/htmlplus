@@ -1,6 +1,6 @@
 # Project plan
 
-Updated: 2026-10-22. Status: local prototype available. Chromium and WebKit contract checks are in place; Firefox cannot launch on this macOS host. Physical-device autofill remains unverified.
+Updated: 2026-10-23. Status: eight-control prototype and static Pages workflow available. Chromium and WebKit contract checks are in place; Firefox cannot launch on this macOS host. Physical-device autofill remains unverified.
 
 ## Intended outcome
 
@@ -22,7 +22,9 @@ Names are provisional. Being listed does not commit a component to the first rel
 | `h6-combobox` | Searchable selection with separate display label and identifier | The selected identifier |
 | `h6-interval` | Two related numeric boundaries, optionally with a two-thumb slider | Two explicitly named numeric values |
 | `h6-date-range` | Coordinated start and end dates with shared constraints | Two explicitly named date values |
-| Duration, money, and unit fields | Domain-aware editing and normalization | An explicit, documented representation per field |
+| `h6-duration` | Flexible elapsed-time notation with a native editor | Whole, nonnegative seconds |
+| `h6-segmented` | Compact choice with native radio keyboard behavior | The selected identifier |
+| Money and unit fields | Domain-aware editing and normalization | An explicit, documented representation per field |
 
 Later candidates include file collections and hierarchical selections. Rich-text editing needs a separate scope assessment because of its editing and content-processing obligations.
 
@@ -74,9 +76,15 @@ Later candidates include file collections and hierarchical selections. Rich-text
 | 4. Combobox | Separate label from identifier with accessible selection and caller-supplied options. Reuse proven primitives only where behavior matches. | Shared form contract; combobox interaction design |
 | 5. First release decision | Review actual integration effort and supported-browser evidence. Choose a small release set; defer fields that still require application workarounds. | Evidence from implemented slices |
 
-The initial playground, five controls, two CSS themes, and a focused browser suite are implemented. The specialized editor mechanism changed after a native undo experiment; ADR-0003 records why. Text normalization uses a submitted value separate from the editor text. Tag editing in place and physical-device checks remain open.
+The playground now contains eight controls and two CSS themes. Thirty checks pass across Chromium and WebKit, plus five validation unit tests. The static Pages export is tested under a repository subpath; the Actions workflow gates deployment on the full three-engine Linux matrix. The specialized editor mechanism changed after a native undo experiment; ADR-0003 records why. Text normalization uses a submitted value separate from the editor text. Tag editing in place and physical-device checks remain open.
 
 These are learning checkpoints, not dated delivery promises. The switch is a bounded reference implementation; the specialized fields and tags demonstrate the project's broader value.
+
+## Current expansion
+
+Implemented duration, numeric interval, and segmented choice to test text normalization, related field names, and native radio semantics side by side. [ADR-0004](adr/0004-composite-value-contracts.md) records the public units and value shapes. The duration reuses the narrow text-field class. The two composite controls keep their native interactions in focused implementations; no runtime framework or universal component base is introduced.
+
+Next, assess a searchable combobox and date range using the same ordinary-form contract. Preserve browser editing behavior and test real integration before introducing shared abstractions. Browser back/forward restoration, manual screen-reader coverage, and physical-device autofill remain separate evidence tasks.
 
 ## Current technical direction
 
@@ -89,7 +97,7 @@ Provide a restrained default appearance, inheritable CSS variables, and document
 - Final element prefix, package name, and registration strategy.
 - Reassess the initial tag API: `.value` and `.defaultValue` arrays, with JSON declarative defaults; existing-tag editing remains pending.
 - Verify the separate canonical submission mechanism on additional devices and password managers.
-- No-JavaScript fallback and server-side rendering integration for all five controls.
+- No-JavaScript fallback and server-side rendering integration for all eight controls.
 - Exact browser versions, manual assistive-technology coverage, and the first package's release set.
 
 ## Sources
