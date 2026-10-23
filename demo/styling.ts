@@ -1,3 +1,4 @@
+import "./icons.js";
 import "../src/index.js";
 import { recipes } from "./recipes.js";
 import type { StylingRecipe } from "./recipes.js";
@@ -28,9 +29,9 @@ function markup(recipe: StylingRecipe, variant: string, id: string): string {
 
 function renderSource(): void {
   source.textContent = format === "base" ? baseCss : format === "html"
-    ? `<form class="h6-base">\n${markup(current, current.className, "example-field").split("\n").map((line) => `  ${line}`).join("\n")}\n</form>`
+    ? `<form>\n${markup(current, current.className, "example-field").split("\n").map((line) => `  ${line}`).join("\n")}\n</form>`
     : current.css;
-  copy.textContent = format === "html" ? "Copy HTML" : format === "base" ? "Copy base CSS" : "Copy CSS";
+  copy.textContent = format === "html" ? "Copy HTML" : format === "base" ? "Copy theme CSS" : "Copy CSS";
   for (const button of document.querySelectorAll<HTMLButtonElement>("[data-source]")) button.setAttribute("aria-pressed", String(button.dataset.source === format));
   status.textContent = "";
 }
@@ -48,7 +49,7 @@ function render(): void {
   previews.replaceChildren(...["Base", current.variant].map((title, index) => {
     const panel = document.createElement("section"); panel.className = "recipe-preview"; panel.setAttribute("aria-label", `${title} preview`);
     const heading = document.createElement("h3"); heading.textContent = title;
-    const form = document.createElement("form"); form.className = "h6-base";
+    const form = document.createElement("form"); form.className = "recipe-form";
     // All markup comes from the static recipes above; user values are never interpolated.
     form.innerHTML = markup(current, index ? current.className : "", `preview-${index}`);
     const output = document.createElement("output"); output.setAttribute("aria-label", `${title} form data`); output.setAttribute("aria-live", "off");

@@ -1,3 +1,4 @@
+import "./icons.js";
 import "../src/index.js";
 import { H6TextField } from "../src/text-fields.js";
 

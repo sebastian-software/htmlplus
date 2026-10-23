@@ -1,3 +1,5 @@
+import { hostStyles, inputStyles } from "./styles.js";
+
 export type IntervalValue = readonly [number | null, number | null];
 
 function pair(value: unknown): value is IntervalValue {
@@ -6,14 +8,11 @@ function pair(value: unknown): value is IntervalValue {
 
 const template = document.createElement("template");
 template.innerHTML = `<style>
-  :host { display: block; font: inherit; }
-  [part=control] { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 10px; align-items: center; }
-  label { min-width: 0; display: grid; gap: 5px; font-size: 11px; color: var(--h6-placeholder, #666666); }
-  input { width: 100%; min-width: 0; box-sizing: border-box; height: 47px; border: 1px solid var(--h6-border,#d4d4d4); border-radius: var(--h6-radius,9px); background: var(--h6-surface,white); padding: 11px 13px; color: var(--h6-text, #171717); font: inherit; font-size: 14px; outline: none; }
-  input:focus { border-color: var(--h6-accent,#171717); box-shadow: 0 0 0 3px var(--h6-focus-soft,#f5f5f5); }
-  input:disabled { opacity: .5; }
-  [part=separator] { padding-top: 16px; color: var(--h6-placeholder,#666666); }
-  :host([data-touched]:invalid) input { border-color: var(--h6-danger,#af3c41); }
+  ${hostStyles}
+  ${inputStyles}
+  [part=control] { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: .5rem; align-items: end; }
+  label { min-width: 0; display: grid; gap: .375rem; font-size: .75rem; line-height: 1rem; color: var(--h6-placeholder, #737373); }
+  [part=separator] { align-self: end; display: grid; place-items: center; height: var(--h6-control-height, 2.5rem); color: var(--h6-placeholder, #737373); }
 </style><div part="control"><label><span part="lower-label">From</span><input part="input lower-input" type="number"></label><span part="separator" aria-hidden="true">–</span><label><span part="upper-label">To</span><input part="input upper-input" type="number"></label></div>`;
 
 /** Two numeric boundaries, serialized under explicit, independent field names. */

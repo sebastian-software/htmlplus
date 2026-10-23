@@ -18,7 +18,7 @@
     <span class="masthead-label">Form playground</span>
     <div class="masthead-actions">
       <label class="theme-picker" for="theme">Appearance <select id="theme"><option value="base">Base</option><option value="utility">Utility</option></select></label>
-      <a class="text-link recipes-link" href="./styling.html">Styling <span aria-hidden="true">↗</span></a>
+      <a class="text-link recipes-link" href="./styling.html">Styling <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></a>
     </div>
   </header>
 
@@ -30,8 +30,8 @@
 
     <div class="playground-grid">
       <section class="form-pane" aria-labelledby="form-heading">
-        <div class="pane-heading"><h2 id="form-heading">The form</h2><button class="quiet-button" id="load-example" type="button"><span aria-hidden="true">↻</span> Load example</button></div>
-        <form id="demo-form" class="h6-base">
+        <div class="pane-heading"><h2 id="form-heading">The form</h2><button class="quiet-button" id="load-example" type="button"><span class="icon" data-icon="refresh" aria-hidden="true"></span> Load example</button></div>
+        <form id="demo-form">
           <fieldset id="demo-fields">
             <legend class="visually-hidden">Component examples</legend>
             <p class="field-section">01 <span>Identifiers & verification</span></p>
@@ -85,7 +85,7 @@
             </div>
           </fieldset>
 
-          <div class="form-actions"><button class="primary-button" type="submit">Submit demo <span aria-hidden="true">↗</span></button><button class="secondary-button" type="reset">Reset form</button></div>
+          <div class="form-actions"><button class="primary-button" type="submit">Submit demo <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></button><button class="secondary-button" type="reset">Reset form</button></div>
           <p class="submission-status" id="submission-status" role="status">Sample values stay in this browser.</p>
         </form>
         <div class="experiment-bar"><label><input id="disable-fields" type="checkbox"> Disable the fieldset</label><span>Watch the entries disappear.</span></div>

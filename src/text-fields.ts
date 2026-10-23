@@ -1,14 +1,11 @@
 import { normalizeIdentifier, validateBic, validateIban } from "./validation.js";
 import type { FieldValidation } from "./validation.js";
+import { hostStyles, inputStyles } from "./styles.js";
 
 const template = document.createElement("template");
 template.innerHTML = `<style>
-  :host { display: block; font: inherit; }
-  input { box-sizing: border-box; display: block; width: 100%; min-width: 0; height: 47px; padding: 11px 13px; border: 1px solid var(--h6-border, #d4d4d4); border-radius: var(--h6-radius, 9px); background: var(--h6-surface, white); color: inherit; outline: none; font: inherit; font-size: 14px; }
-  input:focus { border-color: var(--h6-accent, #171717); box-shadow: 0 0 0 3px var(--h6-focus-soft, #f5f5f5); }
-  input::placeholder { color: var(--h6-placeholder, #737373); }
-  input:disabled { opacity: .5; }
-  :host([data-touched]:invalid) input { border-color: var(--h6-danger, #af3c41); }
+  ${hostStyles}
+  ${inputStyles}
 </style><input part="input" type="text">`;
 
 /** A native editor with a separate canonical value owned by ElementInternals. */

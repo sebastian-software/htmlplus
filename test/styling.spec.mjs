@@ -26,9 +26,9 @@ test('deep links expose copyable HTML, actual preview CSS, and the shared base s
   expect(await page.evaluate(() => window.copiedRecipe)).toBe(await page.locator('#recipe-code').innerText());
   expect(await page.evaluate(() => [...document.querySelectorAll('style')].some((style) => style.textContent === window.copiedRecipe))).toBe(true);
   await page.getByRole('button', { name: 'HTML', exact: true }).click();
-  await expect(page.locator('#recipe-code')).toContainText('class="h6-base"');
+  await expect(page.locator('#recipe-code')).toContainText('<form>');
   await expect(page.locator('#recipe-code')).toContainText('class="duration-tabular"');
-  await page.getByRole('button', { name: 'Base CSS', exact: true }).click();
+  await page.getByRole('button', { name: 'Theme CSS', exact: true }).click();
   await expect(page.locator('#recipe-code')).toContainText('--h6-accent: var(--primary)');
   const response = await request.get('/demo/base.css');
   expect(response.ok()).toBe(true);
@@ -54,7 +54,7 @@ test('selected option styling follows keyboard selection without changing the va
   await expect(variant.getByLabel('Outlined choices form data')).toContainText('express');
   const color = await variant.locator('[part~=selected-option]').evaluate((element) => getComputedStyle(element).backgroundColor);
   expect(color).toBe('rgb(23, 23, 23)');
-  expect(await variant.locator('[part~=selected-option]').evaluate((element) => getComputedStyle(element).display)).toBe('block');
+  expect(await variant.locator('[part~=selected-option]').evaluate((element) => getComputedStyle(element).display)).toBe('flex');
 });
 
 test('neutral defaults, focus, and recipe layout work on desktop and mobile', async ({ page }) => {

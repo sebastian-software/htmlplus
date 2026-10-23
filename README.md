@@ -19,7 +19,7 @@ The playground shows actual `new FormData(form)` entries as fields change. Switc
 
 ## Styling examples
 
-Open **Styling** in the playground, or click an element's name beside a field. Each of the eight controls has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. Download the shared neutral `base.css` as a starting point. The gallery uses semantic tokens inspired by shadcn/ui, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
+Open **Styling** in the playground, or click an element's name beside a field. Each of the eight controls has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `base.css` adapter connects semantic application tokens; the gallery shows the built-in base without it. The gallery uses semantic tokens inspired by shadcn/ui, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
 
 ## Implemented controls
 
@@ -33,6 +33,8 @@ Open **Styling** in the playground, or click an element's name beside a field. E
 | `h6-interval` | Two native numeric editors, explicit boundary names, order and numeric constraints, optional open ends |
 | `h6-segmented` | Compact single selection using native radio inputs and caller-supplied options |
 | `h6-tags` | Add with Enter or comma, remove individual tags, trim and deduplicate, submit repeated names, and reset |
+
+Every control includes a neutral base appearance, with consistent editor typography and centered SVG icons. No external component stylesheet is required. Override inherited `--h6-*` tokens or public parts to customize it.
 
 Every control uses `ElementInternals` for form participation. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: typing `de89 3704 0044 0532 0130 00` leaves that text untouched while the form receives `DE89370400440532013000`. This separation preserves native text editing and undo.
 

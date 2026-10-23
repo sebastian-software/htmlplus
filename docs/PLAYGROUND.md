@@ -16,7 +16,7 @@ The inspector is the main visual contrast. Surrounding controls stay quiet, with
 
 ## Styling gallery
 
-The playground links to `styling.html`, with direct fragment links from each element annotation. A compact element navigation leads to two live previews, their actual form entries, documented parts, and selectable CSS/HTML source. The downloadable neutral `base.css` and its token adapter follow the general shadcn/ui idea of a useful, editable starting point. Recipe CSS has one source shared by the live preview and copy panel. Mobile layouts stack the previews and wrap component navigation; source scrolls inside its own panel. Clipboard failure leaves the source selectable and explains how to copy it manually.
+The playground links to `styling.html`, with direct fragment links from each element annotation. A compact element navigation leads to two live previews, their actual form entries, documented parts, and selectable CSS/HTML source. The complete neutral base is built into each element. The downloadable `base.css` is an optional token adapter; the Base preview uses no adapter class. Typography and SVG icon geometry follow the general shadcn/ui idea of a useful, editable starting point. Recipe CSS has one source shared by the live preview and copy panel. Mobile layouts stack the previews and wrap component navigation; source scrolls inside its own panel. Clipboard failure leaves the source selectable and explains how to copy it manually.
 
 ## Required states and evidence
 

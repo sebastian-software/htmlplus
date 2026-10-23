@@ -14,7 +14,7 @@ test('the exported Pages artifact works under a repository subpath', async ({ pa
   await page.getByRole('link', { name: 'Style h6-switch', exact: true }).click();
   await expect(page).toHaveURL('http://127.0.0.1:48165/html6/styling.html#h6-switch');
   await expect(page.locator('#recipe-heading')).toHaveText('Switch');
-  await page.getByRole('button', { name: 'Base CSS', exact: true }).click();
+  await page.getByRole('button', { name: 'Theme CSS', exact: true }).click();
   await expect(page.locator('#recipe-code')).toContainText('--h6-accent: var(--primary)');
   expect(errors).toEqual([]);
 });

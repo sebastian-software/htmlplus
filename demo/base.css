@@ -1,4 +1,4 @@
-/* A neutral starting point. Apply .h6-base to a container or an individual control. */
+/* Optional theme adapter. The neutral base styling is already built into each component. */
 .h6-base {
   --background: #ffffff;
   --foreground: #171717;
@@ -13,6 +13,7 @@
   --radius: 0.5rem;
 
   --h6-accent: var(--primary);
+  --h6-accent-foreground: var(--primary-foreground);
   --h6-border: var(--input);
   --h6-radius: var(--radius);
   --h6-surface: var(--background);
@@ -27,65 +28,6 @@
   --h6-tag-color: var(--foreground);
   --h6-tag-hover: var(--border);
   color: var(--foreground);
-  font: 14px/1.5 ui-sans-serif, system-ui, sans-serif;
-}
-
-/* Text and numeric editors share a small, explicit styling surface. */
-.h6-base :is(h6-iban, h6-bic, h6-otp, h6-duration, h6-interval)::part(input),
-:is(h6-iban, h6-bic, h6-otp, h6-duration, h6-interval).h6-base::part(input) {
-  height: 40px;
-  padding: 8px 12px;
-  border: 1px solid var(--h6-border);
-  border-radius: var(--h6-radius);
-  background: var(--h6-surface);
-  color: var(--h6-text);
-  font: inherit;
-  box-shadow: 0 1px 2px #00000005;
-}
-
-.h6-base h6-tags::part(control), h6-tags.h6-base::part(control) {
-  min-height: 40px;
-  padding: 4px 6px;
-  gap: 5px;
-}
-.h6-base h6-tags::part(tag), h6-tags.h6-base::part(tag) {
-  padding: 2px 4px 2px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-}
-
-.h6-base h6-switch::part(track), h6-switch.h6-base::part(track) {
-  width: 42px;
-  height: 24px;
-  padding: 2px;
-}
-.h6-base h6-switch::part(thumb), h6-switch.h6-base::part(thumb) {
-  width: 18px;
-  height: 18px;
-}
-
-.h6-base h6-segmented::part(control), h6-segmented.h6-base::part(control) {
-  padding: 3px;
-  gap: 3px;
-}
-.h6-base h6-segmented::part(option), h6-segmented.h6-base::part(option) {
-  padding: 8px 12px;
-  font-size: 13px;
-}
-
-/* Keep keyboard focus and invalid state visible when integrating a new palette. */
-.h6-base :is(h6-iban, h6-bic, h6-otp, h6-duration, h6-interval)::part(input):focus-visible,
-:is(h6-iban, h6-bic, h6-otp, h6-duration, h6-interval).h6-base::part(input):focus-visible {
-  border-color: var(--h6-focus);
-  outline: 2px solid var(--h6-focus);
-  outline-offset: 2px;
-  box-shadow: none;
-}
-.h6-base h6-tags:focus-within::part(control), h6-tags.h6-base:focus-within::part(control) {
-  outline: 2px solid var(--h6-focus);
-  outline-offset: 2px;
-}
-.h6-base :is(h6-iban, h6-bic, h6-otp, h6-duration, h6-interval)[data-touched]:invalid::part(input),
-:is(h6-iban, h6-bic, h6-otp, h6-duration, h6-interval).h6-base[data-touched]:invalid::part(input) {
-  border-color: var(--h6-danger);
+  --h6-font-family: ui-sans-serif, system-ui, sans-serif;
+  font: 14px/20px var(--h6-font-family);
 }

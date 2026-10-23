@@ -56,7 +56,7 @@ export const recipes: readonly StylingRecipe[] = [
     markup: '<h6-duration name="duration" value="1h 30m" min="60" required></h6-duration>', parts: ["input"],
     css: `h6-duration.duration-tabular::part(input) {
   max-width: 18rem;
-  background: var(--muted);
+  background: var(--h6-track, #f5f5f5);
   font-family: ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
 }`,
@@ -85,14 +85,17 @@ h6-interval.interval-compact::part(separator) {
     element: "h6-tags", title: "Tags", label: "Topics", variant: "Outlined tokens", className: "tags-outlined",
     description: "Restyle the tokens and remove buttons without replacing the editor or the repeated form entries.",
     markup: `<h6-tags name="topics" value='["html","forms"]'></h6-tags>`,
-    parts: ["control", "tokens", "input", "tag", "tag-label", "remove-button"],
+    parts: ["control", "tokens", "input", "tag", "tag-label", "remove-button", "remove-icon"],
     css: `h6-tags.tags-outlined::part(tag) {
-  border: 1px solid var(--border);
+  border: 1px solid var(--h6-border, #d4d4d4);
   border-radius: 999px;
   background: transparent;
 }
 h6-tags.tags-outlined::part(remove-button) {
   border-radius: 50%;
+}
+h6-tags.tags-outlined::part(remove-icon) {
+  stroke-width: 1.75;
 }`,
   },
   {
@@ -107,7 +110,7 @@ h6-switch.switch-square::part(thumb) {
   box-shadow: none;
 }
 h6-switch.switch-square:state(checked)::part(track) {
-  background: var(--primary);
+  background: var(--h6-accent, #171717);
 }`,
   },
   {
@@ -125,13 +128,13 @@ h6-switch.switch-square:state(checked)::part(track) {
   background: transparent;
 }
 h6-segmented.segmented-outlined::part(option) {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid var(--h6-border, #d4d4d4);
+  border-radius: var(--h6-radius, .5rem);
 }
 h6-segmented.segmented-outlined::part(selected-option) {
-  border-color: var(--primary);
-  background: var(--primary);
-  color: var(--primary-foreground);
+  border-color: var(--h6-accent, #171717);
+  background: var(--h6-accent, #171717);
+  color: var(--h6-accent-foreground, #fff);
 }`,
   },
 ];
