@@ -13,7 +13,7 @@ Use `htmlplus` where a machine-friendly identifier is needed, including the priv
 
 ## Consequences
 
-- Update the prototype's identity consistently while preserving the native form and CSS contracts. The existing `h6-` elements, exported classes, and `--h6-*` tokens remain provisional public API identifiers; a final prefix is a separate API decision.
+- Update the prototype's identity consistently while preserving the native form and CSS contracts. The existing `h6-` element names and exported classes remain provisional. Public CSS tokens use the accepted `--hp-` prefix; [ADR-0002](0002-css-styling-contract.md) owns that contract. The final element prefix remains a separate API decision.
 - `htmlplus` is currently a private local package identifier. This decision does not establish registry availability, a public package scope, or a GitHub repository name.
 - The static demo uses relative asset URLs. `/htmlplus/` is the local repository-subpath compatibility fixture; custom-domain hosting can serve the same artifact at `/`.
 - Domain DNS and hosting configuration require separate deployment work. Recording the domain does not establish that a site is deployed there.
@@ -28,3 +28,5 @@ Use `htmlplus` where a machine-friendly identifier is needed, including the priv
 ## Changes
 
 - 2026-10-23: Accepted html+ and htmlplus.dev as the project identity, replacing the html6 working name. Applied the name to the demo and documentation and used htmlplus for technical slugs.
+
+- 2026-10-23: Accepted `--hp-` for CSS tokens while retaining the provisional `h6-` element names and class exports.

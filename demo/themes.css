@@ -1,0 +1,76 @@
+/* Optional neutral presets. Component fallbacks work without this file.
+ * Token roles and radius scale follow https://ui.shadcn.com/docs/theming.
+ * Chart, sidebar, card, and popover roles are reserved for future elements.
+ */
+
+.hp-light {
+  color-scheme: light;
+  --hp-background: #ffffff;
+  --hp-foreground: #171717;
+  --hp-card: #ffffff;
+  --hp-card-foreground: #171717;
+  --hp-popover: #ffffff;
+  --hp-popover-foreground: #171717;
+  --hp-primary: #171717;
+  --hp-primary-foreground: #fafafa;
+  --hp-secondary: #f5f5f5;
+  --hp-secondary-foreground: #262626;
+  --hp-muted: #f5f5f5;
+  --hp-muted-foreground: #737373;
+  --hp-accent: #f5f5f5;
+  --hp-accent-foreground: #171717;
+  --hp-destructive: #b91c1c;
+  --hp-border: #d4d4d4;
+  --hp-input: #d4d4d4;
+  --hp-ring: #737373;
+  --hp-chart-1: #c2410c;
+  --hp-chart-2: #0f766e;
+  --hp-chart-3: #0369a1;
+  --hp-chart-4: #a16207;
+  --hp-chart-5: #be123c;
+  --hp-sidebar: #fafafa;
+  --hp-sidebar-foreground: #171717;
+  --hp-sidebar-primary: #171717;
+  --hp-sidebar-primary-foreground: #fafafa;
+  --hp-sidebar-accent: #f5f5f5;
+  --hp-sidebar-accent-foreground: #171717;
+  --hp-sidebar-border: #d4d4d4;
+  --hp-sidebar-ring: #737373;
+  --hp-radius: .625rem;
+}
+
+.hp-dark {
+  color-scheme: dark;
+  --hp-background: #171717;
+  --hp-foreground: #fafafa;
+  --hp-card: #202020;
+  --hp-card-foreground: #fafafa;
+  --hp-popover: #262626;
+  --hp-popover-foreground: #fafafa;
+  --hp-primary: #fafafa;
+  --hp-primary-foreground: #171717;
+  --hp-secondary: #303030;
+  --hp-secondary-foreground: #fafafa;
+  --hp-muted: #262626;
+  --hp-muted-foreground: #a3a3a3;
+  --hp-accent: #383838;
+  --hp-accent-foreground: #fafafa;
+  --hp-destructive: #f87171;
+  --hp-border: #404040;
+  --hp-input: #525252;
+  --hp-ring: #a3a3a3;
+  --hp-chart-1: #fb923c;
+  --hp-chart-2: #2dd4bf;
+  --hp-chart-3: #38bdf8;
+  --hp-chart-4: #facc15;
+  --hp-chart-5: #fb7185;
+  --hp-sidebar: #202020;
+  --hp-sidebar-foreground: #fafafa;
+  --hp-sidebar-primary: #fafafa;
+  --hp-sidebar-primary-foreground: #171717;
+  --hp-sidebar-accent: #303030;
+  --hp-sidebar-accent-foreground: #fafafa;
+  --hp-sidebar-border: #404040;
+  --hp-sidebar-ring: #a3a3a3;
+  --hp-radius: .625rem;
+}

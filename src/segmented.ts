@@ -1,16 +1,17 @@
+import { theme, radius } from "./theme.js";
 import { hostStyles } from "./styles.js";
 
 const template = document.createElement("template");
 template.innerHTML = `<style>
   ${hostStyles}
-  [part=control] { display: flex; flex-wrap: wrap; gap: .1875rem; padding: .1875rem; border: 1px solid var(--h6-border,#d4d4d4); border-radius: var(--h6-radius,.5rem); background: var(--h6-track,#f5f5f5); }
+  [part=control] { display: flex; flex-wrap: wrap; gap: .1875rem; padding: .1875rem; border: 1px solid ${theme("input")}; border-radius: ${radius("lg")}; background: ${theme("muted")}; }
   label { flex: 1; position: relative; min-width: 72px; }
   input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-  [part~=option] { display: flex; align-items: center; justify-content: center; min-height: 2rem; padding: .375rem .75rem; border-radius: max(0px,calc(var(--h6-radius,.5rem) - .25rem)); text-align: center; font-weight: 500; cursor: pointer; }
-  input:checked + span { background: var(--h6-surface,#fff); color: var(--h6-accent,#171717); box-shadow: 0 1px 3px #00000010; }
-  input:focus-visible + span { outline: 2px solid var(--h6-focus,#737373); outline-offset: 2px; }
+  [part~=option] { display: flex; align-items: center; justify-content: center; min-height: 2rem; padding: .375rem .75rem; border-radius: ${radius("sm")}; text-align: center; font-weight: 500; cursor: pointer; }
+  input:checked + span { background: ${theme("background")}; color: ${theme("foreground")}; box-shadow: 0 1px 3px #00000010; }
+  input:focus-visible + span { outline: 2px solid ${theme("ring")}; outline-offset: 2px; }
   input:disabled + span { opacity: .5; cursor: default; }
-  :host([data-touched]:invalid) [part=control] { border-color: var(--h6-danger,#af3c41); }
+  :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }
 </style><div part="control"></div>`;
 
 /** A compact single choice, retaining native radio navigation inside the control. */

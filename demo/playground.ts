@@ -1,3 +1,4 @@
+import "./theme.js";
 import "./icons.js";
 import "../src/index.js";
 import { H6TextField } from "../src/text-fields.js";
@@ -138,9 +139,6 @@ document.querySelector("#disable-fields")!.addEventListener("change", (event) =>
   lastEvent = fields.disabled ? "Fieldset disabled" : "Fieldset enabled";
   schedule();
 });
-document.querySelector("#theme")!.addEventListener("change", (event) => {
-  document.documentElement.dataset.theme = (event.target as HTMLSelectElement).value;
-});
 for (const button of document.querySelectorAll<HTMLButtonElement>("[data-view]")) button.addEventListener("click", () => {
   const view = button.dataset.view;
   for (const item of document.querySelectorAll<HTMLButtonElement>("[data-view]")) item.setAttribute("aria-pressed", String(item === button));
@@ -150,3 +148,9 @@ for (const button of document.querySelectorAll<HTMLButtonElement>("[data-view]")
 
 await Promise.all(["h6-switch", "h6-tags", "h6-iban", "h6-bic", "h6-otp", "h6-duration", "h6-interval", "h6-segmented", "h6-toggle", "h6-tabs", "h6-accordion"].map((name) => customElements.whenDefined(name)));
 render();
+
+try {
+  const response = await fetch("./demo/themes.css");
+  if (!response.ok) throw new Error("Theme stylesheet unavailable");
+  document.querySelector("#theme-code")!.textContent = await response.text();
+} catch { document.querySelector("#theme-code")!.textContent = "Theme source unavailable. Use the download link or reload the page."; }

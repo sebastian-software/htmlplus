@@ -1,3 +1,4 @@
+import { theme, radius } from "./theme.js";
 import * as accordion from "@zag-js/accordion";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles } from "./styles.js";
@@ -11,11 +12,11 @@ const template = document.createElement("template");
 template.innerHTML = `<style>
   ${hostStyles}
   :host { min-width: 0; }
-  [part=item] { border-bottom: 1px solid var(--h6-border, #d4d4d4); }
+  [part=item] { border-bottom: 1px solid ${theme("border")}; }
   [part=heading] { margin: 0; font: inherit; }
   [part=trigger] { display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; min-height: 3rem; padding: .875rem 0; border: 0; background: transparent; color: inherit; font: inherit; font-weight: 500; text-align: start; cursor: pointer; }
   [part=trigger]:hover [part=label] { text-decoration: underline; text-underline-offset: .25rem; }
-  [part=trigger]:focus-visible { outline: 2px solid var(--h6-focus, #737373); outline-offset: 3px; border-radius: .125rem; }
+  [part=trigger]:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 3px; border-radius: ${radius("sm")}; }
   [part=trigger]:disabled { opacity: .5; cursor: not-allowed; }
   [part=label] { min-width: 0; overflow-wrap: anywhere; }
   [part=indicator] { width: 1rem; height: 1rem; flex: none; transition: transform .15s; }

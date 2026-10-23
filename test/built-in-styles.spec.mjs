@@ -19,7 +19,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('all elements provide their base typography and sizes without a document stylesheet', async ({ page }) => {
-  expect(await page.evaluate(() => document.querySelectorAll('link[rel=stylesheet], style, .h6-base').length)).toBe(0);
+  expect(await page.evaluate(() => document.querySelectorAll('link[rel=stylesheet], style, .hp-shadcn').length)).toBe(0);
   const editors = page.locator('h6-iban input, h6-bic input, h6-otp input, h6-duration input, h6-interval input');
   for (const editor of await editors.all()) {
     const metrics = await editor.evaluate((element) => { const css = getComputedStyle(element); return { fontSize: css.fontSize, lineHeight: css.lineHeight, height: element.getBoundingClientRect().height }; });
@@ -59,7 +59,7 @@ test('default tags wrap long content and scale at 200 percent text size', async 
 });
 
 test('public tokens and parts override the built-in base without an adapter class', async ({ page }) => {
-  await page.addStyleTag({ content: 'h6-iban { --h6-control-height: 3rem; --h6-font-size: 1rem; --h6-radius: 0; } h6-tags::part(remove-icon) { width: 1rem; height: 1rem; stroke-width: 3; }' });
+  await page.addStyleTag({ content: 'h6-iban { --hp-control-height: 3rem; --hp-font-size: 1rem; --hp-radius: 0; } h6-tags::part(remove-icon) { width: 1rem; height: 1rem; stroke-width: 3; }' });
   expect(await page.locator('h6-iban input').evaluate((input) => { const css = getComputedStyle(input); return { height: css.height, fontSize: css.fontSize, radius: css.borderRadius }; })).toEqual({ height: '48px', fontSize: '16px', radius: '0px' });
   expect(await page.locator('h6-tags [part=remove-icon]').first().evaluate((icon) => getComputedStyle(icon).width)).toBe('16px');
   expect(await page.locator('#bare-form').evaluate((form) => new FormData(form).get('iban'))).toBe('DE89370400440532013000');

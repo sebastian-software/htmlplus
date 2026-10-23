@@ -38,7 +38,7 @@ TypeScript emits declarations, and esbuild bundles split browser modules with ex
 
 ## Evidence: integrated elements, 2026-10-23
 
-Sixty-six browser checks pass across Chromium and WebKit, plus five validation unit tests. The added integration checks cover pressed values and user-event counts; defaults, custom errors, external labels, and fieldsets; keyboard modes, RTL and vertical tabs; fields in hidden panels; nested and simultaneous invalid fields with native focus; native undo across panel changes; dynamic sections; reconnection cleanup; built-in styles, text scaling, and mobile recipes. The earlier eight fields retain their existing contract checks. Assistive-technology usability, physical touch devices, Firefox on this host, and real history restoration remain unverified.
+The initial Toggle/Accordion/Tabs integration passed sixty-six browser checks across Chromium and WebKit, plus five validation unit tests. The project plan records the current suite, including subsequent theme checks. The added integration checks cover pressed values and user-event counts; defaults, custom errors, external labels, and fieldsets; keyboard modes, RTL and vertical tabs; fields in hidden panels; nested and simultaneous invalid fields with native focus; native undo across panel changes; dynamic sections; reconnection cleanup; built-in styles, text scaling, and mobile recipes. The earlier eight fields retain their existing contract checks. Assistive-technology usability, physical touch devices, Firefox on this host, and real history restoration remain unverified.
 
 ## Earlier evidence: isolated combobox, 2026-10-23
 

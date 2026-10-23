@@ -15,11 +15,11 @@ npm run dev
 
 Open [http://127.0.0.1:4173](http://127.0.0.1:4173). The dev command compiles TypeScript, watches source changes, and starts a local server. Refresh the page after source changes. Stop it with Ctrl+C.
 
-The playground shows actual `new FormData(form)` entries as fields change. Switch between an entry table and a JSON view, submit locally, reset defaults, disable the fieldset, or compare the neutral Base and blue Utility CSS themes. Repeated field names remain separate entries; the JSON view groups repeated names into arrays. Demo submissions are captured in the browser and do not make a network request.
+The playground shows actual `new FormData(form)` entries as fields change. Switch between an entry table and a JSON view, submit locally, reset defaults, disable the fieldset, or compare neutral Light, Dark, and blue Utility themes. Repeated field names remain separate entries; the JSON view groups repeated names into arrays. Demo submissions are captured in the browser and do not make a network request.
 
 ## Styling examples
 
-Open **Styling** in the playground, or click an element's name beside a field. Each of the eleven elements has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `base.css` adapter connects semantic application tokens; the gallery shows the built-in base without it. The gallery uses semantic tokens inspired by shadcn/ui, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
+Open **Styling** in the playground, or click an element's name beside a field. Each of the eleven elements has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `themes.css` supplies prefixed light/dark palettes; `shadcn.css` connects an existing shadcn palette through the `hp-shadcn` class. Both files are copied into `dist/` at build time. Semantic token suffixes and roles match the documented shadcn theme contract, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
 
 ## Implemented elements
 
@@ -37,13 +37,13 @@ Open **Styling** in the playground, or click an element's name beside a field. E
 | `h6-accordion` | Zag disclosure navigation, one/multiple open sections, light-DOM content, and invalid-field revelation |
 | `h6-tabs` | Zag automatic/manual activation, horizontal/vertical and RTL keys, linked panels, and contained form fields |
 
-Every control includes a neutral base appearance, with consistent editor typography and centered SVG icons. No external component stylesheet is required. Override inherited `--h6-*` tokens or public parts to customize it.
+Every control includes a neutral base appearance, with consistent editor typography and centered SVG icons. No external component stylesheet is required. Override inherited `--hp-*` tokens or public parts to customize it.
 
 The nine form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: typing `de89 3704 0044 0532 0130 00` leaves that text untouched while the form receives `DE89370400440532013000`. This separation preserves native text editing and undo.
 
 ## Use a control
 
-After building, import `dist/src/index.js` as a browser ES module. It registers the eleven elements and exports their classes. Toggle, Accordion, and Tabs use Zag's vanilla adapter internally; there is no runtime component framework dependency. The build type-checks TypeScript, emits declarations, and bundles browser modules with shared chunks using esbuild. Deploy the complete `dist/` tree so those chunks remain available. Source modules also export their individual classes for explicit registration. CSS parts and inherited `--h6-*` custom properties are the styling surface; the demo demonstrates both.
+After building, import `dist/src/index.js` as a browser ES module. It registers the eleven elements and exports their classes. Toggle, Accordion, and Tabs use Zag's vanilla adapter internally; there is no runtime component framework dependency. The build type-checks TypeScript, emits declarations, and bundles browser modules with shared chunks using esbuild. Deploy the complete `dist/` tree so those chunks remain available. Source modules also export their individual classes for explicit registration. CSS parts and inherited `--hp-*` custom properties are the styling surface; the demo demonstrates both.
 
 ```html
 <script type="module" src="/dist/src/index.js"></script>
@@ -89,7 +89,7 @@ The bundled runtime dependencies' [third-party notices](THIRD_PARTY_NOTICES.txt)
 - Segmented: `.value` and `.defaultValue` are strings. Direct child options provide labels and nonempty values; the first duplicate value wins. Unknown or disabled selections are omitted. `required` needs an enabled selection. Options can be added, removed, or updated. Native radio arrow keys and Space select; a label click focuses the selected option. Use `disabled` for a noninteractive choice.
 - All three support ordinary form association, fieldset disabling, reset, `setCustomValidity`, `checkValidity`, and `reportValidity`. Programmatic assignments emit no user events.
 
-Public styling hooks: duration exposes `input`; interval exposes `control`, `input`, `lower-input`, `upper-input`, `lower-label`, `upper-label`, and `separator`; segmented exposes `control` and `option`. All inherit the existing `--h6-*` theme properties.
+Public styling hooks: duration exposes `input`; interval exposes `control`, `input`, `lower-input`, `upper-input`, `lower-label`, `upper-label`, and `separator`; segmented exposes `control` and `option`. All inherit the existing `--hp-*` theme properties.
 
 ## Static demo and GitHub Pages
 
@@ -113,7 +113,7 @@ npx playwright install chromium firefox webkit
 npm test
 ```
 
-`npm test` compiles with strict TypeScript, runs the validation unit tests, then runs the integrated browser tests. The default browser matrix is Chromium, Firefox, and WebKit. Desktop/mobile layout and the two themes are inspected from generated screenshots.
+`npm test` compiles with strict TypeScript, runs the validation unit tests, then runs the integrated browser tests. The default browser matrix is Chromium, Firefox, and WebKit. Desktop/mobile layout and light and dark themes are inspected from generated screenshots.
 
 On this macOS host, Firefox exits before opening a page with `Could not find profile folder`; this resembles the [upstream Firefox/macOS app-data issue](https://github.com/microsoft/playwright/issues/42768). No system privacy settings were changed. Run the available-engine checks explicitly with:
 

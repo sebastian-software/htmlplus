@@ -22,9 +22,9 @@ export const recipes: readonly StylingRecipe[] = [
   padding-inline: 1rem;
 }
 h6-toggle.toggle-pill:state(pressed)::part(button) {
-  background: var(--h6-track, #f5f5f5);
-  border-color: var(--h6-accent, #171717);
-  color: var(--h6-accent, #171717);
+  background: var(--hp-muted, #f5f5f5);
+  border-color: var(--hp-primary, #171717);
+  color: var(--hp-primary, #171717);
 }`,
   },
   {
@@ -39,8 +39,8 @@ h6-toggle.toggle-pill:state(pressed)::part(button) {
   </section>
 </h6-accordion>`, parts: ["root", "item", "heading", "trigger", "label", "indicator", "content"],
     css: `h6-accordion.accordion-boxed::part(root) {
-  border: 1px solid var(--h6-border, #d4d4d4);
-  border-radius: var(--h6-radius, .5rem);
+  border: 1px solid var(--hp-border, #d4d4d4);
+  border-radius: var(--hp-radius, .5rem);
 }
 h6-accordion.accordion-boxed::part(item) {
   border: 0;
@@ -67,7 +67,7 @@ h6-accordion.accordion-boxed::part(content) {
   width: 100%;
   padding: 0;
   gap: 1rem;
-  border-bottom: 1px solid var(--h6-border, #d4d4d4);
+  border-bottom: 1px solid var(--hp-border, #d4d4d4);
   border-radius: 0;
   background: transparent;
 }
@@ -80,8 +80,8 @@ h6-tabs.tabs-underline::part(tab) {
   box-shadow: none;
 }
 h6-tabs.tabs-underline::part(selected-tab) {
-  border-bottom-color: var(--h6-accent, #171717);
-  color: var(--h6-accent, #171717);
+  border-bottom-color: var(--hp-primary, #171717);
+  color: var(--hp-primary, #171717);
 }`,
   },
   {
@@ -128,7 +128,7 @@ h6-tabs.tabs-underline::part(selected-tab) {
     markup: '<h6-duration name="duration" value="1h 30m" min="60" required></h6-duration>', parts: ["input"],
     css: `h6-duration.duration-tabular::part(input) {
   max-width: 18rem;
-  background: var(--h6-track, #f5f5f5);
+  background: var(--hp-muted, #f5f5f5);
   font-family: ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
 }`,
@@ -159,7 +159,7 @@ h6-interval.interval-compact::part(separator) {
     markup: `<h6-tags name="topics" value='["html","forms"]'></h6-tags>`,
     parts: ["control", "tokens", "input", "tag", "tag-label", "remove-button", "remove-icon"],
     css: `h6-tags.tags-outlined::part(tag) {
-  border: 1px solid var(--h6-border, #d4d4d4);
+  border: 1px solid var(--hp-border, #d4d4d4);
   border-radius: 999px;
   background: transparent;
 }
@@ -182,7 +182,7 @@ h6-switch.switch-square::part(thumb) {
   box-shadow: none;
 }
 h6-switch.switch-square:state(checked)::part(track) {
-  background: var(--h6-accent, #171717);
+  background: var(--hp-primary, #171717);
 }`,
   },
   {
@@ -200,13 +200,13 @@ h6-switch.switch-square:state(checked)::part(track) {
   background: transparent;
 }
 h6-segmented.segmented-outlined::part(option) {
-  border: 1px solid var(--h6-border, #d4d4d4);
-  border-radius: var(--h6-radius, .5rem);
+  border: 1px solid var(--hp-input, #d4d4d4);
+  border-radius: var(--hp-radius, .5rem);
 }
 h6-segmented.segmented-outlined::part(selected-option) {
-  border-color: var(--h6-accent, #171717);
-  background: var(--h6-accent, #171717);
-  color: var(--h6-accent-foreground, #fff);
+  border-color: var(--hp-primary, #171717);
+  background: var(--hp-primary, #171717);
+  color: var(--hp-primary-foreground, #fff);
 }`,
   },
 ];

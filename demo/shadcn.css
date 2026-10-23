@@ -1,0 +1,39 @@
+/* Optional shadcn adapter: add hp-shadcn to a theme scope or individual element.
+ * Private fallbacks preserve inherited public --hp-* overrides. Resolve on each
+ * host so nested .dark scopes and local shadcn tokens are evaluated locally.
+ * No palette, font, layout, or public --hp-* declarations are introduced.
+ */
+:where(.hp-shadcn, .hp-shadcn :is(h6-switch, h6-iban, h6-bic, h6-otp, h6-duration, h6-interval, h6-tags, h6-segmented, h6-toggle, h6-accordion, h6-tabs)) {
+  --_hp-shadcn-background: var(--background);
+  --_hp-shadcn-foreground: var(--foreground);
+  --_hp-shadcn-card: var(--card);
+  --_hp-shadcn-card-foreground: var(--card-foreground);
+  --_hp-shadcn-popover: var(--popover);
+  --_hp-shadcn-popover-foreground: var(--popover-foreground);
+  --_hp-shadcn-primary: var(--primary);
+  --_hp-shadcn-primary-foreground: var(--primary-foreground);
+  --_hp-shadcn-secondary: var(--secondary);
+  --_hp-shadcn-secondary-foreground: var(--secondary-foreground);
+  --_hp-shadcn-muted: var(--muted);
+  --_hp-shadcn-muted-foreground: var(--muted-foreground);
+  --_hp-shadcn-accent: var(--accent);
+  --_hp-shadcn-accent-foreground: var(--accent-foreground);
+  --_hp-shadcn-destructive: var(--destructive);
+  --_hp-shadcn-border: var(--border);
+  --_hp-shadcn-input: var(--input);
+  --_hp-shadcn-ring: var(--ring);
+  --_hp-shadcn-chart-1: var(--chart-1);
+  --_hp-shadcn-chart-2: var(--chart-2);
+  --_hp-shadcn-chart-3: var(--chart-3);
+  --_hp-shadcn-chart-4: var(--chart-4);
+  --_hp-shadcn-chart-5: var(--chart-5);
+  --_hp-shadcn-sidebar: var(--sidebar);
+  --_hp-shadcn-sidebar-foreground: var(--sidebar-foreground);
+  --_hp-shadcn-sidebar-primary: var(--sidebar-primary);
+  --_hp-shadcn-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --_hp-shadcn-sidebar-accent: var(--sidebar-accent);
+  --_hp-shadcn-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --_hp-shadcn-sidebar-border: var(--sidebar-border);
+  --_hp-shadcn-sidebar-ring: var(--sidebar-ring);
+  --_hp-shadcn-radius: var(--radius);
+}

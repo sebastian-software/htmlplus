@@ -1,3 +1,4 @@
+import { theme } from "./theme.js";
 import { hostStyles, inputStyles } from "./styles.js";
 
 export type IntervalValue = readonly [number | null, number | null];
@@ -11,8 +12,8 @@ template.innerHTML = `<style>
   ${hostStyles}
   ${inputStyles}
   [part=control] { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: .5rem; align-items: end; }
-  label { min-width: 0; display: grid; gap: .375rem; font-size: .75rem; line-height: 1rem; color: var(--h6-placeholder, #737373); }
-  [part=separator] { align-self: end; display: grid; place-items: center; height: var(--h6-control-height, 2.5rem); color: var(--h6-placeholder, #737373); }
+  label { min-width: 0; display: grid; gap: .375rem; font-size: .75rem; line-height: 1rem; color: ${theme("muted-foreground")}; }
+  [part=separator] { align-self: end; display: grid; place-items: center; height: var(--hp-control-height, 2.5rem); color: ${theme("muted-foreground")}; }
 </style><div part="control"><label><span part="lower-label">From</span><input part="input lower-input" type="number"></label><span part="separator" aria-hidden="true">–</span><label><span part="upper-label">To</span><input part="input upper-input" type="number"></label></div>`;
 
 /** Two numeric boundaries, serialized under explicit, independent field names. */

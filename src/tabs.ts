@@ -1,3 +1,4 @@
+import { theme, radius } from "./theme.js";
 import * as tabs from "@zag-js/tabs";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles } from "./styles.js";
@@ -11,10 +12,10 @@ template.innerHTML = `<style>
   ${hostStyles}
   :host { min-width: 0; }
   [part=root] { display: grid; gap: 1rem; min-width: 0; }
-  [part=list] { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; width: fit-content; max-width: 100%; min-height: var(--h6-control-height, 2.5rem); padding: .25rem; border-radius: var(--h6-radius, .5rem); background: var(--h6-track, #f5f5f5); }
-  [part~=tab] { display: inline-flex; align-items: center; justify-content: center; min-height: 2rem; min-width: 0; padding: .25rem .75rem; border: 1px solid transparent; border-radius: max(0px, calc(var(--h6-radius, .5rem) - .25rem)); background: transparent; color: var(--h6-placeholder, #737373); font: inherit; font-weight: 500; overflow-wrap: anywhere; cursor: pointer; }
-  [part~=tab][data-selected] { background: var(--h6-surface, #fff); color: var(--h6-text, #171717); box-shadow: 0 1px 3px #00000012; }
-  [part~=tab]:focus-visible, [part=panel]:focus-visible { outline: 2px solid var(--h6-focus, #737373); outline-offset: 3px; }
+  [part=list] { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; width: fit-content; max-width: 100%; min-height: var(--hp-control-height, 2.5rem); padding: .25rem; border-radius: ${radius("lg")}; background: ${theme("muted")}; }
+  [part~=tab] { display: inline-flex; align-items: center; justify-content: center; min-height: 2rem; min-width: 0; padding: .25rem .75rem; border: 1px solid transparent; border-radius: ${radius("sm")}; background: transparent; color: ${theme("muted-foreground")}; font: inherit; font-weight: 500; overflow-wrap: anywhere; cursor: pointer; }
+  [part~=tab][data-selected] { background: ${theme("background")}; color: ${theme("foreground")}; box-shadow: 0 1px 3px #00000012; }
+  [part~=tab]:focus-visible, [part=panel]:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 3px; }
   [part~=tab]:disabled { opacity: .5; cursor: not-allowed; }
   [part=panels], [part=panel] { min-width: 0; }
   [part=root][data-orientation=vertical] { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); align-items: start; }

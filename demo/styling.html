@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en-US" data-theme="base">
+<html lang="en-US" class="hp-light" data-theme="base">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
   <meta name="description" content="Copyable CSS styling recipes for every html+ form element. Neutral defaults, live variations, and public CSS parts.">
   <meta name="application-name" content="html+">
   <title>html+ — Styling recipes</title>
   <link rel="icon" href="./demo/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./demo/base.css">
+  <link rel="stylesheet" href="./demo/themes.css">
   <link rel="stylesheet" href="./demo/styles.css">
   <link rel="stylesheet" href="./demo/styling.css">
   <script type="module" src="./dist/demo/styling.js"></script>
@@ -18,10 +18,10 @@
   <header class="masthead">
     <a class="wordmark" href="./" aria-label="html plus home">html<span>+</span></a>
     <span class="masthead-label">Styling recipes</span>
-    <div class="masthead-actions"><a class="text-link recipes-link" href="./">Form playground <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></a></div>
+    <div class="masthead-actions"><label class="theme-picker" for="theme">Appearance <select id="theme"><option value="base">Light</option><option value="dark">Dark</option><option value="utility">Utility</option></select></label><a class="text-link recipes-link" href="./">Form playground <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></a></div>
   </header>
   <main id="recipes">
-    <div class="intro"><div><h1>Style every element.</h1><p>Neutral defaults built into every element. Explore variations using only CSS overrides.</p></div><a class="secondary-button download-base" href="./demo/base.css" download="htmlplus-base.css">Download base.css <span class="icon" data-icon="arrow-down" aria-hidden="true"></span></a></div>
+    <div class="intro"><div><h1>Style every element.</h1><p>Neutral defaults built into every element. Explore variations using only CSS overrides.</p></div><a class="secondary-button download-base" href="./demo/shadcn.css" download="htmlplus-shadcn.css">shadcn adapter <span class="icon" data-icon="arrow-down" aria-hidden="true"></span></a></div>
     <div class="recipe-layout">
       <nav class="recipe-navigation" aria-label="Components"><p>Elements</p><div id="recipe-links"></div></nav>
       <section class="recipe-content" aria-labelledby="recipe-heading">
@@ -30,13 +30,13 @@
         <div class="recipe-previews" id="recipe-previews"></div>
         <div class="recipe-parts"><span>Public parts</span><div id="recipe-parts"></div></div>
         <section class="recipe-source" aria-label="Example source">
-          <div class="source-toolbar"><div class="source-tabs" role="group" aria-label="Source format"><button type="button" data-source="css" aria-pressed="true">Variant CSS</button><button type="button" data-source="html" aria-pressed="false">HTML</button><button type="button" data-source="base" aria-pressed="false">Theme CSS</button></div><button class="copy-button" id="copy-source" type="button">Copy CSS</button></div>
+          <div class="source-toolbar"><div class="source-tabs" role="group" aria-label="Source format"><button type="button" data-source="css" aria-pressed="true">Variant CSS</button><button type="button" data-source="html" aria-pressed="false">HTML</button><button type="button" data-source="base" aria-pressed="false">Theme CSS</button><button type="button" data-source="adapter" aria-pressed="false">Adapter</button></div><button class="copy-button" id="copy-source" type="button">Copy CSS</button></div>
           <pre tabindex="0" aria-label="Example code"><code id="recipe-code"></code></pre>
           <p class="copy-status" id="copy-status" role="status"></p>
         </section>
-        <details class="base-explanation"><summary>How the base styles work</summary><p>The neutral base is built into each element. No extra stylesheet or wrapper class is needed. To connect an application theme, optionally load <code>base.css</code> and add <code>class="h6-base"</code> to a wrapper or control. The neutral palette uses semantic tokens in the spirit of <a href="https://ui.shadcn.com/docs/theming">shadcn/ui</a>. Change those tokens or copy a recipe to override a specific part. The components keep their native form behavior.</p><pre><code>&lt;link rel="stylesheet" href="./htmlplus-base.css"&gt;
-&lt;form class="h6-base"&gt;
-  &lt;!-- Labeled html+ controls go here. --&gt;
+        <details class="base-explanation"><summary>How the base styles work</summary><p>Each element includes its own neutral base. Change inherited <code>--hp-*</code> tokens for colors and radius, or use a recipe for a specific part. The Appearance picker applies the same <a href="./demo/themes.css">light and dark presets</a> as the playground.</p><p>To reuse an existing shadcn theme, load the adapter and add <code>hp-shadcn</code> to its scope. It reads your existing semantic variables, including nested dark scopes. Explicit <code>--hp-*</code> overrides take precedence.</p><pre><code>&lt;link rel="stylesheet" href="./htmlplus-shadcn.css"&gt;
+&lt;form class="hp-shadcn"&gt;
+  &lt;!-- Your shadcn theme supplies --background, --primary, etc. --&gt;
 &lt;/form&gt;</code></pre><p>These examples use plain CSS. They do not require React, Tailwind, or shadcn/ui.</p></details>
       </section>
     </div>

@@ -18,6 +18,9 @@ test('the exported Pages artifact works under a repository subpath', async ({ pa
   await expect(page).toHaveURL('http://127.0.0.1:48165/htmlplus/styling.html#h6-switch');
   await expect(page.locator('#recipe-heading')).toHaveText('Switch');
   await page.getByRole('button', { name: 'Theme CSS', exact: true }).click();
-  await expect(page.locator('#recipe-code')).toContainText('--h6-accent: var(--primary)');
+  await expect(page.locator('#recipe-code')).toContainText('.hp-dark');
+  await page.getByRole('button', { name: 'Adapter', exact: true }).click();
+  await expect(page.locator('#recipe-code')).toContainText('--_hp-shadcn-primary: var(--primary)');
+  for (const file of ['shadcn.css', 'themes.css']) expect((await request.get(`http://127.0.0.1:48165/htmlplus/dist/${file}`)).ok()).toBe(true);
   expect(errors).toEqual([]);
 });

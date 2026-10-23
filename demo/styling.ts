@@ -1,3 +1,4 @@
+import "./theme.js";
 import "./icons.js";
 import "../src/index.js";
 import { recipes } from "./recipes.js";
@@ -12,7 +13,8 @@ const exampleStyle = document.createElement("style");
 document.head.append(exampleStyle);
 let current: StylingRecipe = recipes[0]!;
 let format = "css";
-let baseCss = "/* Loading base.css… */";
+let baseCss = "/* Loading themes.css… */";
+let adapterCss = "/* Loading shadcn.css… */";
 
 for (const recipe of recipes) {
   const link = document.createElement("a");
@@ -28,10 +30,10 @@ function markup(recipe: StylingRecipe, variant: string, id: string): string {
 }
 
 function renderSource(): void {
-  source.textContent = format === "base" ? baseCss : format === "html"
+  source.textContent = format === "adapter" ? adapterCss : format === "base" ? baseCss : format === "html"
     ? `<form>\n${markup(current, current.className, "example-field").split("\n").map((line) => `  ${line}`).join("\n")}\n</form>`
     : current.css;
-  copy.textContent = format === "html" ? "Copy HTML" : format === "base" ? "Copy theme CSS" : "Copy CSS";
+  copy.textContent = format === "html" ? "Copy HTML" : format === "base" ? "Copy theme CSS" : format === "adapter" ? "Copy adapter" : "Copy CSS";
   for (const button of document.querySelectorAll<HTMLButtonElement>("[data-source]")) button.setAttribute("aria-pressed", String(button.dataset.source === format));
   status.textContent = "";
 }
@@ -76,9 +78,13 @@ copy.addEventListener("click", async () => {
 });
 window.addEventListener("hashchange", render);
 render();
-try {
-  const response = await fetch("./demo/base.css");
-  if (!response.ok) throw new Error("Base stylesheet unavailable");
-  baseCss = await response.text();
-} catch { baseCss = "/* Could not load base.css. Use the download link or reload the page. */"; }
-if (format === "base") renderSource();
+await Promise.all(["themes", "shadcn"].map(async (name) => {
+  let css: string;
+  try {
+    const response = await fetch(`./demo/${name}.css`);
+    if (!response.ok) throw new Error("Stylesheet unavailable");
+    css = await response.text();
+  } catch { css = `/* Could not load ${name}.css. Use the download link or reload the page. */`; }
+  if (name === "themes") baseCss = css; else adapterCss = css;
+}));
+if (format === "base" || format === "adapter") renderSource();

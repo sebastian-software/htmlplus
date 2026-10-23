@@ -12,19 +12,30 @@ The controls should fit existing visual systems while remaining usable on first 
 
 This gives consumers stable styling surfaces while allowing internal markup to evolve. A fully opaque theme API would restrict integration; treating all internal markup as public would make maintenance costly.
 
+## Semantic theme decision
+
+Use `--hp-` for the public CSS-property prefix. Adopt shadcn/ui's semantic token suffixes and meanings for the color palette and base radius, as inspected on 2026-10-23. Keep typography and density as explicitly documented html+ extensions. Primary actions, interaction accents, input borders, and general separators are distinct roles. Align the derived radius scale with shadcn's current multiplicative model and compute it at use so nested themes can override the base reliably.
+
+Retain complete neutral component fallbacks. Add optional prefixed light/dark presets and a separate shadcn adapter, with neither React nor Tailwind required. The adapter resolves generic application tokens on each current html+ host through private fallbacks; explicit inherited or local `--hp-*` properties take precedence. It supplies no palette or structural rules. Bridge only the base radius to avoid freezing ancestor-derived sizes. The full palette reserves card, popover, chart, and sidebar roles without implying that current elements consume them.
+
+This replaces the old ad hoc `--h6-*` CSS roles before release rather than preserving conflicting aliases, particularly the old use of accent for primary actions. Element names and class exports are unchanged. Token compatibility is a documented snapshot, not a promise of identical component geometry or automatic adoption of upstream schema changes.
+
 ## Consequences and validation
 
-- Part names, state names, and custom properties are public API once released. Keep the initial surface small and document which hooks each component actually supports.
-- Do not apply `::part` to native light-DOM children or assume arbitrary descendants of a part are selectable from outside the shadow root.
-- Build two substantially different themes using the same component behavior and public hooks. Preserve focus indication, contrast, and usable disabled and invalid states.
-- The playground implements a neutral Base theme and a blue Utility theme with public parts and custom properties. The original violet Studio palette has been replaced, including component fallbacks. Desktop and mobile screenshots are reviewed. Firefox remains unverified on this host; complete that engine check before a release support claim. Revisit when a consumer needs private DOM access to achieve a reasonable design.
-- A separate recipe gallery exercises every element with the same CSS it displays for copying. Its optional downloadable `base.css` maps semantic application tokens to `--h6-*` tokens, inspired by shadcn/ui without importing its implementation or adding dependencies. It contains no structural part rules; the Base preview demonstrates the built-in appearance without this adapter.
-- Expose `selected-option` on the currently selected segmented option, alongside `option`. Consumers cannot select its private adjacent radio state through `::part(option):checked`. Internal part selectors use token matching when a node carries multiple part names.
+- Theme common colors and rounding without `::part`. Keep deliberate parts and custom states for detailed component variants; do not expose arbitrary shadow descendants as API.
+- Public defaults remain consumption fallbacks, not declarations that shadow inherited tokens. The adapter's internal properties are not public API. Its current-element selector must grow with the catalog.
+- Light, Dark, and Utility examples in both demo pages use tokens for the common theme. Every element retains an individual part-based recipe with the exact preview CSS available for copying.
+- Focus, invalid, disabled, and selected states retain visible behavior. Browser checks cover nested and host overrides, semantic role separation, adapter precedence and missing values, radius derivation, light/dark contrast, forced colors, and FormData preservation. Firefox remains unverified on this host; complete that engine check before a release support claim.
+- `selected-option` and `selected-tab` parts follow live state; Toggle exposes pressed and Switch exposes checked custom states. Native light-DOM fields inside companion elements use ordinary application CSS.
+- Revisit when a reasonable design requires private DOM access or a new element needs an additional semantic role. Keep exact values and the token inventory in the styling guide and stylesheet sources.
 
 ## References
 
 - [Playground design](../PLAYGROUND.md)
-- [Demo styles](../../demo/styles.css)
+- [Theme resolution](../../src/theme.ts)
+- [Light/dark presets](../../demo/themes.css)
+- [shadcn adapter](../../demo/shadcn.css)
+- [shadcn/ui theming](https://ui.shadcn.com/docs/theming)
 - [Styling guide](../STYLING.md)
 
 - [MDN: CSS shadow parts](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::part)
@@ -38,3 +49,5 @@ This gives consumers stable styling surfaces while allowing internal markup to e
 - 2026-10-23: Moved the complete base into shadow styles, reduced the external CSS to a theme adapter, aligned type and editor metrics, and replaced font glyphs with centered SVG icons. Added the `remove-icon` part and checks without application CSS.
 
 - 2026-10-23: Added built-in styles and Pill, Boxed, and Underline recipes for Toggle, Accordion, and Tabs; selected-tab and pressed state expose live styling hooks.
+
+- 2026-10-23: Adopted the `--hp-` semantic theme contract, multiplicative radii, separate prefixed presets and shadcn adapter, and Light/Dark examples. Replaced the pre-release ad hoc tokens; preserved component parts and form behavior.

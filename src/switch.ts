@@ -1,16 +1,17 @@
+import { theme } from "./theme.js";
 import { hostStyles } from "./styles.js";
 
 const switchTemplate = document.createElement("template");
 switchTemplate.innerHTML = `<style>
   ${hostStyles}
   :host { display: inline-flex; vertical-align: middle; cursor: pointer; border-radius: 99px; outline: none; -webkit-tap-highlight-color: transparent; }
-  [part=track] { display: flex; align-items: center; width: 2.625rem; height: 1.5rem; padding: .125rem; border: 1px solid var(--h6-border, #d4d4d4); border-radius: 99px; background: var(--h6-muted, #e5e5e5); transition: background .15s; }
-  [part=thumb] { display: block; flex: none; width: 1.125rem; height: 1.125rem; border-radius: 50%; background: var(--h6-accent-foreground, #fff); box-shadow: 0 1px 2px #00000020; transition: transform .15s; }
-  :host(:state(checked)) [part=track] { border-color: var(--h6-accent, #171717); background: var(--h6-accent, #171717); }
+  [part=track] { display: flex; align-items: center; width: 2.625rem; height: 1.5rem; padding: .125rem; border: 1px solid ${theme("input")}; border-radius: 99px; background: ${theme("input")}; transition: background .15s; }
+  [part=thumb] { display: block; flex: none; width: 1.125rem; height: 1.125rem; border-radius: 50%; background: ${theme("primary-foreground")}; box-shadow: 0 1px 2px #00000020; transition: transform .15s; }
+  :host(:state(checked)) [part=track] { border-color: ${theme("primary")}; background: ${theme("primary")}; }
   :host(:state(checked)) [part=thumb] { transform: translateX(calc(1.25rem - 2px)); }
-  :host(:focus-visible) { outline: 2px solid var(--h6-focus, #737373); outline-offset: 3px; }
+  :host(:focus-visible) { outline: 2px solid ${theme("ring")}; outline-offset: 3px; }
   :host(:disabled) { opacity: .5; cursor: not-allowed; }
-  :host(:invalid) [part=track] { border-color: var(--h6-danger, #af3c41); }
+  :host(:invalid) [part=track] { border-color: ${theme("destructive")}; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style><span part="track" aria-hidden="true"><span part="thumb"></span></span>`;
 

@@ -1,3 +1,4 @@
+import { theme, radius } from "./theme.js";
 import * as toggle from "@zag-js/toggle";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles } from "./styles.js";
@@ -8,12 +9,12 @@ const template = document.createElement("template");
 template.innerHTML = `<style>
   ${hostStyles}
   :host { display: inline-flex; vertical-align: middle; }
-  button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: var(--h6-control-height, 2.5rem); padding: .5rem .75rem; border: 1px solid var(--h6-border, #d4d4d4); border-radius: var(--h6-radius, .5rem); background: var(--h6-surface, #fff); color: inherit; font: inherit; font-weight: 500; cursor: pointer; }
-  button:hover { background: var(--h6-track, #f5f5f5); }
-  button[data-pressed] { background: var(--h6-accent, #171717); border-color: var(--h6-accent, #171717); color: var(--h6-accent-foreground, #fff); }
-  button:focus-visible { outline: 2px solid var(--h6-focus, #737373); outline-offset: 3px; }
+  button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: var(--hp-control-height, 2.5rem); padding: .5rem .75rem; border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; color: inherit; font: inherit; font-weight: 500; cursor: pointer; }
+  button:hover { background: ${theme("accent")}; color: ${theme("accent-foreground")}; }
+  button[data-pressed] { background: ${theme("primary")}; border-color: ${theme("primary")}; color: ${theme("primary-foreground")}; }
+  button:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 3px; }
   button:disabled { opacity: .5; cursor: not-allowed; }
-  :host(:invalid) button { border-color: var(--h6-danger, #b91c1c); }
+  :host(:invalid) button { border-color: ${theme("destructive")}; }
   ::slotted(svg) { width: 1rem; height: 1rem; flex: none; }
   @media (forced-colors: active) { button[data-pressed] { outline: 2px solid Highlight; } }
 </style><button part="button" type="button"><slot></slot></button>`;

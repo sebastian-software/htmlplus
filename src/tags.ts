@@ -1,3 +1,4 @@
+import { theme, radius } from "./theme.js";
 import { uniqueTags } from "./validation.js";
 import { hostStyles } from "./styles.js";
 import { createIcon } from "./icons.js";
@@ -5,19 +6,19 @@ import { createIcon } from "./icons.js";
 const tagsTemplate = document.createElement("template");
 tagsTemplate.innerHTML = `<style>
   ${hostStyles}
-  [part=control] { display: flex; flex-wrap: wrap; align-items: center; gap: .375rem; min-height: var(--h6-control-height, 2.5rem); padding: .375rem; border: 1px solid var(--h6-border, #d4d4d4); border-radius: var(--h6-radius, .5rem); background: var(--h6-surface, #fff); box-shadow: 0 1px 2px #00000005; }
-  :host(:focus-within) [part=control] { border-color: var(--h6-focus, #737373); outline: 2px solid var(--h6-focus, #737373); outline-offset: 2px; }
+  [part=control] { display: flex; flex-wrap: wrap; align-items: center; gap: .375rem; min-height: var(--hp-control-height, 2.5rem); padding: .375rem; border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: 0 1px 2px #00000005; }
+  :host(:focus-within) [part=control] { border-color: ${theme("ring")}; outline: 2px solid ${theme("ring")}; outline-offset: 2px; }
   [part=tokens] { display: contents; }
-  [part=tag] { display: inline-flex; align-items: center; gap: .25rem; min-height: 1.625rem; max-width: 100%; padding: 0 0 0 .5rem; border: 1px solid transparent; border-radius: var(--h6-tag-radius, .375rem); background: var(--h6-tag-background, #f5f5f5); color: var(--h6-tag-color, #262626); font-size: .75rem; font-weight: 500; line-height: 1rem; }
+  [part=tag] { display: inline-flex; align-items: center; gap: .25rem; min-height: 1.625rem; max-width: 100%; padding: 0 0 0 .5rem; border: 1px solid transparent; border-radius: ${radius("sm")}; background: ${theme("secondary")}; color: ${theme("secondary-foreground")}; font-size: .75rem; font-weight: 500; line-height: 1rem; }
   [part=tag-label] { display: block; min-width: 0; padding-block: .25rem; overflow-wrap: anywhere; }
-  [part=remove-button] { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 1.5rem; height: 1.5rem; margin: 0; padding: 0; border: none; border-radius: .25rem; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+  [part=remove-button] { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 1.5rem; height: 1.5rem; margin: 0; padding: 0; border: none; border-radius: ${radius("sm")}; background: transparent; color: inherit; font: inherit; cursor: pointer; }
   [part=remove-icon] { display: block; flex: none; width: .75rem; height: .75rem; pointer-events: none; }
-  [part=remove-button]:hover { background: var(--h6-tag-hover, #e5e5e5); }
-  [part=remove-button]:focus-visible { outline: 2px solid var(--h6-accent, #171717); outline-offset: 1px; }
+  [part=remove-button]:hover { background: ${theme("accent")}; color: ${theme("accent-foreground")}; }
+  [part=remove-button]:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 1px; }
   [part=input] { display: block; flex: 1; min-width: 6rem; width: 6rem; height: 1.625rem; margin: 0; padding: .1875rem .25rem; border: 0; outline: none; background: transparent; color: inherit; font: inherit; }
-  [part=input]::placeholder { color: var(--h6-placeholder, #737373); }
+  [part=input]::placeholder { color: ${theme("muted-foreground")}; }
   :host(:disabled) { opacity: .55; }
-  :host([data-visited]:invalid) [part=control] { border-color: var(--h6-danger, #af3c41); }
+  :host([data-visited]:invalid) [part=control] { border-color: ${theme("destructive")}; }
 </style><div part="control"><div part="tokens"></div><input part="input" type="text" autocomplete="off" placeholder="Add a tag…"></div>`;
 
 export class H6Tags extends HTMLElement {

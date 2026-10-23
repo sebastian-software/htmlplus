@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en-US" data-theme="base">
+<html lang="en-US" class="hp-light" data-theme="base">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
   <meta name="description" content="An interactive playground for html+ form controls. Edit native-feeling fields and inspect the actual FormData, live.">
   <meta name="application-name" content="html+">
   <title>html+ — Form playground</title>
   <link rel="icon" href="./demo/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./demo/base.css">
+  <link rel="stylesheet" href="./demo/themes.css">
   <link rel="stylesheet" href="./demo/styles.css">
   <script type="module" src="./dist/demo/playground.js"></script>
 </head>
@@ -18,7 +18,7 @@
     <a class="wordmark" href="./" aria-label="html plus home">html<span>+</span></a>
     <span class="masthead-label">Form playground</span>
     <div class="masthead-actions">
-      <label class="theme-picker" for="theme">Appearance <select id="theme"><option value="base">Base</option><option value="utility">Utility</option></select></label>
+      <label class="theme-picker" for="theme">Appearance <select id="theme"><option value="base">Light</option><option value="dark">Dark</option><option value="utility">Utility</option></select></label>
       <a class="text-link recipes-link" href="./styling.html">Styling <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></a>
     </div>
   </header>
@@ -132,6 +132,12 @@
         </section>
 
         <div class="inspector-note"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m6 5-4 5 4 5m8-10 4 5-4 5m-3-12-2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><p>These are the actual form entries. No separate state object, no hidden proxy inputs.</p></div>
+        <details class="theme-source">
+          <summary>Theme CSS</summary>
+          <p>These light and dark presets use only <code>--hp-*</code> variables. Apply <code>hp-light</code> or <code>hp-dark</code> to any theme scope.</p>
+          <p><a href="./demo/themes.css" download="htmlplus-themes.css">Download themes</a> · <a href="./demo/shadcn.css" download="htmlplus-shadcn.css">shadcn adapter</a></p>
+          <pre tabindex="0" aria-label="Light and dark theme CSS"><code id="theme-code">Loading theme CSS…</code></pre>
+        </details>
         <details class="last-submission" id="last-submission" hidden><summary>Last submitted data</summary><pre id="submitted-output"></pre></details>
       </aside>
     </div>

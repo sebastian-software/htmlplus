@@ -13,12 +13,12 @@ await rm(site, { recursive: true, force: true });
 await mkdir(join(site, 'demo'), { recursive: true });
 await copyFile(join(root, 'demo/index.html'), join(site, 'index.html'));
 await copyFile(join(root, 'demo/styling.html'), join(site, 'styling.html'));
-for (const name of ['styles.css', 'base.css', 'styling.css', 'favicon.svg']) await copyFile(join(root, 'demo', name), join(site, 'demo', name));
+for (const name of ['styles.css', 'shadcn.css', 'themes.css', 'styling.css', 'favicon.svg']) await copyFile(join(root, 'demo', name), join(site, 'demo', name));
 async function copyModules(source, destination) {
   await mkdir(destination, { recursive: true });
   for (const file of await readdir(source, { withFileTypes: true })) {
     if (file.isDirectory()) await copyModules(join(source, file.name), join(destination, file.name));
-    else if (file.name.endsWith('.js') || file.name === 'THIRD_PARTY_NOTICES.txt') await copyFile(join(source, file.name), join(destination, file.name));
+    else if (file.name.endsWith('.js') || file.name.endsWith('.css') || file.name === 'THIRD_PARTY_NOTICES.txt') await copyFile(join(source, file.name), join(destination, file.name));
   }
 }
 await copyModules(join(root, 'dist'), join(site, 'dist'));

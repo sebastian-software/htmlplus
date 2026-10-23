@@ -1,6 +1,6 @@
 import { build, context } from 'esbuild';
 import { spawnSync } from 'node:child_process';
-import { copyFile, readdir, rm } from 'node:fs/promises';
+import { copyFile, mkdir, readdir, rm } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -14,6 +14,9 @@ const entryPoints = (await Promise.all(['src', 'demo'].map(async (folder) =>
   (await readdir(new URL(`../${folder}/`, import.meta.url))).filter((name) => name.endsWith('.ts')).map((name) => `${folder}/${name}`),
 ))).flat();
 const options = { absWorkingDir: root, entryPoints, outdir: 'dist', outbase: '.', bundle: true, splitting: true, format: 'esm', platform: 'browser', target: 'es2022', sourcemap: true, chunkNames: 'chunks/[name]-[hash]', banner: { js: '/*! Third-party license notices: ../THIRD_PARTY_NOTICES.txt */' }, define: { 'process.env.NODE_ENV': '"production"' } };
+await mkdir(new URL('../dist/', import.meta.url), { recursive: true });
+await copyFile(new URL('../demo/shadcn.css', import.meta.url), new URL('../dist/shadcn.css', import.meta.url));
+await copyFile(new URL('../demo/themes.css', import.meta.url), new URL('../dist/themes.css', import.meta.url));
 if (watch) {
   const compiler = await context(options);
   await compiler.watch();

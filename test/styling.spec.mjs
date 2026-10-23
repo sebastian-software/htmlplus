@@ -29,8 +29,10 @@ test('deep links expose copyable HTML, actual preview CSS, and the shared base s
   await expect(page.locator('#recipe-code')).toContainText('<form>');
   await expect(page.locator('#recipe-code')).toContainText('class="duration-tabular"');
   await page.getByRole('button', { name: 'Theme CSS', exact: true }).click();
-  await expect(page.locator('#recipe-code')).toContainText('--h6-accent: var(--primary)');
-  const response = await request.get('/demo/base.css');
+  await expect(page.locator('#recipe-code')).toContainText('.hp-dark');
+  await page.getByRole('button', { name: 'Adapter', exact: true }).click();
+  await expect(page.locator('#recipe-code')).toContainText('--_hp-shadcn-primary: var(--primary)');
+  const response = await request.get('/demo/shadcn.css');
   expect(response.ok()).toBe(true);
   expect(await response.text()).toBe(await page.locator('#recipe-code').textContent());
 });
