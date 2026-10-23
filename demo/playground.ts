@@ -126,6 +126,8 @@ document.querySelector("#load-example")!.addEventListener("click", () => {
   document.querySelector("h6-slider")!.value = 35;
   document.querySelector("h6-range-slider")!.value = [100, 350];
   document.querySelector("h6-rating")!.value = 4;
+  document.querySelector("h6-select")!.value = "standard";
+  document.querySelector("h6-combobox")!.value = "DE";
   tags.value = ["html", "web-components"];
   updates.checked = true;
   document.querySelector("h6-toggle")!.pressed = false;
@@ -149,7 +151,7 @@ for (const button of document.querySelectorAll<HTMLButtonElement>("[data-view]")
   document.querySelector<HTMLElement>("#json-view")!.hidden = view !== "json";
 });
 
-await Promise.all(["h6-switch", "h6-tags", "h6-iban", "h6-bic", "h6-otp", "h6-duration", "h6-interval", "h6-segmented", "h6-toggle", "h6-tabs", "h6-accordion", "h6-slider", "h6-range-slider", "h6-rating"].map((name) => customElements.whenDefined(name)));
+await Promise.all(["h6-switch", "h6-tags", "h6-iban", "h6-bic", "h6-otp", "h6-duration", "h6-interval", "h6-segmented", "h6-toggle", "h6-tabs", "h6-accordion", "h6-slider", "h6-range-slider", "h6-rating", "h6-select", "h6-combobox"].map((name) => customElements.whenDefined(name)));
 render();
 
 try {

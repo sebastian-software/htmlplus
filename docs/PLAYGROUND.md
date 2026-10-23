@@ -6,7 +6,7 @@ This is an operating surface for developers exploring form behavior. The main ac
 
 The page opens with the playground rather than a marketing section. Component names annotate real fields; the lower section explains the integration. Tables preserve repeated keys. The JSON view explicitly groups repeated names into arrays rather than dropping them.
 
-The fourteen elements start with a Zag toggle, contact-detail tabs, and delivery-instruction accordion, followed by identifiers and verification, numeric choices, values with more to say, and choices and collections. Each added field demonstrates a distinct form contract: duration notation becomes seconds, an interval supplies two named entries, and segmented radio choices submit an identifier. The inspector remains sticky while browsing the longer form, with its entry list scrolling inside a bounded height. The initial eighteen entries include ordinary fields in inactive panels. Pressing the priority toggle adds one entry; closing a section removes none. Interactive validation reveals the first invalid section, including nested form-associated fields.
+The sixteen elements start with a Zag toggle, contact-detail tabs, and delivery-instruction accordion, followed by identifiers and verification, options and search, numeric choices, values with more to say, and choices and collections. Each added field demonstrates a distinct form contract: duration notation becomes seconds, an interval supplies two named entries, and segmented radio choices submit an identifier. The inspector remains sticky while browsing the longer form, with its entry list scrolling inside a bounded height. The initial twenty entries include ordinary fields in inactive panels. Pressing the priority toggle adds one entry; closing a section removes none. Interactive validation reveals the first invalid section, including nested form-associated fields.
 
 ## Visual direction
 
@@ -27,3 +27,5 @@ Check populated and invalid fields, repeated keys, omitted unchecked values, dis
 Automated tests save desktop Light/Dark, mobile theme, and styling-gallery screenshots for visual review. Mobile viewport checks are layout evidence, not physical-device or OTP autofill certification.
 
 The numeric section demonstrates a volume slider, a two-thumb price filter with explicit boundary names, and a clearable experience rating. Each has a styling deep link and a built-in current-value display. Rating preview does not enter FormData; clearing the sample score removes its entry.
+
+The Options & search section adds a clearable Shipping method Select and searchable Destination country Combobox. Defaults submit `shipping=standard` and `country=DE`. Editing a query immediately removes the old country entry; selecting a result restores an identifier. Their top-layer popups stay themed in Light/Dark and link directly to individual styling recipes.

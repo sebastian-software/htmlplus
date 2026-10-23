@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-10-23
+- Updated: 2026-10-24
 - Lifecycle: living
 - Scope: product scope, component APIs, and public positioning
 
@@ -31,9 +31,9 @@ Components own reusable interaction, value-format rules, serialization, and the 
 | Rating | Score selection, clearing, preview, and form contribution | What is rated, who may rate, and where the result is saved |
 | Range Slider | Ordered values, thumb interaction, and explicitly named form entries | Meaning of the range and the business policy behind supplied bounds |
 | Accordion and Tabs | Section navigation, focus, and revealing contained invalid fields | Workflow progress, route state, and authorization to access content |
-| Planned Combobox | Query/selection distinction, option interaction, and selected identifier | Data sources, remote requests, authorization, and persistence |
+| Combobox | Query/selection distinction, option interaction, and selected identifier | Data sources, remote requests, authorization, and persistence |
 
-The Combobox row defines scope for planned work; it does not claim an integrated component is available. Components do not fetch business records or initiate application workflows. Applications compose those behaviors around values, properties, and DOM events. Companion elements do not acquire submitted values merely by belonging to the library.
+Components do not fetch business records or initiate application workflows. Applications compose those behaviors around values, properties, and DOM events. Companion elements do not acquire submitted values merely by belonging to the library.
 
 Zag supplies reusable interaction logic behind the element API. html+ remains responsible for the rendered integration, form behavior, and styling contract. Form association and headless logic do not automatically establish accessible or reliable behavior; implementation and verification remain necessary.
 
@@ -64,3 +64,5 @@ Reassess a custom element when native HTML meets the documented need with less i
 ## Changes
 
 - 2026-10-23: Accepted the guiding principle and component/application boundary. Added native-HTML selection criteria, concrete responsibility examples, public claim limits, and Lawson's article as contextual reference.
+
+- 2026-10-24: Updated Combobox from planned scope to implemented selection behavior; data sources, verification, and workflows remain application responsibilities.

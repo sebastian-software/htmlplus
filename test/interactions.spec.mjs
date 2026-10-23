@@ -3,7 +3,7 @@ import { test, expect } from 'playwright/test';
 const data = (page) => page.locator('#demo-form').evaluate((form) => [...new FormData(form)]);
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByText('18 entries', { exact: true })).toBeVisible();
+  await expect(page.getByText('20 entries', { exact: true })).toBeVisible();
 });
 
 test('toggle uses a native pressed button and submits one value with one user event pair', async ({ page }) => {

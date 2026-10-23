@@ -26,7 +26,7 @@
 
   <main id="playground">
     <div class="intro">
-      <div><h1>Let HTML do the form work.</h1><p>Fourteen components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
+      <div><h1>Let HTML do the form work.</h1><p>Sixteen components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
       <span class="preview-label"><span aria-hidden="true"></span> Early preview</span>
     </div>
 
@@ -86,7 +86,32 @@
               </div>
             </div>
 
-            <p class="field-section">03 <span>Numeric choices</span></p>
+            <p class="field-section" id="selection-examples">03 <span>Options & search</span></p>
+            <div class="field">
+              <div class="field-heading"><label for="shipping-field">Shipping method</label><a class="recipe-link" href="./styling.html#h6-select" aria-label="Style h6-select"><code>&lt;h6-select&gt;</code></a></div>
+              <h6-select id="shipping-field" name="shipping" value="standard" aria-describedby="shipping-feedback" required>
+                <option value="economy">Economy · 5–7 days</option>
+                <option value="standard">Standard · 2–3 days</option>
+                <option value="express">Express · next day</option>
+                <option value="pickup" disabled>Pickup · unavailable</option>
+              </h6-select>
+              <p class="feedback" id="shipping-feedback">Choose a label; the form receives its identifier. Clear leaves it unanswered.</p>
+            </div>
+            <div class="field">
+              <div class="field-heading"><label for="country-field">Destination country</label><a class="recipe-link" href="./styling.html#h6-combobox" aria-label="Style h6-combobox"><code>&lt;h6-combobox&gt;</code></a></div>
+              <h6-combobox id="country-field" name="country" value="DE" placeholder="Search countries…" aria-describedby="country-feedback" required>
+                <option value="AT">Austria</option>
+                <option value="BE">Belgium</option>
+                <option value="FR">France</option>
+                <option value="DE">Germany</option>
+                <option value="IE">Ireland</option>
+                <option value="NL">Netherlands</option>
+                <option value="GB">United Kingdom</option>
+                <option value="US">United States</option>
+              </h6-combobox>
+              <p class="feedback" id="country-feedback">Type to filter, then choose. Search text alone contributes no form entry.</p>
+            </div>
+            <p class="field-section">04 <span>Numeric choices</span></p>
             <div class="field">
               <div class="field-heading"><label for="volume-field">Volume</label><a class="recipe-link" href="./styling.html#h6-slider" aria-label="Style h6-slider"><code>&lt;h6-slider&gt;</code></a></div>
               <h6-slider id="volume-field" name="volume" value="35" min="0" max="100" step="5" aria-describedby="volume-feedback"></h6-slider>
@@ -102,7 +127,7 @@
               <h6-rating id="rating-field" name="rating" value="4" aria-describedby="rating-feedback"></h6-rating>
               <p class="feedback" id="rating-feedback">Hover previews a score. Choose to commit; Clear removes the entry.</p>
             </div>
-            <p class="field-section">04 <span>Values with more to say</span></p>
+            <p class="field-section">05 <span>Values with more to say</span></p>
             <div class="field">
               <div class="field-heading"><label for="duration-field">Session duration</label><a class="recipe-link" href="./styling.html#h6-duration" aria-label="Style h6-duration"><code>&lt;h6-duration&gt;</code></a></div>
               <h6-duration id="duration-field" name="duration" value="1h 30m" min="60" max="86400" required aria-describedby="duration-feedback" placeholder="1h 30m"></h6-duration>
@@ -113,7 +138,7 @@
               <h6-interval id="budget-field" name="budget" lower-name="budget_min" upper-name="budget_max" value="[200,800]" min="0" max="10000" step="50" required aria-describedby="budget-feedback"></h6-interval>
               <p class="feedback" id="budget-feedback">One control, two named values. The lower boundary cannot exceed the upper.</p>
             </div>
-            <p class="field-section">05 <span>Choices & collections</span></p>
+            <p class="field-section">06 <span>Choices & collections</span></p>
             <div class="field">
               <div class="field-heading"><label for="delivery-field">Delivery speed</label><a class="recipe-link" href="./styling.html#h6-segmented" aria-label="Style h6-segmented"><code>&lt;h6-segmented&gt;</code></a></div>
               <h6-segmented id="delivery-field" name="delivery" value="standard" required aria-describedby="delivery-feedback">

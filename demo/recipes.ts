@@ -14,6 +14,50 @@ export interface StylingRecipe {
 /** Trusted, static authoring examples. This CSS is both shown and used by the previews. */
 export const recipes: readonly StylingRecipe[] = [
   {
+    element: "h6-select", title: "Select", label: "Shipping method", variant: "Quiet surface", className: "select-quiet",
+    description: "A Zag listbox selects a supplied identifier. Its top-layer popup shares inherited theme tokens.",
+    markup: `<h6-select name="shipping" value="standard" required>
+  <option value="economy">Economy</option>
+  <option value="standard">Standard</option>
+  <option value="express">Express</option>
+  <option value="pickup" disabled>Pickup (unavailable)</option>
+</h6-select>`,
+    parts: ["root", "control", "trigger", "value-text", "indicator", "clear-button", "positioner", "content", "option", "selected-option", "option-label", "option-indicator", "empty"],
+    css: `h6-select.select-quiet::part(control) {
+  background: var(--hp-muted, #f5f5f5);
+  box-shadow: none;
+}
+h6-select.select-quiet::part(content) {
+  padding: .5rem;
+}
+h6-select.select-quiet::part(selected-option) {
+  font-weight: 600;
+}`,
+  },
+  {
+    element: "h6-combobox", title: "Combobox", label: "Destination country", variant: "Underlined search", className: "combobox-underlined",
+    description: "Search supplied labels and choose an identifier. Editing clears the old selection; free text never submits as a country.",
+    markup: `<h6-combobox name="country" value="DE" placeholder="Search countries…" required>
+  <option value="AT">Austria</option>
+  <option value="DE">Germany</option>
+  <option value="NL">Netherlands</option>
+  <option value="US">United States</option>
+</h6-combobox>`,
+    parts: ["root", "control", "input", "trigger", "indicator", "clear-button", "positioner", "content", "option", "selected-option", "option-label", "option-indicator", "empty"],
+    css: `h6-combobox.combobox-underlined::part(control) {
+  border-width: 0 0 1px;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+h6-combobox.combobox-underlined::part(content) {
+  border-radius: var(--hp-radius, .625rem);
+}
+h6-combobox.combobox-underlined::part(selected-option) {
+  font-weight: 600;
+}`,
+  },
+  {
     element: "h6-slider", title: "Slider", label: "Output level", variant: "Slim rail", className: "slider-slim",
     description: "A single Zag thumb submits one number. Theme its colors globally or restyle its track and thumb parts.",
     markup: '<h6-slider name="level" value="35" min="0" max="100" step="5"></h6-slider>',

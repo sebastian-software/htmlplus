@@ -4,6 +4,8 @@
 const defaults = {
   "background": "#ffffff",
   "foreground": "#171717",
+  "popover": "#ffffff",
+  "popover-foreground": "#171717",
   "primary": "#171717",
   "primary-foreground": "#fafafa",
   "secondary": "#f5f5f5",

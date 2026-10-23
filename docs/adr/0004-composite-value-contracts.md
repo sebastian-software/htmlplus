@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-10-23
+- Updated: 2026-10-24
 - Lifecycle: living
 
 ## Context and decision
@@ -18,6 +18,8 @@ Segmented choices use caller-supplied direct `<option>` children and submit one 
 Sliders expose a finite number, clamped/snapped to the declared step grid. Range sliders expose an ordered nonnullable pair, submit two named numeric entries using the interval naming convention, and stop thumbs at collision without swapping identities. Programmatic inverted pairs throw. Their value/reset defaults are distinct from current dirty values. Invalid numeric configuration blocks submission rather than passing invalid geometry to Zag.
 
 Ratings expose a whole score or null for unanswered. Hover is separate preview state and never submitted. A committed score submits one numeric string; Clear returns to unanswered and required validation can reject it. Whole scores with 1–10 items are the first scope. The [numeric choice guide](../NUMERIC-CHOICES.md) owns exact API details.
+
+Select and Combobox use the same label/identifier distinction: an enabled selected identifier contributes one string, and an unanswered selection contributes no entry. Combobox query text remains separate; editing invalidates a prior selection, and exact label text alone does not commit. [The selection guide](../SELECTION-CONTROLS.md) owns the detailed contract.
 
 ## Consequences and evidence
 
@@ -35,3 +37,5 @@ Toggle contributes a named string while pressed and no entry while unpressed, wi
 - 2026-10-23: Added Toggle as a named string while pressed; Accordion/Tabs view values are not form entries. Their contained fields retain their own serialization.
 
 - 2026-10-23: Accepted bounded slider numbers, nonnullable range pairs with explicit names and stable thumb identities, and nullable whole ratings with separate hover preview.
+
+- 2026-10-24: Added selected identifiers for Select/Combobox and separate non-submitted query state with immediate invalidation on user editing.

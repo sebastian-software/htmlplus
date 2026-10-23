@@ -3,7 +3,7 @@
 - Status: accepted
 - Scope: initial prototype
 - Created: 2026-10-22
-- Updated: 2026-10-23
+- Updated: 2026-10-24
 - Lifecycle: living
 
 ## Context and decision
@@ -16,7 +16,7 @@ This gives consumers stable styling surfaces while allowing internal markup to e
 
 Use `--hp-` for the public CSS-property prefix. Adopt shadcn/ui's semantic token suffixes and meanings for the color palette and base radius, as inspected on 2026-10-23. Keep typography and density as explicitly documented html+ extensions. Primary actions, interaction accents, input borders, and general separators are distinct roles. Align the derived radius scale with shadcn's current multiplicative model and compute it at use so nested themes can override the base reliably.
 
-Retain complete neutral component fallbacks. Add optional prefixed light/dark presets and a separate shadcn adapter, with neither React nor Tailwind required. The adapter resolves generic application tokens on each current html+ host through private fallbacks; explicit inherited or local `--hp-*` properties take precedence. It supplies no palette or structural rules. Bridge only the base radius to avoid freezing ancestor-derived sizes. The full palette reserves card, popover, chart, and sidebar roles without implying that current elements consume them.
+Retain complete neutral component fallbacks. Add optional prefixed light/dark presets and a separate shadcn adapter, with neither React nor Tailwind required. The adapter resolves generic application tokens on each current html+ host through private fallbacks; explicit inherited or local `--hp-*` properties take precedence. It supplies no palette or structural rules. Bridge only the base radius to avoid freezing ancestor-derived sizes. The full palette reserves card, chart, and sidebar roles without implying that current elements consume them. Select and Combobox consume the popover roles.
 
 This replaces the old ad hoc `--h6-*` CSS roles before release rather than preserving conflicting aliases, particularly the old use of accent for primary actions. Element names and class exports are unchanged. Token compatibility is a documented snapshot, not a promise of identical component geometry or automatic adoption of upstream schema changes.
 
@@ -24,10 +24,12 @@ This replaces the old ad hoc `--h6-*` CSS roles before release rather than prese
 
 - Theme common colors and rounding without `::part`. Keep deliberate parts and custom states for detailed component variants; do not expose arbitrary shadow descendants as API.
 - Public defaults remain consumption fallbacks, not declarations that shadow inherited tokens. The adapter's internal properties are not public API. Its current-element selector must grow with the catalog.
-- Light/Dark appearances with independently selected palettes in both demo pages use tokens for the common theme. All fourteen elements retain an individual part-based recipe with the exact preview CSS available for copying.
+- Light/Dark appearances with independently selected palettes in both demo pages use tokens for the common theme. All sixteen elements retain an individual part-based recipe with the exact preview CSS available for copying.
 - Focus, invalid, disabled, and selected states retain visible behavior. Browser checks cover nested and host overrides, semantic role separation, adapter precedence and missing values, radius derivation, light/dark contrast, forced colors, and FormData preservation. Firefox remains unverified on this host; complete that engine check before a release support claim.
 - `selected-option` and `selected-tab` parts follow live state; Toggle exposes pressed and Switch exposes checked custom states. Native light-DOM fields inside companion elements use ordinary application CSS.
 - Revisit when a reasonable design requires private DOM access or a new element needs an additional semantic role. Keep exact values and the token inventory in the styling guide and stylesheet sources.
+
+Select and Combobox consume `--hp-popover` / `--hp-popover-foreground` for popup surfaces and text, with accent roles for highlighted options. The shadow-local top-layer approach in [ADR-0008](0008-selection-popups.md) preserves inherited tokens and public parts.
 
 ## References
 
@@ -55,3 +57,5 @@ This replaces the old ad hoc `--h6-*` CSS roles before release rather than prese
 - 2026-10-23: Added numeric-element parts/recipes and independent palette selection. Included MIT-attributed official Blue, Green, Orange, and Rose accent overlays as a curated selection; retained Neutral and custom Utility, without claiming popularity statistics.
 
 - 2026-10-23: Derive numeric marks from primary/foreground rather than using deep primary surfaces as standalone icon/stroke colors; verify at least 3:1 track/surface contrast for every bundled palette and appearance.
+
+- 2026-10-24: Added Select/Combobox recipes, host-local shadcn mappings, and real consumers of popover surface/text roles, retaining tokens in the native top layer.
