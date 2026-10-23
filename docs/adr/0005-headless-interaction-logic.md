@@ -4,8 +4,8 @@
 - Created: 2026-10-23
 - Updated: 2026-10-23
 - Lifecycle: living
-- Scope: Toggle, Accordion, and Tabs; future popup/slider/calendar integrations require their own evidence
-- Implementation: three Zag-backed elements, split browser modules, live examples, and eleven styling recipes
+- Scope: Toggle, Accordion, Tabs, Slider, Range Slider, and Rating; popup/calendar integrations still require their own evidence
+- Implementation: six Zag-backed elements, split browser modules, live examples, and fourteen styling recipes
 
 ## Context
 
@@ -15,9 +15,9 @@ The existing contract remains ordinary HTML forms, native custom elements, shado
 
 ## Decision
 
-Use Zag 1.46.0 for Toggle, Accordion, and Tabs through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, generated IDs, and callback names stay implementation details.
+Use Zag 1.46.0 for Toggle, Accordion, Tabs, Slider, Range Slider, and Rating through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, generated IDs, and callback names stay implementation details.
 
-Adopt per component after checking its actual DOM assumptions. This slice follows the explicit direction to implement the three interactions with Zag. Toggle retains a native button; Accordion/Tabs generate native button triggers in shadow DOM and project caller-owned light-DOM sections. Native details/summary would be a smaller disclosure baseline but would not exercise the requested common behavior foundation and deliberate shadow styling surface. Continue comparing native range/select/date controls for later work. Do not migrate the earlier eight controls simply to standardize on one engine.
+Adopt per component after checking its actual DOM assumptions. The initial slice implemented Toggle, Accordion, and Tabs; the numeric slice adds Slider, Range Slider, and Rating. Toggle retains a native button; Accordion/Tabs generate native button triggers in shadow DOM and project caller-owned light-DOM sections. Native details/summary would be a smaller disclosure baseline but would not exercise the requested common behavior foundation and deliberate shadow styling surface. Native range remains a smaller single-thumb alternative; the explicit Zag direction shares the slider machine across one and two thumbs. Continue comparing native select/date controls for later work. Do not migrate the earlier eight controls simply to standardize on one engine.
 
 Responsibilities are divided as follows:
 
@@ -30,7 +30,7 @@ Responsibilities are divided as follows:
 
 Keep related popup controls and ARIA references within the same shadow root initially. Investigate clipping and native top-layer integration before choosing a production popup strategy; copying a document-body portal is not sufficient. Pass `getRootNode` explicitly. Internal Zag data attributes can aid implementation, but they do not replace public CSS parts across a shadow boundary.
 
-Adoption is accepted for these three machines. Their fields and content do not require hidden form proxies. A narrow DOM-binding owner applies and removes the official adapter's props/listeners; it does not implement a machine interpreter. Controlled host state keeps programmatic assignments separate from user events. Accordion/Tabs emit `valuechange` for view changes, while Toggle emits the form field's `input`/`change` pair.
+Adoption is accepted for these implemented machine integrations. Their fields and content do not require hidden form proxies. Slider and Rating hidden-control props are deliberately omitted: their installed 1.46.0 effects guard missing inputs, while ElementInternals handles form state. A narrow DOM-binding owner applies and removes the official adapter's props/listeners; it does not implement a machine interpreter. Controlled host state keeps programmatic assignments separate from user events. Accordion/Tabs emit `valuechange` for view changes, while Toggle emits the form field's `input`/`change` pair.
 
 Keep section content in its original light DOM and form. Generated triggers and content wrappers share one shadow root and explicit ID relationships. Revealing a section does not clone, rewrite, disable, or reset its native editors. Invalid-event handling reveals the first invalid section, including nested custom fields; other hidden invalid fields suppress only their own native validation UI for that validation task. This preserves native submission blocking and avoids hidden focus targets. [The interaction guide](../INTERACTIONS.md) defines the public markup and values.
 
@@ -55,7 +55,7 @@ The [isolated probe](../../experiments/zag/README.md) pins the combobox and vani
 
 The minified production-mode probe bundle is 101,462 bytes, or 33,180 bytes with Node's default gzip, including the fixture class. This is a single-combobox experiment, not an incremental cost for html+, a benchmark, or a release size budget. No other component bundle sizes have been measured.
 
-Important limits: external label forwarding, native undo/IME, full user-event semantics, real browser history restoration, touch interaction, assistive technologies, and a clipping-safe production popup are not established by this combobox probe. Its implementation is separate from the three integrated interaction elements. Combobox, Select, Slider, Range Slider, Rating, and Date Picker remain planned. Firefox remains untested on this host because its existing launch failure occurs before navigation.
+Important limits: external label forwarding, native undo/IME, full user-event semantics, real browser history restoration, touch interaction, assistive technologies, and a clipping-safe production popup are not established by this combobox probe. Its implementation is separate from the integrated interaction elements. Combobox, Select, and Date Picker remain planned; the numeric controls have since completed their separate integration checks. Firefox remains untested on this host because its existing launch failure occurs before navigation.
 
 ## Tradeoffs and alternatives
 
@@ -68,9 +68,15 @@ Zag's Select, Slider, and Rating examples include hidden native controls. Their 
 
 The former `tsc`-only build could not resolve bare package specifiers for browser use. The integrated build now bundles those dependencies with esbuild. Individual earlier field modules keep their native implementations; importing the all-elements registration entry also imports the new Zag-backed elements and their dependency chunks.
 
+## Numeric integration evidence, 2026-10-23
+
+The installed Slider and Rating implementations tolerate omitted hidden inputs. Their form reset/fieldset effects become no-ops, and the form-associated hosts own those operations. Zag still owns pointer geometry, drag completion, collision, roving focus, and keyboard steps. Slider input/change events distinguish continuous movement from commit; controlled property updates remain silent.
+
+Rating needs a narrow semantic adaptation: upstream item checked state can follow hover or mark the first item while unanswered. html+ exposes only a committed score as checked, while retaining Zag highlights and keyboard reachability. Keyboard input ends pointer-preview state before using the machine's focused-key transitions. Label activation explicitly focuses the shadow interaction without selecting a score. The integrated browser checks and [numeric choice guide](../NUMERIC-CHOICES.md) record these boundaries.
+
 ## Review triggers
 
-Inspect each additional machine's form assumptions before using it. Popup placement, editable query handling, date parsing, and multi-thumb behavior remain gates for their respective components; this decision does not claim those are solved by the current three machines. Keep delivery tasks and candidate value contracts in the [project plan](../PLAN.md).
+Inspect each additional machine's form assumptions before using it. Popup placement, editable query handling, and date parsing remain gates for their respective components; this decision does not claim those are solved by the current implemented machines. Keep delivery tasks and candidate value contracts in the [project plan](../PLAN.md).
 
 Revisit on an adapter/machine contract change, a supported-browser failure, editing or accessibility regressions, or a dependency cost that outweighs the behavior reused. Upgrade the machine and adapter versions together and rerun the compatibility probe.
 
@@ -93,3 +99,5 @@ Revisit on an adapter/machine contract change, a supported-browser failure, edit
 - 2026-10-23: Updated the project name to html+ following ADR-0006; the proposal and compatibility evidence are unchanged.
 
 - 2026-10-23: Accepted the bounded Zag integration for Toggle, Accordion, and Tabs after the explicit implementation direction and passing integrated browser checks. Added split module bundling, light-DOM content ownership, and first-invalid-field revelation. Future popup/calendar/slider behavior remains a separate acceptance gate.
+
+- 2026-10-23: Extended accepted adoption to Slider, Range Slider, and Rating with guarded missing-input effects, form-associated forms, stable thumb identities, rating checked/hover adaptation, and pointer/touch/keyboard evidence.

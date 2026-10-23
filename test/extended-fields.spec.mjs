@@ -3,7 +3,7 @@ import { test, expect } from 'playwright/test';
 const data = (page) => page.evaluate(() => [...new FormData(document.querySelector('#demo-form'))]);
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByText('14 entries', { exact: true })).toBeVisible();
+  await expect(page.getByText('18 entries', { exact: true })).toBeVisible();
 });
 
 test('duration preserves native notation while validating and submitting seconds', async ({ page }) => {
@@ -18,7 +18,7 @@ test('duration preserves native notation while validating and submitting seconds
   expect(await page.locator('h6-duration').evaluate((field) => field.checkValidity())).toBe(false);
   await input.fill('90m');
   await page.getByRole('button', { name: 'Submit demo' }).click();
-  await expect(page.getByRole('status')).toContainText('Captured 14 entries');
+  await expect(page.getByRole('status')).toContainText('Captured 18 entries');
 });
 
 test('interval submits two explicit names and validates order, step, and missing boundaries', async ({ page }) => {
@@ -51,7 +51,7 @@ test('segmented choices use native radio keys and submit identifiers exactly onc
   await expect(page.getByText('1 field needs attention', { exact: true })).toBeVisible();
   await page.getByRole('radio', { name: 'Economy', exact: true }).check();
   await page.getByRole('button', { name: 'Submit demo' }).click();
-  await expect(page.getByRole('status')).toContainText('Captured 14 entries');
+  await expect(page.getByRole('status')).toContainText('Captured 18 entries');
 });
 
 test('extended fields reset, disable, restore state, and retain explicit errors', async ({ page }) => {

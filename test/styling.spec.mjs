@@ -3,7 +3,7 @@ import { test, expect } from 'playwright/test';
 test('every element has two working previews, matching form values, and its own CSS', async ({ page }) => {
   await page.goto('/styling.html');
   const navigation = page.getByRole('navigation', { name: 'Components' });
-  const names = ['IBAN', 'BIC / SWIFT', 'Verification code', 'Duration', 'Numeric interval', 'Tags', 'Switch', 'Segmented choice', 'Toggle', 'Accordion', 'Tabs'];
+  const names = ['Slider', 'Range Slider', 'Rating', 'IBAN', 'BIC / SWIFT', 'Verification code', 'Duration', 'Numeric interval', 'Tags', 'Switch', 'Segmented choice', 'Toggle', 'Accordion', 'Tabs'];
   await expect(navigation.getByRole('link')).toHaveCount(names.length);
   for (const name of names) {
     await navigation.getByRole('link', { name, exact: true }).click();
@@ -74,7 +74,7 @@ test('neutral defaults, focus, and recipe layout work on desktop and mobile', as
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath('styling-mobile.png'), fullPage: true });
   await page.getByRole('link', { name: 'Form playground' }).click();
-  await expect(page.getByText('14 entries', { exact: true })).toBeVisible();
+  await expect(page.getByText('18 entries', { exact: true })).toBeVisible();
   expect(await page.locator('#demo-form').evaluate((form) => [...new FormData(form)])).toEqual(before);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

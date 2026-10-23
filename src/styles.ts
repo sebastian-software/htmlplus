@@ -36,3 +36,6 @@ export const inputStyles = `
   input:disabled { opacity: .5; cursor: not-allowed; }
   :host([data-touched]:invalid) input { border-color: ${theme("destructive")}; }
 `;
+
+/** Standalone numeric marks need more contrast than a filled primary button. */
+export const numericAccent = `color-mix(in oklch, ${theme("primary")} 65%, ${theme("foreground")})`;

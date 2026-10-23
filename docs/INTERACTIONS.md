@@ -82,3 +82,5 @@ Native interactive validation reveals the first invalid field's section before t
 All three elements include a neutral base, inherited `--hp-*` tokens, and deliberate CSS parts. The styling gallery includes Pill, Boxed, and Underline variations with the exact CSS used by their previews. The examples' labels and native inputs are application content: style them with ordinary CSS, as demonstrated by `.native-field` in [demo/styles.css](../demo/styles.css). They are not private shadow editors or component parts.
 
 The [browser checks](../test/interactions.spec.mjs) cover keyboard modes, RTL, vertical tabs, actual FormData, defaults/errors/labels, fieldset disabling, nested invalid fields, multiple invalid panels, native undo, dynamic sections, cleanup/reconnection, built-in styles, text scaling, and mobile recipe layout. Chromium and WebKit are the locally available engines. Screen-reader usability, physical touch devices, and real browser history restoration remain separate evidence tasks.
+
+Slider, Range Slider, and Rating use the same Zag/ElementInternals boundary. See [numeric choices](NUMERIC-CHOICES.md) for their value, event, label, and styling contracts.

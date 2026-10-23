@@ -14,6 +14,51 @@ export interface StylingRecipe {
 /** Trusted, static authoring examples. This CSS is both shown and used by the previews. */
 export const recipes: readonly StylingRecipe[] = [
   {
+    element: "h6-slider", title: "Slider", label: "Output level", variant: "Slim rail", className: "slider-slim",
+    description: "A single Zag thumb submits one number. Theme its colors globally or restyle its track and thumb parts.",
+    markup: '<h6-slider name="level" value="35" min="0" max="100" step="5"></h6-slider>',
+    parts: ["root", "value-text", "control", "track", "range", "thumb"],
+    css: `h6-slider.slider-slim::part(track) {
+  height: 2px;
+  top: calc(50% - 1px);
+}
+h6-slider.slider-slim::part(thumb) {
+  border-width: 1px;
+  box-shadow: none;
+}`,
+  },
+  {
+    element: "h6-range-slider", title: "Range Slider", label: "Price filter (USD)", variant: "Square handles", className: "range-square",
+    description: "Two independently labeled thumbs keep their identities. The form receives two explicit boundary entries.",
+    markup: '<h6-range-slider name="price" value="[100,350]" min="0" max="500" step="10"></h6-range-slider>',
+    parts: ["root", "value-text", "control", "track", "range", "thumb", "lower-thumb", "upper-thumb"],
+    css: `h6-range-slider.range-square::part(track) {
+  border-radius: 0;
+}
+h6-range-slider.range-square::part(thumb) {
+  border-radius: 4px;
+  border-width: 1px;
+  box-shadow: none;
+}`,
+  },
+  {
+    element: "h6-rating", title: "Rating", label: "Experience rating", variant: "Outlined score", className: "rating-outlined",
+    description: "Hover is a preview, not a submitted score. Style each item and its committed selected-item part independently.",
+    markup: '<h6-rating name="rating" value="4"></h6-rating>',
+    parts: ["root", "label", "control", "item", "selected-item", "icon", "clear-button", "value-text"],
+    css: `h6-rating.rating-outlined::part(item) {
+  border-color: var(--hp-input, #d4d4d4);
+}
+h6-rating.rating-outlined::part(selected-item) {
+  background: var(--hp-primary, #171717);
+  color: var(--hp-primary-foreground, #fafafa);
+}
+h6-rating.rating-outlined::part(icon) {
+  fill: none;
+  stroke-width: 2;
+}`,
+  },
+  {
     element: "h6-toggle", title: "Toggle", label: "Priority handling", variant: "Pill", className: "toggle-pill",
     description: "A pressed button submits one value. Restyle its public button part; :state(pressed) follows the same state.",
     markup: '<h6-toggle name="priority" value="yes" pressed>Priority handling</h6-toggle>', parts: ["button"],

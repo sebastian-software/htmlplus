@@ -18,14 +18,15 @@
     <a class="wordmark" href="./" aria-label="html plus home">html<span>+</span></a>
     <span class="masthead-label">Form playground</span>
     <div class="masthead-actions">
-      <label class="theme-picker" for="theme">Appearance <select id="theme"><option value="base">Light</option><option value="dark">Dark</option><option value="utility">Utility</option></select></label>
+      <label class="theme-picker" for="theme">Appearance <select id="theme"><option value="base">Light</option><option value="dark">Dark</option></select></label>
+      <label class="theme-picker" for="palette">Palette <select id="palette"><option value="neutral">Neutral</option><option value="blue">Blue</option><option value="green">Green</option><option value="orange">Orange</option><option value="rose">Rose</option><option value="utility">Utility (custom)</option></select></label>
       <a class="text-link recipes-link" href="./styling.html">Styling <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></a>
     </div>
   </header>
 
   <main id="playground">
     <div class="intro">
-      <div><h1>Let HTML do the form work.</h1><p>Eleven components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
+      <div><h1>Let HTML do the form work.</h1><p>Fourteen components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
       <span class="preview-label"><span aria-hidden="true"></span> Early preview</span>
     </div>
 
@@ -85,7 +86,23 @@
               </div>
             </div>
 
-            <p class="field-section">03 <span>Values with more to say</span></p>
+            <p class="field-section">03 <span>Numeric choices</span></p>
+            <div class="field">
+              <div class="field-heading"><label for="volume-field">Volume</label><a class="recipe-link" href="./styling.html#h6-slider" aria-label="Style h6-slider"><code>&lt;h6-slider&gt;</code></a></div>
+              <h6-slider id="volume-field" name="volume" value="35" min="0" max="100" step="5" aria-describedby="volume-feedback"></h6-slider>
+              <p class="feedback" id="volume-feedback">Drag or use arrow keys. Submitted as one number.</p>
+            </div>
+            <div class="field">
+              <div class="field-heading"><label for="price-field">Price filter (USD)</label><a class="recipe-link" href="./styling.html#h6-range-slider" aria-label="Style h6-range-slider"><code>&lt;h6-range-slider&gt;</code></a></div>
+              <h6-range-slider id="price-field" name="price" lower-name="price_min" upper-name="price_max" value="[100,350]" min="0" max="500" step="10" aria-describedby="price-feedback"></h6-range-slider>
+              <p class="feedback" id="price-feedback">Two named boundaries. Handles stop at each other.</p>
+            </div>
+            <div class="field">
+              <div class="field-heading"><label for="rating-field">Experience rating</label><a class="recipe-link" href="./styling.html#h6-rating" aria-label="Style h6-rating"><code>&lt;h6-rating&gt;</code></a></div>
+              <h6-rating id="rating-field" name="rating" value="4" aria-describedby="rating-feedback"></h6-rating>
+              <p class="feedback" id="rating-feedback">Hover previews a score. Choose to commit; Clear removes the entry.</p>
+            </div>
+            <p class="field-section">04 <span>Values with more to say</span></p>
             <div class="field">
               <div class="field-heading"><label for="duration-field">Session duration</label><a class="recipe-link" href="./styling.html#h6-duration" aria-label="Style h6-duration"><code>&lt;h6-duration&gt;</code></a></div>
               <h6-duration id="duration-field" name="duration" value="1h 30m" min="60" max="86400" required aria-describedby="duration-feedback" placeholder="1h 30m"></h6-duration>
@@ -96,7 +113,7 @@
               <h6-interval id="budget-field" name="budget" lower-name="budget_min" upper-name="budget_max" value="[200,800]" min="0" max="10000" step="50" required aria-describedby="budget-feedback"></h6-interval>
               <p class="feedback" id="budget-feedback">One control, two named values. The lower boundary cannot exceed the upper.</p>
             </div>
-            <p class="field-section">04 <span>Choices & collections</span></p>
+            <p class="field-section">05 <span>Choices & collections</span></p>
             <div class="field">
               <div class="field-heading"><label for="delivery-field">Delivery speed</label><a class="recipe-link" href="./styling.html#h6-segmented" aria-label="Style h6-segmented"><code>&lt;h6-segmented&gt;</code></a></div>
               <h6-segmented id="delivery-field" name="delivery" value="standard" required aria-describedby="delivery-feedback">
@@ -124,7 +141,7 @@
 
       <aside class="inspector-column" aria-labelledby="data-heading">
         <section class="inspector">
-          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">14 entries</span></div>
+          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">18 entries</span></div>
           <div class="inspector-toolbar"><div class="view-switch" role="group" aria-label="Data format"><button type="button" data-view="entries" aria-pressed="true">Entries</button><button type="button" data-view="json" aria-pressed="false">JSON</button></div><span class="reading-label">new FormData(form)</span></div>
           <div id="entries-view" class="data-view"><table><caption class="visually-hidden">Current form entries, preserving repeated field names</caption><thead><tr><th scope="col">Name</th><th scope="col">Value</th></tr></thead><tbody id="entries-body"></tbody></table><p id="empty-data" class="empty-data" hidden>No entries. Disabled fields are left out of FormData.</p></div>
           <div id="json-view" class="data-view" hidden><pre class="json-code" id="json-output" aria-label="Current form data as JSON"></pre><p class="json-note">Repeated names become arrays in this JSON view.</p></div>
@@ -134,7 +151,7 @@
         <div class="inspector-note"><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m6 5-4 5 4 5m8-10 4 5-4 5m-3-12-2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><p>These are the actual form entries. No separate state object, no hidden proxy inputs.</p></div>
         <details class="theme-source">
           <summary>Theme CSS</summary>
-          <p>These light and dark presets use only <code>--hp-*</code> variables. Apply <code>hp-light</code> or <code>hp-dark</code> to any theme scope.</p>
+          <p>These palettes and light/dark presets use only <code>--hp-*</code> variables. Apply <code>hp-light</code> or <code>hp-dark</code> to any theme scope. Add a palette class such as <code>hp-blue</code> to that same scope.</p>
           <p><a href="./demo/themes.css" download="htmlplus-themes.css">Download themes</a> · <a href="./demo/shadcn.css" download="htmlplus-shadcn.css">shadcn adapter</a></p>
           <pre tabindex="0" aria-label="Light and dark theme CSS"><code id="theme-code">Loading theme CSS…</code></pre>
         </details>

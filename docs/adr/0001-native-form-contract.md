@@ -4,7 +4,7 @@
 - Created: 2026-10-22
 - Updated: 2026-10-23
 - Lifecycle: living
-- Implementation: nine form controls, two companion elements, and a live playground
+- Implementation: twelve form controls, two companion elements, and a live playground
 
 ## Context and decision
 
@@ -39,3 +39,5 @@ Revisit the mechanism if a supported browser cannot provide reliable submission,
 - 2026-10-23: Updated the project name to html+ following ADR-0006; the form contract is unchanged.
 
 - 2026-10-23: Added the form-associated Toggle and light-DOM Accordion/Tabs contract, including nested and multiple-invalid-field revelation.
+
+- 2026-10-23: Added Slider, Range Slider, and Rating as form-associated numeric controls without hidden submission proxies. Their numbers, boundary names, and nullable score follow ADR-0004.

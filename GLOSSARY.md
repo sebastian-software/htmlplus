@@ -28,6 +28,8 @@ Terminology for form controls, their values, and specialized input fields.
 
 **Combobox:** An editable search or entry control combined with an option list. In a selection combobox, query text and a selected identifier are distinct values.
 
+**Slider:** A control that chooses one number within a bounded range using a movable thumb.
+
 **Range slider:** A control with two thumbs representing the lower and upper boundaries of a bounded numeric interval.
 
 **Rating:** A person's chosen score on a declared scale. An unanswered rating is distinct from a selected score or a hover preview.

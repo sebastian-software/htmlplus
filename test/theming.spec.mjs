@@ -105,7 +105,7 @@ test('light, dark, and utility examples preserve edited form data and work on mo
   await page.getByRole('button', { name:'Priority handling', exact:true }).click();
   const before = await page.locator('#demo-form').evaluate(form => [...new FormData(form)]);
   for (const mode of ['dark','utility','base']) {
-    await page.getByLabel('Appearance').selectOption(mode);
+    if (mode === 'utility') { await page.getByLabel('Appearance').selectOption('base'); await page.getByLabel('Palette').selectOption('utility'); } else { await page.getByLabel('Palette').selectOption('neutral'); await page.getByLabel('Appearance').selectOption(mode); }
     await expect(page.locator('html')).toHaveCSS('color-scheme', mode==='dark' ? 'dark' : 'light');
     await expect(page.locator('h6-otp input')).toHaveValue('001234');
     expect(await page.locator('#demo-form').evaluate(form => [...new FormData(form)])).toEqual(before);
@@ -125,7 +125,7 @@ test('light, dark, and utility examples preserve edited form data and work on mo
 test('neutral light and dark palettes keep readable text and visible keyboard focus, including forced colors', async ({ page }) => {
   await page.goto('/');
   for (const mode of ['base','dark']) {
-    await page.getByLabel('Appearance').selectOption(mode);
+    if (mode === 'utility') { await page.getByLabel('Appearance').selectOption('base'); await page.getByLabel('Palette').selectOption('utility'); } else { await page.getByLabel('Palette').selectOption('neutral'); await page.getByLabel('Appearance').selectOption(mode); }
     const editor=page.getByRole('textbox', {name:'IBAN',exact:true});
     await editor.focus();
     const ratios=await editor.evaluate(input => {

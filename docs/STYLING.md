@@ -1,6 +1,6 @@
 # Styling html+ controls
 
-The playground and styling gallery share Light, Dark, and blue Utility examples. Their appearance changes through inherited `--hp-*` properties. Each of the eleven elements also has its own Base preview, part-based variation, actual form entries, and copyable source. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
+The playground and styling gallery share independent Light/Dark appearances and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the fourteen elements also has its own Base preview, part-based variation, actual form entries, and copyable source. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
 
 ## Built-in base
 
@@ -23,13 +23,13 @@ Token suffixes and roles follow [shadcn/ui's current theming contract](https://u
 | Public token | Current role |
 | --- | --- |
 | `--hp-background`, `--hp-foreground` | Editors, selected tab/segment surfaces, and default component text |
-| `--hp-primary`, `--hp-primary-foreground` | Pressed toggles and checked switches |
+| `--hp-primary`, `--hp-primary-foreground` | Pressed toggles, checked switches, slider ranges/thumbs, and highlighted rating items |
 | `--hp-secondary`, `--hp-secondary-foreground` | Tag tokens |
 | `--hp-muted`, `--hp-muted-foreground` | Tab/segmented tracks, inactive tabs, placeholders, and interval labels |
 | `--hp-accent`, `--hp-accent-foreground` | Unpressed toggle hover and tag remove-button hover |
 | `--hp-destructive` | Invalid controls |
 | `--hp-border` | Accordion separators and recipe borders |
-| `--hp-input` | Editor, tag-control, toggle, and segmented-control borders; unchecked switch tracks |
+| `--hp-input` | Editor, tag-control, toggle, segmented-control, and rating clear-button borders; unchecked switch tracks |
 | `--hp-ring` | Focus borders and keyboard focus outlines |
 | `--hp-radius` | Base for the component radius scale |
 
@@ -50,7 +50,7 @@ Set public tokens on `:root`, a wrapper, or an individual host. More local decla
 
 `--hp-radius` defaults to `.625rem`. Derived sizes use the current shadcn factors: `sm` = 0.6, `md` = 0.8, `lg` = 1, `xl` = 1.4, `2xl` = 1.8, `3xl` = 2.2, `4xl` = 2.6. Editors and toggles use `md`; tag tokens and inner tabs/segments use `sm`; tab/segmented tracks use `lg`. Explicit `--hp-radius-sm`, `--hp-radius-md`, and `--hp-radius-lg` override those sizes. The larger sizes are reserved for future consumers. Values derive at the consuming element, so a locally overridden base takes effect without inheriting a stale computed scale from an ancestor. Explicit size overrides are inherited as supplied. Capsule switches and circular thumbs retain their functional shapes; use their parts for a different shape.
 
-Typography and density are html+ extensions: `--hp-font-family`, `--hp-font-size`, `--hp-line-height`, and `--hp-control-height`. The last controls text/numeric editor height, minimum tag-control height, and minimum toggle/tab-list height. Keep these values compatible when changing density. These extensions are not a claim about shadcn's base theme schema.
+Typography and density are html+ extensions: `--hp-font-family`, `--hp-font-size`, `--hp-line-height`, and `--hp-control-height`. The last controls text/numeric editor height, minimum tag-control height, and minimum toggle/tab-list height and horizontal slider control height. Keep these values compatible when changing density. These extensions are not a claim about shadcn's base theme schema.
 
 ## Light and dark presets
 
@@ -63,7 +63,7 @@ The optional [themes.css](../demo/themes.css) defines complete `.hp-light` and `
 </form>
 ```
 
-The playground's **Theme CSS** disclosure displays the exact preset file it uses. Both pages' Appearance pickers change the theme without replacing fields or modifying their values. Utility demonstrates a blue palette and a smaller radius through tokens alone. Part-based recipes remain separate examples.
+The playground's **Theme CSS** disclosure displays the exact preset file it uses. Both pages' Appearance and Palette pickers change the theme without replacing fields or modifying their values. The independent Palette picker combines either appearance with Neutral, Blue, Green, Orange, Rose, or custom Utility. The four new palettes copy the official shadcn accent overlays at [source revision 4101ec9](https://github.com/shadcn-ui/ui/blob/4101ec98af37e2d812f859e3f540bceafbbc5200/apps/v4/registry/themes.ts), retrieved 2026-10-23, over html+'s existing neutral base. They are a curated selection, not a measured popularity ranking. MIT attribution ships with the browser artifact. Utility retains a smaller radius and now has a dark variant. Apply the appearance and palette classes to the same scope, for example `class="hp-dark hp-blue"`; use both classes again for a nested theme scope. Part-based recipes remain separate examples.
 
 ## Optional shadcn adapter
 
@@ -110,6 +110,9 @@ The [recipe definitions](../demo/recipes.ts) are the single source for the galle
 
 | Element | Included variation | Public parts |
 | --- | --- | --- |
+| `h6-slider` | Slim rail | `root`, `value-text`, `control`, `track`, `range`, `thumb` |
+| `h6-range-slider` | Square handles | Slider parts plus `lower-thumb`, `upper-thumb` |
+| `h6-rating` | Outlined score | `root`, `label`, `control`, `item`, `selected-item`, `icon`, `clear-button`, `value-text` |
 | `h6-iban` | Underlined editor with monospaced text | `input` |
 | `h6-bic` | Compact identifier field | `input` |
 | `h6-otp` | Larger, spaced code with one native editor | `input` |
@@ -140,4 +143,4 @@ Stateful styles should preserve visible keyboard focus, disabled states, invalid
 
 ## Verification
 
-The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, and unchanged edited FormData while switching themes on mobile. Gallery tests cover all eleven recipes, shared displayed source, deep links, and clipboard success/failure. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.
+The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, and unchanged edited FormData while switching themes on mobile. Gallery tests cover all fourteen recipes, shared displayed source, deep links, and clipboard success/failure. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.

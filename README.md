@@ -2,7 +2,7 @@
 
 Form controls that extend HTML's vocabulary and participate in ordinary web forms.
 
-**Status:** working prototype. Eleven elements (nine form controls, Accordion, and Tabs), a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
+**Status:** working prototype. Fourteen elements (twelve form controls, Accordion, and Tabs), a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
 
 ## Run the playground
 
@@ -15,11 +15,11 @@ npm run dev
 
 Open [http://127.0.0.1:4173](http://127.0.0.1:4173). The dev command compiles TypeScript, watches source changes, and starts a local server. Refresh the page after source changes. Stop it with Ctrl+C.
 
-The playground shows actual `new FormData(form)` entries as fields change. Switch between an entry table and a JSON view, submit locally, reset defaults, disable the fieldset, or compare neutral Light, Dark, and blue Utility themes. Repeated field names remain separate entries; the JSON view groups repeated names into arrays. Demo submissions are captured in the browser and do not make a network request.
+The playground shows actual `new FormData(form)` entries as fields change. Switch between an entry table and a JSON view, submit locally, reset defaults, disable the fieldset, or compare Light/Dark appearances and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Repeated field names remain separate entries; the JSON view groups repeated names into arrays. Demo submissions are captured in the browser and do not make a network request.
 
 ## Styling examples
 
-Open **Styling** in the playground, or click an element's name beside a field. Each of the eleven elements has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `themes.css` supplies prefixed light/dark palettes; `shadcn.css` connects an existing shadcn palette through the `hp-shadcn` class. Both files are copied into `dist/` at build time. Semantic token suffixes and roles match the documented shadcn theme contract, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
+Open **Styling** in the playground, or click an element's name beside a field. Each of the fourteen elements has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `themes.css` supplies prefixed light/dark palettes; `shadcn.css` connects an existing shadcn palette through the `hp-shadcn` class. Both files are copied into `dist/` at build time. Semantic token suffixes and roles match the documented shadcn theme contract, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
 
 ## Implemented elements
 
@@ -39,11 +39,11 @@ Open **Styling** in the playground, or click an element's name beside a field. E
 
 Every control includes a neutral base appearance, with consistent editor typography and centered SVG icons. No external component stylesheet is required. Override inherited `--hp-*` tokens or public parts to customize it.
 
-The nine form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: typing `de89 3704 0044 0532 0130 00` leaves that text untouched while the form receives `DE89370400440532013000`. This separation preserves native text editing and undo.
+The twelve form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: typing `de89 3704 0044 0532 0130 00` leaves that text untouched while the form receives `DE89370400440532013000`. This separation preserves native text editing and undo.
 
 ## Use a control
 
-After building, import `dist/src/index.js` as a browser ES module. It registers the eleven elements and exports their classes. Toggle, Accordion, and Tabs use Zag's vanilla adapter internally; there is no runtime component framework dependency. The build type-checks TypeScript, emits declarations, and bundles browser modules with shared chunks using esbuild. Deploy the complete `dist/` tree so those chunks remain available. Source modules also export their individual classes for explicit registration. CSS parts and inherited `--hp-*` custom properties are the styling surface; the demo demonstrates both.
+After building, import `dist/src/index.js` as a browser ES module. It registers the fourteen elements and exports their classes. Toggle, Accordion, Tabs, Slider, Range Slider, and Rating use Zag's vanilla adapter internally; there is no runtime component framework dependency. The build type-checks TypeScript, emits declarations, and bundles browser modules with shared chunks using esbuild. Deploy the complete `dist/` tree so those chunks remain available. Source modules also export their individual classes for explicit registration. CSS parts and inherited `--hp-*` custom properties are the styling surface; the demo demonstrates both.
 
 ```html
 <script type="module" src="/dist/src/index.js"></script>
@@ -125,11 +125,17 @@ Firefox behavior remains unverified here. Physical-device OTP autofill, assistiv
 
 ## Project documents
 
-- [Project plan](docs/PLAN.md): current scope and delivery order. Slider, Range Slider, Rating, Select, Combobox, and Date Picker remain planned.
+- [Project plan](docs/PLAN.md): current scope and delivery order. Select, Combobox, and Date Picker remain planned.
 - [Interaction elements](docs/INTERACTIONS.md): Toggle, Accordion, and Tabs APIs, section markup, events, native form behavior, and validation.
-- [Headless interaction decision](docs/adr/0005-headless-interaction-logic.md): accepted Zag integration for the three interaction elements, build boundaries, and remaining popup work.
+- [Headless interaction decision](docs/adr/0005-headless-interaction-logic.md): accepted Zag integration for the six interaction elements, build boundaries, and remaining popup work.
 - [Living architecture decisions](docs/adr/README.md): current rationale and browser evidence.
 - [Project identity](docs/adr/0006-project-identity.md): the html+ name, htmlplus.dev domain, and technical naming boundary.
 - [Playground design](docs/PLAYGROUND.md): layout and styling intent.
 - [Glossary](GLOSSARY.md): shared field terminology.
 - [Project instructions](AGENTS.md): US English, Conventional Commits, and living ADRs.
+
+## Numeric choices
+
+Slider, Range Slider, and Rating use Zag 1.46.0 with ElementInternals submission and no hidden inputs. Slider submits one numeric string; Range Slider submits two explicitly named boundaries; Rating submits one whole score or no entry while unanswered. Hover only previews a rating. Each has its own styling recipe and Light/Dark examples. See [numeric choice APIs and behavior](docs/NUMERIC-CHOICES.md).
+
+The Palette picker adds Blue, Green, Orange, and Rose from the official [shadcn registry](https://github.com/shadcn-ui/ui/blob/4101ec98af37e2d812f859e3f540bceafbbc5200/apps/v4/registry/themes.ts), on the existing neutral base. These are a curated selection, not a measured popularity ranking. Appearance remains independent. Utility is retained as a custom example. Palette data is MIT-attributed in `THIRD_PARTY_NOTICES.txt`.

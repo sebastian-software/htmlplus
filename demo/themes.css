@@ -74,3 +74,169 @@
   --hp-sidebar-ring: #a3a3a3;
   --hp-radius: .625rem;
 }
+
+/* License for the following shadcn accent palette data:
+MIT License
+
+Copyright (c) 2023 shadcn
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+/* Official shadcn accent overlays, retrieved 2026-10-23.
+ * https://github.com/shadcn-ui/ui/blob/4101ec98af37e2d812f859e3f540bceafbbc5200/apps/v4/registry/themes.ts
+ * MIT, Copyright (c) 2023 shadcn. See THIRD_PARTY_NOTICES.txt.
+ */
+
+.hp-light.hp-blue {
+  --hp-primary: oklch(0.488 0.243 264.376);
+  --hp-primary-foreground: oklch(0.97 0.014 254.604);
+  --hp-secondary: oklch(0.967 0.001 286.375);
+  --hp-secondary-foreground: oklch(0.21 0.006 285.885);
+  --hp-chart-1: oklch(0.809 0.105 251.813);
+  --hp-chart-2: oklch(0.623 0.214 259.815);
+  --hp-chart-3: oklch(0.546 0.245 262.881);
+  --hp-chart-4: oklch(0.488 0.243 264.376);
+  --hp-chart-5: oklch(0.424 0.199 265.638);
+  --hp-sidebar-primary: oklch(0.546 0.245 262.881);
+  --hp-sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+}
+
+.hp-dark.hp-blue {
+  --hp-primary: oklch(0.424 0.199 265.638);
+  --hp-primary-foreground: oklch(0.97 0.014 254.604);
+  --hp-secondary: oklch(0.274 0.006 286.033);
+  --hp-secondary-foreground: oklch(0.985 0 0);
+  --hp-chart-1: oklch(0.809 0.105 251.813);
+  --hp-chart-2: oklch(0.623 0.214 259.815);
+  --hp-chart-3: oklch(0.546 0.245 262.881);
+  --hp-chart-4: oklch(0.488 0.243 264.376);
+  --hp-chart-5: oklch(0.424 0.199 265.638);
+  --hp-sidebar-primary: oklch(0.623 0.214 259.815);
+  --hp-sidebar-primary-foreground: oklch(0.97 0.014 254.604);
+}
+
+.hp-light.hp-green {
+  --hp-primary: oklch(0.527 0.154 150.069);
+  --hp-primary-foreground: oklch(0.982 0.018 155.826);
+  --hp-secondary: oklch(0.967 0.001 286.375);
+  --hp-secondary-foreground: oklch(0.21 0.006 285.885);
+  --hp-chart-1: oklch(0.871 0.15 154.449);
+  --hp-chart-2: oklch(0.723 0.219 149.579);
+  --hp-chart-3: oklch(0.627 0.194 149.214);
+  --hp-chart-4: oklch(0.527 0.154 150.069);
+  --hp-chart-5: oklch(0.448 0.119 151.328);
+  --hp-sidebar-primary: oklch(0.627 0.194 149.214);
+  --hp-sidebar-primary-foreground: oklch(0.982 0.018 155.826);
+}
+
+.hp-dark.hp-green {
+  --hp-primary: oklch(0.448 0.119 151.328);
+  --hp-primary-foreground: oklch(0.982 0.018 155.826);
+  --hp-secondary: oklch(0.274 0.006 286.033);
+  --hp-secondary-foreground: oklch(0.985 0 0);
+  --hp-chart-1: oklch(0.871 0.15 154.449);
+  --hp-chart-2: oklch(0.723 0.219 149.579);
+  --hp-chart-3: oklch(0.627 0.194 149.214);
+  --hp-chart-4: oklch(0.527 0.154 150.069);
+  --hp-chart-5: oklch(0.448 0.119 151.328);
+  --hp-sidebar-primary: oklch(0.723 0.219 149.579);
+  --hp-sidebar-primary-foreground: oklch(0.982 0.018 155.826);
+}
+
+.hp-light.hp-orange {
+  --hp-primary: oklch(0.553 0.195 38.402);
+  --hp-primary-foreground: oklch(0.98 0.016 73.684);
+  --hp-secondary: oklch(0.967 0.001 286.375);
+  --hp-secondary-foreground: oklch(0.21 0.006 285.885);
+  --hp-chart-1: oklch(0.837 0.128 66.29);
+  --hp-chart-2: oklch(0.705 0.213 47.604);
+  --hp-chart-3: oklch(0.646 0.222 41.116);
+  --hp-chart-4: oklch(0.553 0.195 38.402);
+  --hp-chart-5: oklch(0.47 0.157 37.304);
+  --hp-sidebar-primary: oklch(0.646 0.222 41.116);
+  --hp-sidebar-primary-foreground: oklch(0.98 0.016 73.684);
+}
+
+.hp-dark.hp-orange {
+  --hp-primary: oklch(0.47 0.157 37.304);
+  --hp-primary-foreground: oklch(0.98 0.016 73.684);
+  --hp-secondary: oklch(0.274 0.006 286.033);
+  --hp-secondary-foreground: oklch(0.985 0 0);
+  --hp-chart-1: oklch(0.837 0.128 66.29);
+  --hp-chart-2: oklch(0.705 0.213 47.604);
+  --hp-chart-3: oklch(0.646 0.222 41.116);
+  --hp-chart-4: oklch(0.553 0.195 38.402);
+  --hp-chart-5: oklch(0.47 0.157 37.304);
+  --hp-sidebar-primary: oklch(0.705 0.213 47.604);
+  --hp-sidebar-primary-foreground: oklch(0.98 0.016 73.684);
+}
+
+.hp-light.hp-rose {
+  --hp-primary: oklch(0.514 0.222 16.935);
+  --hp-primary-foreground: oklch(0.969 0.015 12.422);
+  --hp-secondary: oklch(0.967 0.001 286.375);
+  --hp-secondary-foreground: oklch(0.21 0.006 285.885);
+  --hp-chart-1: oklch(0.81 0.117 11.638);
+  --hp-chart-2: oklch(0.645 0.246 16.439);
+  --hp-chart-3: oklch(0.586 0.253 17.585);
+  --hp-chart-4: oklch(0.514 0.222 16.935);
+  --hp-chart-5: oklch(0.455 0.188 13.697);
+  --hp-sidebar-primary: oklch(0.586 0.253 17.585);
+  --hp-sidebar-primary-foreground: oklch(0.969 0.015 12.422);
+}
+
+.hp-dark.hp-rose {
+  --hp-primary: oklch(0.455 0.188 13.697);
+  --hp-primary-foreground: oklch(0.969 0.015 12.422);
+  --hp-secondary: oklch(0.274 0.006 286.033);
+  --hp-secondary-foreground: oklch(0.985 0 0);
+  --hp-chart-1: oklch(0.81 0.117 11.638);
+  --hp-chart-2: oklch(0.645 0.246 16.439);
+  --hp-chart-3: oklch(0.586 0.253 17.585);
+  --hp-chart-4: oklch(0.514 0.222 16.935);
+  --hp-chart-5: oklch(0.455 0.188 13.697);
+  --hp-sidebar: oklch(0.21 0.006 285.885);
+  --hp-sidebar-primary: oklch(0.645 0.246 16.439);
+  --hp-sidebar-primary-foreground: oklch(0.969 0.015 12.422);
+}
+
+.hp-light.hp-utility {
+  --hp-foreground: #192d40;
+  --hp-primary: #176294;
+  --hp-primary-foreground: #ffffff;
+  --hp-secondary: #e0edf7;
+  --hp-secondary-foreground: #192d40;
+  --hp-muted: #e0edf7;
+  --hp-muted-foreground: #586e81;
+  --hp-accent: #d0e5f4;
+  --hp-accent-foreground: #192d40;
+  --hp-input: #bfcfdd;
+  --hp-border: #bfcfdd;
+  --hp-ring: #176294;
+  --hp-radius: 2px;
+}
+.hp-dark.hp-utility {
+  --hp-primary: #7dd3fc;
+  --hp-primary-foreground: #082f49;
+  --hp-secondary: #163044;
+  --hp-secondary-foreground: #e0f2fe;
+  --hp-ring: #7dd3fc;
+  --hp-radius: 2px;
+}

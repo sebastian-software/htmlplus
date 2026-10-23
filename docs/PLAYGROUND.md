@@ -6,7 +6,7 @@ This is an operating surface for developers exploring form behavior. The main ac
 
 The page opens with the playground rather than a marketing section. Component names annotate real fields; the lower section explains the integration. Tables preserve repeated keys. The JSON view explicitly groups repeated names into arrays rather than dropping them.
 
-The eleven elements start with a Zag toggle, contact-detail tabs, and delivery-instruction accordion, followed by identifiers and verification, values with more to say, and choices and collections. Each added field demonstrates a distinct form contract: duration notation becomes seconds, an interval supplies two named entries, and segmented radio choices submit an identifier. The inspector remains sticky while browsing the longer form, with its entry list scrolling inside a bounded height. The initial fourteen entries include ordinary fields in inactive panels. Pressing the priority toggle adds one entry; closing a section removes none. Interactive validation reveals the first invalid section, including nested form-associated fields.
+The fourteen elements start with a Zag toggle, contact-detail tabs, and delivery-instruction accordion, followed by identifiers and verification, numeric choices, values with more to say, and choices and collections. Each added field demonstrates a distinct form contract: duration notation becomes seconds, an interval supplies two named entries, and segmented radio choices submit an identifier. The inspector remains sticky while browsing the longer form, with its entry list scrolling inside a bounded height. The initial eighteen entries include ordinary fields in inactive panels. Pressing the priority toggle adds one entry; closing a section removes none. Interactive validation reveals the first invalid section, including nested form-associated fields.
 
 ## Visual direction
 
@@ -14,7 +14,7 @@ Use the **html+** wordmark and a simple plus favicon. The home link's accessible
 
 Base uses a neutral canvas (`#fafafa`), white field surface (`#ffffff`), dark text and primary actions (`#171717`), gray borders (`#d4d4d4`), and a charcoal inspector (`#171717`). System sans is the interface face; system monospace identifies code and submitted values. Component fallbacks are also neutral. No remote fonts or image assets are required.
 
-The inspector is the main visual contrast. Surrounding controls stay quiet, with clear labels, normal sentence case, limited motion, and visible focus. Dark uses a separate neutral palette, light text, and native dark color-scheme. Utility uses blue and tighter corners through semantic tokens alone to demonstrate the public styling surface with unchanged markup and form behavior. This directly tests the library's styling goal.
+The independent Palette picker adds the official Blue, Green, Orange, and Rose accent overlays, preserving Neutral and custom Utility. Appearance independently chooses Light or Dark. The header uses a two-column picker row on narrow screens. The inspector is the main visual contrast. Surrounding controls stay quiet, with clear labels, normal sentence case, limited motion, and visible focus. Dark uses a separate neutral palette, light text, and native dark color-scheme. Utility uses blue and tighter corners through semantic tokens alone to demonstrate the public styling surface with unchanged markup and form behavior. This directly tests the library's styling goal.
 
 ## Styling gallery
 
@@ -25,3 +25,5 @@ The playground links to `styling.html`, with direct fragment links from each ele
 Check populated and invalid fields, repeated keys, omitted unchecked values, disabled fieldsets, restored defaults, local submission feedback, and both data views. Verify narrow-screen overflow, keyboard access, and reduced motion. Keep error and submission feedback separate from the changing data panel; do not announce every keystroke as a live region.
 
 Automated tests save desktop Light/Dark, mobile theme, and styling-gallery screenshots for visual review. Mobile viewport checks are layout evidence, not physical-device or OTP autofill certification.
+
+The numeric section demonstrates a volume slider, a two-thumb price filter with explicit boundary names, and a clearable experience rating. Each has a styling deep link and a built-in current-value display. Rating preview does not enter FormData; clearing the sample score removes its entry.
