@@ -27,6 +27,9 @@ Responsibilities are divided as follows:
 | html+ DOM binding | Connect/disconnect lifecycle, root lookup, stable editor nodes, property updates, and cleanup |
 | html+ form-associated host | Canonical values, names, validity, labels, disabled fieldsets, reset/restoration, and public events |
 | html+ styling | Built-in neutral base, deliberate `part` names, tokens, and styling examples |
+| Application | Supplied data and constraints, business verification, persistence, and workflow side effects |
+
+[ADR-0007](0007-component-application-boundary.md) owns the product boundary: Zag supplies reusable interaction logic, html+ owns the HTML/form/CSS contract, and application knowledge stays with the caller. Reusing a machine does not transfer application responsibilities into the component.
 
 Keep related popup controls and ARIA references within the same shadow root initially. Investigate clipping and native top-layer integration before choosing a production popup strategy; copying a document-body portal is not sufficient. Pass `getRootNode` explicitly. Internal Zag data attributes can aid implementation, but they do not replace public CSS parts across a shadow boundary.
 
@@ -101,3 +104,5 @@ Revisit on an adapter/machine contract change, a supported-browser failure, edit
 - 2026-10-23: Accepted the bounded Zag integration for Toggle, Accordion, and Tabs after the explicit implementation direction and passing integrated browser checks. Added split module bundling, light-DOM content ownership, and first-invalid-field revelation. Future popup/calendar/slider behavior remains a separate acceptance gate.
 
 - 2026-10-23: Extended accepted adoption to Slider, Range Slider, and Rating with guarded missing-input effects, form-associated forms, stable thumb identities, rating checked/hover adaptation, and pointer/touch/keyboard evidence.
+
+- 2026-10-23: Connected the Zag/html+/application responsibilities to the product scope in ADR-0007.

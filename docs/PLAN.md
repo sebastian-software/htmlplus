@@ -6,6 +6,8 @@ Updated: 2026-10-23. Status: fourteen implemented elements, three expansion cand
 
 Help developers use richer fields in ordinary HTML forms with little application glue. Controls should work with native form submission and `FormData`, expose clear validity and reset behavior, and fit different visual systems through CSS. Add companion interaction components where they help compose these forms, such as tabs and accordions; these do not become submitted fields merely by belonging to the library.
 
+**More capable HTML. Ordinary forms.** Components own reusable interaction and value rules; applications own their data, business decisions, and workflows. Compare each candidate with native HTML first. [ADR-0007](adr/0007-component-application-boundary.md) defines the scope boundary, including format validation versus application verification and caller-supplied data for selection controls.
+
 The project is named **html+**, with **htmlplus.dev** as its domain and `htmlplus` as its technical slug. [ADR-0006](adr/0006-project-identity.md) records the identity and the still-provisional element prefix. The project language is US English. Architecture rationale belongs in the [living ADRs](adr/README.md); terminology belongs in the [glossary](../GLOSSARY.md).
 
 ## Component catalog

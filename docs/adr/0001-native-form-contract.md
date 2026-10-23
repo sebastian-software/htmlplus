@@ -10,6 +10,8 @@
 
 html+ exists to make richer controls usable in ordinary forms without repeating value synchronization in every application. Form submission, `FormData`, validation, labels, disabled state, and reset are the shared integration contract.
 
+[ADR-0007](0007-component-application-boundary.md) defines the product boundary around that contract: components own reusable interaction and value rules, while applications own their data, business decisions, and workflows. Compare each candidate with native HTML before adding a custom element.
+
 Use the platform's form mechanisms. Existing native inputs may remain the submission owner; new composite controls can use form-associated custom elements and `ElementInternals`. Applications should not need hidden proxy inputs or framework-specific form adapters for basic integration. The specialized text-field boundary is recorded in [ADR-0003](0003-specialized-native-inputs.md).
 
 ## Consequences
@@ -41,3 +43,5 @@ Revisit the mechanism if a supported browser cannot provide reliable submission,
 - 2026-10-23: Added the form-associated Toggle and light-DOM Accordion/Tabs contract, including nested and multiple-invalid-field revelation.
 
 - 2026-10-23: Added Slider, Range Slider, and Rating as form-associated numeric controls without hidden submission proxies. Their numbers, boundary names, and nullable score follow ADR-0004.
+
+- 2026-10-23: Linked ADR-0007's component/application boundary and native-HTML comparison rule to the ordinary-form contract.

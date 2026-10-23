@@ -1,8 +1,24 @@
 # html+
 
-Form controls that extend HTML's vocabulary and participate in ordinary web forms.
+**More capable HTML. Ordinary forms.**
+
+html+ provides framework-independent form controls and core UI primitives. Components handle interaction, value formats, and form participation. Your application supplies the data, business rules, and workflows.
 
 **Status:** working prototype. Fourteen elements (twelve form controls, Accordion, and Tabs), a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
+
+## What belongs in html+
+
+Use native HTML when it meets the interaction, form, and styling requirements. html+ fills gaps with reusable controls that expose HTML attributes, properties, DOM events, and CSS styling hooks. Form controls participate through `name`, `FormData`, validation, disabled state, and reset. Accordion and Tabs organize content while contained fields keep their own form values.
+
+The boundary is application knowledge. A component may know the rules of its value and interaction; the application decides what that value means in its workflow:
+
+- An IBAN field checks supported national formats and check digits. The application verifies account ownership and initiates payments.
+- An OTP field preserves the entered code and checks its configured format. The application delivers codes, verifies them, and manages expiry and retries.
+- A rating control manages a chosen score and hover preview. The application decides who may rate, what is being rated, and how to save the result.
+
+Applications can declare constraints and supply custom validity errors through the form API. Components expose values and events without fetching business records or starting application workflows.
+
+The value is a maintained HTML, form, and CSS contract, backed by behavior checks. [ADR-0007](docs/adr/0007-component-application-boundary.md) records this scope and its tradeoffs, with Nolan Lawson's [discussion of web components and reuse](https://nolanlawson.com/2026/10/19/do-web-components-have-a-future-if-nobody-is-writing-them/) as a reference.
 
 ## Run the playground
 
@@ -36,6 +52,9 @@ Open **Styling** in the playground, or click an element's name beside a field. E
 | `h6-toggle` | Native pressed button, checkbox-like form contribution, labels, required state, fieldsets, and reset; Zag behavior |
 | `h6-accordion` | Zag disclosure navigation, one/multiple open sections, light-DOM content, and invalid-field revelation |
 | `h6-tabs` | Zag automatic/manual activation, horizontal/vertical and RTL keys, linked panels, and contained form fields |
+| `h6-slider` | Zag pointer/keyboard selection of one bounded number, with native form participation |
+| `h6-range-slider` | Two stable Zag thumbs, ordered boundaries, and explicitly named form entries |
+| `h6-rating` | Clearable whole score, separate hover preview, and an unanswered required state; Zag behavior |
 
 Every control includes a neutral base appearance, with consistent editor typography and centered SVG icons. No external component stylesheet is required. Override inherited `--hp-*` tokens or public parts to customize it.
 
@@ -125,6 +144,7 @@ Firefox behavior remains unverified here. Physical-device OTP autofill, assistiv
 
 ## Project documents
 
+- [Component and application boundary](docs/adr/0007-component-application-boundary.md): the guiding principle, reusable component logic, and application responsibilities.
 - [Project plan](docs/PLAN.md): current scope and delivery order. Select, Combobox, and Date Picker remain planned.
 - [Interaction elements](docs/INTERACTIONS.md): Toggle, Accordion, and Tabs APIs, section markup, events, native form behavior, and validation.
 - [Headless interaction decision](docs/adr/0005-headless-interaction-logic.md): accepted Zag integration for the six interaction elements, build boundaries, and remaining popup work.
