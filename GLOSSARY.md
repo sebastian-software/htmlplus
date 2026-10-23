@@ -16,6 +16,20 @@ Terminology for form controls, their values, and specialized input fields.
 
 **Segmented choice:** A single selection from a small set of visible, mutually exclusive options.
 
+**Switch:** An on/off control representing whether a setting is enabled.
+
+**Toggle:** A button with a persistent pressed or unpressed state, such as a formatting choice or filter.
+
+**Select:** A choice from a supplied set of options, each with a display label and a selection identifier.
+
+**Combobox:** An editable search or entry control combined with an option list. In a selection combobox, query text and a selected identifier are distinct values.
+
+**Range slider:** A control with two thumbs representing the lower and upper boundaries of a bounded numeric interval.
+
+**Rating:** A person's chosen score on a declared scale. An unanswered rating is distinct from a selected score or a hover preview.
+
+**Calendar date:** A day identified by year, month, and day in a calendar, without a time of day or time zone.
+
 **Specialized input field:** A field for a particular kind of information whose entry, formatting, or validation benefits from domain-specific behavior.
 
 **IBAN:** International Bank Account Number, an account identifier with a country-specific structure and check digits.

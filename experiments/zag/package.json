@@ -1,0 +1,17 @@
+{
+  "name": "html6-zag-compatibility-probe",
+  "private": true,
+  "type": "module",
+  "description": "Isolated evidence for Zag behavior inside a form-associated shadow host.",
+  "scripts": {
+    "check": "node check.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@zag-js/combobox": "1.46.0",
+    "@zag-js/vanilla": "1.46.0",
+    "esbuild": "0.25.12"
+  }
+}

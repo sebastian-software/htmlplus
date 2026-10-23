@@ -117,7 +117,8 @@ Firefox behavior remains unverified here. Physical-device OTP autofill, assistiv
 
 ## Project documents
 
-- [Project plan](docs/PLAN.md): current scope and remaining work.
+- [Project plan](docs/PLAN.md): current scope, proposed value contracts, and delivery order. The next candidates are Accordion, Toggle, Tabs, Slider, Range Slider, Rating, Select, Combobox, and Date Picker; these are not implemented exports yet.
+- [Headless interaction assessment](docs/adr/0005-headless-interaction-logic.md): Zag as a proposed internal behavior layer, with a reproducible shadow DOM and native-form compatibility probe.
 - [Living architecture decisions](docs/adr/README.md): current rationale and browser evidence.
 - [Playground design](docs/PLAYGROUND.md): layout and styling intent.
 - [Glossary](GLOSSARY.md): shared field terminology.

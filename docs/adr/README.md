@@ -12,5 +12,6 @@ When a decision changes, edit the same record, update its date and change notes,
 | [0002](0002-css-styling-contract.md) | accepted | Expose styling through platform CSS mechanisms |
 | [0003](0003-specialized-native-inputs.md) | accepted | Separate native text editing from canonical form submission |
 | [0004](0004-composite-value-contracts.md) | accepted | Explicit units, boundary names, and selection identifiers |
+| [0005](0005-headless-interaction-logic.md) | proposed | Use Zag selectively for complex interaction logic behind native custom elements |
 
 Acceptance of a design constraint is distinct from implementation completion. Eight controls, a live playground, and a tested static export are implemented; compatibility limits are documented in the project README.
