@@ -15,7 +15,7 @@ export const server = createServer(async (request, response) => {
       response.writeHead(405, { Allow: 'GET, HEAD' }); response.end(); return;
     }
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
-    const base = siteMode ? '/html6/' : '/';
+    const base = siteMode ? '/htmlplus/' : '/';
     if (!pathname.startsWith(base)) { response.writeHead(404); response.end('Not found'); return; }
     let relative = pathname === base ? siteMode ? 'index.html' : 'demo/index.html' : pathname.slice(base.length);
     if (!siteMode && relative === 'styling.html') relative = 'demo/styling.html';
@@ -30,5 +30,5 @@ export const server = createServer(async (request, response) => {
     response.writeHead(error instanceof URIError ? 400 : 404); response.end('Not found');
   }
 });
-server.listen(port, '127.0.0.1', () => console.log(`html6 playground: http://127.0.0.1:${port}`));
+server.listen(port, '127.0.0.1', () => console.log(`html+ playground: http://127.0.0.1:${port}`));
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => server.close(() => process.exit(0)));

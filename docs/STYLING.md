@@ -1,4 +1,4 @@
-# Styling html6 controls
+# Styling html+ controls
 
 The playground's **Styling** link opens a recipe for every element. Run `npm run dev`, then open [the local styling gallery](http://localhost:4173/styling.html). Each recipe has two live controls, their actual form entries, public part names, and copyable HTML and CSS. The variation uses exactly the CSS displayed in its source panel.
 
@@ -19,7 +19,7 @@ The typography and geometry take visual cues from shadcn/ui's [Input](https://ui
 To connect a semantic application theme, optionally copy [demo/base.css](../demo/base.css), then apply `h6-base` to a wrapper or individual control. This file maps tokens; it does not supply structural component styles.
 
 ```html
-<link rel="stylesheet" href="./html6-base.css">
+<link rel="stylesheet" href="./htmlplus-base.css">
 <form class="h6-base">
   <!-- Labeled controls go here. -->
 </form>
@@ -27,7 +27,7 @@ To connect a semantic application theme, optionally copy [demo/base.css](../demo
 
 The example token adapter maps application roles to the component contract:
 
-| Application token | html6 token | Purpose |
+| Application token | html+ token | Purpose |
 | --- | --- | --- |
 | `--primary` | `--h6-accent` | Checked switches and selected choices |
 | `--background` / `--foreground` | `--h6-surface` / `--h6-text` | Editor surface and text |
@@ -83,4 +83,4 @@ Stateful styles should preserve visible keyboard focus, disabled states, invalid
 
 ## Verification
 
-The browser suite checks all eight elements without any document stylesheet, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct public overrides. It also visits all eight recipes, compares base and variation form entries, checks deep links and matching source, exercises selection with the keyboard, and verifies copy success and failure paths. The clipboard tests stub the browser API; actual clipboard permission remains a browser decision. Desktop and mobile screenshots cover the neutral theme and gallery. The Pages check loads the gallery and base stylesheet under `/html6/`.
+The browser suite checks all eight elements without any document stylesheet, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct public overrides. It also visits all eight recipes, compares base and variation form entries, checks deep links and matching source, exercises selection with the keyboard, and verifies copy success and failure paths. The clipboard tests stub the browser API; actual clipboard permission remains a browser decision. Desktop and mobile screenshots cover the neutral theme and gallery. The Pages check loads the gallery and base stylesheet under `/htmlplus/`.

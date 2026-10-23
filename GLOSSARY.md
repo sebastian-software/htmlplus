@@ -1,4 +1,4 @@
-# html6
+# html+
 
 Terminology for form controls, their values, and specialized input fields.
 

@@ -1,8 +1,8 @@
-# html6
+# html+
 
 Form controls that extend HTML's vocabulary and participate in ordinary web forms.
 
-**Status:** working prototype. Eight controls, a live FormData playground, and a static Pages export are implemented. The project name and `h6-` prefix are working names; there is no published package.
+**Status:** working prototype. Eight controls, a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
 
 ## Run the playground
 
@@ -92,9 +92,11 @@ npm run build:demo
 node scripts/serve.mjs --site --port 48165
 ```
 
-Open `http://127.0.0.1:48165/html6/`. The `site/` export contains only the demo HTML, CSS, favicon, and compiled browser modules. Relative URLs support GitHub repository subpaths and custom domains. Generated files are ignored in Git; source stays authoritative.
+Open `http://127.0.0.1:48165/htmlplus/`. The `site/` export contains only the demo HTML, CSS, favicon, and compiled browser modules. Relative URLs support GitHub repository subpaths and custom domains. Generated files are ignored in Git; source stays authoritative.
 
-The [Pages workflow](.github/workflows/pages.yml) runs strict compilation, unit tests, and Chromium, Firefox, and WebKit browser checks on Linux, including the actual exported artifact under `/html6/`. Successful pushes to `main` and manual runs upload that artifact and deploy to the `github-pages` environment. Pull requests run verification without deploying. Pages must be enabled with **GitHub Actions** as the build source in repository settings. The demo runs entirely in the browser; it has no application backend or analytics.
+The [Pages workflow](.github/workflows/pages.yml) runs strict compilation, unit tests, and Chromium, Firefox, and WebKit browser checks on Linux, including the actual exported artifact under `/htmlplus/`. Successful pushes to `main` and manual runs upload that artifact and deploy to the `github-pages` environment. Pull requests run verification without deploying. Pages must be enabled with **GitHub Actions** as the build source in repository settings. The demo runs entirely in the browser; it has no application backend or analytics.
+
+The intended custom-domain address is `https://htmlplus.dev/`. The local `/htmlplus/` route tests repository-subpath compatibility; it is not a required prefix on the custom domain. Domain DNS and GitHub Pages settings are separate deployment configuration and have not been changed by the project rename.
 
 ## Verify
 
@@ -120,6 +122,7 @@ Firefox behavior remains unverified here. Physical-device OTP autofill, assistiv
 - [Project plan](docs/PLAN.md): current scope, proposed value contracts, and delivery order. The next candidates are Accordion, Toggle, Tabs, Slider, Range Slider, Rating, Select, Combobox, and Date Picker; these are not implemented exports yet.
 - [Headless interaction assessment](docs/adr/0005-headless-interaction-logic.md): Zag as a proposed internal behavior layer, with a reproducible shadow DOM and native-form compatibility probe.
 - [Living architecture decisions](docs/adr/README.md): current rationale and browser evidence.
+- [Project identity](docs/adr/0006-project-identity.md): the html+ name, htmlplus.dev domain, and technical naming boundary.
 - [Playground design](docs/PLAYGROUND.md): layout and styling intent.
 - [Glossary](GLOSSARY.md): shared field terminology.
 - [Project instructions](AGENTS.md): US English, Conventional Commits, and living ADRs.

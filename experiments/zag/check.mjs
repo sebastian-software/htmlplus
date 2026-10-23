@@ -68,5 +68,5 @@ try {
       console.log(`${name}: shadow-root lookup, filtered keyboard selection, canonical FormData, required validity, Escape, outside click, two instances, fieldset disable/reset, reconnect: PASS`);
     } finally { await browser.close(); }
   }
-  console.log(JSON.stringify({ bundleBytes: bundle.length, gzipBytes: gzipSync(bundle).length, zagVersion: '1.46.0', scope: 'Isolated combobox + vanilla adapter + fixture; not a complete html6 build' }));
+  console.log(JSON.stringify({ bundleBytes: bundle.length, gzipBytes: gzipSync(bundle).length, zagVersion: '1.46.0', scope: 'Isolated combobox + vanilla adapter + fixture; not a complete html+ build' }));
 } finally { server.close(); }

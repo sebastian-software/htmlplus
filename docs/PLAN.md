@@ -6,7 +6,7 @@ Updated: 2026-10-23. Status: eight implemented controls, nine expansion candidat
 
 Help developers use richer fields in ordinary HTML forms with little application glue. Controls should work with native form submission and `FormData`, expose clear validity and reset behavior, and fit different visual systems through CSS. Add companion interaction components where they help compose these forms, such as tabs and accordions; these do not become submitted fields merely by belonging to the library.
 
-The project language is US English. Architecture rationale belongs in the [living ADRs](adr/README.md); terminology belongs in the [glossary](../GLOSSARY.md).
+The project is named **html+**, with **htmlplus.dev** as its domain and `htmlplus` as its technical slug. [ADR-0006](adr/0006-project-identity.md) records the identity and the still-provisional element prefix. The project language is US English. Architecture rationale belongs in the [living ADRs](adr/README.md); terminology belongs in the [glossary](../GLOSSARY.md).
 
 ## Component catalog
 
@@ -122,7 +122,7 @@ Provide a restrained default appearance, inheritable CSS variables, and document
 
 ## Open decisions
 
-- Final element prefix, package name, and registration strategy.
+- Final element prefix, public package publication/namespacing, and registration strategy. The private package uses `htmlplus`; registry availability and publication are not implied.
 - Reassess the initial tag API: `.value` and `.defaultValue` arrays, with JSON declarative defaults; existing-tag editing remains pending.
 - Verify the separate canonical submission mechanism on additional devices and password managers.
 - No-JavaScript fallback and server-side rendering integration for all eight controls.

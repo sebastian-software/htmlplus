@@ -1,5 +1,5 @@
 {
-  "name": "html6-zag-compatibility-probe",
+  "name": "htmlplus-zag-compatibility-probe",
   "private": true,
   "type": "module",
   "description": "Isolated evidence for Zag behavior inside a form-associated shadow host.",

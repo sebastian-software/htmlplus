@@ -1,6 +1,6 @@
 # Zag compatibility probe
 
-This private experiment checks whether Zag's official vanilla adapter can drive a form-associated custom element inside a shadow root. It is decision evidence for [ADR-0005](../../docs/adr/0005-headless-interaction-logic.md), not a production element, supported API, or replacement for html6's test suite. Its dependencies and generated bundle are separate from the library and static demo.
+This private experiment checks whether Zag's official vanilla adapter can drive a form-associated custom element inside a shadow root. It is decision evidence for [ADR-0005](../../docs/adr/0005-headless-interaction-logic.md), not a production element, supported API, or replacement for html+'s test suite. Its dependencies and generated bundle are separate from the library and static demo.
 
 ## Run
 
@@ -25,6 +25,6 @@ On 2026-10-23, both engines passed with `@zag-js/combobox` and `@zag-js/vanilla`
 
 ## What it does not establish
 
-The fixture deliberately exposes its machine to inspect the experiment. It does not define html6's public property/event/default contract or prove user-event semantics, external labels, native undo/IME, actual history restoration, browser-driven autofill, screen-reader behavior, touch behavior, or an unclipped production popup. In particular, it does not resolve whether editing a selected label should clear the previous identifier.
+The fixture deliberately exposes its machine to inspect the experiment. It does not define html+'s public property/event/default contract or prove user-event semantics, external labels, native undo/IME, actual history restoration, browser-driven autofill, screen-reader behavior, touch behavior, or an unclipped production popup. In particular, it does not resolve whether editing a selected label should clear the previous identifier.
 
 A different Zag machine may depend on native hidden controls for behavior. This result does not establish that Select, Slider, Rating, or Date Picker can use the same binding without further checks. The eight production controls and their runtime dependency graph are unchanged.

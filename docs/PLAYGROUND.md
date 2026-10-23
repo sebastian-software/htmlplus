@@ -10,6 +10,8 @@ The eight fields are grouped into identifiers and verification, values with more
 
 ## Visual direction
 
+Use the **html+** wordmark and a simple plus favicon. The home link's accessible name spells out "html plus". Show **htmlplus.dev** as the project domain. [ADR-0006](adr/0006-project-identity.md) owns the project identity.
+
 Base uses a neutral canvas (`#fafafa`), white field surface (`#ffffff`), dark text and primary actions (`#171717`), gray borders (`#d4d4d4`), and a charcoal inspector (`#171717`). System sans is the interface face; system monospace identifies code and submitted values. Component fallbacks are also neutral. No remote fonts or image assets are required.
 
 The inspector is the main visual contrast. Surrounding controls stay quiet, with clear labels, normal sentence case, limited motion, and visible focus. The second Utility theme uses blue, tighter corners, and different control parts to demonstrate the public styling surface with unchanged markup and form behavior. This directly tests the library's styling goal.

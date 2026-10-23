@@ -16,6 +16,6 @@ export default defineConfig({
   ],
   webServer: [
     { command: 'node scripts/serve.mjs --port 48164', url: 'http://127.0.0.1:48164', reuseExistingServer: false },
-    { command: 'node scripts/serve.mjs --site --port 48165', url: 'http://127.0.0.1:48165/html6/', reuseExistingServer: false },
+    { command: 'node scripts/serve.mjs --site --port 48165', url: 'http://127.0.0.1:48165/htmlplus/', reuseExistingServer: false },
   ],
 });

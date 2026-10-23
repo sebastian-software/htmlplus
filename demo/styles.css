@@ -47,7 +47,6 @@
   .wordmark { position:relative; display:inline-flex; align-items:baseline; font-size:31px; font-weight:750; line-height:1; letter-spacing:-2px; }
   .wordmark:hover { text-decoration:none; }
   .wordmark span { color:var(--accent); }
-  .wordmark i { position:absolute; right:-8px; top:0; width:5px; height:5px; border-radius:50%; background:var(--accent); }
   .masthead-label { border-left:1px solid var(--border); padding-left:25px; color:var(--muted-foreground); font-size:13px; }
   .theme-picker { display:flex; align-items:center; gap:10px; font-size:12px; color:var(--muted-foreground); }
   .theme-picker select { border:1px solid var(--border); border-radius:6px; background:var(--surface); color:var(--ink); padding:6px 23px 6px 9px; font-size:12px; }
