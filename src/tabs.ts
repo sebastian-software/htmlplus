@@ -4,7 +4,7 @@ import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles } from "./styles.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
-import { readSections, sectionsChanged, containsFocus, reconcileChildren } from "./sections.js";
+import { readSections, sectionsChanged, containsFocus, reconcileChildren, inactiveSectionStyles } from "./sections.js";
 import type { Section } from "./sections.js";
 
 const template = document.createElement("template");
@@ -20,7 +20,7 @@ template.innerHTML = `<style>
   [part=panels], [part=panel] { min-width: 0; }
   [part=root][data-orientation=vertical] { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); align-items: start; }
   [data-orientation=vertical][part=list] { flex-direction: column; align-items: stretch; width: 100%; }
-  [hidden] { display: none !important; }
+  ${inactiveSectionStyles}
   ::slotted(section) { margin: 0; min-width: 0; }
   @media (forced-colors: active) { [part~=tab][data-selected] { border-color: Highlight; } }
 </style><div part="root"><div part="list"></div><div part="panels"></div></div><slot></slot>`;
@@ -59,6 +59,8 @@ export class H6Tabs extends HTMLElement {
       // Preserve the first invalid panel through the browser's whole validation task.
       setTimeout(() => { this.#revealingInvalid = false; }, 0);
       this.value = entry.section.value;
+      // Flush the newly revealed inert subtree before native validation moves focus.
+      entry.panel.getBoundingClientRect();
     }, true);
   }
   connectedCallback(): void {
@@ -129,6 +131,7 @@ export class H6Tabs extends HTMLElement {
     for (const { section, trigger, panel } of this.#entries) {
       this.#bindings.apply(trigger, api.getTriggerProps({ value: section.value, disabled: this.disabled || section.disabled }));
       trigger.setAttribute("part", section.value === this.#value ? "tab selected-tab" : "tab");
+      panel.inert = section.value !== this.#value;
       this.#bindings.apply(panel, api.getContentProps({ value: section.value }));
     }
   }

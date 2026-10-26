@@ -6,6 +6,13 @@ export interface Section {
   slot: string;
 }
 
+// display:none reconstructs native editors and drops Firefox's undo history.
+export const inactiveSectionStyles = `[hidden] {
+  display: block !important; block-size: 0 !important; min-block-size: 0 !important;
+  padding-block: 0 !important; margin-block: 0 !important; border-block-width: 0 !important;
+  overflow: clip !important; visibility: hidden !important;
+}`;
+
 /** Light-DOM content stays in its original form; only its slot assignment is managed. */
 export function readSections(host: HTMLElement, id: string): Section[] {
   const values = new Set<string>();

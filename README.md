@@ -150,7 +150,7 @@ On this macOS host, Firefox exits before opening a page with `Could not find pro
 npm test -- --project=chromium --project=webkit
 ```
 
-Firefox behavior remains unverified here. Physical-device OTP autofill, assistive-technology combinations, and exact minimum browser versions are also unverified. A Playwright WebKit pass is not a claim of physical iPhone certification.
+Direct Firefox automation on this macOS host remains unavailable; the Linux container and CI include Firefox. Physical-device OTP autofill, assistive-technology combinations, and exact minimum browser versions are also unverified. A Playwright WebKit pass is not a claim of physical iPhone certification.
 
 ## Project documents
 

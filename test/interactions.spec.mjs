@@ -175,6 +175,12 @@ test('nested closed sections reveal a form-associated field and preserve native 
   // Native undo may group the space and the following word into separate edits.
   for (let edit = 0; edit < 3 && await editor.inputValue() !== 'Ada Lovelace'; edit++) await editor.press('ControlOrMeta+Z');
   await expect(editor).toHaveValue('Ada Lovelace');
+  const note = page.getByRole('textbox', { name: 'Delivery note', exact: true });
+  await note.focus(); await note.press('End'); await note.pressSequentially(' twice');
+  const delivery = page.locator('#delivery-accordion').getByRole('button', { name: 'Delivery', exact: true });
+  await delivery.click(); await delivery.click(); await note.focus();
+  for (let edit = 0; edit < 6 && await note.inputValue() !== 'Ring the bell'; edit++) await note.press('ControlOrMeta+Z');
+  await expect(note).toHaveValue('Ring the bell');
 });
 
 test('interaction base styles and icon metrics work without an application stylesheet', async ({ page }) => {

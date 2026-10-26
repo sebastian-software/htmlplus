@@ -35,7 +35,7 @@ Keep related popup controls and ARIA references within the same shadow root. Sel
 
 Adoption is accepted for these implemented machine integrations. Their fields and content do not require hidden form proxies. Slider and Rating hidden-control props are deliberately omitted: their installed 1.46.0 effects guard missing inputs, while ElementInternals handles form state. A narrow DOM-binding owner applies and removes the official adapter's props/listeners; it does not implement a machine interpreter. Controlled host state keeps programmatic assignments separate from user events. Accordion/Tabs emit `valuechange` for view changes, while Toggle emits the form field's `input`/`change` pair.
 
-Keep section content in its original light DOM and form. Generated triggers and content wrappers share one shadow root and explicit ID relationships. Revealing a section does not clone, rewrite, disable, or reset its native editors. Invalid-event handling reveals the first invalid section, including nested custom fields; other hidden invalid fields suppress only their own native validation UI for that validation task. This preserves native submission blocking and avoids hidden focus targets. [The interaction guide](../INTERACTIONS.md) defines the public markup and values.
+Keep section content in its original light DOM and form. Generated triggers and content wrappers share one shadow root and explicit ID relationships. Revealing a section does not clone, rewrite, disable, or reset its native editors. Inactive wrappers preserve their layout boxes with zero-size clipping and inert semantics, protecting Firefox undo under ADR-0003. Invalid-event handling reveals the first invalid section, including nested custom fields; other hidden invalid fields suppress only their own native validation UI for that validation task. This preserves native submission blocking and avoids hidden focus targets. [The interaction guide](../INTERACTIONS.md) defines the public markup and values.
 
 TypeScript emits declarations, and esbuild bundles split browser modules with explicit per-element entry points. The dev command watches types and bundles; the static export includes all shared JS chunks. Applications can import the built modules without an import map or framework adapter. The current browser checks exercise that exact exported artifact under a repository subpath.
 
@@ -124,3 +124,5 @@ Revisit on an adapter/machine contract change, a supported-browser failure, edit
 - 2026-10-24: Accepted Date Picker under ADR-0009, with strict calendar dates, a native editor outside machine input synchronization, and scoped top-layer rendering.
 
 - 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.
+
+- 2026-10-26: Retained inactive editor layout boxes and added inert semantics so native undo survives Tabs/Accordion visibility changes in Firefox.

@@ -162,3 +162,5 @@ Date Range Picker adds the eighteenth element and sixteenth form-associated cont
 ## Public demo checkpoint, 2026-10-26
 
 The source repository is [sebastian-software/htmlplus](https://github.com/sebastian-software/htmlplus), with `main` as the publication branch. GitHub Pages uses the Actions workflow to build and verify the static artifact before deployment. CI uses the official Playwright browser image aligned with the lockfile, keeping all three browsers and Linux dependencies together. The [form playground](https://sebastian-software.github.io/htmlplus/) and [styling gallery](https://sebastian-software.github.io/htmlplus/styling.html) share that artifact. The `htmlplus.dev` custom domain remains separate DNS/Pages configuration.
+
+The Linux workflow runs 219 browser checks across Chromium, Firefox, and WebKit, plus eight unit tests. A Firefox-specific undo regression in inactive sections is covered by the same native-editor test for both Tabs and Accordion. Their wrappers retain editor layout boxes while hidden, clipped, and inert; ADR-0003 records the tradeoff. Direct macOS Firefox launch remains unavailable.

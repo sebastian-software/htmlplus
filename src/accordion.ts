@@ -5,7 +5,7 @@ import { hostStyles } from "./styles.js";
 import { createIcon } from "./icons.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
-import { readSections, sectionsChanged, containsFocus, reconcileChildren } from "./sections.js";
+import { readSections, sectionsChanged, containsFocus, reconcileChildren, inactiveSectionStyles } from "./sections.js";
 import type { Section } from "./sections.js";
 
 const template = document.createElement("template");
@@ -22,7 +22,7 @@ template.innerHTML = `<style>
   [part=indicator] { width: 1rem; height: 1rem; flex: none; transition: transform .15s; }
   [part=indicator][data-state=open] { transform: rotate(180deg); }
   [part=content] { padding-bottom: 1rem; }
-  [hidden] { display: none !important; }
+  ${inactiveSectionStyles}
   ::slotted(section) { margin: 0; min-width: 0; }
   @media (prefers-reduced-motion: reduce) { [part=indicator] { transition: none; } }
 </style><div part="root"></div><slot></slot>`;
@@ -57,6 +57,8 @@ export class H6Accordion extends HTMLElement {
       // Native validation may run microtask checkpoints between invalid events.
       setTimeout(() => { this.#revealingInvalid = false; }, 0);
       if (!this.#value.includes(entry.section.value)) this.value = this.multiple ? [...this.#value, entry.section.value] : [entry.section.value];
+      // Flush the newly revealed inert subtree before native validation moves focus.
+      entry.content.getBoundingClientRect();
     }, true);
   }
   connectedCallback(): void {
@@ -140,6 +142,7 @@ export class H6Accordion extends HTMLElement {
       this.#bindings.apply(entry.item, api.getItemProps(props));
       this.#bindings.apply(entry.trigger, api.getItemTriggerProps(props));
       this.#bindings.apply(entry.indicator, api.getItemIndicatorProps(props));
+      entry.content.inert = !this.#value.includes(entry.section.value);
       this.#bindings.apply(entry.content, api.getItemContentProps(props));
     }
   }
