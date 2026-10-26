@@ -6,6 +6,8 @@ html+ provides framework-independent form controls and core UI primitives. Compo
 
 **Status:** working prototype. Eighteen elements (sixteen form controls, Accordion, and Tabs), a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
 
+**Demo:** [Form playground](https://sebastian-software.github.io/htmlplus/) · [Styling recipes](https://sebastian-software.github.io/htmlplus/styling.html) · [Deployment checks](https://github.com/sebastian-software/htmlplus/actions/workflows/pages.yml)
+
 ## What belongs in html+
 
 Use native HTML when it meets the interaction, form, and styling requirements. html+ fills gaps with reusable controls that expose HTML attributes, properties, DOM events, and CSS styling hooks. Form controls participate through `name`, `FormData`, validation, disabled state, and reset. Accordion and Tabs organize content while contained fields keep their own form values.
@@ -125,7 +127,7 @@ node scripts/serve.mjs --site --port 48165
 
 Open `http://127.0.0.1:48165/htmlplus/`. The `site/` export contains only the demo HTML, CSS, favicon, and compiled browser modules. Relative URLs support GitHub repository subpaths and custom domains. Generated files are ignored in Git; source stays authoritative.
 
-The [Pages workflow](.github/workflows/pages.yml) runs strict compilation, unit tests, and Chromium, Firefox, and WebKit browser checks on Linux, including the actual exported artifact under `/htmlplus/`. Successful pushes to `main` and manual runs upload that artifact and deploy to the `github-pages` environment. Pull requests run verification without deploying. Pages must be enabled with **GitHub Actions** as the build source in repository settings. The demo runs entirely in the browser; it has no application backend or analytics.
+The [Pages workflow](.github/workflows/pages.yml) runs strict compilation, unit tests, and Chromium, Firefox, and WebKit browser checks on Linux, including the actual exported artifact under `/htmlplus/`. Successful pushes to `main` and manual runs upload that artifact and deploy to the `github-pages` environment. Pull requests run verification without deploying. The public [sebastian-software/htmlplus repository](https://github.com/sebastian-software/htmlplus) uses **GitHub Actions** as its Pages publishing source. Pushes to `main` publish the verified demo at [sebastian-software.github.io/htmlplus](https://sebastian-software.github.io/htmlplus/). The demo runs entirely in the browser; it has no application backend or analytics.
 
 The intended custom-domain address is `https://htmlplus.dev/`. The local `/htmlplus/` route tests repository-subpath compatibility; it is not a required prefix on the custom domain. Domain DNS and GitHub Pages settings are separate deployment configuration and have not been changed by the project rename.
 

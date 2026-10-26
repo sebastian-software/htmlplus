@@ -1,6 +1,6 @@
 # Project plan
 
-Updated: 2026-10-26. Status: eighteen implemented elements and a static Pages workflow. The initial requested catalog and Date Range Picker expansion are complete. Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker use Zag; their integrated Chromium/WebKit checks pass. Firefox cannot launch on this macOS host; physical-device autofill remains unverified.
+Updated: 2026-10-26. Status: eighteen implemented elements, a public GitHub repository, and an Actions-based Pages deployment. The initial requested catalog and Date Range Picker expansion are complete. Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker use Zag; their integrated Chromium/WebKit checks pass. Firefox cannot launch on this macOS host; physical-device autofill remains unverified.
 
 ## Intended outcome
 
@@ -158,3 +158,7 @@ Date Picker completed the initial expansion with native text editing, explicit n
 ## Date Range Picker checkpoint, 2026-10-26
 
 Date Range Picker adds the eighteenth element and sixteenth form-associated control. Two native editors share Zag's existing range calendar; no new dependency is needed. A partial start is submitted as current state while native validation requires completion; hover remains a preview. Defaults add `period.start` and `period.end`, bringing the playground to twenty-three entries. Base/Outlined range recipes, inherited Light/Dark themes, and the shadcn adapter exercise the public surface. Both date fields now share calendar views and base styles. [ADR-0010](adr/0010-calendar-date-ranges.md) and the [range guide](DATE-RANGE-PICKER.md) own the new contract.
+
+## Public demo checkpoint, 2026-10-26
+
+The source repository is [sebastian-software/htmlplus](https://github.com/sebastian-software/htmlplus), with `main` as the publication branch. GitHub Pages uses the existing Actions workflow to build and verify the static artifact before deployment. The [form playground](https://sebastian-software.github.io/htmlplus/) and [styling gallery](https://sebastian-software.github.io/htmlplus/styling.html) share that artifact. The `htmlplus.dev` custom domain remains separate DNS/Pages configuration.
