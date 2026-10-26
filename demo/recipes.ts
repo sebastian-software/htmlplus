@@ -14,6 +14,27 @@ export interface StylingRecipe {
 /** Trusted, static authoring examples. This CSS is both shown and used by the previews. */
 export const recipes: readonly StylingRecipe[] = [
   {
+    element: "h6-date-range-picker", title: "Date Range Picker", label: "Travel period", variant: "Outlined range", className: "date-range-outlined",
+    description: "Two native editors and one Zag calendar submit explicitly named date boundaries. Preview a range without changing its form values.",
+    markup: `<h6-date-range-picker name="period" value='["2026-10-28","2026-11-03"]' min="2026-10-01" max="2027-12-31" locale="en-US" required></h6-date-range-picker>`,
+    parts: ["root", "control", "input", "start-field", "end-field", "start-input", "end-input", "start-label", "end-label", "trigger", "clear-button", "positioner", "content", "navigation", "prev-button", "view-button", "next-button", "view", "day-view", "month-view", "year-view", "grid", "weekday", "day", "selected-day", "today", "month", "year", "range-start", "range-end", "in-range", "preview-day"],
+    css: `h6-date-range-picker.date-range-outlined::part(control) {
+  background: var(--hp-muted, #f5f5f5);
+  box-shadow: none;
+}
+h6-date-range-picker.date-range-outlined::part(content) {
+  border-width: 2px;
+}
+h6-date-range-picker.date-range-outlined::part(in-range) {
+  border-radius: .375rem;
+}
+h6-date-range-picker.date-range-outlined::part(range-start),
+h6-date-range-picker.date-range-outlined::part(range-end) {
+  outline: 1px solid var(--hp-primary, #171717);
+  outline-offset: 2px;
+}`,
+  },
+  {
     element: "h6-date-picker", title: "Date Picker", label: "Delivery date", variant: "Framed calendar", className: "date-framed",
     description: "A native text editor and Zag calendar share one date-only form value. Localized text stays separate from YYYY-MM-DD submission.",
     markup: '<h6-date-picker name="delivery_date" value="2026-10-28" min="2026-10-01" max="2027-12-31" locale="en-US" required></h6-date-picker>',

@@ -36,6 +36,8 @@ Terminology for form controls, their values, and specialized input fields.
 
 **Calendar date:** A day identified by year, month, and day in a calendar, without a time of day or time zone.
 
+**Date range:** A bounded span of calendar dates with a start date and an end date. Both boundaries are inclusive; a span may start and end on the same day.
+
 **Specialized input field:** A field for a particular kind of information whose entry, formatting, or validation benefits from domain-specific behavior.
 
 **IBAN:** International Bank Account Number, an account identifier with a country-specific structure and check digits.

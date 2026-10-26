@@ -3,7 +3,7 @@
 - Status: accepted
 - Scope: initial prototype
 - Created: 2026-10-22
-- Updated: 2026-10-24
+- Updated: 2026-10-26
 - Lifecycle: living
 
 ## Context and decision
@@ -24,12 +24,14 @@ This replaces the old ad hoc `--h6-*` CSS roles before release rather than prese
 
 - Theme common colors and rounding without `::part`. Keep deliberate parts and custom states for detailed component variants; do not expose arbitrary shadow descendants as API.
 - Public defaults remain consumption fallbacks, not declarations that shadow inherited tokens. The adapter's internal properties are not public API. Its current-element selector must grow with the catalog.
-- Light/Dark appearances with independently selected palettes in both demo pages use tokens for the common theme. All seventeen elements retain an individual part-based recipe with the exact preview CSS available for copying.
+- Light/Dark appearances with independently selected palettes in both demo pages use tokens for the common theme. All eighteen elements retain an individual part-based recipe with the exact preview CSS available for copying.
 - Focus, invalid, disabled, and selected states retain visible behavior. Browser checks cover nested and host overrides, semantic role separation, adapter precedence and missing values, radius derivation, light/dark contrast, forced colors, and FormData preservation. Firefox remains unverified on this host; complete that engine check before a release support claim.
 - `selected-option` and `selected-tab` parts follow live state; Toggle exposes pressed and Switch exposes checked custom states. Native light-DOM fields inside companion elements use ordinary application CSS.
 - Revisit when a reasonable design requires private DOM access or a new element needs an additional semantic role. Keep exact values and the token inventory in the styling guide and stylesheet sources.
 
 Select and Combobox consume `--hp-popover` / `--hp-popover-foreground` for popup surfaces and text, with accent roles for highlighted options. The shadow-local top-layer approach in [ADR-0008](0008-selection-popups.md) preserves inherited tokens and public parts.
+
+Date Range Picker uses the same popup tokens, primary boundary colors, accent span colors, and a separate preview part. Its Base/Outlined range examples extend the adapter host selector without new theme roles.
 
 ## References
 
@@ -61,3 +63,5 @@ Select and Combobox consume `--hp-popover` / `--hp-popover-foreground` for popup
 - 2026-10-24: Added Select/Combobox recipes, host-local shadcn mappings, and real consumers of popover surface/text roles, retaining tokens in the native top layer.
 
 - 2026-10-24: Added Date Picker parts and Base/Framed calendar recipes, including selected-day/today states and inherited popup tokens.
+
+- 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.

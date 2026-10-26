@@ -2,22 +2,22 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-10-24
+- Updated: 2026-10-26
 - Lifecycle: living
-- Scope: Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, and Date Picker
-- Implementation: nine Zag-backed elements, split browser modules, live examples, and seventeen styling recipes
+- Scope: Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker
+- Implementation: ten Zag-backed elements, split browser modules, live examples, and eighteen styling recipes
 
 ## Context
 
-The requested expansion adds Accordion, Toggle, Tabs, Slider, Range Slider, Rating, Select, Combobox, and Date Picker. Popup selection, multi-thumb interaction, and calendar navigation involve substantial keyboard, focus, dismissal, and accessibility behavior. Reimplementing each pattern would increase the behavior html+ must maintain.
+The initial requested expansion added Accordion, Toggle, Tabs, Slider, Range Slider, Rating, Select, Combobox, and Date Picker; Date Range Picker extends the calendar slice. Popup selection, multi-thumb interaction, and calendar navigation involve substantial keyboard, focus, dismissal, and accessibility behavior. Reimplementing each pattern would increase the behavior html+ must maintain.
 
 The existing contract remains ordinary HTML forms, native custom elements, shadow DOM, and platform CSS hooks. [ADR-0001](0001-native-form-contract.md) requires one submission owner, while [ADR-0003](0003-specialized-native-inputs.md) protects native editing. A headless library must fit those boundaries rather than dictate a framework, hidden form proxies, or application-level value synchronization.
 
 ## Decision
 
-Use Zag 1.46.0 for Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, and Date Picker through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, generated IDs, and callback names stay implementation details.
+Use Zag 1.46.0 for Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, generated IDs, and callback names stay implementation details.
 
-Adopt per component after checking its actual DOM assumptions. The initial slice implemented Toggle, Accordion, and Tabs; the numeric slice adds Slider, Range Slider, and Rating. Toggle retains a native button; Accordion/Tabs generate native button triggers in shadow DOM and project caller-owned light-DOM sections. Native details/summary would be a smaller disclosure baseline but would not exercise the requested common behavior foundation and deliberate shadow styling surface. Native range remains a smaller single-thumb alternative; the explicit Zag direction shares the slider machine across one and two thumbs. ADR-0008 records the Select/Combobox slice; ADR-0009 records the Date Picker slice and its native-input boundary. Do not migrate the earlier eight controls simply to standardize on one engine.
+Adopt per component after checking its actual DOM assumptions. The initial slice implemented Toggle, Accordion, and Tabs; the numeric slice adds Slider, Range Slider, and Rating. Toggle retains a native button; Accordion/Tabs generate native button triggers in shadow DOM and project caller-owned light-DOM sections. Native details/summary would be a smaller disclosure baseline but would not exercise the requested common behavior foundation and deliberate shadow styling surface. Native range remains a smaller single-thumb alternative; the explicit Zag direction shares the slider machine across one and two thumbs. ADR-0008 records the Select/Combobox slice; ADR-0010 adds range mode using the same dependency; ADR-0009 records the Date Picker slice and its native-input boundary. Do not migrate the earlier eight controls simply to standardize on one engine.
 
 Responsibilities are divided as follows:
 
@@ -45,7 +45,7 @@ The initial Toggle/Accordion/Tabs integration passed sixty-six browser checks ac
 
 ## Earlier evidence: isolated combobox, 2026-10-23
 
-Official sources provide all nine requested interaction patterns. Range Slider is the multi-thumb configuration of `@zag-js/slider`; Rating uses `@zag-js/rating-group`. The vanilla package exports `VanillaMachine`, `normalizeProps`, and `spreadProps`, so no React or other component runtime is necessary. The date-picker uses `@internationalized/date`; using that date model does not require adopting React Aria's component layer.
+Official sources provide all nine initially requested interaction patterns, with date ranges available in the date-picker machine. Range Slider is the multi-thumb configuration of `@zag-js/slider`; Rating uses `@zag-js/rating-group`. The vanilla package exports `VanillaMachine`, `normalizeProps`, and `spreadProps`, so no React or other component runtime is necessary. The date-picker uses `@internationalized/date`; using that date model does not require adopting React Aria's component layer.
 
 The [isolated probe](../../experiments/zag/README.md) pins the combobox and vanilla packages to 1.46.0 and bundles them separately from html+. It runs real browser interactions against two form-associated custom elements with their own shadow roots. Chromium and WebKit pass:
 
@@ -85,6 +85,10 @@ Select and Combobox complete the next accepted slice, with host-owned forms and 
 
 Date Picker completes the requested catalog using Zag calendar views and the shared top-layer popup strategy. A host-owned native editor remains outside Zag's input lookup so selected-value effects and blur correction cannot rewrite raw drafts. Missing-editor actions are guarded and final focus returns to the calendar trigger. ADR-0009 records the date model, locale policy, and evidence.
 
+## Integrated Date Range Picker, 2026-10-26
+
+Date Range Picker uses the same date machine in range mode, with two host-owned editors, explicit boundary names, and visible partial selection. Both date fields share calendar views and neutral styles. Silent editor/reset changes also synchronize the machine's active range boundary through its installed INPUT.FOCUS transition; otherwise a cleared partial range can incorrectly resume at the end. Hovered days have provisional styling, while grid aria-selected reflects committed dates only. ADR-0010 records the range value and completion decisions.
+
 ## Review triggers
 
 Inspect each additional machine's form assumptions before using it. Popup placement, editable query handling, and date parsing remain gates for their respective components; this decision does not claim those are solved by the current implemented machines. Keep delivery tasks and candidate value contracts in the [project plan](../PLAN.md).
@@ -118,3 +122,5 @@ Revisit on an adapter/machine contract change, a supported-browser failure, edit
 - 2026-10-24: Accepted the integrated Select/Combobox slice under ADR-0008: guarded missing hidden-select effects, native top-layer popups, and stable native query editing.
 
 - 2026-10-24: Accepted Date Picker under ADR-0009, with strict calendar dates, a native editor outside machine input synchronization, and scoped top-layer rendering.
+
+- 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.

@@ -2,9 +2,9 @@
 
 - Status: accepted
 - Created: 2026-10-22
-- Updated: 2026-10-24
+- Updated: 2026-10-26
 - Lifecycle: living
-- Implementation: fifteen form controls, two companion elements, and a live playground
+- Implementation: sixteen form controls, two companion elements, and a live playground
 
 ## Context and decision
 
@@ -26,6 +26,8 @@ Accordion and Tabs are companion elements rather than submission owners. Their s
 Select and Combobox submit only enabled selected identifiers. Query edits invalidate selection, and query-only text does not become a form value. Their form and popup contracts are recorded in [ADR-0008](0008-selection-popups.md).
 
 Date Picker submits one Gregorian ISO date independently of its localized native editor. Invalid drafts remain visible and do not submit a stale date; constraints and popup behavior follow [ADR-0009](0009-calendar-date-picker.md).
+
+Date Range Picker adds two explicit ISO boundaries and visible partial state, with complete-range validation under [ADR-0010](0010-calendar-date-ranges.md).
 
 ## Review trigger
 
@@ -53,3 +55,5 @@ Revisit the mechanism if a supported browser cannot provide reliable submission,
 - 2026-10-24: Added Select and Combobox as form-associated hosts with one selected identifier and no hidden proxy. ADR-0008 records popup and query behavior.
 
 - 2026-10-24: Added Date Picker with host-owned native editing, date-only submission, explicit locale parsing, and inclusive constraints under ADR-0009.
+
+- 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.

@@ -7,50 +7,10 @@ import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
 import { fieldLabel, referencedText } from "./field-label.js";
 import { createIcon } from "./icons.js";
-import { hostStyles } from "./styles.js";
-import { theme, radius } from "./theme.js";
+import { calendarTemplate, CalendarViews } from "./calendar.js";
 
-type CalendarView = datePicker.DateView;
-interface ViewNodes { root: HTMLElement; table: HTMLTableElement; head: HTMLTableSectionElement; body: HTMLTableSectionElement; key: string; }
 const firstDate = parseCalendarDate("0001-01-01")!;
 const lastDate = parseCalendarDate("9999-12-31")!;
-const template = document.createElement("template");
-template.innerHTML = `<style>
-  ${hostStyles}
-  :host { min-width: 0; }
-  [hidden] { display: none !important; }
-  button, input { font: inherit; color: inherit; }
-  button { border: 1px solid transparent; background: transparent; cursor: pointer; }
-  [part=control] { display: flex; align-items: center; min-height: var(--hp-control-height, 2.5rem); border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: 0 1px 2px #00000005; }
-  [part=input] { flex: 1; min-width: 0; width: 100%; height: calc(var(--hp-control-height, 2.5rem) - 2px); padding: .5rem .75rem; border: 0; border-radius: inherit; outline: none; background: transparent; font-variant-numeric: tabular-nums; }
-  input::placeholder { color: ${theme("muted-foreground")}; opacity: 1; }
-  [part=trigger], [part=clear-button], [part=prev-button], [part=next-button] { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 2rem; height: 2rem; padding: .375rem; border-radius: ${radius("sm")}; }
-  [part=trigger], [part=clear-button] { margin-inline-end: .1875rem; color: ${theme("muted-foreground")}; }
-  svg { display: block; width: 1rem; height: 1rem; flex: 0 0 auto; }
-  button:hover:not(:disabled):not([data-disabled]) { background: ${theme("accent")}; color: ${theme("accent-foreground")}; }
-  button:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 2px; }
-  [part=control]:focus-within { border-color: ${theme("ring")}; }
-  [part=control]:has(input:focus-visible, [part=trigger]:focus-visible) { outline: 2px solid ${theme("ring")}; outline-offset: 2px; }
-  [part=trigger]:focus-visible { outline: none; }
-  [part=control][data-disabled] { opacity: .5; }
-  button:disabled { cursor: not-allowed; }
-  :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }
-  [part=positioner] { inset: auto; margin: 0; padding: 0; border: 0; max-width: calc(100vw - 1rem); overflow: visible; background: transparent; color: inherit; }
-  [part=content] { width: min(20rem, calc(100vw - 1rem)); padding: .75rem; max-height: var(--available-height, calc(100vh - 1rem)); overflow: auto; overscroll-behavior: contain; border: 1px solid ${theme("border")}; border-radius: ${radius("lg")}; background: ${theme("popover")}; color: ${theme("popover-foreground")}; box-shadow: 0 4px 6px -1px #00000018, 0 2px 4px -2px #00000018; outline: none; }
-  [part=navigation] { display: grid; grid-template-columns: 2rem minmax(0, 1fr) 2rem; align-items: center; gap: .25rem; margin-bottom: .5rem; }
-  [part=view-button] { min-width: 0; min-height: 2rem; padding: .25rem; border-radius: ${radius("sm")}; font-weight: 500; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-  [part=grid] { width: 100%; border-collapse: separate; border-spacing: .125rem; table-layout: fixed; }
-  [part=weekday] { height: 2rem; padding: 0; color: ${theme("muted-foreground")}; font-weight: 400; font-size: .8125rem; text-align: center; }
-  td { padding: 0; text-align: center; }
-  [part~=day], [part~=month], [part~=year] { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 2.25rem; padding: .25rem; border-radius: ${radius("sm")}; font-variant-numeric: tabular-nums; }
-  [data-outside-range] { color: ${theme("muted-foreground")}; }
-  [part=content] [data-disabled] { opacity: .4; cursor: default; }
-  [part~=today]:not([data-selected]) { border-color: ${theme("input")}; background: ${theme("muted")}; }
-  [part~=selected-day], [part~=month][data-selected], [part~=year][data-selected] { background: ${theme("primary")}; color: ${theme("primary-foreground")}; }
-  [part~=selected-day]:hover:not([data-disabled]) { background: ${theme("primary")}; color: ${theme("primary-foreground")}; }
-  @media (forced-colors: active) { [data-selected] { outline: 1px solid Highlight; outline-offset: -1px; } }
-</style><div part="root"><div part="control"><input part="input" type="text" autocomplete="off" spellcheck="false"></div></div>
-<div part="positioner" popover="manual" hidden><div part="content"><div part="navigation"></div></div></div>`;
 
 /** Native editor and form owner around Zag's calendar navigation and popup behavior. */
 export class H6DatePicker extends HTMLElement {
@@ -69,7 +29,7 @@ export class H6DatePicker extends HTMLElement {
   #previous: HTMLButtonElement;
   #viewButton: HTMLButtonElement;
   #next: HTMLButtonElement;
-  #views = new Map<CalendarView, ViewNodes>();
+  #views: CalendarViews;
   #machine?: InteractionMachine<datePicker.Service, datePicker.Props>;
   #bindings = new DomBindings();
   #canonical = "";
@@ -83,7 +43,7 @@ export class H6DatePicker extends HTMLElement {
 
   constructor() {
     super();
-    const shadow = this.attachShadow({ mode: "open", delegatesFocus: true }); shadow.append(template.content.cloneNode(true));
+    const shadow = this.attachShadow({ mode: "open", delegatesFocus: true }); shadow.append(calendarTemplate.content.cloneNode(true));
     this.#root = shadow.querySelector("[part=root]")!; this.#control = shadow.querySelector("[part=control]")!;
     this.#input = shadow.querySelector("input")!; this.#input.id = `${this.#id}-editor`;
     this.#positioner = shadow.querySelector("[part=positioner]")!; this.#content = shadow.querySelector("[part=content]")!;
@@ -93,12 +53,7 @@ export class H6DatePicker extends HTMLElement {
     };
     this.#trigger = button("trigger", "calendar"); this.#clear = button("clear-button", "close"); this.#control.append(this.#trigger, this.#clear);
     this.#previous = button("prev-button", "chevron-left"); this.#viewButton = button("view-button"); this.#next = button("next-button", "chevron-right"); this.#navigation.append(this.#previous, this.#viewButton, this.#next);
-    for (const view of ["day", "month", "year"] as const) {
-      const root = document.createElement("div"); root.part.add("view", `${view}-view`);
-      const table = document.createElement("table"); table.part.add("grid");
-      const head = document.createElement("thead"), body = document.createElement("tbody"); table.append(head, body); root.append(table); this.#content.append(root);
-      this.#views.set(view, { root, table, head, body, key: "" });
-    }
+    this.#views = new CalendarViews(this.#content);
     this.#input.addEventListener("input", event => {
       event.stopPropagation(); if (this.#disabled || this.readOnly) return;
       this.#dirty = true; this.#pendingEdit = true;
@@ -251,7 +206,7 @@ export class H6DatePicker extends HTMLElement {
     this.#bindings.apply(this.#positioner, api.getPositionerProps()); this.#bindings.apply(this.#content, api.getContentProps());
     this.#bindings.apply(this.#navigation, api.getViewControlProps({ view: api.view }));
     this.#bindings.apply(this.#previous, api.getPrevTriggerProps({ view: api.view })); this.#bindings.apply(this.#next, api.getNextTriggerProps({ view: api.view }));
-    this.#bindings.apply(this.#viewButton, api.getViewTriggerProps({ view: api.view })); this.#viewButton.textContent = api.visibleRangeText.formatted;
+    this.#bindings.apply(this.#viewButton, api.getViewTriggerProps({ view: api.view })); this.#viewButton.textContent = api.visibleRangeText.start === api.visibleRangeText.end ? api.visibleRangeText.start : api.visibleRangeText.formatted;
     const label = fieldLabel(this, this.labels, "Date");
     this.#input.setAttribute("aria-label", label); this.#input.setAttribute("aria-description", [referencedText(this, "aria-describedby"), `Format: ${this.#format.placeholder}; ISO YYYY-MM-DD also accepted.`].filter(Boolean).join(" "));
     this.#input.setAttribute("aria-invalid", String(!this.validity.valid)); this.#input.setAttribute("aria-required", String(this.required));
@@ -259,44 +214,7 @@ export class H6DatePicker extends HTMLElement {
     this.#trigger.setAttribute("aria-label", `Open calendar for ${label}`); this.#trigger.setAttribute("aria-haspopup", "dialog"); this.#clear.setAttribute("aria-label", `Clear ${label}`);
     this.#content.setAttribute("role", "dialog"); this.#content.setAttribute("aria-modal", "false"); this.#content.setAttribute("aria-label", `${label} calendar`);
     const retained: Element[] = [this.#root, this.#control, this.#trigger, this.#positioner, this.#content, this.#navigation, this.#previous, this.#next, this.#viewButton];
-    for (const [view, nodes] of this.#views) {
-      this.#bindings.apply(nodes.root, api.getViewProps({ view })); this.#bindings.apply(nodes.table, api.getTableProps({ view, columns: view === "day" ? 7 : 4 }));
-      this.#bindings.apply(nodes.head, api.getTableHeaderProps({ view })); this.#bindings.apply(nodes.body, api.getTableBodyProps({ view }));
-      retained.push(nodes.root, nodes.table, nodes.head, nodes.body);
-      const weeks = api.weeks, values = view === "month" ? api.getMonthsGrid({ columns: 4, format: "short" }) : view === "year" ? api.getYearsGrid({ columns: 4 }) : undefined;
-      const key = view === "day" ? weeks.map(week => week.map(date => date.toString()).join(",")).join(";") + this.#format.locale : values!.map(row => row.map(item => `${item.value}:${item.label}`).join(",")).join(";");
-      if (key !== nodes.key) {
-        nodes.key = key; nodes.head.replaceChildren(); nodes.body.replaceChildren();
-        if (view === "day") {
-          const row = document.createElement("tr");
-          for (const day of api.weekDays) { const cell = document.createElement("th"); cell.part.add("weekday"); cell.scope = "col"; cell.textContent = day.short; cell.setAttribute("aria-label", day.long); row.append(cell); }
-          nodes.head.append(row);
-        }
-        const rows = view === "day" ? weeks.map(week => week.map(date => ({ label: String(date.day), value: date.toString() }))) : values!;
-        for (const rowValues of rows) {
-          const row = document.createElement("tr");
-          for (const item of rowValues) { const cell = document.createElement("td"), button = document.createElement("button"); button.type = "button"; button.part.add(view); button.dataset.calendarValue = String(item.value); button.textContent = item.label; cell.append(button); row.append(cell); }
-          nodes.body.append(row);
-        }
-      }
-      for (const row of nodes.body.rows) {
-        this.#bindings.apply(row, api.getTableRowProps({ view })); retained.push(row);
-        for (const cell of row.cells) {
-          const button = cell.firstElementChild as HTMLButtonElement;
-          if (view === "day") {
-            const date = parseCalendarDate(button.dataset.calendarValue!);
-            if (!date) { button.disabled = true; button.tabIndex = -1; continue; }
-            this.#bindings.apply(cell, api.getDayTableCellProps({ value: date })); this.#bindings.apply(button, api.getDayTableCellTriggerProps({ value: date }));
-            const state = api.getDayTableCellState({ value: date }); button.part.toggle("selected-day", state.selected); button.part.toggle("today", state.today);
-          } else {
-            const value = Number(button.dataset.calendarValue);
-            this.#bindings.apply(cell, view === "month" ? api.getMonthTableCellProps({ value }) : api.getYearTableCellProps({ value }));
-            this.#bindings.apply(button, view === "month" ? api.getMonthTableCellTriggerProps({ value }) : api.getYearTableCellTriggerProps({ value }));
-          }
-          retained.push(cell, button);
-        }
-      }
-    }
+    retained.push(...this.#views.render(api, this.#bindings, this.#format.locale));
     this.#bindings.retain(retained);
     if (api.open && !this.#disabled && !this.readOnly && !this.#config.message && this.isConnected) {
       this.#positioner.hidden = false; if (!this.#positioner.matches(":popover-open")) this.#positioner.showPopover(); this.#internals.states.add("open");

@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-10-24
+- Updated: 2026-10-26
 - Lifecycle: living
 
 ## Context and decision
@@ -22,6 +22,8 @@ Ratings expose a whole score or null for unanswered. Hover is separate preview s
 Select and Combobox use the same label/identifier distinction: an enabled selected identifier contributes one string, and an unanswered selection contributes no entry. Combobox query text remains separate; editing invalidates a prior selection, and exact label text alone does not commit. [The selection guide](../SELECTION-CONTROLS.md) owns the detailed contract.
 
 Date Picker uses one Gregorian `YYYY-MM-DD` string or an unanswered state, separately from localized editor text. Complete out-of-range dates retain their ISO value with range validity errors; invalid drafts have no canonical entry. [ADR-0009](0009-calendar-date-picker.md) records the locale and date-model decisions.
+
+Date Range Picker uses nullable ISO boundaries and explicit `start-name` / `end-name`, defaulting to `name.start` / `name.end`. A partial boundary remains inspectable in FormData but requires its counterpart for a complete range. Typed ordering errors preserve identity; the two-point calendar gesture orders its picks. [ADR-0010](0010-calendar-date-ranges.md) records this bounded-range contract.
 
 ## Consequences and evidence
 
@@ -43,3 +45,5 @@ Toggle contributes a named string while pressed and no entry while unpressed, wi
 - 2026-10-24: Added selected identifiers for Select/Combobox and separate non-submitted query state with immediate invalidation on user editing.
 
 - 2026-10-24: Added the Date Picker calendar-date contract, without a time component, timestamp conversion, or inferred locale order.
+
+- 2026-10-26: Added the bounded date-range value shape, boundary names, and partial-state validation under ADR-0010.
