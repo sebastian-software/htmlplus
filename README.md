@@ -140,6 +140,8 @@ npx playwright install chromium firefox webkit
 npm test
 ```
 
+The Actions verification job uses the official `mcr.microsoft.com/playwright:v1.64.1-noble` image with browsers and Linux system dependencies preinstalled. Keep its version aligned with Playwright in `package-lock.json` when upgrading.
+
 `npm test` compiles with strict TypeScript, runs the validation unit tests, then runs the integrated browser tests. The default browser matrix is Chromium, Firefox, and WebKit. Desktop/mobile layout and light and dark themes are inspected from generated screenshots.
 
 On this macOS host, Firefox exits before opening a page with `Could not find profile folder`; this resembles the [upstream Firefox/macOS app-data issue](https://github.com/microsoft/playwright/issues/42768). No system privacy settings were changed. Run the available-engine checks explicitly with:
