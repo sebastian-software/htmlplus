@@ -1,7 +1,7 @@
 import * as slider from "@zag-js/slider";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles, numericAccent } from "./styles.js";
-import { theme, radius } from "./theme.js";
+import { theme, radius, surfaceShadow } from "./theme.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
 import { numericBounds, snap } from "./numeric-value.js";
@@ -15,9 +15,9 @@ template.innerHTML = `<style>
   [part=root] { display: grid; gap: .25rem; min-width: 0; }
   [part=value-text] { justify-self: end; color: ${theme("muted-foreground")}; font-size: .75rem; font-variant-numeric: tabular-nums; }
   [part=control] { height: var(--hp-control-height, 2.5rem); min-width: 0; }
-  [part=track] { width: 100%; height: .375rem; top: calc(50% - .1875rem); border-radius: ${radius("sm")}; background: ${theme("muted")}; }
+  [part=track] { width: 100%; height: .375rem; top: calc(50% - .1875rem); border-radius: ${radius("sm")}; background: ${theme("muted")}; box-shadow: ${surfaceShadow("inset")}; }
   [part=range] { height: 100%; border-radius: inherit; background: ${numericAccent}; }
-  [part~=thumb] { top: calc(50% - .75rem); width: 1.5rem; height: 1.5rem; border: 2px solid ${numericAccent}; border-radius: 50%; background: ${theme("background")}; box-shadow: 0 1px 3px #00000015; cursor: grab; touch-action: none; }
+  [part~=thumb] { top: calc(50% - .75rem); width: 1.5rem; height: 1.5rem; border: 2px solid ${numericAccent}; border-radius: 50%; background: ${theme("background")}; box-shadow: ${surfaceShadow("thumb")}; cursor: grab; touch-action: none; }
   [part~=thumb][data-dragging] { cursor: grabbing; }
   [part~=thumb]:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 3px; }
   [data-disabled][part=root] { opacity: .5; }

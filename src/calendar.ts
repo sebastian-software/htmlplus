@@ -2,7 +2,7 @@ import type * as datePicker from "@zag-js/date-picker";
 import { parseCalendarDate } from "./date-value.js";
 import { DomBindings } from "./zag-dom.js";
 import { hostStyles } from "./styles.js";
-import { theme, radius } from "./theme.js";
+import { theme, radius, surfaceShadow } from "./theme.js";
 
 type CalendarView = datePicker.DateView;
 interface ViewNodes { root: HTMLElement; table: HTMLTableElement; head: HTMLTableSectionElement; body: HTMLTableSectionElement; key: string; }
@@ -13,7 +13,7 @@ calendarTemplate.innerHTML = `<style>
   [hidden] { display: none !important; }
   button, input { font: inherit; color: inherit; }
   button { border: 1px solid transparent; background: transparent; cursor: pointer; }
-  [part=control] { display: flex; align-items: center; min-height: var(--hp-control-height, 2.5rem); border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: 0 1px 2px #00000005; }
+  [part=control] { display: flex; align-items: center; min-height: var(--hp-control-height, 2.5rem); border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: ${surfaceShadow("inset")}; }
   [part~=input] { flex: 1; min-width: 0; width: 100%; height: calc(var(--hp-control-height, 2.5rem) - 2px); padding: .5rem .75rem; border: 0; border-radius: inherit; outline: none; background: transparent; font-variant-numeric: tabular-nums; }
   input::placeholder { color: ${theme("muted-foreground")}; opacity: 1; }
   [part=trigger], [part=clear-button], [part=prev-button], [part=next-button] { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 2rem; height: 2rem; padding: .375rem; border-radius: ${radius("sm")}; }
@@ -28,7 +28,7 @@ calendarTemplate.innerHTML = `<style>
   button:disabled { cursor: not-allowed; }
   :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }
   [part=positioner] { inset: auto; margin: 0; padding: 0; border: 0; max-width: calc(100vw - 1rem); overflow: visible; background: transparent; color: inherit; }
-  [part=content] { width: min(20rem, calc(100vw - 1rem)); padding: .75rem; max-height: var(--available-height, calc(100vh - 1rem)); overflow: auto; overscroll-behavior: contain; border: 1px solid ${theme("border")}; border-radius: ${radius("lg")}; background: ${theme("popover")}; color: ${theme("popover-foreground")}; box-shadow: 0 4px 6px -1px #00000018, 0 2px 4px -2px #00000018; outline: none; }
+  [part=content] { width: min(20rem, calc(100vw - 1rem)); padding: .75rem; max-height: var(--available-height, calc(100vh - 1rem)); overflow: auto; overscroll-behavior: contain; border: 1px solid ${theme("border")}; border-radius: ${radius("lg")}; background: ${theme("popover")}; color: ${theme("popover-foreground")}; box-shadow: ${surfaceShadow("popover")}; outline: none; }
   [part=navigation] { display: grid; grid-template-columns: 2rem minmax(0, 1fr) 2rem; align-items: center; gap: .25rem; margin-bottom: .5rem; }
   [part=view-button] { min-width: 0; min-height: 2rem; padding: .25rem; border-radius: ${radius("sm")}; font-weight: 500; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   [part=grid] { width: 100%; border-collapse: separate; border-spacing: .125rem; table-layout: fixed; }

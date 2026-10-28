@@ -3,7 +3,7 @@
 - Status: accepted
 - Scope: initial prototype
 - Created: 2026-10-22
-- Updated: 2026-10-26
+- Updated: 2026-10-29
 - Lifecycle: living
 
 ## Context and decision
@@ -20,12 +20,18 @@ Retain complete neutral component fallbacks. Add optional prefixed light/dark pr
 
 This replaces the old ad hoc `--h6-*` CSS roles before release rather than preserving conflicting aliases, particularly the old use of accent for primary actions. Element names and class exports are unchanged. Token compatibility is a documented snapshot, not a promise of identical component geometry or automatic adoption of upstream schema changes.
 
+## Surface depth decision
+
+Add five html+ surface-shadow extensions to the color/radius contract: raised, pressed, inset, thumb, and popover. The default Layered finish uses layered light/shadow cues; an optional Flat preset removes every role. Keep finish independent of palette and Light/Dark appearance. React Aria's Button and TextField examples are mechanism references, inspected on 2026-10-29; html+ retains its own colors, layout, and component behavior.
+
+Resolve the effects at use through `--hp-shadow-*` fallbacks and the consuming scope's `color-scheme`. Do not use the system dark-mode media query to override an explicitly selected appearance. Preserve real borders and focus outlines when decorative shadows disappear, including in forced-colors mode. Surface changes update CSS without remounting native editors or changing submitted values. See the [styling guide](../STYLING.md#surface-depth) for the exact contract and flat preset.
+
 ## Consequences and validation
 
 - Theme common colors and rounding without `::part`. Keep deliberate parts and custom states for detailed component variants; do not expose arbitrary shadow descendants as API.
 - Public defaults remain consumption fallbacks, not declarations that shadow inherited tokens. The adapter's internal properties are not public API. Its current-element selector must grow with the catalog.
 - Light/Dark appearances with independently selected palettes in both demo pages use tokens for the common theme. All eighteen elements retain an individual part-based recipe with the exact preview CSS available for copying.
-- Focus, invalid, disabled, and selected states retain visible behavior. Browser checks cover nested and host overrides, semantic role separation, adapter precedence and missing values, radius derivation, light/dark contrast, forced colors, and FormData preservation. Firefox remains unverified on this host; complete that engine check before a release support claim.
+- Focus, invalid, disabled, and selected states retain visible behavior. Browser checks cover nested and host overrides, semantic role separation, adapter precedence and missing values, radius derivation, light/dark contrast, forced colors, and FormData preservation. Firefox runs in the Linux CI container; direct macOS Firefox automation remains unavailable.
 - `selected-option` and `selected-tab` parts follow live state; Toggle exposes pressed and Switch exposes checked custom states. Native light-DOM fields inside companion elements use ordinary application CSS.
 - Revisit when a reasonable design requires private DOM access or a new element needs an additional semantic role. Keep exact values and the token inventory in the styling guide and stylesheet sources.
 
@@ -39,6 +45,8 @@ Date Range Picker uses the same popup tokens, primary boundary colors, accent sp
 - [Theme resolution](../../src/theme.ts)
 - [Light/dark presets](../../demo/themes.css)
 - [shadcn adapter](../../demo/shadcn.css)
+- [React Aria Button](https://react-aria.adobe.com/Button)
+- [React Aria TextField](https://react-aria.adobe.com/TextField)
 - [shadcn/ui theming](https://ui.shadcn.com/docs/theming)
 - [Styling guide](../STYLING.md)
 
@@ -65,3 +73,5 @@ Date Range Picker uses the same popup tokens, primary boundary colors, accent sp
 - 2026-10-24: Added Date Picker parts and Base/Framed calendar recipes, including selected-day/today states and inherited popup tokens.
 
 - 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.
+
+- 2026-10-29: Added shared surface-shadow roles inspired by React Aria, explicit-scheme Light/Dark shading, and an independent Layered/Flat comparison in both demos. Preserve the shadcn color/radius contract and existing form behavior.

@@ -1,6 +1,6 @@
 # Styling html+ controls
 
-The playground and styling gallery share independent Light/Dark appearances and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the eighteen elements also has its own Base preview, part-based variation, actual form entries, and copyable source. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
+The playground and styling gallery share independent Light/Dark appearances, Layered/Flat surfaces, and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the eighteen elements also has its own Base preview, part-based variation, actual form entries, and copyable source. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
 
 ## Built-in base
 
@@ -15,6 +15,38 @@ Every component includes its neutral light base in shadow DOM. No external style
 ```
 
 The components use system sans text at 14px/20px and 40px base editors at a 16px root. Tags use 12px/16px text, a centered 12px SVG close icon, and a 24px remove button. Root-relative dimensions scale with text size. Their geometry takes cues from shadcn/ui while retaining an independent plain CSS implementation.
+
+## Surface depth
+
+The default Layered finish uses a small shared set of surface roles inspired by the [React Aria Button](https://react-aria.adobe.com/Button) and [TextField](https://react-aria.adobe.com/TextField) examples, inspected on 2026-10-29. Raised controls combine a top highlight, lower edge, inner shading, and a small contact shadow. Editors have an inset shadow; thumbs and popovers have their own elevation. These are independently implemented effects on the existing html+ geometry and semantic colors.
+
+| Public token | Role |
+| --- | --- |
+| `--hp-shadow-raised` | Toggle buttons, Select surfaces, selected tabs/segments, tags, and secondary actions |
+| `--hp-shadow-pressed` | Momentarily pressed Toggle and demo action buttons |
+| `--hp-shadow-inset` | Editors, editable compound fields, tab/segmented tracks, and switch/slider tracks |
+| `--hp-shadow-thumb` | Switch and slider handles |
+| `--hp-shadow-popover` | Selection lists and calendars |
+
+Each token accepts a complete `box-shadow` value, including `none`. They are html+ extensions; the shadcn adapter continues to bridge colors and the base radius. Defaults resolve where they are consumed, so a nested or host-level override wins without `::part`.
+
+Light and dark highlights follow the consuming element's `color-scheme` through `light-dark()`. The bundled `.hp-light` and `.hp-dark` presets set it explicitly, so the demo appearance does not depend on the operating system preference. Set `color-scheme: dark` when supplying a custom dark palette. Actual borders and focus outlines remain independent of decorative shadows; forced-colors mode removes the shadows.
+
+Both demos expose an independent Surface selector. `Layered` uses the built-in defaults; `Flat` applies `.hp-flat` from `themes.css`, setting all five roles to `none`. Changing finish preserves the DOM, edited values, native history, and form entries. The gallery's Theme CSS view includes the exact flat preset.
+
+```css
+.flat-form {
+  --hp-shadow-raised: none;
+  --hp-shadow-pressed: none;
+  --hp-shadow-inset: none;
+  --hp-shadow-thumb: none;
+  --hp-shadow-popover: none;
+}
+
+h6-date-picker {
+  --hp-shadow-inset: inset 0 1px 2px rgb(0 0 0 / .12);
+}
+```
 
 ## Semantic theme contract
 
@@ -148,7 +180,7 @@ Stateful styles should preserve visible keyboard focus, disabled states, invalid
 
 ## Verification
 
-The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, and unchanged edited FormData while switching themes on mobile. Gallery tests cover all eighteen recipes, shared displayed source, deep links, and clipboard success/failure. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.
+The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, surface-token inheritance and local overrides, and unchanged edited FormData while switching appearances, palettes, and finishes on mobile. Gallery tests cover all eighteen recipes, shared displayed source, deep links, and clipboard success/failure. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.
 
 Select, Combobox, Date Picker, and Date Range Picker keep their popup in shadow DOM while entering the native top layer. Inherited theme tokens, the shadcn bridge, and public popup parts still apply. Use `--hp-popover` and `--hp-popover-foreground` for its surface and text, and accent tokens for highlighted options. `:state(selected)` and `:state(open)` expose current state. See the [selection guide](SELECTION-CONTROLS.md).
 

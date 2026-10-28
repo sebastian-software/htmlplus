@@ -6,7 +6,7 @@ import type { InteractionMachine } from "./zag-dom.js";
 import { fieldLabel, referencedText } from "./field-label.js";
 import { createIcon } from "./icons.js";
 import { hostStyles } from "./styles.js";
-import { radius, theme } from "./theme.js";
+import { radius, theme, surfaceShadow } from "./theme.js";
 
 interface Choice { value: string; label: string; disabled: boolean; }
 
@@ -17,7 +17,8 @@ template.innerHTML = `<style>
   [hidden] { display: none !important; }
   button, input { font: inherit; color: inherit; }
   button { cursor: pointer; }
-  [part=control] { display: flex; align-items: center; min-height: var(--hp-control-height, 2.5rem); border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: 0 1px 2px #00000005; }
+  [part=control] { display: flex; align-items: center; min-height: var(--hp-control-height, 2.5rem); border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: ${surfaceShadow("inset")}; }
+  :host(h6-select) [part=control] { box-shadow: ${surfaceShadow("raised")}; }
   [part=control]:focus-within { border-color: ${theme("ring")}; }
   [part=trigger], [part=input] { min-width: 0; border: 0; border-radius: inherit; background: transparent; outline: none; }
   [part=trigger] { display: flex; align-items: center; gap: .5rem; justify-content: space-between; flex: 1; min-height: calc(var(--hp-control-height, 2.5rem) - 2px); padding: .5rem .75rem; text-align: start; }
@@ -35,7 +36,7 @@ template.innerHTML = `<style>
   button:disabled { cursor: not-allowed; }
   :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }
   [part=positioner] { inset: auto; margin: 0; padding: 0; border: 0; overflow: visible; background: transparent; color: inherit; max-width: calc(100vw - 1rem); }
-  [part=content] { width: 100%; min-width: 0; max-height: min(18rem, var(--available-height, 18rem)); margin: 0; padding: .25rem; overflow: auto; overscroll-behavior: contain; list-style: none; outline: none; border: 1px solid ${theme("border")}; border-radius: ${radius("md")}; background: ${theme("popover")}; color: ${theme("popover-foreground")}; box-shadow: 0 4px 6px -1px #00000018, 0 2px 4px -2px #00000018; }
+  [part=content] { width: 100%; min-width: 0; max-height: min(18rem, var(--available-height, 18rem)); margin: 0; padding: .25rem; overflow: auto; overscroll-behavior: contain; list-style: none; outline: none; border: 1px solid ${theme("border")}; border-radius: ${radius("md")}; background: ${theme("popover")}; color: ${theme("popover-foreground")}; box-shadow: ${surfaceShadow("popover")}; }
   [part~=option] { display: flex; align-items: center; gap: .5rem; min-height: 2.25rem; padding: .5rem .625rem; border-radius: ${radius("sm")}; cursor: default; overflow-wrap: anywhere; }
   [part~=option][data-highlighted] { background: ${theme("accent")}; color: ${theme("accent-foreground")}; }
   [part~=option][data-disabled] { opacity: .5; }

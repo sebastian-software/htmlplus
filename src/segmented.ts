@@ -1,14 +1,14 @@
-import { theme, radius } from "./theme.js";
+import { theme, radius, surfaceShadow } from "./theme.js";
 import { hostStyles } from "./styles.js";
 
 const template = document.createElement("template");
 template.innerHTML = `<style>
   ${hostStyles}
-  [part=control] { display: flex; flex-wrap: wrap; gap: .1875rem; padding: .1875rem; border: 1px solid ${theme("input")}; border-radius: ${radius("lg")}; background: ${theme("muted")}; }
+  [part=control] { display: flex; flex-wrap: wrap; gap: .1875rem; padding: .1875rem; border: 1px solid ${theme("input")}; border-radius: ${radius("lg")}; background: ${theme("muted")}; box-shadow: ${surfaceShadow("inset")}; }
   label { flex: 1; position: relative; min-width: 72px; }
   input { position: absolute; opacity: 0; width: 1px; height: 1px; }
   [part~=option] { display: flex; align-items: center; justify-content: center; min-height: 2rem; padding: .375rem .75rem; border-radius: ${radius("sm")}; text-align: center; font-weight: 500; cursor: pointer; }
-  input:checked + span { background: ${theme("background")}; color: ${theme("foreground")}; box-shadow: 0 1px 3px #00000010; }
+  input:checked + span { background: ${theme("background")}; color: ${theme("foreground")}; box-shadow: ${surfaceShadow("raised")}; }
   input:focus-visible + span { outline: 2px solid ${theme("ring")}; outline-offset: 2px; }
   input:disabled + span { opacity: .5; cursor: default; }
   :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }

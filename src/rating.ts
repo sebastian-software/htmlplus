@@ -1,7 +1,7 @@
 import * as rating from "@zag-js/rating-group";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles, numericAccent } from "./styles.js";
-import { theme, radius } from "./theme.js";
+import { theme, radius, surfaceShadow } from "./theme.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
 import { fieldLabel, referencedText } from "./field-label.js";
@@ -17,7 +17,7 @@ template.innerHTML = `<style>
   [part~=icon] { display: block; width: 100%; height: 100%; fill: transparent; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; pointer-events: none; }
   [data-highlighted] [part~=icon] { fill: currentColor; }
   [part~=item]:focus-visible, [part=clear-button]:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 2px; }
-  [part=clear-button] { border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; color: ${theme("foreground")}; font: inherit; font-size: .75rem; line-height: 1rem; min-height: 2rem; padding: .375rem .5rem; cursor: pointer; }
+  [part=clear-button] { border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; color: ${theme("foreground")}; font: inherit; font-size: .75rem; line-height: 1rem; min-height: 2rem; padding: .375rem .5rem; cursor: pointer; box-shadow: ${surfaceShadow("raised")}; }
   [part=clear-button]:hover:not(:disabled) { background: ${theme("accent")}; color: ${theme("accent-foreground")}; }
   [part=clear-button]:disabled { opacity: .5; cursor: default; }
   [part=value-text] { color: ${theme("muted-foreground")}; font-size: .75rem; font-variant-numeric: tabular-nums; }

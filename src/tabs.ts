@@ -1,4 +1,4 @@
-import { theme, radius } from "./theme.js";
+import { theme, radius, surfaceShadow } from "./theme.js";
 import * as tabs from "@zag-js/tabs";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles } from "./styles.js";
@@ -12,9 +12,9 @@ template.innerHTML = `<style>
   ${hostStyles}
   :host { min-width: 0; }
   [part=root] { display: grid; gap: 1rem; min-width: 0; }
-  [part=list] { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; width: fit-content; max-width: 100%; min-height: var(--hp-control-height, 2.5rem); padding: .25rem; border-radius: ${radius("lg")}; background: ${theme("muted")}; }
+  [part=list] { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; width: fit-content; max-width: 100%; min-height: var(--hp-control-height, 2.5rem); padding: .25rem; border-radius: ${radius("lg")}; background: ${theme("muted")}; box-shadow: ${surfaceShadow("inset")}; }
   [part~=tab] { display: inline-flex; align-items: center; justify-content: center; min-height: 2rem; min-width: 0; padding: .25rem .75rem; border: 1px solid transparent; border-radius: ${radius("sm")}; background: transparent; color: ${theme("muted-foreground")}; font: inherit; font-weight: 500; overflow-wrap: anywhere; cursor: pointer; }
-  [part~=tab][data-selected] { background: ${theme("background")}; color: ${theme("foreground")}; box-shadow: 0 1px 3px #00000012; }
+  [part~=tab][data-selected] { background: ${theme("background")}; color: ${theme("foreground")}; box-shadow: ${surfaceShadow("raised")}; }
   [part~=tab]:focus-visible, [part=panel]:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 3px; }
   [part~=tab]:disabled { opacity: .5; cursor: not-allowed; }
   [part=panels], [part=panel] { min-width: 0; }

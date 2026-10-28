@@ -9,7 +9,7 @@ When a decision changes, edit the same record, update its date and change notes,
 | Record | Status | Subject |
 | --- | --- | --- |
 | [0001](0001-native-form-contract.md) | accepted | Ordinary HTML forms are the integration contract |
-| [0002](0002-css-styling-contract.md) | accepted | Semantic --hp- themes, shadcn adapter, and deliberate platform styling hooks |
+| [0002](0002-css-styling-contract.md) | accepted | Semantic --hp- themes, shared surface depth, shadcn adapter, and deliberate platform styling hooks |
 | [0003](0003-specialized-native-inputs.md) | accepted | Separate canonical submission from native editing; preserve inactive editors |
 | [0004](0004-composite-value-contracts.md) | accepted | Explicit units, boundary names, and selection identifiers |
 | [0005](0005-headless-interaction-logic.md) | accepted | Zag for ten interactions behind native custom elements |

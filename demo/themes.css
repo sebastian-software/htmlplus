@@ -240,3 +240,12 @@ SOFTWARE.
   --hp-ring: #7dd3fc;
   --hp-radius: 2px;
 }
+
+/* Optional flat surfaces; independent of appearance and palette. */
+.hp-flat {
+  --hp-shadow-raised: none;
+  --hp-shadow-pressed: none;
+  --hp-shadow-inset: none;
+  --hp-shadow-thumb: none;
+  --hp-shadow-popover: none;
+}

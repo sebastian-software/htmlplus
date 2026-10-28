@@ -1,4 +1,4 @@
-import { theme, radius } from "./theme.js";
+import { theme, radius, surfaceShadow } from "./theme.js";
 import * as toggle from "@zag-js/toggle";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles } from "./styles.js";
@@ -9,11 +9,12 @@ const template = document.createElement("template");
 template.innerHTML = `<style>
   ${hostStyles}
   :host { display: inline-flex; vertical-align: middle; }
-  button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: var(--hp-control-height, 2.5rem); padding: .5rem .75rem; border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; color: inherit; font: inherit; font-weight: 500; cursor: pointer; }
+  button { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: var(--hp-control-height, 2.5rem); padding: .5rem .75rem; border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; color: inherit; font: inherit; font-weight: 500; cursor: pointer; box-shadow: ${surfaceShadow("raised")}; }
   button:hover { background: ${theme("accent")}; color: ${theme("accent-foreground")}; }
   button[data-pressed] { background: ${theme("primary")}; border-color: ${theme("primary")}; color: ${theme("primary-foreground")}; }
+  button:active:not(:disabled) { box-shadow: ${surfaceShadow("pressed")}; }
   button:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 3px; }
-  button:disabled { opacity: .5; cursor: not-allowed; }
+  button:disabled { box-shadow: none; opacity: .5; cursor: not-allowed; }
   :host(:invalid) button { border-color: ${theme("destructive")}; }
   ::slotted(svg) { width: 1rem; height: 1rem; flex: none; }
   @media (forced-colors: active) { button[data-pressed] { outline: 2px solid Highlight; } }

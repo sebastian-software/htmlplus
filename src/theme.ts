@@ -31,3 +31,16 @@ const radiusScale = { sm: .6, md: .8, lg: 1, xl: 1.4, "2xl": 1.8, "3xl": 2.2, "4
 export function radius(size: keyof typeof radiusScale): string {
   return `var(--hp-radius-${size}, calc(${theme("radius")} * ${radiusScale[size]}))`;
 }
+
+/** Surface depth resolves at use; color-scheme follows explicit, nested theme scopes. */
+const surfaceShadows = {
+  raised: "inset 0 1px 0 light-dark(rgb(255 255 255 / .9), rgb(255 255 255 / .12)), inset 0 -1px 0 light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .3)), inset 0 -6px 8px -6px light-dark(rgb(0 0 0 / .14), rgb(255 255 255 / .06)), 0 1px 2px light-dark(rgb(0 0 0 / .08), rgb(0 0 0 / .25))",
+  pressed: "inset 0 1px 3px light-dark(rgb(0 0 0 / .18), rgb(0 0 0 / .45)), inset 0 -1px 0 light-dark(rgb(255 255 255 / .3), rgb(255 255 255 / .08))",
+  inset: "inset 0 1px 3px light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .4)), 0 1px 0 light-dark(rgb(255 255 255 / .8), rgb(255 255 255 / .04))",
+  thumb: "inset 0 1px 0 rgb(255 255 255 / .65), inset 0 -2px 3px rgb(0 0 0 / .08), 0 1px 3px rgb(0 0 0 / .2)",
+  popover: "inset 0 1px 0 light-dark(rgb(255 255 255 / .8), rgb(255 255 255 / .06)), 0 8px 24px -6px light-dark(rgb(0 0 0 / .18), rgb(0 0 0 / .5)), 0 2px 6px light-dark(rgb(0 0 0 / .08), rgb(0 0 0 / .3))",
+} as const;
+
+export function surfaceShadow(role: keyof typeof surfaceShadows): string {
+  return `var(--hp-shadow-${role}, ${surfaceShadows[role]})`;
+}

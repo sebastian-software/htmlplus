@@ -37,7 +37,7 @@ The playground shows actual `new FormData(form)` entries as fields change. Switc
 
 ## Styling examples
 
-Open **Styling** in the playground, or click an element's name beside a field. Each of the eighteen elements has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `themes.css` supplies prefixed light/dark palettes; `shadcn.css` connects an existing shadcn palette through the `hp-shadcn` class. Both files are copied into `dist/` at build time. Semantic token suffixes and roles match the documented shadcn theme contract, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
+Open **Styling** in the playground, or click an element's name beside a field. Each of the eighteen elements has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `themes.css` supplies prefixed light/dark palettes; `shadcn.css` connects an existing shadcn palette through the `hp-shadcn` class. Both files are copied into `dist/` at build time. The Surface picker compares Layered and Flat finishes independently of appearance and palette. Five `--hp-shadow-*` roles control depth across buttons, fields, handles, and popovers, inspired by the React Aria examples. Semantic token suffixes and roles match the documented shadcn theme contract, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
 
 ## Implemented elements
 

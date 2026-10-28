@@ -19,6 +19,7 @@
     <a class="wordmark" href="./" aria-label="html plus home">html<span>+</span></a>
     <span class="masthead-label">Styling recipes</span>
     <div class="masthead-actions"><label class="theme-picker" for="theme">Appearance <select id="theme"><option value="base">Light</option><option value="dark">Dark</option></select></label>
+      <label class="theme-picker" for="surface">Surface <select id="surface"><option value="layered">Layered</option><option value="flat">Flat</option></select></label>
       <label class="theme-picker" for="palette">Palette <select id="palette"><option value="neutral">Neutral</option><option value="blue">Blue</option><option value="green">Green</option><option value="orange">Orange</option><option value="rose">Rose</option><option value="utility">Utility (custom)</option></select></label><a class="text-link recipes-link" href="./">Form playground <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></a></div>
   </header>
   <main id="recipes">
@@ -35,7 +36,7 @@
           <pre tabindex="0" aria-label="Example code"><code id="recipe-code"></code></pre>
           <p class="copy-status" id="copy-status" role="status"></p>
         </section>
-        <details class="base-explanation"><summary>How the base styles work</summary><p>Each element includes its own neutral base. Change inherited <code>--hp-*</code> tokens for colors and radius, or use a recipe for a specific part. The Appearance picker applies the same <a href="./demo/themes.css">light and dark presets</a> as the playground.</p><p>To reuse an existing shadcn theme, load the adapter and add <code>hp-shadcn</code> to its scope. It reads your existing semantic variables, including nested dark scopes. Explicit <code>--hp-*</code> overrides take precedence.</p><pre><code>&lt;link rel="stylesheet" href="./htmlplus-shadcn.css"&gt;
+        <details class="base-explanation"><summary>How the base styles work</summary><p>Each element includes its own neutral base. Change inherited <code>--hp-*</code> tokens for colors, radius, and surface depth, or use a recipe for a specific part. Compare Layered and Flat with the Surface picker. The Appearance picker applies the same <a href="./demo/themes.css">light and dark presets</a> as the playground.</p><p>To reuse an existing shadcn theme, load the adapter and add <code>hp-shadcn</code> to its scope. It reads your existing semantic variables, including nested dark scopes. Explicit <code>--hp-*</code> overrides take precedence.</p><pre><code>&lt;link rel="stylesheet" href="./htmlplus-shadcn.css"&gt;
 &lt;form class="hp-shadcn"&gt;
   &lt;!-- Your shadcn theme supplies --background, --primary, etc. --&gt;
 &lt;/form&gt;</code></pre><p>These examples use plain CSS. They do not require React, Tailwind, or shadcn/ui.</p></details>

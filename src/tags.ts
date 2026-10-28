@@ -1,4 +1,4 @@
-import { theme, radius } from "./theme.js";
+import { theme, radius, surfaceShadow } from "./theme.js";
 import { uniqueTags } from "./validation.js";
 import { hostStyles } from "./styles.js";
 import { createIcon } from "./icons.js";
@@ -6,10 +6,10 @@ import { createIcon } from "./icons.js";
 const tagsTemplate = document.createElement("template");
 tagsTemplate.innerHTML = `<style>
   ${hostStyles}
-  [part=control] { display: flex; flex-wrap: wrap; align-items: center; gap: .375rem; min-height: var(--hp-control-height, 2.5rem); padding: .375rem; border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: 0 1px 2px #00000005; }
+  [part=control] { display: flex; flex-wrap: wrap; align-items: center; gap: .375rem; min-height: var(--hp-control-height, 2.5rem); padding: .375rem; border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: ${surfaceShadow("inset")}; }
   :host(:focus-within) [part=control] { border-color: ${theme("ring")}; outline: 2px solid ${theme("ring")}; outline-offset: 2px; }
   [part=tokens] { display: contents; }
-  [part=tag] { display: inline-flex; align-items: center; gap: .25rem; min-height: 1.625rem; max-width: 100%; padding: 0 0 0 .5rem; border: 1px solid transparent; border-radius: ${radius("sm")}; background: ${theme("secondary")}; color: ${theme("secondary-foreground")}; font-size: .75rem; font-weight: 500; line-height: 1rem; }
+  [part=tag] { display: inline-flex; align-items: center; gap: .25rem; min-height: 1.625rem; max-width: 100%; padding: 0 0 0 .5rem; border: 1px solid transparent; border-radius: ${radius("sm")}; background: ${theme("secondary")}; color: ${theme("secondary-foreground")}; font-size: .75rem; font-weight: 500; line-height: 1rem; box-shadow: ${surfaceShadow("raised")}; }
   [part=tag-label] { display: block; min-width: 0; padding-block: .25rem; overflow-wrap: anywhere; }
   [part=remove-button] { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 1.5rem; height: 1.5rem; margin: 0; padding: 0; border: none; border-radius: ${radius("sm")}; background: transparent; color: inherit; font: inherit; cursor: pointer; }
   [part=remove-icon] { display: block; flex: none; width: .75rem; height: .75rem; pointer-events: none; }

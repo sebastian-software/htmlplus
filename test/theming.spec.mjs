@@ -34,6 +34,9 @@ test('public theme tokens inherit through every shadow root and allow nested and
   await expect(page.locator('#nested-iban input')).toHaveCSS('background-color', 'rgb(224, 242, 254)');
   await expect(page.locator('#nested-iban input')).toHaveCSS('border-radius', '8px');
   await expect(page.locator('#nested-iban input')).toHaveCSS('color', 'rgb(12, 74, 110)');
+  await page.addStyleTag({ content: '#scope { --hp-shadow-inset: none; } #nested-iban { --hp-shadow-inset: inset 0 2px 3px rgb(0 0 0 / .2); }' });
+  await expect(page.locator('#scope > h6-iban input')).toHaveCSS('box-shadow', 'none');
+  await expect(page.locator('#nested-iban input')).toHaveCSS('box-shadow', /inset/);
   expect(await data(page)).toEqual(before);
 });
 
@@ -99,7 +102,7 @@ test('radius scales derive from local bases and allow zero and explicit size ove
   await expect(page.locator('h6-tags [part=control]')).toHaveCSS('border-radius', '0px');
 });
 
-test('light, dark, and utility examples preserve edited form data and work on mobile', async ({ page, request }) => {
+test('light, dark, utility, and surface examples preserve edited form data and work on mobile', async ({ page, request }) => {
   await page.goto('/');
   await page.getByRole('textbox', { name:'Verification code', exact:true }).fill('001234');
   await page.getByRole('button', { name:'Priority handling', exact:true }).click();
@@ -108,7 +111,11 @@ test('light, dark, and utility examples preserve edited form data and work on mo
     if (mode === 'utility') { await page.getByLabel('Appearance').selectOption('base'); await page.getByLabel('Palette').selectOption('utility'); } else { await page.getByLabel('Palette').selectOption('neutral'); await page.getByLabel('Appearance').selectOption(mode); }
     await expect(page.locator('html')).toHaveCSS('color-scheme', mode==='dark' ? 'dark' : 'light');
     await expect(page.locator('h6-otp input')).toHaveValue('001234');
-    expect(await page.locator('#demo-form').evaluate(form => [...new FormData(form)])).toEqual(before);
+    for (const surface of ['flat', 'layered']) {
+      await page.getByRole('combobox', { name: 'Surface', exact: true }).selectOption(surface);
+      await expect(page.locator('h6-otp input')).toHaveCSS('box-shadow', surface === 'flat' ? 'none' : /inset/);
+      expect(await page.locator('#demo-form').evaluate(form => [...new FormData(form)])).toEqual(before);
+    }
     await expect(page.locator('h6-toggle button')).toHaveAttribute('aria-pressed','true');
     await page.setViewportSize({width:390,height:844});
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -141,4 +148,5 @@ test('neutral light and dark palettes keep readable text and visible keyboard fo
   await toggle.focus();await toggle.press('Space');
   await expect(toggle).toHaveAttribute('aria-pressed','true');
   await expect(toggle).toHaveCSS('outline-style','solid');
+  await expect(toggle).toHaveCSS('box-shadow', 'none');
 });
