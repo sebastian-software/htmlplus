@@ -34,7 +34,7 @@ export function radius(size: keyof typeof radiusScale): string {
 
 /** Surface depth resolves at use; color-scheme follows explicit, nested theme scopes. */
 const surfaceShadows = {
-  raised: "inset 0 1px 0 light-dark(rgb(255 255 255 / .9), rgb(255 255 255 / .12)), inset 0 -1px 0 light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .3)), inset 0 -6px 8px -6px light-dark(rgb(0 0 0 / .14), rgb(255 255 255 / .06)), 0 1px 2px light-dark(rgb(0 0 0 / .08), rgb(0 0 0 / .25))",
+  raised: "inset 0 1px 1px light-dark(rgb(255 255 255 / .14), rgb(255 255 255 / .08)), inset 0 -1px 0 light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .3)), inset 0 -6px 8px -6px light-dark(rgb(0 0 0 / .14), rgb(255 255 255 / .06)), 0 1px 2px light-dark(rgb(0 0 0 / .08), rgb(0 0 0 / .25))",
   pressed: "inset 0 1px 3px light-dark(rgb(0 0 0 / .18), rgb(0 0 0 / .45)), inset 0 -1px 0 light-dark(rgb(255 255 255 / .3), rgb(255 255 255 / .08))",
   inset: "inset 0 1px 3px light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .4)), 0 1px 0 light-dark(rgb(255 255 255 / .8), rgb(255 255 255 / .04))",
   thumb: "inset 0 1px 0 rgb(255 255 255 / .65), inset 0 -2px 3px rgb(0 0 0 / .08), 0 1px 3px rgb(0 0 0 / .2)",

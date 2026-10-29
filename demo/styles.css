@@ -168,7 +168,7 @@
 /* Ordinary fields and action buttons share the component surface roles. */
 @layer components {
   .native-field input, .field > input { box-shadow: var(--hp-shadow-inset, inset 0 1px 3px light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .4)), 0 1px 0 light-dark(rgb(255 255 255 / .8), rgb(255 255 255 / .04))); }
-  .primary-button, .secondary-button, .theme-picker select { box-shadow: var(--hp-shadow-raised, inset 0 1px 0 light-dark(rgb(255 255 255 / .9), rgb(255 255 255 / .12)), inset 0 -1px 0 light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .3)), inset 0 -6px 8px -6px light-dark(rgb(0 0 0 / .14), rgb(255 255 255 / .06)), 0 1px 2px light-dark(rgb(0 0 0 / .08), rgb(0 0 0 / .25))); }
+  .primary-button, .secondary-button, .theme-picker select { box-shadow: var(--hp-shadow-raised, inset 0 1px 1px light-dark(rgb(255 255 255 / .14), rgb(255 255 255 / .08)), inset 0 -1px 0 light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .3)), inset 0 -6px 8px -6px light-dark(rgb(0 0 0 / .14), rgb(255 255 255 / .06)), 0 1px 2px light-dark(rgb(0 0 0 / .08), rgb(0 0 0 / .25))); }
   .primary-button:active, .secondary-button:active { box-shadow: var(--hp-shadow-pressed, inset 0 1px 3px light-dark(rgb(0 0 0 / .18), rgb(0 0 0 / .45)), inset 0 -1px 0 light-dark(rgb(255 255 255 / .3), rgb(255 255 255 / .08))); }
   @media (forced-colors: active) { .native-field input, .primary-button, .secondary-button, .theme-picker select { box-shadow: none; } }
 }
