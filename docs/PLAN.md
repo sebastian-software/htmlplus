@@ -80,7 +80,7 @@ Every new element needs the built-in neutral base, deliberate CSS parts/tokens/s
 - Start with one real text input, preserving leading zeros and normal selection, undo, paste, and keyboard behavior.
 - Use `autocomplete="one-time-code"`; use `inputmode="numeric"` for numeric codes. Do not use `type="number"`.
 - Treat length and allowed characters as configuration; six numeric characters can be a demo profile rather than a universal rule.
-- Optional segmented visuals must preserve one logical input and accessible label.
+- Segmented visuals now preserve one logical input and accessible label; length configures the visual cells and default numeric policy.
 - Do not submit the form automatically when the field becomes complete. Code generation, delivery, expiry, verification, and retry limits belong to the application.
 - The shadow editor has native autofill hints; check autofill on actual supported mobile browsers and password managers. WebOTP can be a later, separate opt-in integration.
 
@@ -179,3 +179,7 @@ Implemented shared raised, pressed, inset, thumb, and popover shadow roles, insp
 Added Checkbox with independent checked/mixed states and a derived select-all table demo, Radio Group, Number Input, Password Input, and Toggle Group. Each uses Zag 1.46.0, host-owned FormData, default/reset and fieldset behavior, a neutral base, and Base/styled recipes. The playground now starts with thirty entries. The native Button family has a separate recipe and generated `dist/native.css`; it preserves native submitter and reset behavior without a custom-element wrapper. [Everyday controls](EVERYDAY-CONTROLS.md) documents values, keyboard behavior, locale limits, and integration adaptations.
 
 Keep larger form components in separate slices: [File Upload #2](https://github.com/sebastian-software/htmlplus/issues/2), [Color Picker #3](https://github.com/sebastian-software/htmlplus/issues/3), and [Tree View #4](https://github.com/sebastian-software/htmlplus/issues/4). Palamedes integration, tag editing in place, and physical-device/assistive-technology evidence remain open.
+
+## Formatted fields, 2026-10-29
+
+IBAN now displays uppercase groups of four, while its canonical value remains whitespace-free. OTP now displays individual decorative slots over one native editor, with configurable length for four-digit codes and six-digit verification codes. Both retain native selection and undo through targeted native edits; no multiple-input focus choreography or automatic submission is added. The [formatted fields guide](FORMATTED-FIELDS.md) and ADR-0003 record the legacy editing-command tradeoff, fallback, and device evidence limits. Existing recipes now demonstrate grouped IBAN and underlined OTP slots in Light/Dark.

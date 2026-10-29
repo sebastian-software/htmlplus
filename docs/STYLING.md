@@ -152,7 +152,7 @@ The [recipe definitions](../demo/recipes.ts) are the single source for the galle
 | `h6-rating` | Outlined score | `root`, `label`, `control`, `item`, `selected-item`, `icon`, `clear-button`, `value-text` |
 | `h6-iban` | Underlined editor with monospaced text | `input` |
 | `h6-bic` | Compact identifier field | `input` |
-| `h6-otp` | Larger, spaced code with one native editor | `input` |
+| `h6-otp` | Underlined slots over one native editor | `control`, `slots`, `slot`, `filled-slot`, `active-slot`, `selected-slot`, `input` |
 | `h6-duration` | Quiet surface with tabular figures | `input` |
 | `h6-interval` | Compact numeric pair | `control`, `input`, `lower-input`, `upper-input`, `lower-label`, `upper-label`, `separator` |
 | `h6-tags` | Outlined, rounded tokens | `control`, `tokens`, `input`, `tag`, `tag-label`, `remove-button`, `remove-icon` |
@@ -176,7 +176,7 @@ Toggles expose `:state(pressed)`; Tabs expose `selected-tab` alongside `tab`. Th
 
 Switches expose their live checked state through `:state(checked)`. Use it instead of `[checked]`, which describes the initial default. Segmented choices expose `selected-option` on the currently selected option; it moves when selection changes by pointer, keyboard, assignment, or reset. It is also an `option` part. `::part(option):checked` cannot observe the adjacent private radio input.
 
-Stateful styles should preserve visible keyboard focus, disabled states, invalid borders, and readable text. Avoid changing a switch's geometry without adjusting its thumb travel. The default switch keeps its thumb travel in step with its root-relative track dimensions. OTP styling retains one real input and does not introduce separate character boxes or automatic submission.
+Stateful styles should preserve visible keyboard focus, disabled states, invalid borders, and readable text. Avoid changing a switch's geometry without adjusting its thumb travel. The default switch keeps its thumb travel in step with its root-relative track dimensions. OTP uses decorative character cells over one real input; it does not introduce multiple editors or automatic submission. Its size and gap tokens keep the native text aligned with the cells. See [formatted fields](FORMATTED-FIELDS.md).
 
 ## Verification
 

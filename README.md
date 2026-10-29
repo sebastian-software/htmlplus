@@ -71,7 +71,7 @@ The optional `dist/native.css` styles real `<button class="hp-button">` elements
 
 Every control includes a neutral base appearance, with consistent editor typography and centered SVG icons. No external component stylesheet is required. Override inherited `--hp-*` tokens or public parts to customize it.
 
-The twenty-one form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: typing `de89 3704 0044 0532 0130 00` leaves that text untouched while the form receives `DE89370400440532013000`. This separation preserves native text editing and undo.
+The twenty-one form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: an IBAN displays `DE89 3704 0044 0532 0130 00` while the form receives `DE89370400440532013000`. Verification codes use visual character slots over one native input. Targeted native editing commands preserve undo during formatting; [formatted fields](docs/FORMATTED-FIELDS.md) documents the behavior and compatibility fallback.
 
 ## Use a control
 
@@ -96,7 +96,7 @@ The bundled runtime dependencies' [third-party notices](THIRD_PARTY_NOTICES.txt)
 
 ## Current value contract
 
-- Text fields expose canonical `.value`, raw `.displayValue`, and `.defaultValue`. Setting `.value` is programmatic and emits no user events. User edits keep the native editor's text intact.
+- Text fields expose canonical `.value`, raw `.displayValue`, and `.defaultValue`. Setting `.value` is programmatic and emits no user events. Formatting for IBAN and OTP uses native edits while retaining the browser's undo history. Other text fields keep their typed notation.
 - Tags expose `.value` and `.defaultValue` as string arrays. Declarative defaults use a JSON array in the `value` attribute. Entries are trimmed and deduplicated with case-sensitive equality; their order is preserved. Enter, comma, or blur commits pending text. Backspace in an empty editor focuses the last remove button. Editing an existing tag in place is not implemented.
 - Switches expose `.checked`, `.defaultChecked`, and `.value`. An unchecked switch contributes no entry. Text fields and tags support `readonly`; switches use `disabled`.
 - Toggles expose `.pressed`, `.defaultPressed`, and the submitted string `.value` (default `on`). An unpressed toggle contributes no entry. User activation emits one `input`/`change` pair; assignment and reset emit no user events.

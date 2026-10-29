@@ -20,7 +20,7 @@ test.beforeEach(async ({ page }) => {
 
 test('all elements provide their base typography and sizes without a document stylesheet', async ({ page }) => {
   expect(await page.evaluate(() => document.querySelectorAll('link[rel=stylesheet], style, .hp-shadcn').length)).toBe(0);
-  const editors = page.locator('h6-iban input, h6-bic input, h6-otp input, h6-duration input, h6-interval input');
+  const editors = page.locator('h6-iban input, h6-bic input, h6-duration input, h6-interval input');
   for (const editor of await editors.all()) {
     const metrics = await editor.evaluate((element) => { const css = getComputedStyle(element); return { fontSize: css.fontSize, lineHeight: css.lineHeight, height: element.getBoundingClientRect().height }; });
     expect(metrics).toEqual({ fontSize: '14px', lineHeight: '20px', height: 40 });

@@ -277,7 +277,7 @@ h6-tabs.tabs-underline::part(selected-tab) {
   },
   {
     element: "h6-iban", title: "IBAN", label: "Bank account", variant: "Underlined", className: "iban-underlined",
-    description: "Change the editor's presentation while the form keeps its canonical, whitespace-free IBAN.",
+    description: "An IBAN is displayed in uppercase groups of four while the form receives the canonical identifier without spaces. Native edits retain undo.",
     markup: '<h6-iban name="iban" value="DE89370400440532013000" required></h6-iban>',
     parts: ["input"],
     css: `h6-iban.iban-underlined::part(input) {
@@ -302,15 +302,20 @@ h6-tabs.tabs-underline::part(selected-tab) {
 }`,
   },
   {
-    element: "h6-otp", title: "Verification code", label: "Verification code", variant: "Spaced code", className: "otp-spaced",
-    description: "A more prominent code field still uses one native input for paste, selection, undo, and autofill hints.",
-    markup: '<h6-otp name="code" value="004271" required></h6-otp>', parts: ["input"],
-    css: `h6-otp.otp-spaced::part(input) {
-  max-width: 14ch;
-  height: 48px;
-  font: 24px ui-monospace, monospace;
-  letter-spacing: 0.25em;
-  text-align: center;
+    element: "h6-otp", title: "Verification code", label: "Verification code", variant: "Underlined slots", className: "otp-underlined",
+    description: "Six visual slots share one real input. Arrows, selection, paste, deletion, undo, and autofill use a single editing surface.",
+    markup: '<h6-otp name="code" value="004271" length="6" required></h6-otp>', parts: ["control", "slots", "slot", "filled-slot", "active-slot", "selected-slot", "input"],
+    css: `h6-otp.otp-underlined {
+  --hp-otp-gap: .375rem;
+}
+h6-otp.otp-underlined::part(slot) {
+  border-width: 0 0 2px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+h6-otp.otp-underlined::part(active-slot) {
+  border-color: var(--hp-primary, #171717);
 }`,
   },
   {

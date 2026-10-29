@@ -22,7 +22,7 @@ test('live data retains repeated keys and reflects tag editing without proxy inp
 
 test('native enhanced fields normalize, retain leading zeros, and block invalid submission', async ({ page }) => {
   await page.getByRole('textbox', { name: 'IBAN', exact: true }).fill('de89 3704 0044 0532 0130 00');
-  await expect(page.getByRole('textbox', { name: 'IBAN', exact: true })).toHaveValue('de89 3704 0044 0532 0130 00');
+  await expect(page.getByRole('textbox', { name: 'IBAN', exact: true })).toHaveValue('DE89 3704 0044 0532 0130 00');
   expect((await data(page)).find(([name]) => name === 'iban')?.[1]).toBe('DE89370400440532013000');
   await page.getByRole('textbox', { name: 'BIC / SWIFT', exact: true }).fill('deutdeff');
   await expect(page.getByRole('textbox', { name: 'BIC / SWIFT', exact: true })).toHaveValue('deutdeff');
@@ -60,7 +60,7 @@ test('native reset restores initial text values, switch state, and tag defaults'
   await page.getByRole('button', { name: 'Remove html', exact: true }).click();
   await page.locator('h6-switch').click();
   await page.getByRole('button', { name: 'Reset form', exact: true }).click();
-  await expect(page.getByRole('textbox', { name: 'IBAN', exact: true })).toHaveValue('DE89370400440532013000');
+  await expect(page.getByRole('textbox', { name: 'IBAN', exact: true })).toHaveValue('DE89 3704 0044 0532 0130 00');
   await expect(page.getByRole('button', { name: 'Remove html', exact: true })).toBeVisible();
   expect((await data(page)).filter(([name]) => name === 'topics').map(([, value]) => value)).toEqual(['html', 'web-components']);
   expect((await data(page)).find(([name]) => name === 'updates')?.[1]).toBe('email');
@@ -139,11 +139,11 @@ test('canonical serialization leaves native text editing and undo intact', async
   await input.focus();
   await input.press('ControlOrMeta+A');
   await input.pressSequentially('de89');
-  await expect(input).toHaveValue('de89');
+  await expect(input).toHaveValue('DE89');
   expect((await data(page)).find(([name]) => name === 'iban')?.[1]).toBe('DE89');
   // Browsers group keystrokes differently; all four native edits must remain undoable.
-  for (let edit = 0; edit < 4 && await input.inputValue() !== 'DE89370400440532013000'; edit++) {
+  for (let edit = 0; edit < 4 && await input.inputValue() !== 'DE89 3704 0044 0532 0130 00'; edit++) {
     await input.press('ControlOrMeta+Z');
   }
-  await expect(input).toHaveValue('DE89370400440532013000');
+  await expect(input).toHaveValue('DE89 3704 0044 0532 0130 00');
 });

@@ -120,7 +120,7 @@ test('light, dark, utility, and surface examples preserve edited form data and w
     await expect(page.locator('h6-otp input')).toHaveValue('001234');
     for (const surface of ['flat', 'layered']) {
       await page.getByRole('combobox', { name: 'Surface', exact: true }).selectOption(surface);
-      await expect(page.locator('h6-otp input')).toHaveCSS('box-shadow', surface === 'flat' ? 'none' : /inset/);
+      await expect(page.locator('h6-otp [part~=slot]').first()).toHaveCSS('box-shadow', surface === 'flat' ? 'none' : /inset/);
       expect(await page.locator('#demo-form').evaluate(form => [...new FormData(form)])).toEqual(before);
     }
     await expect(page.locator('h6-toggle button')).toHaveAttribute('aria-pressed','true');
