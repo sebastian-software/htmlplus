@@ -1,4 +1,5 @@
 import "./theme.js";
+import "./locale.js";
 import "./icons.js";
 import "../src/index.js";
 import { H6TextField } from "../src/text-fields.js";
@@ -93,6 +94,8 @@ function render(): void {
   const intervalFeedback = document.querySelector<HTMLElement>("#budget-feedback")!;
   intervalFeedback.dataset.state = !fields.disabled && !interval.validity.valid && interval.hasAttribute("data-touched") ? "invalid" : "neutral";
   intervalFeedback.textContent = intervalFeedback.dataset.state === "invalid" ? interval.validationMessage : "One control, two named values. The lower boundary cannot exceed the upper.";
+  const date = document.querySelector("h6-date-picker")!;
+  document.querySelector("#date-feedback")!.textContent = `Enter ${date.placeholder} or choose a day. The form receives YYYY-MM-DD without a time zone.`;
 }
 
 function schedule(): void {
@@ -107,6 +110,7 @@ for (const type of ["input", "change", "valuechange"]) form.addEventListener(typ
   schedule();
 });
 form.addEventListener("focusout", schedule);
+document.addEventListener("hp-locale-change", schedule);
 form.addEventListener("invalid", () => { form.classList.add("was-validated"); schedule(); }, true);
 form.addEventListener("reset", (event) => queueMicrotask(() => {
   if (event.defaultPrevented) return;

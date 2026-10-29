@@ -8,6 +8,7 @@ import type { InteractionMachine } from "./zag-dom.js";
 import { fieldLabel, referencedText } from "./field-label.js";
 import { createIcon } from "./icons.js";
 import { calendarTemplate, CalendarViews } from "./calendar.js";
+import { LocaleContext, resolvedLocale, localeWeekStart } from "./locale.js";
 
 const firstDate = parseCalendarDate("0001-01-01")!;
 const lastDate = parseCalendarDate("9999-12-31")!;
@@ -15,7 +16,7 @@ const lastDate = parseCalendarDate("9999-12-31")!;
 /** Native editor and form owner around Zag's calendar navigation and popup behavior. */
 export class H6DatePicker extends HTMLElement {
   static formAssociated = true;
-  static observedAttributes = ["value", "name", "min", "max", "locale", "disabled", "readonly", "required", "placeholder", "dir", "aria-label", "aria-labelledby", "aria-describedby"];
+  static observedAttributes = ["value", "name", "min", "max", "locale", "lang", "disabled", "readonly", "required", "placeholder", "dir", "aria-label", "aria-labelledby", "aria-describedby"];
   #internals = this.attachInternals();
   #id = interactionId("date-picker");
   #root: HTMLElement;
@@ -40,6 +41,11 @@ export class H6DatePicker extends HTMLElement {
   #pendingEdit = false;
   #format: DateTextFormat = dateTextFormat("en-US")!;
   #localeValid = true;
+  #localeContext = new LocaleContext(this, locale => {
+    const format = dateTextFormat(locale); this.#localeValid = Boolean(format); this.#format = format ?? dateTextFormat("en-US")!;
+    if (this.#canonical) this.#input.value = this.#format.format(parseCalendarDate(this.#canonical)!);
+    this.hidePicker(); this.#sync(true);
+  });
 
   constructor() {
     super();
@@ -81,6 +87,7 @@ export class H6DatePicker extends HTMLElement {
     this.addEventListener("invalid", () => { this.setAttribute("data-touched", ""); });
   }
   connectedCallback(): void {
+    this.#localeContext.connect();
     const config = this.#config;
     this.#machine = new VanillaMachine(datePicker.machine, {
       ...this.#props, id: this.#id, getRootNode: () => this.shadowRoot!, selectionMode: "single", fixedWeeks: true,
@@ -98,12 +105,9 @@ export class H6DatePicker extends HTMLElement {
     if (config.message) this.hidePicker();
     queueMicrotask(() => { if (this.isConnected) this.#render(); });
   }
-  disconnectedCallback(): void { this.#hidePopup(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); this.#pendingEdit = false; }
+  disconnectedCallback(): void { this.#localeContext.disconnect(); this.#hidePopup(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); this.#pendingEdit = false; }
   attributeChangedCallback(name: string): void {
-    if (name === "locale") {
-      const format = dateTextFormat(this.locale); this.#localeValid = Boolean(format); this.#format = format ?? dateTextFormat("en-US")!;
-      if (this.#canonical) this.#input.value = this.#format.format(parseCalendarDate(this.#canonical)!);
-    }
+    if (name === "locale" || name === "lang") this.#localeContext.update();
     if (name === "value" && !this.#dirty) this.#restoreDefault();
     this.#sync(["value", "min", "max", "locale"].includes(name));
   }
@@ -126,7 +130,7 @@ export class H6DatePicker extends HTMLElement {
   set min(value: string) { this.setAttribute("min", value); }
   get max(): string { return this.getAttribute("max") ?? ""; }
   set max(value: string) { this.setAttribute("max", value); }
-  get locale(): string { return this.getAttribute("locale") || "en-US"; }
+  get locale(): string { return resolvedLocale(this); }
   set locale(value: string) { this.setAttribute("locale", value); }
   get disabled(): boolean { return this.hasAttribute("disabled"); }
   set disabled(value: boolean) { this.toggleAttribute("disabled", Boolean(value)); }
@@ -177,7 +181,7 @@ export class H6DatePicker extends HTMLElement {
   get #props(): Partial<datePicker.Props> {
     const config = this.#config, date = parseCalendarDate(this.#canonical);
     const selectable = date && !config.message && date.compare(config.min) >= 0 && date.compare(config.max) <= 0;
-    return { value: selectable ? [date] : [], min: config.message ? firstDate : config.min, max: config.message ? lastDate : config.max, locale: this.#format.locale, disabled: this.#disabled || Boolean(config.message), readOnly: this.readOnly, required: this.required, invalid: !this.validity.valid, dir: direction(this) };
+    return { value: selectable ? [date] : [], min: config.message ? firstDate : config.min, max: config.message ? lastDate : config.max, locale: this.#format.locale, startOfWeek: localeWeekStart(this.#format.locale), disabled: this.#disabled || Boolean(config.message), readOnly: this.readOnly, required: this.required, invalid: !this.validity.valid, dir: direction(this) };
   }
   #restoreDefault(): void { const date = parseCalendarDate(this.defaultValue); this.#canonical = date?.toString() ?? ""; this.#input.value = date ? this.#format.format(date) : this.defaultValue; }
   #emitCommit(): void { this.dispatchEvent(new Event("input", { bubbles: true, composed: true })); this.dispatchEvent(new Event("change", { bubbles: true, composed: true })); }
@@ -192,6 +196,7 @@ export class H6DatePicker extends HTMLElement {
     else if (this.required && !date) { flags = { valueMissing: true }; message = "Choose a date."; }
     this.#internals.setValidity(flags, message, this.#input);
     this.#input.disabled = this.#disabled; this.#input.readOnly = this.readOnly; this.#input.placeholder = this.placeholder;
+    this.#input.lang = this.#format.locale;
     this.#clear.hidden = !this.displayValue; this.#clear.disabled = this.#disabled || this.readOnly;
     if (this.#disabled || this.readOnly || config.message) this.hidePicker();
     this.#machine?.updateProps(this.#props);
@@ -206,7 +211,7 @@ export class H6DatePicker extends HTMLElement {
     this.#bindings.apply(this.#positioner, api.getPositionerProps()); this.#bindings.apply(this.#content, api.getContentProps());
     this.#bindings.apply(this.#navigation, api.getViewControlProps({ view: api.view }));
     this.#bindings.apply(this.#previous, api.getPrevTriggerProps({ view: api.view })); this.#bindings.apply(this.#next, api.getNextTriggerProps({ view: api.view }));
-    this.#bindings.apply(this.#viewButton, api.getViewTriggerProps({ view: api.view })); this.#viewButton.textContent = api.visibleRangeText.start === api.visibleRangeText.end ? api.visibleRangeText.start : api.visibleRangeText.formatted;
+    this.#bindings.apply(this.#viewButton, api.getViewTriggerProps({ view: api.view })); this.#viewButton.lang = this.#format.locale; this.#viewButton.textContent = api.visibleRangeText.start === api.visibleRangeText.end ? api.visibleRangeText.start : api.visibleRangeText.formatted;
     const label = fieldLabel(this, this.labels, "Date");
     this.#input.setAttribute("aria-label", label); this.#input.setAttribute("aria-description", [referencedText(this, "aria-describedby"), `Format: ${this.#format.placeholder}; ISO YYYY-MM-DD also accepted.`].filter(Boolean).join(" "));
     this.#input.setAttribute("aria-invalid", String(!this.validity.valid)); this.#input.setAttribute("aria-required", String(this.required));

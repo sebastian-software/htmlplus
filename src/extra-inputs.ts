@@ -7,6 +7,7 @@ import { H6TextField } from "./text-fields.js";
 import { theme, radius, surfaceShadow } from "./theme.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
+import { LocaleContext } from "./locale.js";
 
 const compoundStyles = `
   [part=control] { display: flex; align-items: center; min-height: var(--hp-control-height, 2.5rem); border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: ${surfaceShadow("inset")}; }
@@ -85,28 +86,40 @@ export class H6PasswordInput extends H6TextField {
 }
 
 export class H6NumberInput extends H6TextField {
-  static override observedAttributes = [...H6TextField.observedAttributes, "min", "max", "step", "locale", "dir", "aria-labelledby", "aria-describedby", "increment-label", "decrement-label"];
+  static override observedAttributes = [...H6TextField.observedAttributes, "min", "max", "step", "locale", "lang", "dir", "aria-labelledby", "aria-describedby", "increment-label", "decrement-label"];
   #id = interactionId("number");
   #machine?: InteractionMachine<numberInput.Service, numberInput.Props>;
   #bindings = new DomBindings();
   #control: HTMLElement;
   #silent = false;
+  #activeLocale = "en-US";
+  #localeDraft = false;
+  #localeContext = new LocaleContext(this, requested => {
+    const raw = this.input.value, value = this.#localeDraft ? NaN : new NumberParser(this.#activeLocale).parse(raw);
+    try { this.#activeLocale = new Intl.NumberFormat(requested).resolvedOptions().locale; } catch { this.#activeLocale = "en-US"; }
+    if (!this.dirty) this.input.value = this.defaultDisplayValue;
+    else if (raw.trim() && Number.isFinite(value)) this.input.value = new Intl.NumberFormat(this.locale, { useGrouping: false, maximumFractionDigits: 20 }).format(value);
+    else this.#localeDraft = Boolean(raw.trim());
+    this.input.lang = this.locale; this.refresh();
+  });
   constructor() {
     super(); this.#control = wrap(this, '<button part="decrement-trigger" type="button" aria-label="Decrease value"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><button part="increment-trigger" type="button" aria-label="Increase value"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg></button>');
     this.input.id = `${this.#id}-editor`;
+    this.input.addEventListener("input", () => { this.#localeDraft = false; }, true);
   }
-  get locale(): string { const value = this.getAttribute("locale") || this.closest("[lang]")?.getAttribute("lang") || "en-US"; try { return new Intl.NumberFormat(value).resolvedOptions().locale; } catch { return "en-US"; } }
+  get locale(): string { return this.#activeLocale; }
   override get defaultInputMode(): string { return "decimal"; }
   protected override get defaultDisplayValue(): string {
     const value = Number(this.defaultValue);
     return this.defaultValue.trim() && Number.isFinite(value) ? new Intl.NumberFormat(this.locale, { useGrouping: false, maximumFractionDigits: 20 }).format(value) : "";
   }
   override attributeChangedCallback(name: string): void {
+    if (name === "locale" || name === "lang") this.#localeContext.update();
+    if (name === "value" && !this.dirty) this.#localeDraft = false;
     super.attributeChangedCallback(name);
-    if (name === "locale" && !this.dirty) { this.input.value = this.defaultDisplayValue; this.refresh(); }
   }
   set locale(value: string) { this.setAttribute("locale", value); }
-  get valueAsNumber(): number { return new NumberParser(this.locale).parse(this.input.value); }
+  get valueAsNumber(): number { return this.#localeDraft ? NaN : new NumberParser(this.locale).parse(this.input.value); }
   set valueAsNumber(value: number) { this.value = Number.isFinite(value) ? String(value) : ""; }
   get min(): number { return this.hasAttribute("min") ? Number(this.getAttribute("min")) : Number.MIN_SAFE_INTEGER; }
   set min(value: number) { this.setAttribute("min", String(value)); }
@@ -114,28 +127,32 @@ export class H6NumberInput extends H6TextField {
   set max(value: number) { this.setAttribute("max", String(value)); }
   get step(): number { return this.hasAttribute("step") ? Number(this.getAttribute("step")) : 1; }
   set step(value: number) { this.setAttribute("step", String(value)); }
-  override normalizeValue(value: string): string { const number = new NumberParser(this.locale).parse(value); return value.trim() && Number.isFinite(number) ? String(number) : ""; }
+  override normalizeValue(value: string): string { const number = this.#localeDraft ? NaN : new NumberParser(this.locale).parse(value); return value.trim() && Number.isFinite(number) ? String(number) : ""; }
   override get value(): string { return this.normalizeValue(this.input.value); }
   override set value(value: string) {
+    this.#localeDraft = false;
     const number = Number(value); const formatted = value.trim() && Number.isFinite(number) ? new Intl.NumberFormat(this.locale, { useGrouping: false, maximumFractionDigits: 20 }).format(number) : "";
     // The base setter owns dirty/default behavior; restore the localized editor afterward.
     super.value = value; this.input.value = formatted; this.refresh();
   }
   override connectedCallback(): void {
+    this.#localeContext.connect();
     if (!this.dirty) this.input.value = this.defaultDisplayValue;
     super.connectedCallback(); this.#machine = new VanillaMachine(numberInput.machine, { id: this.#id, getRootNode: () => this.shadowRoot!, value: this.input.value,
       onValueChange: ({ value, valueAsNumber }) => {
         if (this.#silent || this.input.disabled || this.readOnly) return;
         // Blur/Enter formatting must not rewrite an equivalent native draft.
         if (Object.is(valueAsNumber, this.valueAsNumber)) { this.refresh(); return; }
-        this.markDirty(); this.input.value = value;
+        this.markDirty(); this.#localeDraft = false; this.input.value = value;
         this.refresh();
         for (const type of ["input", "change"]) this.dispatchEvent(new Event(type, { bubbles: true, composed: true }));
       },
     });
     this.#machine.subscribe(() => this.#render()); this.refresh(); this.#silent = true; this.#machine.start(); this.#silent = false;
   }
-  disconnectedCallback(): void { this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
+  disconnectedCallback(): void { this.#localeContext.disconnect(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
+  override formResetCallback(): void { this.#localeDraft = false; super.formResetCallback(); }
+  override formStateRestoreCallback(state: string): void { this.#localeDraft = false; super.formStateRestoreCallback(state); }
   override refresh(): void {
     super.refresh();
     const raw = this.input.value.trim(), value = this.valueAsNumber;

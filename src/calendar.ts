@@ -19,6 +19,7 @@ calendarTemplate.innerHTML = `<style>
   [part=trigger], [part=clear-button], [part=prev-button], [part=next-button] { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; width: 2rem; height: 2rem; padding: .375rem; border-radius: ${radius("sm")}; }
   [part=trigger], [part=clear-button] { margin-inline-end: .1875rem; color: ${theme("muted-foreground")}; }
   svg { display: block; width: 1rem; height: 1rem; flex: 0 0 auto; }
+  :host(:dir(rtl)) [part=prev-button] svg, :host(:dir(rtl)) [part=next-button] svg { transform: rotate(180deg); }
   button:hover:not(:disabled):not([data-disabled]) { background: ${theme("accent")}; color: ${theme("accent-foreground")}; }
   button:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 2px; }
   [part=control]:focus-within { border-color: ${theme("ring")}; }
@@ -57,20 +58,22 @@ export class CalendarViews {
   }
   render(api: datePicker.Api, bindings: DomBindings, locale: string): Element[] {
     const retained: Element[] = [];
+    const numbers = new Intl.NumberFormat(locale, { useGrouping: false });
     for (const [view, nodes] of this.#nodes) {
+      nodes.table.lang = locale;
       bindings.apply(nodes.root, api.getViewProps({ view })); bindings.apply(nodes.table, api.getTableProps({ view, columns: view === "day" ? 7 : 4 }));
       bindings.apply(nodes.head, api.getTableHeaderProps({ view })); bindings.apply(nodes.body, api.getTableBodyProps({ view }));
       retained.push(nodes.root, nodes.table, nodes.head, nodes.body);
       const weeks = api.weeks, values = view === "month" ? api.getMonthsGrid({ columns: 4, format: "short" }) : view === "year" ? api.getYearsGrid({ columns: 4 }) : undefined;
-      const key = view === "day" ? weeks.map(week => week.map(date => date.toString()).join(",")).join(";") + locale : values!.map(row => row.map(item => `${item.value}:${item.label}`).join(",")).join(";");
+      const key = (view === "day" ? weeks.map(week => week.map(date => date.toString()).join(",")).join(";") : values!.map(row => row.map(item => `${item.value}:${item.label}`).join(",")).join(";")) + locale;
       if (key !== nodes.key) {
         nodes.key = key; nodes.head.replaceChildren(); nodes.body.replaceChildren();
         if (view === "day") {
           const row = document.createElement("tr");
-          for (const day of api.weekDays) { const cell = document.createElement("th"); cell.part.add("weekday"); cell.scope = "col"; cell.textContent = day.short; cell.setAttribute("aria-label", day.long); row.append(cell); }
+          for (const day of api.weekDays) { const cell = document.createElement("th"); cell.part.add("weekday"); cell.scope = "col"; cell.textContent = day.narrow; cell.setAttribute("aria-label", day.long); cell.title = day.long; row.append(cell); }
           nodes.head.append(row);
         }
-        const rows = view === "day" ? weeks.map(week => week.map(date => ({ label: String(date.day), value: date.toString() }))) : values!;
+        const rows = view === "day" ? weeks.map(week => week.map(date => ({ label: numbers.format(date.day), value: date.toString() }))) : view === "year" ? values!.map(row => row.map(item => ({ ...item, label: numbers.format(Number(item.value)) }))) : values!;
         for (const rowValues of rows) {
           const row = document.createElement("tr");
           for (const item of rowValues) { const cell = document.createElement("td"), button = document.createElement("button"); button.type = "button"; button.part.add(view); button.dataset.calendarValue = String(item.value); button.textContent = item.label; cell.append(button); row.append(cell); }

@@ -1,4 +1,5 @@
 import "./theme.js";
+import { applyLocale, applyFieldLocale } from "./locale.js";
 import "./icons.js";
 import "../src/index.js";
 import { recipes } from "./recipes.js";
@@ -28,6 +29,7 @@ function markup(recipe: StylingRecipe, variant: string, id: string): string {
   const template = document.createElement("template"); template.innerHTML = recipe.markup;
   const element = template.content.querySelector<HTMLElement>(recipe.element)!;
   element.id = id;
+  applyFieldLocale(element);
   if (variant) for (const control of template.content.querySelectorAll(recipe.element)) control.classList.add(variant);
   const control = template.innerHTML;
   return `${recipe.field === false ? `<p class="recipe-label">${recipe.label}</p>` : `<label for="${id}">${recipe.label}</label>`}\n${control}`;
@@ -66,6 +68,7 @@ function render(): void {
     queueMicrotask(update);
     return panel;
   }));
+  applyLocale();
   document.querySelector("#recipe-parts")!.replaceChildren(...current.parts.map((part) => {
     const code = document.createElement("code"); code.textContent = `::part(${part})`; return code;
   }));
@@ -81,6 +84,7 @@ copy.addEventListener("click", async () => {
   } catch { status.textContent = "Copy unavailable. Select and copy the code above."; }
 });
 window.addEventListener("hashchange", render);
+document.addEventListener("hp-locale-change", renderSource);
 render();
 await Promise.all(["themes", "shadcn"].map(async (name) => {
   let css: string;

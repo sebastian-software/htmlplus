@@ -16,13 +16,17 @@ export interface DateTextFormat {
 const unmark = (text: string): string => text.replace(/[\u061c\u200e\u200f]/g, "");
 const escape = (text: string): string => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-/** Explicit numeric locale order, Gregorian dates, Latin digits, and literal separators. */
+/** Numeric locale order, numbering system, and separators around Gregorian ISO values. */
 export function dateTextFormat(locale: string): DateTextFormat | null {
   try {
     const canonical = Intl.getCanonicalLocales(locale)[0];
     if (!canonical || !Intl.DateTimeFormat.supportedLocalesOf([canonical]).length) return null;
-    const resolved = new Intl.Locale(canonical, { calendar: "gregory", numberingSystem: "latn" }).toString();
-    const formatter = new Intl.DateTimeFormat(resolved, { calendar: "gregory", numberingSystem: "latn", timeZone: "UTC", year: "numeric", month: "2-digit", day: "2-digit" });
+    const resolved = new Intl.Locale(canonical, { calendar: "gregory" }).toString();
+    const formatter = new Intl.DateTimeFormat(resolved, { calendar: "gregory", timeZone: "UTC", year: "numeric", month: "2-digit", day: "2-digit" });
+    const numbers = new Intl.NumberFormat(resolved, { useGrouping: false });
+    const digits = new Map(Array.from({ length: 10 }, (_, digit) => [numbers.format(digit), String(digit)]));
+    const ascii = (text: string): string => Array.from(text, character => digits.get(character) ?? character).join("");
+    const zero = numbers.format(0);
     const sample = parseCalendarDate("2006-11-22")!;
     const parts = formatter.formatToParts(sample.toDate("UTC"));
     const order: string[] = [];
@@ -35,9 +39,9 @@ export function dateTextFormat(locale: string): DateTextFormat | null {
     return {
       locale: resolved,
       placeholder: parts.map(part => part.type === "year" ? "YYYY" : part.type === "month" ? "MM" : part.type === "day" ? "DD" : unmark(part.value)).join(""),
-      format: date => unmark(formatter.formatToParts(date.toDate("UTC")).map(part => part.type === "year" ? part.value.padStart(4, "0") : part.value).join("")),
+      format: date => unmark(formatter.formatToParts(date.toDate("UTC")).map(part => part.type === "year" ? zero.repeat(Math.max(0, 4 - Array.from(part.value).length)) + part.value : part.value).join("")),
       parse(text) {
-        text = unmark(text.trim());
+        text = ascii(unmark(text.trim()));
         const iso = parseCalendarDate(text); if (iso) return iso;
         const match = matcher.exec(text); if (!match) return null;
         const values = Object.fromEntries(order.map((name, index) => [name, match[index + 1]!]));

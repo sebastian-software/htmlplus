@@ -17,9 +17,19 @@ test('numeric locale formats preserve date-only values and parse only their expl
   assert.equal(dateTextFormat('en-GB').parse('02/03/2028')?.toString(),'2028-03-02');
   for(const text of ['02/30/2028','2/3/28','tomorrow','2028-02','2.29.2028']) assert.equal(dateTextFormat('en-US').parse(text),null);
 });
-test('locale validation is explicit and calendar or numbering extensions cannot change the value model', () => {
+test('locale validation is explicit and calendar extensions cannot change the Gregorian value model', () => {
   assert.equal(dateTextFormat('not_a_locale'),null);assert.equal(dateTextFormat('zz-ZZ'),null);
   const format=dateTextFormat('th-TH-u-ca-buddhist');
-  assert.match(format.locale,/gregory/);assert.match(format.locale,/latn/);
+  assert.match(format.locale,/gregory/);
   assert.equal(format.parse(format.format(parseCalendarDate('2028-02-29')))?.toString(),'2028-02-29');
+});
+test('localized digits round-trip through Intl while submission remains ASCII ISO', () => {
+  for (const locale of ['ar-EG','fa-IR','bn-BD','th-TH-u-nu-thai','en-US-u-nu-mathsans']) {
+    const format = dateTextFormat(locale), date = parseCalendarDate('2028-02-29');
+    const expected = new Intl.DateTimeFormat(locale, {calendar:'gregory',timeZone:'UTC',year:'numeric',month:'2-digit',day:'2-digit'}).format(date.toDate('UTC')).replace(/[\u061c\u200e\u200f]/g,'');
+    assert.equal(format.format(date), expected);
+    assert.equal(format.parse(expected)?.toString(),'2028-02-29');
+    assert.equal(format.parse('2028-02-29')?.toString(),'2028-02-29');
+    assert.equal(format.parse(format.format(parseCalendarDate('0001-01-01')))?.toString(),'0001-01-01');
+  }
 });

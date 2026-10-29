@@ -18,5 +18,6 @@ When a decision changes, edit the same record, update its date and change notes,
 | [0008](0008-selection-popups.md) | accepted | Zag single selection and shadow-local top-layer popups |
 | [0009](0009-calendar-date-picker.md) | accepted | Gregorian date-only values, native editing, and Zag calendar navigation |
 | [0010](0010-calendar-date-ranges.md) | accepted | Two named date boundaries, visible partial state, and complete-range validation |
+| [0011](0011-functional-locale-context.md) | accepted | Inherited HTML language, Intl functional displays, and stable canonical date/number values |
 
 Acceptance of a design constraint is distinct from implementation completion. Twenty-one form controls, Accordion, Tabs, a native Button family, a live playground, and a tested static export are implemented; compatibility limits are documented in the project README.

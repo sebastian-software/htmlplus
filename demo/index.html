@@ -19,6 +19,7 @@
     <a class="wordmark" href="./" aria-label="html plus home">html<span>+</span></a>
     <span class="masthead-label">Form playground</span>
     <div class="masthead-actions">
+      <label class="theme-picker" for="locale">Locale <select id="locale" aria-description="Changes date and number displays; interface labels stay English."><option value="en-US">en-US</option><option value="en-GB">en-GB</option><option value="de-DE">de-DE</option><option value="fr-FR">fr-FR</option><option value="ja-JP">ja-JP</option><option value="ar-EG" data-direction="rtl">ar-EG</option></select></label>
       <label class="theme-picker" for="theme">Appearance <select id="theme"><option value="base">Light</option><option value="dark">Dark</option></select></label>
       <label class="theme-picker" for="surface">Surface <select id="surface"><option value="layered">Layered</option><option value="flat">Flat</option></select></label>
       <label class="theme-picker" for="palette">Palette <select id="palette"><option value="neutral">Neutral</option><option value="blue">Blue</option><option value="green">Green</option><option value="orange">Orange</option><option value="rose">Rose</option><option value="utility">Utility (custom)</option></select></label>
@@ -115,12 +116,12 @@
             </div>
             <div class="field" id="date-example">
               <div class="field-heading"><label for="date-field">Delivery date</label><a class="recipe-link" href="./styling.html#h6-date-picker" aria-label="Style h6-date-picker"><code>&lt;h6-date-picker&gt;</code></a></div>
-              <h6-date-picker id="date-field" name="delivery_date" value="2026-10-28" min="2026-10-01" max="2027-12-31" locale="en-US" aria-describedby="date-feedback" required></h6-date-picker>
+              <h6-date-picker id="date-field" name="delivery_date" value="2026-10-28" min="2026-10-01" max="2027-12-31" aria-describedby="date-feedback" required></h6-date-picker>
               <p class="feedback" id="date-feedback">Enter MM/DD/YYYY or choose a day. The form receives YYYY-MM-DD without a time zone.</p>
             </div>
             <div class="field" id="date-range-example">
               <div class="field-heading"><label for="date-range-field">Travel period</label><a class="recipe-link" href="./styling.html#h6-date-range-picker" aria-label="Style h6-date-range-picker"><code>&lt;h6-date-range-picker&gt;</code></a></div>
-              <h6-date-range-picker id="date-range-field" name="period" value='["2026-10-28","2026-11-03"]' min="2026-10-01" max="2027-12-31" locale="en-US" aria-describedby="date-range-feedback" required></h6-date-range-picker>
+              <h6-date-range-picker id="date-range-field" name="period" value='["2026-10-28","2026-11-03"]' min="2026-10-01" max="2027-12-31" aria-describedby="date-range-feedback" required></h6-date-range-picker>
               <p class="feedback" id="date-range-feedback">Choose two days or type both dates. The form receives period.start and period.end as YYYY-MM-DD.</p>
             </div>
             <p class="field-section">04 <span>Numeric choices</span></p>

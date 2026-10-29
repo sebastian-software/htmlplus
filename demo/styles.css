@@ -20,8 +20,8 @@
 }
 
 @layer layout {
-  .masthead { max-width:1280px; margin:auto; height:100px; padding:0 48px; display:flex; align-items:center; gap:26px; }
-  .masthead-actions { display:flex; align-items:center; gap:28px; margin-left:auto; }
+  .masthead { max-width:1280px; margin:auto; min-height:100px; padding:20px 48px; display:flex; align-items:center; flex-wrap:wrap; gap:20px; }
+  .masthead-actions { display:flex; flex-wrap:wrap; align-items:center; gap:20px; margin-left:auto; }
   main { max-width:1280px; margin:auto; padding:35px 48px 0; }
   .intro { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:35px; }
   .intro h1 { font-size:clamp(30px,3.3vw,43px); font-weight:650; letter-spacing:-1.7px; line-height:1.17; margin-bottom:12px; }
@@ -150,13 +150,19 @@
 
 @layer themes {
   @media (max-width: 1050px) {
-    .masthead { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); height: auto; padding-block: 22px; gap: 18px; }
+    .masthead { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); height: auto; padding-block: 22px; gap: 18px; }
     .masthead-label { display: none; }
     .masthead-actions { display: contents; }
     .masthead .wordmark { grid-column: 1 / 3; grid-row: 1; justify-self: start; }
-    .masthead .recipes-link { grid-column: 3; grid-row: 1; justify-self: end; }
+    .masthead .recipes-link { grid-column: 3 / 5; grid-row: 1; justify-self: end; }
     .masthead .theme-picker { grid-row: 2; flex-direction: column; align-items: stretch; gap: 6px; width: 100%; min-width: 0; font-size: 11px; }
     .masthead .theme-picker select { width: 100%; min-width: 0; font-size: 12px; }
+  }
+  @media (max-width: 540px) {
+    .masthead { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .masthead .wordmark { grid-column: 1; }
+    .masthead .recipes-link { grid-column: 2; }
+    .masthead .theme-picker { grid-row: auto; }
   }
 }
 

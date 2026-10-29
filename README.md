@@ -164,7 +164,8 @@ Direct Firefox automation on this macOS host remains unavailable; the Linux cont
 - [Component and application boundary](docs/adr/0007-component-application-boundary.md): the guiding principle, reusable component logic, and application responsibilities.
 - [Project plan](docs/PLAN.md): current scope and delivery order. The initial requested catalog is implemented; later candidates are recorded in the plan.
 - [Date Range Picker](docs/DATE-RANGE-PICKER.md): two named ISO boundaries, native drafts, range preview, validation, and styling.
-- [Date Picker](docs/DATE-PICKER.md): ISO values, explicit locale parsing, raw drafts, constraints, calendar navigation, and styling.
+- [Functional locale formatting](docs/LOCALE.md): inherited HTML language, Intl dates/numbers, dynamic changes, week information, and the demo locale picker.
+- [Date Picker](docs/DATE-PICKER.md): ISO values, locale-aware parsing, raw drafts, constraints, calendar navigation, and styling.
 - [Select and Combobox](docs/SELECTION-CONTROLS.md): identifiers, queries, options, form events, popup behavior, and styling.
 - [Interaction elements](docs/INTERACTIONS.md): Toggle, Accordion, and Tabs APIs, section markup, events, native form behavior, and validation.
 - [Headless interaction decision](docs/adr/0005-headless-interaction-logic.md): accepted Zag integration for ten interaction elements, form boundaries, and dependency upgrade checks.

@@ -183,3 +183,9 @@ Keep larger form components in separate slices: [File Upload #2](https://github.
 ## Formatted fields, 2026-10-29
 
 IBAN now displays uppercase groups of four, while its canonical value remains whitespace-free. OTP now displays individual decorative slots over one native editor, with configurable length for four-digit codes and six-digit verification codes. Both retain native selection and undo through targeted native edits; no multiple-input focus choreography or automatic submission is added. The [formatted fields guide](FORMATTED-FIELDS.md) and ADR-0003 record the legacy editing-command tradeoff, fallback, and device evidence limits. Existing recipes now demonstrate grouped IBAN and underlined OTP slots in Light/Dark.
+
+## 2026-10-29: Functional locale context
+
+Date Picker, Date Range Picker, and Number Input now inherit HTML language with explicit locale overrides and browser fallback. Intl supplies numeric date order, separators, digits, calendar names, and week information with the existing date-model fallback. Dynamic changes retain canonical values and invalid drafts. Both demo pages include a session-scoped Locale picker with six regional examples, including an RTL Arabic example; copied recipe HTML records its language and direction. UI copy stays English. [ADR-0011](adr/0011-functional-locale-context.md) and the [locale guide](LOCALE.md) document the contract and remaining Gregorian/message-localization limits.
+
+Local verification passed all 188 Chromium/WebKit browser checks and nine unit checks. A subsequent focused run passed 64 calendar, number, everyday-control, and locale checks after adding slot-reassignment handling, formatting-language annotations, and restoration cleanup. The Linux workflow covers Firefox as well. Manual browser inspection covered German numeric dates and Monday-first calendars, Arabic digits and RTL calendars, and the compact weekday headers.

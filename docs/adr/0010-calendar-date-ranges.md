@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-26
-- Updated: 2026-10-26
+- Updated: 2026-10-29
 - Lifecycle: living
 - Scope: bounded inclusive Gregorian date ranges
 
@@ -32,3 +32,5 @@ Focused browser checks cover selection, preview versus submitted state, partial 
 ## Changes
 
 - 2026-10-26: Accepted two named ISO boundaries, visible partial state with complete-range validation, independent native editors, shared calendar views, and the distinction between range gestures and identified text boundaries.
+
+- 2026-10-29: Adopted ADR-0011's inherited HTML language and localized numeric displays for both boundaries and the calendar, retaining ISO values and invalid drafts.

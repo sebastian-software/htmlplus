@@ -77,7 +77,7 @@ h6-toggle-group.toggles-joined::part(selected-option) { text-decoration: underli
   {
     element: "h6-date-range-picker", title: "Date Range Picker", label: "Travel period", variant: "Outlined range", className: "date-range-outlined",
     description: "Two native editors and one Zag calendar submit explicitly named date boundaries. Preview a range without changing its form values.",
-    markup: `<h6-date-range-picker name="period" value='["2026-10-28","2026-11-03"]' min="2026-10-01" max="2027-12-31" locale="en-US" required></h6-date-range-picker>`,
+    markup: `<h6-date-range-picker name="period" value='["2026-10-28","2026-11-03"]' min="2026-10-01" max="2027-12-31" required></h6-date-range-picker>`,
     parts: ["root", "control", "input", "start-field", "end-field", "start-input", "end-input", "start-label", "end-label", "trigger", "clear-button", "positioner", "content", "navigation", "prev-button", "view-button", "next-button", "view", "day-view", "month-view", "year-view", "grid", "weekday", "day", "selected-day", "today", "month", "year", "range-start", "range-end", "in-range", "preview-day"],
     css: `h6-date-range-picker.date-range-outlined::part(control) {
   background: var(--hp-muted, #f5f5f5);
@@ -98,7 +98,7 @@ h6-date-range-picker.date-range-outlined::part(range-end) {
   {
     element: "h6-date-picker", title: "Date Picker", label: "Delivery date", variant: "Framed calendar", className: "date-framed",
     description: "A native text editor and Zag calendar share one date-only form value. Localized text stays separate from YYYY-MM-DD submission.",
-    markup: '<h6-date-picker name="delivery_date" value="2026-10-28" min="2026-10-01" max="2027-12-31" locale="en-US" required></h6-date-picker>',
+    markup: '<h6-date-picker name="delivery_date" value="2026-10-28" min="2026-10-01" max="2027-12-31" required></h6-date-picker>',
     parts: ["root", "control", "input", "trigger", "clear-button", "positioner", "content", "navigation", "prev-button", "view-button", "next-button", "view", "day-view", "month-view", "year-view", "grid", "weekday", "day", "selected-day", "today", "month", "year"],
     css: `h6-date-picker.date-framed::part(control) {
   background: var(--hp-muted, #f5f5f5);
