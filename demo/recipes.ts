@@ -8,11 +8,27 @@ export interface StylingRecipe {
   markup: string;
   css: string;
   parts: string[];
+  selectors?: string[];
   field?: boolean;
 }
 
 /** Trusted, static authoring examples. This CSS is both shown and used by the previews. */
 export const recipes: readonly StylingRecipe[] = [
+  {
+    element: "h6-field", title: "Native Field", label: "Native HTML controls", field: false, variant: "Underlined fields", className: "field-underlined",
+    description: "Wrap a real input, textarea, or select. The wrapper supplies base styles; native controls retain labels, autocomplete, validation, editing, reset, and FormData. Optional native.css also works without JavaScript.",
+    markup: `<label class="native-field">Text field<h6-field><input name="reference" value="ORDER-1042" placeholder="Reference"></h6-field></label>
+<label class="native-field">Message<h6-field><textarea name="message" rows="3">Leave the parcel at reception.</textarea></h6-field></label>
+<label class="native-field">Reply via<h6-field><select name="reply_via"><option value="email" selected>Email</option><option value="phone">Phone</option></select></h6-field></label>`,
+    parts: [], selectors: ["h6-field > input", "h6-field > textarea", "h6-field > select"],
+    css: `h6-field.field-underlined > :is(input, textarea, select) {
+  border-width: 0 0 2px;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+h6-field.field-underlined { --hp-control-height: 2.75rem; }`,
+  },
   {
     element: "h6-checkbox", title: "Checkbox", label: "Notification choices", field: false, variant: "Outlined check", className: "checkbox-outlined",
     description: "Native checked and indeterminate states are independent. A mixed state displays a dash; checked determines form contribution.",
@@ -223,10 +239,10 @@ h6-toggle.toggle-pill:state(pressed)::part(button) {
     description: "Style the disclosure headers and content. Both ordinary inputs submit, including the field in a closed section.",
     markup: `<h6-accordion value='["delivery"]'>
   <section data-value="delivery" data-label="Delivery">
-    <label class="native-field">Delivery note<input name="delivery_note" value="Ring the bell"></label>
+    <label class="native-field">Delivery note<h6-field><input name="delivery_note" value="Ring the bell"></h6-field></label>
   </section>
   <section data-value="gift" data-label="Gift">
-    <label class="native-field">Gift message<input name="gift_message" value="Enjoy your gift!"></label>
+    <label class="native-field">Gift message<h6-field><input name="gift_message" value="Enjoy your gift!"></h6-field></label>
   </section>
 </h6-accordion>`, parts: ["root", "item", "heading", "trigger", "label", "indicator", "content"],
     css: `h6-accordion.accordion-boxed::part(root) {
@@ -248,10 +264,10 @@ h6-accordion.accordion-boxed::part(content) {
     description: "A stateful part styles the selected tab. Panel selection is view state; both panels' inputs stay in FormData.",
     markup: `<h6-tabs value="profile" aria-label="Contact details">
   <section data-value="profile" data-label="Profile">
-    <label class="native-field">Display name<input name="display_name" value="Ada Lovelace"></label>
+    <label class="native-field">Display name<h6-field><input name="display_name" value="Ada Lovelace"></h6-field></label>
   </section>
   <section data-value="receipts" data-label="Receipts">
-    <label class="native-field">Receipt email<input name="receipt_email" type="email" value="ada@example.test"></label>
+    <label class="native-field">Receipt email<h6-field><input name="receipt_email" type="email" value="ada@example.test"></h6-field></label>
   </section>
 </h6-tabs>`, parts: ["root", "list", "tab", "selected-tab", "panels", "panel"],
     css: `h6-tabs.tabs-underline::part(list) {

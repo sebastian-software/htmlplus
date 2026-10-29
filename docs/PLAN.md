@@ -1,6 +1,6 @@
 # Project plan
 
-Updated: 2026-10-29. Status: twenty-three implemented elements, a native Button family, a public GitHub repository, and an Actions-based Pages deployment. Fifteen elements use Zag. Physical-device autofill and manual assistive-technology checks remain open.
+Updated: 2026-10-29. Status: twenty-four implemented elements, a native Button family, a public GitHub repository, and an Actions-based Pages deployment. Fifteen elements use Zag. Physical-device autofill and manual assistive-technology checks remain open.
 
 ## Intended outcome
 
@@ -16,6 +16,7 @@ Names are provisional. The table describes implemented elements. Later candidate
 
 | Element | Main benefit | Submitted value |
 | --- | --- | --- |
+| `h6-field` | Shared base around native input, textarea, and select | No host entry; the original native control submits normally |
 | `h6-checkbox` | Independent checked/mixed states and derived select-all patterns | Configured string while checked; no entry otherwise |
 | `h6-radio-group` | One supplied choice with descriptions and disabled options | One enabled identifier |
 | `h6-number-input` | Native numeric editing and Zag step controls | One canonical numeric string |
@@ -55,7 +56,7 @@ Later candidates include money and unit fields, file collections, and hierarchic
 - **Select and combobox:** begin with single selection and direct options, following the segmented choice's label/identifier distinction. For a combobox, resolve what happens to a previous selection when its display text is edited; stale identifiers must not silently submit for a different query. Test IME, paste, native undo, unknown values, no results, disabled options, and dynamic option changes. Remote fetching and virtualization are separate application integrations.
 - **Date picker:** start with Gregorian calendar dates, independently of JavaScript timestamps. Display and parsing follow an explicit locale policy; the submitted value stays date-only. Check typed invalid/incomplete dates, leap days, min/max, clearing, keyboard calendar navigation, and text editing before adding date ranges or time selection.
 
-Every new element needs the built-in neutral base, deliberate CSS parts/tokens/states, and its own working Base and styled examples. New fields also belong in the live FormData playground. Companion components should demonstrate that their contained fields still submit correctly. No candidate is complete on keyboard logic alone.
+Every new element needs the built-in neutral base, deliberate CSS hooks/tokens/states, and its own working Base and styled examples. New fields also belong in the live FormData playground. Companion components should demonstrate that their contained fields still submit correctly. No candidate is complete on keyboard logic alone.
 
 ## Specialized input fields
 
@@ -189,3 +190,11 @@ IBAN now displays uppercase groups of four, while its canonical value remains wh
 Date Picker, Date Range Picker, and Number Input now inherit HTML language with explicit locale overrides and browser fallback. Intl supplies numeric date order, separators, digits, calendar names, and week information with the existing date-model fallback. Dynamic changes retain canonical values and invalid drafts. Both demo pages include a session-scoped Locale picker with six regional examples, including an RTL Arabic example; copied recipe HTML records its language and direction. UI copy stays English. [ADR-0011](adr/0011-functional-locale-context.md) and the [locale guide](LOCALE.md) document the contract and remaining Gregorian/message-localization limits.
 
 Local verification passed all 188 Chromium/WebKit browser checks and nine unit checks. A subsequent focused run passed 64 calendar, number, everyday-control, and locale checks after adding slot-reassignment handling, formatting-language annotations, and restoration cleanup. The Linux workflow covers Firefox as well. Manual browser inspection covered German numeric dates and Monday-first calendars, Arabic digits and RTL calendars, and the compact weekday headers.
+
+## 2026-10-29: Styled native fields
+
+Added presentation-only `h6-field` around original light-DOM input, textarea, and select controls. Native children retain their own labels, form attributes, values, validation, editing, and reset. A shared CSS factory supplies built-in slotted defaults and optional layered `native.css` rules for the same base without JavaScript. Styles opt in through the wrapper; no global reset is added. ADR-0001 and ADR-0002 record the native-ownership and styling tradeoffs; [native fields](NATIVE-FIELDS.md) documents integration and limits.
+
+The playground includes three native field examples and now starts with thirty-three entries. Existing native fields in Tabs and Accordion use the same wrapper. The gallery has twenty-five recipes, including Native Field's Base/Underlined previews with Light/Dark, token overrides, and ordinary CSS selectors.
+
+Local verification covered all 198 Chromium/WebKit checks and nine unit checks. The initial full run passed 197 browser checks; an existing assertion became ambiguous because another field now submits `email`. After scoping it to the `updates` row, all eighteen playground checks passed. The ten new native-field checks passed in both focused and full runs, including a JavaScript-disabled page. Manual browser inspection covered the Base/Underlined typography, native select, and actual values in Dark mode. Firefox remains part of Linux CI.

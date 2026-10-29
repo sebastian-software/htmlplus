@@ -4,7 +4,7 @@
 - Created: 2026-10-22
 - Updated: 2026-10-29
 - Lifecycle: living
-- Implementation: twenty-one form controls, two companion elements, a native Button family, and a live playground
+- Implementation: twenty-one form controls, three companion elements, a native Button family, and a live playground
 
 ## Context and decision
 
@@ -22,6 +22,8 @@ Use the platform's form mechanisms. Existing native inputs may remain the submis
 - Compare implementations with a real HTML form before expanding the catalog. Separate current behavior from intended support claims.
 
 Accordion and Tabs are companion elements rather than submission owners. Their sections stay in light DOM so contained inputs preserve their original form association. Hidden panels retain their values and constraints. Interactive validation reveals the first invalid section; secondary hidden invalid fields suppress only their native validation UI during that attempt, not submission blocking. See the [interaction guide](../INTERACTIONS.md).
+
+Native Field (`h6-field`) is also a companion element. It gives a direct native input, textarea, or select the shared base appearance while retaining the original control in light DOM. Names, values, constraints, labels, autofill hints, and form association belong on that native control. The wrapper is not form-associated, does not mirror a value API, and creates no hidden proxy. A new shadow-owned editor and forwarding API would duplicate native contracts without adding interaction behavior. Use this wrapper when presentation is the only gap; specialized controls remain appropriate when value formats or interactions differ. See [native fields](../NATIVE-FIELDS.md).
 
 Select and Combobox submit only enabled selected identifiers. Query edits invalidate selection, and query-only text does not become a form value. Their form and popup contracts are recorded in [ADR-0008](0008-selection-popups.md).
 
@@ -61,3 +63,5 @@ Native action buttons remain actual `<button>` elements styled by the optional `
 - 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.
 
 - 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.
+
+- 2026-10-29: Added Native Field as a presentation-only companion, retaining original light-DOM control ownership instead of forwarding native form APIs through another form-associated host.

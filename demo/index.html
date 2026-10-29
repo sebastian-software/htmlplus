@@ -29,7 +29,7 @@
 
   <main id="playground">
     <div class="intro">
-      <div><h1>Let HTML do the form work.</h1><p>Twenty-three components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
+      <div><h1>Let HTML do the form work.</h1><p>Twenty-four components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
       <span class="preview-label"><span aria-hidden="true"></span> Early preview</span>
     </div>
 
@@ -49,10 +49,10 @@
               <div class="field-heading"><span class="component-label">Contact details</span><a class="recipe-link" href="./styling.html#h6-tabs" aria-label="Style h6-tabs"><code>&lt;h6-tabs&gt;</code></a></div>
               <h6-tabs id="contact-tabs" value="profile" aria-label="Contact details">
                 <section data-value="profile" data-label="Profile">
-                  <label class="native-field">Display name<input name="display_name" value="Ada Lovelace" required></label>
+                  <label class="native-field">Display name<h6-field><input name="display_name" value="Ada Lovelace" required></h6-field></label>
                 </section>
                 <section data-value="receipts" data-label="Receipts">
-                  <label class="native-field">Receipt email<input name="receipt_email" type="email" value="ada@example.test" required></label>
+                  <label class="native-field">Receipt email<h6-field><input name="receipt_email" type="email" value="ada@example.test" required></h6-field></label>
                 </section>
               </h6-tabs>
               <p class="feedback">Both panels contribute their fields. Arrow keys move between tabs.</p>
@@ -61,10 +61,10 @@
               <div class="field-heading"><span class="component-label">Delivery instructions</span><a class="recipe-link" href="./styling.html#h6-accordion" aria-label="Style h6-accordion"><code>&lt;h6-accordion&gt;</code></a></div>
               <h6-accordion id="delivery-accordion" value='["delivery"]'>
                 <section data-value="delivery" data-label="Delivery">
-                  <label class="native-field">Delivery note<input name="delivery_note" value="Ring the bell" required></label>
+                  <label class="native-field">Delivery note<h6-field><input name="delivery_note" value="Ring the bell" required></h6-field></label>
                 </section>
                 <section data-value="gift" data-label="Gift">
-                  <label class="native-field">Gift message<input name="gift_message" value="Enjoy your gift!"></label>
+                  <label class="native-field">Gift message<h6-field><input name="gift_message" value="Enjoy your gift!"></h6-field></label>
                 </section>
               </h6-accordion>
               <p class="feedback">Closed sections keep their form values. Invalid fields reveal their section.</p>
@@ -207,6 +207,21 @@
               </table>
               <p class="feedback" id="selection-feedback">2 of 3 selected. The header checkbox has no submitted value.</p>
             </div>
+            <p class="field-section" id="native-fields">08 <span>Native HTML, shared styling</span></p>
+            <div class="field">
+              <div class="field-heading"><label for="reference">Reference</label><a class="recipe-link" href="./styling.html#h6-field" aria-label="Style native fields"><code>&lt;h6-field&gt;</code></a></div>
+              <h6-field><input id="reference" name="reference" value="ORDER-1042" autocomplete="off" aria-describedby="reference-feedback"></h6-field>
+              <p class="feedback" id="reference-feedback">The real input owns its value, validation, and form entry. The wrapper supplies its base style.</p>
+            </div>
+            <div class="field">
+              <div class="field-heading"><label for="message">Message</label></div>
+              <h6-field><textarea id="message" name="message" rows="3">Please leave the parcel at reception.</textarea></h6-field>
+            </div>
+            <div class="field">
+              <div class="field-heading"><label for="reply-via">Reply via</label></div>
+              <h6-field><select id="reply-via" name="reply_via"><option value="email" selected>Email</option><option value="phone">Phone</option><option value="none">No reply needed</option></select></h6-field>
+              <p class="feedback">A native select keeps its platform picker. Appearance follows the same theme.</p>
+            </div>
           </fieldset>
 
           <div class="field-heading action-heading"><span class="component-label">Native actions</span><a class="recipe-link" href="./styling.html#button" aria-label="Style buttons"><code>&lt;button&gt;</code></a></div>
@@ -218,7 +233,7 @@
 
       <aside class="inspector-column" aria-labelledby="data-heading">
         <section class="inspector">
-          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">30 entries</span></div>
+          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">33 entries</span></div>
           <div class="inspector-toolbar"><div class="view-switch" role="group" aria-label="Data format"><button type="button" data-view="entries" aria-pressed="true">Entries</button><button type="button" data-view="json" aria-pressed="false">JSON</button></div><span class="reading-label">new FormData(form)</span></div>
           <div id="entries-view" class="data-view"><table><caption class="visually-hidden">Current form entries, preserving repeated field names</caption><thead><tr><th scope="col">Name</th><th scope="col">Value</th></tr></thead><tbody id="entries-body"></tbody></table><p id="empty-data" class="empty-data" hidden>No entries. Disabled fields are left out of FormData.</p></div>
           <div id="json-view" class="data-view" hidden><pre class="json-code" id="json-output" aria-label="Current form data as JSON"></pre><p class="json-note">Repeated names become arrays in this JSON view.</p></div>

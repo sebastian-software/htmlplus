@@ -30,9 +30,9 @@ Resolve the effects at use through `--hp-shadow-*` fallbacks and the consuming s
 
 - Theme common colors and rounding without `::part`. Keep deliberate parts and custom states for detailed component variants; do not expose arbitrary shadow descendants as API.
 - Public defaults remain consumption fallbacks, not declarations that shadow inherited tokens. The adapter's internal properties are not public API. Its current-element selector must grow with the catalog.
-- Light/Dark appearances with independently selected palettes in both demo pages use tokens for the common theme. All twenty-three elements retain an individual part-based recipe with the exact preview CSS available for copying.
+- Light/Dark appearances with independently selected palettes in both demo pages use tokens for the common theme. All twenty-four elements retain an individual CSS recipe with the exact preview source available for copying; Native Field uses ordinary child selectors and other elements use public parts.
 - Focus, invalid, disabled, and selected states retain visible behavior. Browser checks cover nested and host overrides, semantic role separation, adapter precedence and missing values, radius derivation, light/dark contrast, forced colors, and FormData preservation. Firefox runs in the Linux CI container; direct macOS Firefox automation remains unavailable.
-- `selected-option` and `selected-tab` parts follow live state; Toggle exposes pressed and Switch exposes checked custom states. Native light-DOM fields inside companion elements use ordinary application CSS.
+- `selected-option` and `selected-tab` parts follow live state; Toggle exposes pressed and Switch exposes checked custom states. Native light-DOM fields can opt into `h6-field` for the shared base and use ordinary application CSS for details.
 - Revisit when a reasonable design requires private DOM access or a new element needs an additional semantic role. Keep exact values and the token inventory in the styling guide and stylesheet sources.
 
 Select and Combobox consume `--hp-popover` / `--hp-popover-foreground` for popup surfaces and text, with accent roles for highlighted options. The shadow-local top-layer approach in [ADR-0008](0008-selection-popups.md) preserves inherited tokens and public parts.
@@ -53,7 +53,11 @@ Date Range Picker uses the same popup tokens, primary boundary colors, accent sp
 - [MDN: CSS shadow parts](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::part)
 - [MDN: custom state selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:state)
 
-Native Button primitives use an optional generated `dist/native.css` and the `hp-button` class, rather than a shadow wrapper. The stylesheet shares the same token, radius, and surface helpers, preserves ordinary CSS overrides, and works without JavaScript. The gallery includes a native Button recipe alongside twenty-three element recipes. Shadow controls continue to include their complete neutral bases. Checkbox, Radio Group, Number Input, Password Input, and Toggle Group follow the existing parts and semantic-theme contract.
+Native Button primitives use an optional generated `dist/native.css` and the `hp-button` class, rather than a shadow wrapper. The stylesheet shares the same token, radius, and surface helpers, preserves ordinary CSS overrides, and works without JavaScript. The gallery includes a native Button recipe alongside twenty-four element recipes. Shadow controls continue to include their complete neutral bases. Checkbox, Radio Group, Number Input, Password Input, and Toggle Group follow the existing parts and semantic-theme contract.
+
+Native Field applies scoped defaults to its slotted input, textarea, or select using the same semantic tokens. It leaves the editor in light DOM: ordinary application selectors can override its base, and the control exposes no shadow part. This deliberately preserves native ownership and editable CSS at the cost of isolation from existing application input styles. The shadcn adapter resolves on both the wrapper and native child for local theme overrides.
+
+Shadow DOM does not remove user-agent styling. Set the properties needed for the base explicitly; do not use `all: unset` or a document-wide reset. A shared CSS factory produces Native Field's built-in slotted styles and the optional `native.css` rules, which opt in only through `h6-field`. The stylesheet uses a cascade layer and supplies the same base before registration or without JavaScript. Native select appearance and platform popups remain browser-controlled. The [native fields guide](../NATIVE-FIELDS.md) records integration, supported types, and override behavior.
 
 ## Changes
 
@@ -79,3 +83,5 @@ Native Button primitives use an optional generated `dist/native.css` and the `hp
 - 2026-10-29: Added shared surface-shadow roles inspired by React Aria, explicit-scheme Light/Dark shading, and an independent Layered/Flat comparison in both demos. Preserve the shadcn color/radius contract and existing form behavior.
 
 - 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.
+
+- 2026-10-29: Added targeted native-field defaults through `h6-field`, ordinary CSS overrides, and a shared optional stylesheet for operation without JavaScript. Documented the distinction between shadow encapsulation and browser default styles.

@@ -1,6 +1,6 @@
 import { test, expect } from 'playwright/test';
 
-test.beforeEach(async ({ page }) => { await page.goto('/'); await expect(page.locator('#entry-count')).toHaveText('30 entries'); });
+test.beforeEach(async ({ page }) => { await page.goto('/'); await expect(page.locator('#entry-count')).toHaveText('33 entries'); });
 const entry = (page, name) => page.locator('#demo-form').evaluate((form, name) => new FormData(form).get(name), name);
 
 test('IBAN groups defaults and assignments while keeping canonical submission and invalid characters', async ({ page }) => {

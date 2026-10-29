@@ -4,7 +4,7 @@
 
 html+ provides framework-independent form controls and core UI primitives. Components handle interaction, value formats, and form participation. Your application supplies the data, business rules, and workflows.
 
-**Status:** working prototype. Twenty-three elements (twenty-one form controls, Accordion, and Tabs), a native Button family, a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
+**Status:** working prototype. Twenty-four elements (twenty-one form controls, Accordion, Tabs, and Native Field), a native Button family, a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
 
 **Demo:** [Form playground](https://sebastian-software.github.io/htmlplus/) · [Styling recipes](https://sebastian-software.github.io/htmlplus/styling.html) · [Deployment checks](https://github.com/sebastian-software/htmlplus/actions/workflows/pages.yml)
 
@@ -37,12 +37,13 @@ The playground shows actual `new FormData(form)` entries as fields change. Switc
 
 ## Styling examples
 
-Open **Styling** in the playground, or click an element's name beside a field. Each of the twenty-three elements has a live Base preview, a CSS variation, a list of public parts, and copyable HTML and CSS. The neutral base is built into the components. The optional `themes.css` supplies prefixed light/dark palettes; `shadcn.css` connects an existing shadcn palette through the `hp-shadcn` class. Both files are copied into `dist/` at build time. The Surface picker compares Layered and Flat finishes independently of appearance and palette. Five `--hp-shadow-*` roles control depth across buttons, fields, handles, and popovers, inspired by the React Aria examples. Semantic token suffixes and roles match the documented shadcn theme contract, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
+Open **Styling** in the playground, or click an element's name beside a field. Each of the twenty-four elements has a live Base preview, a CSS variation, documented styling hooks, and copyable HTML and CSS. Native Field uses ordinary native-control selectors; the other elements expose public shadow parts. The neutral base is built into the components. The optional `themes.css` supplies prefixed light/dark palettes; `shadcn.css` connects an existing shadcn palette through the `hp-shadcn` class. Both files are copied into `dist/` at build time. The Surface picker compares Layered and Flat finishes independently of appearance and palette. Five `--hp-shadow-*` roles control depth across buttons, fields, handles, and popovers, inspired by the React Aria examples. Semantic token suffixes and roles match the documented shadcn theme contract, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
 
 ## Implemented elements
 
 | Element | Behavior |
 | --- | --- |
+| `h6-field` | Shared base styling around real light-DOM input, textarea, or select; the native control owns its form value |
 | `h6-switch` | Checkbox-like form value, keyboard activation, labels, required state, disabled fieldsets, and reset |
 | `h6-iban` | Canonical uppercase submission without whitespace; ten national-format profiles and the IBAN checksum |
 | `h6-bic` | Canonical uppercase submission; 8- or 11-character BIC structure checks |
@@ -67,15 +68,15 @@ Open **Styling** in the playground, or click an element's name beside a field. E
 | `h6-toggle-group` | Single or multiple selection with repeated form entries, using Zag |
 | `h6-rating` | Clearable whole score, separate hover preview, and an unanswered required state; Zag behavior |
 
-The optional `dist/native.css` styles real `<button class="hp-button">` elements with primary, secondary, outline, ghost, destructive, icon, size, and loading examples. Native submit/reset and submitter behavior stay intact without JavaScript. The gallery has a separate Button recipe. See [everyday controls](docs/EVERYDAY-CONTROLS.md) for all five new field APIs, mixed table selection, and the native button contract.
+The optional `dist/native.css` styles real `<button class="hp-button">` elements and native controls inside `h6-field`, including without JavaScript. Buttons have primary, secondary, outline, ghost, destructive, icon, size, and loading examples. Native submit/reset and submitter behavior stay intact. The gallery has a separate Button recipe. See [native fields](docs/NATIVE-FIELDS.md) for the wrapper and [everyday controls](docs/EVERYDAY-CONTROLS.md) for mixed table selection and the native button contract.
 
-Every control includes a neutral base appearance, with consistent editor typography and centered SVG icons. No external component stylesheet is required. Override inherited `--hp-*` tokens or public parts to customize it.
+Every component includes a neutral base appearance, with consistent editor typography and centered SVG icons where applicable. No external component stylesheet is required after registration. Override inherited `--hp-*` tokens, public parts, or ordinary CSS on wrapped native fields to customize it.
 
-The twenty-one form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. The text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: an IBAN displays `DE89 3704 0044 0532 0130 00` while the form receives `DE89370400440532013000`. Verification codes use visual character slots over one native input. Targeted native editing commands preserve undo during formatting; [formatted fields](docs/FORMATTED-FIELDS.md) documents the behavior and compatibility fallback.
+The twenty-one form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. Native Field also leaves its input in light DOM, preserving native values, attributes, labels, validation, and reset without a second submission owner. The specialized text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: an IBAN displays `DE89 3704 0044 0532 0130 00` while the form receives `DE89370400440532013000`. Verification codes use visual character slots over one native input. Targeted native editing commands preserve undo during formatting; [formatted fields](docs/FORMATTED-FIELDS.md) documents the behavior and compatibility fallback.
 
 ## Use a control
 
-After building, import `dist/src/index.js` as a browser ES module. It registers the twenty-three elements and exports their classes. Checkbox, Radio Group, Number Input, Password Input, Toggle Group, Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker use Zag's vanilla adapter internally; there is no runtime component framework dependency. The build type-checks TypeScript, emits declarations, and bundles browser modules with shared chunks using esbuild. Deploy the complete `dist/` tree so those chunks remain available. Source modules also export their individual classes for explicit registration. CSS parts and inherited `--hp-*` custom properties are the styling surface; the demo demonstrates both.
+After building, import `dist/src/index.js` as a browser ES module. It registers the twenty-four elements and exports their classes. Checkbox, Radio Group, Number Input, Password Input, Toggle Group, Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker use Zag's vanilla adapter internally; there is no runtime component framework dependency. The build type-checks TypeScript, emits declarations, and bundles browser modules with shared chunks using esbuild. Deploy the complete `dist/` tree so those chunks remain available. Source modules also export their individual classes for explicit registration. Inherited `--hp-*` custom properties, CSS parts, and ordinary selectors for native fields form the styling surface.
 
 ```html
 <script type="module" src="/dist/src/index.js"></script>
@@ -90,7 +91,7 @@ After building, import `dist/src/index.js` as a browser ES module. It registers 
 </form>
 ```
 
-These are JavaScript-dependent controls. Select, Combobox, Date Picker, and Date Range Picker also require the native Popover API; see the [selection guide](docs/SELECTION-CONTROLS.md) for their popup and browser boundaries. A no-JavaScript fallback and server-side rendering integration are not implemented.
+The custom form controls depend on JavaScript. Select, Combobox, Date Picker, and Date Range Picker also require the native Popover API; see the [selection guide](docs/SELECTION-CONTROLS.md) for their popup and browser boundaries. Their no-JavaScript fallback and server-side rendering integration are not implemented. Native Field and the Button family retain native behavior without JavaScript; `native.css` supplies their opt-in base appearance in that case.
 
 The bundled runtime dependencies' [third-party notices](THIRD_PARTY_NOTICES.txt) are copied into `dist/` and the static export. Keep them with the distributed browser modules.
 
@@ -165,6 +166,7 @@ Direct Firefox automation on this macOS host remains unavailable; the Linux cont
 - [Project plan](docs/PLAN.md): current scope and delivery order. The initial requested catalog is implemented; later candidates are recorded in the plan.
 - [Date Range Picker](docs/DATE-RANGE-PICKER.md): two named ISO boundaries, native drafts, range preview, validation, and styling.
 - [Functional locale formatting](docs/LOCALE.md): inherited HTML language, Intl dates/numbers, dynamic changes, week information, and the demo locale picker.
+- [Native fields](docs/NATIVE-FIELDS.md): styled native input, textarea, and select; light-DOM ownership, CSS overrides, and operation without JavaScript.
 - [Date Picker](docs/DATE-PICKER.md): ISO values, locale-aware parsing, raw drafts, constraints, calendar navigation, and styling.
 - [Select and Combobox](docs/SELECTION-CONTROLS.md): identifiers, queries, options, form events, popup behavior, and styling.
 - [Interaction elements](docs/INTERACTIONS.md): Toggle, Accordion, and Tabs APIs, section markup, events, native form behavior, and validation.

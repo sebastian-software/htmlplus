@@ -37,7 +37,7 @@ function markup(recipe: StylingRecipe, variant: string, id: string): string {
 
 function renderSource(): void {
   source.textContent = format === "adapter" ? adapterCss : format === "base" ? baseCss : format === "html"
-    ? `${current.element === "button" ? '<link rel="stylesheet" href="./dist/native.css">\n' : ""}<form>\n${markup(current, current.className, "example-field").split("\n").map((line) => `  ${line}`).join("\n")}\n</form>`
+    ? `${["button", "h6-field"].includes(current.element) ? '<link rel="stylesheet" href="./dist/native.css">\n' : ""}<form>\n${markup(current, current.className, "example-field").split("\n").map((line) => `  ${line}`).join("\n")}\n</form>`
     : current.css;
   copy.textContent = format === "html" ? "Copy HTML" : format === "base" ? "Copy theme CSS" : format === "adapter" ? "Copy adapter" : "Copy CSS";
   for (const button of document.querySelectorAll<HTMLButtonElement>("[data-source]")) button.setAttribute("aria-pressed", String(button.dataset.source === format));
@@ -69,8 +69,9 @@ function render(): void {
     return panel;
   }));
   applyLocale();
-  document.querySelector("#recipe-parts")!.replaceChildren(...current.parts.map((part) => {
-    const code = document.createElement("code"); code.textContent = `::part(${part})`; return code;
+  document.querySelector(".recipe-parts > span")!.textContent = current.selectors ? "Styling hooks" : "Public parts";
+  document.querySelector("#recipe-parts")!.replaceChildren(...(current.selectors ?? current.parts.map(part => `::part(${part})`)).map((selector) => {
+    const code = document.createElement("code"); code.textContent = selector; return code;
   }));
   renderSource();
 }

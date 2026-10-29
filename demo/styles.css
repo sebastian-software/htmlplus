@@ -58,9 +58,6 @@
   .field label,.switch-field label { font-size:14px; line-height:20px; font-weight:500; cursor:pointer; }
   .field-heading code,.switch-control code { color:var(--muted-foreground); font-size:11px; line-height:16px; font-weight:400; }
   h6-iban,h6-bic,h6-otp { display:block; }
-  .field input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-  .field input::placeholder { color:var(--muted-foreground); }
-  .field input:disabled { opacity:.5; background:var(--canvas); }
   .was-validated h6-iban:invalid::part(input),.was-validated h6-bic:invalid::part(input),.was-validated h6-otp:invalid::part(input) { border-color:var(--danger); }
   .feedback { font-size:12px; line-height:18px; color:var(--muted-foreground); margin-top:7px; min-height:17px; }
   .feedback[data-state=valid] { color:var(--success); }
@@ -136,8 +133,6 @@
   .component-label, .recipe-label { font-size: 14px; line-height: 20px; font-weight: 500; }
   .recipe-label { margin-bottom: 8px; }
   .native-field { display: grid; gap: 6px; min-width: 0; font-size: 14px; line-height: 20px; font-weight: 500; }
-  .native-field input { display: block; min-width: 0; width: 100%; height: 40px; border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 12px; background: var(--surface); color: var(--ink); font-size: 14px; line-height: 20px; font-weight: 400; }
-  .native-field input:disabled { opacity: .5; }
 }
 
 @layer components {
@@ -168,7 +163,6 @@
 
 /* Ordinary fields and action buttons share the component surface roles. */
 @layer components {
-  .native-field input, .field > input { box-shadow: var(--hp-shadow-inset, inset 0 1px 3px light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .4)), 0 1px 0 light-dark(rgb(255 255 255 / .8), rgb(255 255 255 / .04))); }
   .theme-picker select { box-shadow: var(--hp-shadow-raised, inset 0 1px 1px light-dark(rgb(255 255 255 / .14), rgb(255 255 255 / .08)), inset 0 -1px 0 light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .3)), inset 0 -6px 8px -6px light-dark(rgb(0 0 0 / .14), rgb(255 255 255 / .06)), 0 1px 2px light-dark(rgb(0 0 0 / .08), rgb(0 0 0 / .25))); }
   @media (forced-colors: active) { .native-field input, .theme-picker select { box-shadow: none; } }
 }

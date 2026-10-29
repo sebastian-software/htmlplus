@@ -34,7 +34,7 @@ test('native enhanced fields normalize, retain leading zeros, and block invalid 
   await expect(page.getByRole('status')).not.toContainText('Captured');
   await page.getByRole('textbox', { name: 'IBAN', exact: true }).fill('DE89370400440532013000');
   await page.getByRole('button', { name: 'Submit demo' }).click();
-  await expect(page.getByRole('status')).toContainText('Captured 30 entries locally. Nothing was sent.');
+  await expect(page.getByRole('status')).toContainText('Captured 33 entries locally. Nothing was sent.');
   expect((await data(page)).find(([name]) => name === 'code')?.[1]).toBe('001234');
 });
 
@@ -44,7 +44,7 @@ test('switch labels and keyboard activation follow checkbox submission and field
   expect((await data(page)).some(([name]) => name === 'updates')).toBe(false);
   await control.focus();
   await control.press('Space');
-  await expect(page.getByRole('cell', { name: 'email', exact: true })).toBeVisible();
+  await expect(page.getByRole('row').filter({ has: page.getByRole('cell', { name: 'updates', exact: true }) }).getByRole('cell', { name: 'email', exact: true })).toBeVisible();
   await page.getByLabel('Disable the fieldset').check();
   await expect(page.getByText('0 entries', { exact: true })).toBeVisible();
   await expect(page.getByText('Fields disabled', { exact: true })).toBeVisible();
@@ -52,7 +52,7 @@ test('switch labels and keyboard activation follow checkbox submission and field
   await control.evaluate((element) => element.click());
   expect(await control.evaluate((element) => element.checked)).toBe(true);
   await page.getByLabel('Disable the fieldset').uncheck();
-  await expect(page.getByText('30 entries', { exact: true })).toBeVisible();
+  await expect(page.getByText('33 entries', { exact: true })).toBeVisible();
 });
 
 test('native reset restores initial text values, switch state, and tag defaults', async ({ page }) => {

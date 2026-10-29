@@ -3,7 +3,7 @@
  * host so nested .dark scopes and local shadcn tokens are evaluated locally.
  * No palette, font, layout, or public --hp-* declarations are introduced.
  */
-:where(.hp-shadcn, .hp-shadcn :is(h6-switch, h6-iban, h6-bic, h6-otp, h6-duration, h6-interval, h6-tags, h6-segmented, h6-toggle, h6-accordion, h6-tabs, h6-slider, h6-range-slider, h6-rating, h6-select, h6-combobox, h6-date-picker, h6-date-range-picker, h6-checkbox, h6-radio-group, h6-toggle-group, h6-number-input, h6-password-input, .hp-button)) {
+:where(.hp-shadcn, .hp-shadcn :is(h6-switch, h6-iban, h6-bic, h6-otp, h6-duration, h6-interval, h6-tags, h6-segmented, h6-toggle, h6-accordion, h6-tabs, h6-slider, h6-range-slider, h6-rating, h6-select, h6-combobox, h6-date-picker, h6-date-range-picker, h6-checkbox, h6-radio-group, h6-toggle-group, h6-number-input, h6-password-input, h6-field, h6-field > :is(input, textarea, select), .hp-button)) {
   --_hp-shadcn-background: var(--background);
   --_hp-shadcn-foreground: var(--foreground);
   --_hp-shadcn-card: var(--card);

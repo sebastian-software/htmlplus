@@ -1,10 +1,12 @@
 # Styling html+ controls
 
-The playground and styling gallery share independent Light/Dark appearances, Layered/Flat surfaces, and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the twenty-three elements also has its own Base preview, part-based variation, actual form entries, and copyable source. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
+The playground and styling gallery share independent Light/Dark appearances, Layered/Flat surfaces, and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the twenty-four elements also has its own Base preview, CSS variation, actual form entries, and copyable source. Native Field uses ordinary native-control selectors; other elements expose shadow parts. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
 
 ## Built-in base
 
 Every component includes its neutral light base in shadow DOM. No external stylesheet, theme class, React, or Tailwind is required. Defaults are fallbacks at the point of use, not public declarations on `:host`, so a parent theme can flow into every component.
+
+`h6-field` applies that base to a slotted native input, textarea, or select. These controls remain in light DOM and accept ordinary application CSS. The optional `native.css` provides the same opt-in base without JavaScript and does not style unwrapped inputs. Shadow DOM does not remove browser defaults: the library sets specific properties rather than applying a global reset. See [native fields](NATIVE-FIELDS.md).
 
 ```html
 <script type="module" src="./dist/src/index.js"></script>
@@ -114,7 +116,7 @@ An existing shadcn application can load [shadcn.css](../demo/shadcn.css), also c
 </form>
 ```
 
-The adapter maps the same 31 color roles and base `--radius` into private fallback properties. Components resolve **explicit `--hp-*` → adapter value → built-in default**. This preserves inherited as well as local prefixed overrides. A missing application token falls back to the component default. The adapter supplies no palette, font, layout, structural part rules, or public-token declarations; it does not overwrite the host application's variables. Nested `.dark` scopes and generic overrides directly on a component resolve locally. The selector lists the current elements and must be extended when the catalog grows.
+The adapter maps the same 31 color roles and base `--radius` into private fallback properties. Components resolve **explicit `--hp-*` → adapter value → built-in default**. This preserves inherited as well as local prefixed overrides. A missing application token falls back to the component default. The adapter supplies no palette, font, layout, structural part rules, or public-token declarations; it does not overwrite the host application's variables. Nested `.dark` scopes and generic overrides directly on a component resolve locally. For Native Field, mappings also resolve on the native child so its local application tokens work. The selector lists the current elements and must be extended when the catalog grows.
 
 Only the base radius is bridged. Tailwind's derived `--radius-*` variables can hold ancestor-computed values, so components derive their own scale locally. If an application intentionally customizes an individual size, map it explicitly, for example `--hp-radius-md: var(--radius-md)` on the desired scope. Internal `--_hp-shadcn-*` properties are implementation details, not an override API.
 
@@ -143,6 +145,7 @@ The [recipe definitions](../demo/recipes.ts) are the single source for the galle
 
 | Element | Included variation | Public parts |
 | --- | --- | --- |
+| `h6-field` | Underlined native fields | No parts; use `h6-field > input`, `h6-field > textarea`, and `h6-field > select` |
 | `h6-date-range-picker` | Outlined range | Date Picker parts plus `start-field`, `end-field`, `start-input`, `end-input`, `start-label`, `end-label`, `range-start`, `range-end`, `in-range`, `preview-day` |
 | `h6-date-picker` | Framed calendar | `root`, `control`, `input`, `trigger`, `clear-button`, `positioner`, `content`, `navigation`, `prev-button`, `view-button`, `next-button`, `view`, `day-view`, `month-view`, `year-view`, `grid`, `weekday`, `day`, `selected-day`, `today`, `month`, `year` |
 | `h6-select` | Quiet surface | `root`, `control`, `trigger`, `value-text`, `indicator`, `clear-button`, `positioner`, `content`, `option`, `selected-option`, `option-label`, `option-indicator`, `empty` |
@@ -172,7 +175,7 @@ h6-tags.outlined::part(tag) {
 }
 ```
 
-Toggles expose `:state(pressed)`; Tabs expose `selected-tab` alongside `tab`. Their recipes follow those live states. Accordion and Tabs project author-owned sections; native inputs inside them are styled with ordinary application CSS, not shadow parts. See the [interaction guide](INTERACTIONS.md).
+Toggles expose `:state(pressed)`; Tabs expose `selected-tab` alongside `tab`. Their recipes follow those live states. Accordion and Tabs project author-owned sections; native inputs inside them can use `h6-field` for the shared base and ordinary application CSS for details. See the [interaction guide](INTERACTIONS.md).
 
 Switches expose their live checked state through `:state(checked)`. Use it instead of `[checked]`, which describes the initial default. Segmented choices expose `selected-option` on the currently selected option; it moves when selection changes by pointer, keyboard, assignment, or reset. It is also an `option` part. `::part(option):checked` cannot observe the adjacent private radio input.
 
@@ -180,7 +183,7 @@ Stateful styles should preserve visible keyboard focus, disabled states, invalid
 
 ## Verification
 
-The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, surface-token inheritance and local overrides, and unchanged edited FormData while switching appearances, palettes, and finishes on mobile. Gallery tests cover all twenty-four recipes, shared displayed source, deep links, and clipboard success/failure. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.
+The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, surface-token inheritance and local overrides, and unchanged edited FormData while switching appearances, palettes, and finishes on mobile. Gallery tests cover all twenty-five recipes, shared displayed source, deep links, and clipboard success/failure. Native Field checks also cover original node identity, native forms and labels, overrides, and styling with JavaScript disabled. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.
 
 Select, Combobox, Date Picker, and Date Range Picker keep their popup in shadow DOM while entering the native top layer. Inherited theme tokens, the shadcn bridge, and public popup parts still apply. Use `--hp-popover` and `--hp-popover-foreground` for its surface and text, and accent tokens for highlighted options. `:state(selected)` and `:state(open)` expose current state. See the [selection guide](SELECTION-CONTROLS.md).
 

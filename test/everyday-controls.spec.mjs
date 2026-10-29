@@ -2,7 +2,7 @@ import { test, expect } from 'playwright/test';
 
 const data = page => page.locator('#demo-form').evaluate(form => [...new FormData(form)]);
 const values = async (page, name) => (await data(page)).filter(([key]) => key === name).map(([, value]) => value);
-test.beforeEach(async ({ page }) => { await page.goto('/'); await expect(page.locator('#entry-count')).toHaveText('30 entries'); });
+test.beforeEach(async ({ page }) => { await page.goto('/'); await expect(page.locator('#entry-count')).toHaveText('33 entries'); });
 
 test('table selection derives mixed state and submits only selected row identifiers', async ({ page }) => {
   const all = page.getByRole('checkbox', { name: 'Select all examples', exact: true });
