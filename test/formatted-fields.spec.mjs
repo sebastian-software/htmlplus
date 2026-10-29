@@ -43,8 +43,15 @@ test('formatted paste retains zeros and native undo without duplicate value even
   await input.focus(); await input.press('ControlOrMeta+A');
   await input.evaluate(editor => {
     window.codeEvents = []; const host = editor.getRootNode().host; host.addEventListener('input', () => window.codeEvents.push('input'));
-    const clipboardData = new DataTransfer(); clipboardData.setData('text/plain','00 12 34'); editor.dispatchEvent(new ClipboardEvent('paste', { clipboardData, bubbles:true, cancelable:true, composed:true }));
+    // Native editing commands need a user gesture in Firefox. Supply the test
+    // paste payload during a real key event without reading the system clipboard.
+    editor.addEventListener('keydown', event => {
+      event.preventDefault();
+      const clipboardData = new DataTransfer(); clipboardData.setData('text/plain','00 12 34');
+      editor.dispatchEvent(new ClipboardEvent('paste', { clipboardData, bubbles:true, cancelable:true, composed:true }));
+    }, { once:true });
   });
+  await input.press('F8');
   await expect(input).toHaveValue('001234'); expect(await entry(page,'code')).toBe('001234'); expect(await page.evaluate(() => window.codeEvents)).toEqual(['input']);
   await input.press('ControlOrMeta+Z'); await expect(input).toHaveValue('004271');
 });
@@ -78,7 +85,9 @@ test('slot geometry adapts to mobile, text scaling, local styles, Light/Dark and
     const input = base.getByRole('textbox'); await input.focus(); await input.press('ArrowLeft'); await expect(base.locator('[part~=active-slot]')).toHaveCount(1);
     const geometry = await base.locator('[part=control]').evaluate(control => {
       const input = control.querySelector('input'), cells = [...control.querySelectorAll('[part~=slot]')], css=getComputedStyle(input);
-      return { pitch: parseFloat(css.letterSpacing) + parseFloat(css.fontSize)*.602, cellPitch:cells[1].getBoundingClientRect().x-cells[0].getBoundingClientRect().x, height:cells[0].getBoundingClientRect().height };
+      const canvas = document.createElement('canvas'), context = canvas.getContext('2d');
+      context.font = `${css.fontSize} ${css.fontFamily}`;
+      return { pitch: parseFloat(css.letterSpacing) + context.measureText('0').width, cellPitch:cells[1].getBoundingClientRect().x-cells[0].getBoundingClientRect().x, height:cells[0].getBoundingClientRect().height };
     });
     expect(Math.abs(geometry.pitch-geometry.cellPitch)).toBeLessThan(1); expect(geometry.height).toBe(40);
   }
