@@ -11,6 +11,11 @@ const markup = `<!doctype html><html lang="en"><head><script type="module" src="
 <h6-switch name="updates" checked aria-label="Updates"></h6-switch>
 <h6-segmented name="delivery" value="a" aria-label="Delivery"><option value="a">A</option><option value="b">B</option></h6-segmented>
 <h6-toggle name="priority" pressed>Priority</h6-toggle>
+<h6-checkbox checked name="check" aria-label="Check">Check</h6-checkbox>
+<h6-radio-group name="radio" value="a" aria-label="Radio"><option value="a">A</option></h6-radio-group>
+<h6-toggle-group name="toggles" value='["a"]' aria-label="Toggles"><option value="a">A</option></h6-toggle-group>
+<h6-number-input name="number" value="2" aria-label="Number"></h6-number-input>
+<h6-password-input name="password" value="demo" aria-label="Password"></h6-password-input>
 <h6-tabs aria-label="Profile"><section data-value="a" data-label="Profile"><input name="display_name" value="Ada" aria-label="Name"></section></h6-tabs>
 <h6-accordion><section data-value="a" data-label="Details"><input name="note" value="Hello" aria-label="Note"></section></h6-accordion>
 <div id="nested"><h6-iban id="nested-iban" aria-label="Nested IBAN"></h6-iban></div>
@@ -26,7 +31,7 @@ test('public theme tokens inherit through every shadow root and allow nested and
   await bare(page);
   const before = await data(page);
   await page.addStyleTag({ content: ':root { --hp-foreground: #123456; --hp-background: #f1f5f9; --hp-radius: 20px; } #nested { --hp-background: #e0f2fe; --hp-radius: 10px; } #nested-iban { --hp-foreground: #0c4a6e; }' });
-  for (const tag of ['iban', 'bic', 'otp', 'duration', 'interval', 'tags', 'switch', 'segmented', 'toggle', 'tabs', 'accordion']) {
+  for (const tag of ['iban', 'bic', 'otp', 'duration', 'interval', 'tags', 'switch', 'segmented', 'toggle', 'tabs', 'accordion', 'checkbox', 'radio-group', 'toggle-group', 'number-input', 'password-input']) {
     await expect(page.locator(`#scope > h6-${tag}`)).toHaveCSS('color', 'rgb(18, 52, 86)');
   }
   await expect(page.locator('#scope > h6-iban input')).toHaveCSS('background-color', 'rgb(241, 245, 249)');
@@ -65,6 +70,8 @@ test('shadcn adapter resolves nested generic themes locally and preserves prefix
   await bare(page);
   await page.addStyleTag({ url: '/dist/shadcn.css' });
   await page.locator('#scope').evaluate(scope => scope.classList.add('hp-shadcn'));
+  await page.locator('#scope > h6-toggle-group').evaluate(control => control.style.setProperty('--primary','#065f46'));
+  await expect(page.locator('#scope > h6-toggle-group [part~=selected-option]')).toHaveCSS('background-color','rgb(6, 95, 70)');
   // An absent application token must leave the component fallback usable.
   await expect(page.locator('#scope > h6-iban input')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
   await page.addStyleTag({ content: ':root { --background:#ffffff; --foreground:#171717; --primary:#166534; --radius:10px; } #nested { --background:oklch(0.205 0 0); --foreground:#fafafa; --radius:20px; }' });

@@ -13,7 +13,7 @@ test('live data retains repeated keys and reflects tag editing without proxy inp
   await page.getByRole('textbox', { name: 'Topics', exact: true }).press('Enter');
   await expect(page.getByRole('cell', { name: 'topics', exact: true })).toHaveCount(3);
   expect((await data(page)).filter(([name]) => name === 'topics').map(([, value]) => value)).toEqual(['html', 'web-components', 'accessibility']);
-  await page.getByRole('button', { name: 'JSON', exact: true }).click();
+  await page.getByRole('group', { name: 'Data format', exact: true }).getByRole('button', { name: 'JSON', exact: true }).click();
   const json = JSON.parse(await page.getByLabel('Current form data as JSON').innerText());
   expect(json.topics).toEqual(['html', 'web-components', 'accessibility']);
   expect(json.code).toBe('004271');
@@ -34,7 +34,7 @@ test('native enhanced fields normalize, retain leading zeros, and block invalid 
   await expect(page.getByRole('status')).not.toContainText('Captured');
   await page.getByRole('textbox', { name: 'IBAN', exact: true }).fill('DE89370400440532013000');
   await page.getByRole('button', { name: 'Submit demo' }).click();
-  await expect(page.getByRole('status')).toContainText('Captured 23 entries locally. Nothing was sent.');
+  await expect(page.getByRole('status')).toContainText('Captured 30 entries locally. Nothing was sent.');
   expect((await data(page)).find(([name]) => name === 'code')?.[1]).toBe('001234');
 });
 
@@ -52,7 +52,7 @@ test('switch labels and keyboard activation follow checkbox submission and field
   await control.evaluate((element) => element.click());
   expect(await control.evaluate((element) => element.checked)).toBe(true);
   await page.getByLabel('Disable the fieldset').uncheck();
-  await expect(page.getByText('23 entries', { exact: true })).toBeVisible();
+  await expect(page.getByText('30 entries', { exact: true })).toBeVisible();
 });
 
 test('native reset restores initial text values, switch state, and tag defaults', async ({ page }) => {

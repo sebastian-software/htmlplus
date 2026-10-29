@@ -24,6 +24,16 @@ Terminology for form controls, their values, and specialized input fields.
 
 **Toggle:** A button with a persistent pressed or unpressed state, such as a formatting choice or filter.
 
+**Checkbox:** An independently selectable option. Its checked state determines whether its value is included in a form.
+
+**Mixed state:** An indication that only some members of a selection are selected. Also called an indeterminate state; it does not imply a separate submitted value.
+
+**Radio group:** A set of mutually exclusive choices with one selected identifier.
+
+**Toggle group:** A set of related persistent choices that permits one or multiple selected identifiers.
+
+**Submitter:** The control that initiates a form submission and can contribute an action value to that submission.
+
 **Select:** A choice from a supplied set of options, each with a display label and a selection identifier.
 
 **Combobox:** An editable search or entry control combined with an option list. In a selection combobox, query text and a selected identifier are distinct values.

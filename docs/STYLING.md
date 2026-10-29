@@ -1,6 +1,6 @@
 # Styling html+ controls
 
-The playground and styling gallery share independent Light/Dark appearances, Layered/Flat surfaces, and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the eighteen elements also has its own Base preview, part-based variation, actual form entries, and copyable source. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
+The playground and styling gallery share independent Light/Dark appearances, Layered/Flat surfaces, and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the twenty-three elements also has its own Base preview, part-based variation, actual form entries, and copyable source. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
 
 ## Built-in base
 
@@ -180,10 +180,16 @@ Stateful styles should preserve visible keyboard focus, disabled states, invalid
 
 ## Verification
 
-The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, surface-token inheritance and local overrides, and unchanged edited FormData while switching appearances, palettes, and finishes on mobile. Gallery tests cover all eighteen recipes, shared displayed source, deep links, and clipboard success/failure. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.
+The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, surface-token inheritance and local overrides, and unchanged edited FormData while switching appearances, palettes, and finishes on mobile. Gallery tests cover all twenty-four recipes, shared displayed source, deep links, and clipboard success/failure. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.
 
 Select, Combobox, Date Picker, and Date Range Picker keep their popup in shadow DOM while entering the native top layer. Inherited theme tokens, the shadcn bridge, and public popup parts still apply. Use `--hp-popover` and `--hp-popover-foreground` for its surface and text, and accent tokens for highlighted options. `:state(selected)` and `:state(open)` expose current state. See the [selection guide](SELECTION-CONTROLS.md).
 
 Date Picker uses primary tokens for its selected day and accent tokens for calendar hover. `selected-day` and `today` parts expose independent live states. Calendar navigation buttons use the common ring and radius contract. The [Date Picker guide](DATE-PICKER.md) records input and popup behavior.
 
 Date Range Picker shares the calendar base. Primary tokens mark the two selected boundaries; accent tokens fill the selected or previewed span. `range-start`, `range-end`, `in-range`, and `preview-day` expose these states without private DOM selectors. Its Outlined range recipe changes the control surface, popup border, and boundary outline. See the [range guide](DATE-RANGE-PICKER.md).
+
+## Native Button family
+
+Load `dist/native.css` to style actual native buttons with `hp-button`. This optional stylesheet is generated from the same semantic token, radius, shadcn bridge, and surface helpers as the shadow components. Variants, sizes, icon buttons, and a caller-controlled busy indicator are demonstrated in the Button gallery recipe. Native buttons expose no shadow parts: customize them through tokens, classes, and ordinary CSS. They retain submission and reset behavior without JavaScript. See [everyday controls](EVERYDAY-CONTROLS.md#native-buttons).
+
+Checkbox, Radio Group, Number Input, Password Input, and Toggle Group each include a complete built-in neutral base and an individual part-based recipe. Their appearance follows the same Light/Dark and Layered/Flat controls as the existing catalog.

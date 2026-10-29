@@ -68,11 +68,6 @@
   .paired-fields .feedback { min-height:34px; }
   .tags-field { margin-bottom:24px; }
   .switch-field .feedback { margin-top:3px; }
-  .primary-button,.secondary-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; border-radius:var(--radius); padding:8px 12px; min-height:40px; font-size:14px; line-height:20px; font-weight:500; }
-  .primary-button { background:var(--accent); color:var(--hp-primary-foreground); border:1px solid var(--accent); }
-  .primary-button:hover { background:var(--accent-hover); }
-  .secondary-button { border:1px solid var(--border); background:var(--surface); color:var(--ink); }
-  .secondary-button:hover { background:var(--canvas); }
   .submission-status { color:var(--muted-foreground); margin-top:10px; margin-bottom:21px; font-size:11px; min-height:18px; }
   .experiment-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--canvas); padding:14px 28px; margin:0 -28px; border-top:1px solid var(--border); border-radius:0 0 16px 16px; font-size:11px; color:var(--muted-foreground); }
   .experiment-bar label { display:flex; align-items:center; gap:7px; cursor:pointer; color:var(--ink); }
@@ -168,7 +163,18 @@
 /* Ordinary fields and action buttons share the component surface roles. */
 @layer components {
   .native-field input, .field > input { box-shadow: var(--hp-shadow-inset, inset 0 1px 3px light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .4)), 0 1px 0 light-dark(rgb(255 255 255 / .8), rgb(255 255 255 / .04))); }
-  .primary-button, .secondary-button, .theme-picker select { box-shadow: var(--hp-shadow-raised, inset 0 1px 1px light-dark(rgb(255 255 255 / .14), rgb(255 255 255 / .08)), inset 0 -1px 0 light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .3)), inset 0 -6px 8px -6px light-dark(rgb(0 0 0 / .14), rgb(255 255 255 / .06)), 0 1px 2px light-dark(rgb(0 0 0 / .08), rgb(0 0 0 / .25))); }
-  .primary-button:active, .secondary-button:active { box-shadow: var(--hp-shadow-pressed, inset 0 1px 3px light-dark(rgb(0 0 0 / .18), rgb(0 0 0 / .45)), inset 0 -1px 0 light-dark(rgb(255 255 255 / .3), rgb(255 255 255 / .08))); }
-  @media (forced-colors: active) { .native-field input, .primary-button, .secondary-button, .theme-picker select { box-shadow: none; } }
+  .theme-picker select { box-shadow: var(--hp-shadow-raised, inset 0 1px 1px light-dark(rgb(255 255 255 / .14), rgb(255 255 255 / .08)), inset 0 -1px 0 light-dark(rgb(0 0 0 / .1), rgb(0 0 0 / .3)), inset 0 -6px 8px -6px light-dark(rgb(0 0 0 / .14), rgb(255 255 255 / .06)), 0 1px 2px light-dark(rgb(0 0 0 / .08), rgb(0 0 0 / .25))); }
+  @media (forced-colors: active) { .native-field input, .theme-picker select { box-shadow: none; } }
+}
+
+@layer components {
+  .selection-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .selection-table th,.selection-table td { padding:.625rem .5rem; text-align:start; border-bottom:1px solid var(--border); }
+  .selection-table th:first-child,.selection-table td:first-child { width:2.5rem; }
+  .selection-table thead th { color:var(--muted-foreground); font-weight:500; }
+  .selection-table tbody th { font-weight:500; }
+  .selection-table td:last-child { color:var(--muted-foreground); }
+  .action-heading { margin-block:1.25rem .5rem; }
+  .recipe-form:has(.hp-button) { display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
+  .recipe-form:has(.hp-button) .recipe-label { flex-basis:100%; }
 }

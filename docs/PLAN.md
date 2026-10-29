@@ -1,6 +1,6 @@
 # Project plan
 
-Updated: 2026-10-26. Status: eighteen implemented elements, a public GitHub repository, and an Actions-based Pages deployment. The initial requested catalog and Date Range Picker expansion are complete. Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker use Zag; their integrated Chromium/WebKit checks pass. Firefox cannot launch on this macOS host; physical-device autofill remains unverified.
+Updated: 2026-10-29. Status: twenty-three implemented elements, a native Button family, a public GitHub repository, and an Actions-based Pages deployment. Fifteen elements use Zag. Physical-device autofill and manual assistive-technology checks remain open.
 
 ## Intended outcome
 
@@ -16,6 +16,11 @@ Names are provisional. The table describes implemented elements. Later candidate
 
 | Element | Main benefit | Submitted value |
 | --- | --- | --- |
+| `h6-checkbox` | Independent checked/mixed states and derived select-all patterns | Configured string while checked; no entry otherwise |
+| `h6-radio-group` | One supplied choice with descriptions and disabled options | One enabled identifier |
+| `h6-number-input` | Native numeric editing and Zag step controls | One canonical numeric string |
+| `h6-password-input` | Native password editing and accessible visibility control | The unchanged password string |
+| `h6-toggle-group` | Single or multiple persistent selections | Repeated enabled identifiers under one name |
 | `h6-switch` | Small reference control for the complete form contract | Checkbox-like value when on; no entry when off |
 | `h6-iban` | Country-aware format validation, check digits, paste cleanup, and readable presentation | Uppercase IBAN without whitespace |
 | `h6-bic` | BIC/SWIFT entry with explicit structural validation | Uppercase BIC, retaining the entered 8- or 11-character form |
@@ -94,7 +99,7 @@ Every new element needs the built-in neutral base, deliberate CSS parts/tokens/s
 
 | Slice | Outcome and completion criterion | Dependency |
 | --- | --- | --- |
-| Baseline: available | Sixteen form controls and two companion elements, live FormData, reset/validation/fieldset checks, and two styling examples per element. Existing-tag editing and device/assistive-technology checks remain open. | ADR-0001 through ADR-0004 |
+| Baseline: available | Twenty-one form controls and two companion elements, live FormData, reset/validation/fieldset checks, and two styling examples per element. Existing-tag editing and device/assistive-technology checks remain open. | ADR-0001 through ADR-0004 |
 | 0. Foundation: complete for this slice | Use Zag 1.46.0 through its official vanilla adapter with native hosts and bundled browser modules. Select/Combobox popup integration is recorded in ADR-0008; Date Picker follows ADR-0009. | ADR-0005 |
 | 1. Companion interactions: implemented | Toggle, Accordion, and Tabs have neutral bases, individual recipes, and live-form examples. Browser checks cover keys, fields in inactive panels, nested validation, native undo, and lifecycle. | [Interaction guide](INTERACTIONS.md) |
 | 2. Numeric choices: implemented | Slider, Range Slider, and Rating have stable value/event contracts, built-in styles, recipes, and live form values. | [Numeric choice guide](NUMERIC-CHOICES.md); pointer, touch emulation, keyboard, RTL, and lifecycle checks |
@@ -103,7 +108,7 @@ Every new element needs the built-in neutral base, deliberate CSS parts/tokens/s
 | 5. Calendar range: implemented | Two named inclusive ISO boundaries, preserved native drafts, visible partial state, and Zag range preview/selection. | [Date Range Picker guide](DATE-RANGE-PICKER.md) and [ADR-0010](adr/0010-calendar-date-ranges.md) |
 | 6. First release decision | Review actual integration effort, build output, and supported-browser evidence. Choose the release set and publish only supported behavior. | Evidence from implemented slices |
 
-The playground now contains eighteen elements, two appearances, and six palettes. One hundred forty-six browser checks pass across Chromium and WebKit, plus eight unit tests. The static Pages export is tested under a repository subpath; the Actions workflow gates deployment on the full three-engine Linux matrix. The specialized editor mechanism changed after a native undo experiment; ADR-0003 records why. Text normalization uses a submitted value separate from the editor text. Tag editing in place and physical-device checks remain open.
+The playground now contains twenty-three elements, two appearances, and six palettes. The browser suite checks the integrated controls and styling gallery; Actions gates deployment on Chromium, Firefox, and WebKit, plus the unit suite. The static Pages export is tested under a repository subpath. The specialized editor mechanism changed after a native undo experiment; ADR-0003 records why. Text normalization uses a submitted value separate from the editor text. Tag editing in place and physical-device checks remain open.
 
 These are learning checkpoints, not dated delivery promises. The switch is a bounded reference implementation; the specialized fields and tags demonstrate the project's broader value.
 
@@ -111,7 +116,7 @@ These are learning checkpoints, not dated delivery promises. The switch is a bou
 
 Implemented duration, numeric interval, and segmented choice to test text normalization, related field names, and native radio semantics side by side. [ADR-0004](adr/0004-composite-value-contracts.md) records the public units and value shapes. The duration reuses the narrow text-field class. The two composite controls keep their native interactions in focused implementations; no runtime framework or universal component base is introduced.
 
-All eighteen elements now have a neutral Base preview and an individual styling variation with copyable CSS and HTML. The gallery uses built-in defaults and public part overrides. Common theming uses the accepted `--hp-` semantic contract, with Light/Dark presets and a separate shadcn adapter. Public parts remain available for individual recipes; shared shadow styles provide the complete base without application CSS. Tag text/icon alignment, native editor metrics, and root text scaling have explicit browser checks. Violet defaults have been removed from both the demo and component fallbacks. ADR-0002 and the [styling guide](STYLING.md) document the current surface.
+All twenty-three elements now have a neutral Base preview and an individual styling variation with copyable CSS and HTML. The gallery uses built-in defaults and public part overrides. Common theming uses the accepted `--hp-` semantic contract, with Light/Dark presets and a separate shadcn adapter. Public parts remain available for individual recipes; shared shadow styles provide the complete base without application CSS. Tag text/icon alignment, native editor metrics, and root text scaling have explicit browser checks. Violet defaults have been removed from both the demo and component fallbacks. ADR-0002 and the [styling guide](STYLING.md) document the current surface.
 
 Toggle, Accordion, and Tabs complete the first requested Zag slice. Slider, Range Slider, and Rating complete the numeric slice. Select and Combobox complete the popup-selection slice. Date Picker completes the requested calendar slice. Keep the earlier eight field implementations until a concrete benefit justifies changing one. Browser back/forward restoration, manual screen-reader coverage, and physical-device autofill remain separate evidence tasks.
 
@@ -168,3 +173,9 @@ The Linux workflow runs 219 browser checks across Chromium, Firefox, and WebKit,
 ## Surface refinement, 2026-10-29
 
 Implemented shared raised, pressed, inset, thumb, and popover shadow roles, inspired by the React Aria Button/TextField examples. Both demos compare Layered/Flat surfaces independently of appearance and palette. The existing theme suite checks local overrides, forced-colors removal, and stable edited FormData across finish changes; geometry and interaction contracts remain unchanged. See [ADR-0002](adr/0002-css-styling-contract.md) and the [styling guide](STYLING.md#surface-depth).
+
+## Everyday controls, 2026-10-29
+
+Added Checkbox with independent checked/mixed states and a derived select-all table demo, Radio Group, Number Input, Password Input, and Toggle Group. Each uses Zag 1.46.0, host-owned FormData, default/reset and fieldset behavior, a neutral base, and Base/styled recipes. The playground now starts with thirty entries. The native Button family has a separate recipe and generated `dist/native.css`; it preserves native submitter and reset behavior without a custom-element wrapper. [Everyday controls](EVERYDAY-CONTROLS.md) documents values, keyboard behavior, locale limits, and integration adaptations.
+
+Keep larger form components in separate slices: [File Upload #2](https://github.com/sebastian-software/htmlplus/issues/2), [Color Picker #3](https://github.com/sebastian-software/htmlplus/issues/3), and [Tree View #4](https://github.com/sebastian-software/htmlplus/issues/4). Palamedes integration, tag editing in place, and physical-device/assistive-technology evidence remain open.

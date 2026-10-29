@@ -14,6 +14,67 @@ export interface StylingRecipe {
 /** Trusted, static authoring examples. This CSS is both shown and used by the previews. */
 export const recipes: readonly StylingRecipe[] = [
   {
+    element: "h6-checkbox", title: "Checkbox", label: "Notification choices", field: false, variant: "Outlined check", className: "checkbox-outlined",
+    description: "Native checked and indeterminate states are independent. A mixed state displays a dash; checked determines form contribution.",
+    markup: `<h6-checkbox name="notifications" value="email" checked>Email notifications</h6-checkbox>
+<h6-checkbox indeterminate aria-label="Some notifications selected">Some selected</h6-checkbox>`,
+    parts: ["root", "input", "control", "indicator", "label"],
+    css: `h6-checkbox.checkbox-outlined::part(control) { border-radius: 50%; width: 1.25rem; height: 1.25rem; box-shadow: none; }
+h6-checkbox.checkbox-outlined::part(label) { font-weight: 600; }`,
+  },
+  {
+    element: "h6-radio-group", title: "Radio Group", label: "Notification frequency", variant: "Choice cards", className: "radio-cards",
+    description: "Choose one supplied identifier with native radio keys. Descriptions and disabled options stay with their choices.",
+    markup: `<h6-radio-group name="frequency" value="weekly" required>
+  <option value="daily" data-description="A short summary every morning.">Daily</option>
+  <option value="weekly" data-description="One digest each Friday.">Weekly</option>
+  <option value="instant" disabled>Instant (unavailable)</option>
+</h6-radio-group>`,
+    parts: ["root", "option", "selected-option", "input", "control", "label", "description"],
+    css: `h6-radio-group.radio-cards::part(option) { padding: .75rem; border: 1px solid var(--hp-input, #d4d4d4); border-radius: var(--hp-radius, .625rem); }
+h6-radio-group.radio-cards::part(selected-option) { border-color: var(--hp-primary, #171717); background: var(--hp-muted, #f5f5f5); }`,
+  },
+  {
+    element: "h6-number-input", title: "Number Input", label: "Seats", variant: "Tabular number", className: "number-tabular",
+    description: "A native editor keeps its draft and undo. Zag handles arrow keys and step buttons; FormData receives a canonical number.",
+    markup: '<h6-number-input name="seats" value="3" min="1" max="20" step="1" required></h6-number-input>',
+    parts: ["control", "input", "increment-trigger", "decrement-trigger"],
+    css: `h6-number-input.number-tabular::part(input) { font-variant-numeric: tabular-nums; font-weight: 600; }
+h6-number-input.number-tabular::part(control) { box-shadow: none; background: var(--hp-muted, #f5f5f5); }`,
+  },
+  {
+    element: "h6-password-input", title: "Password Input", label: "Demo password", variant: "Underlined password", className: "password-underlined",
+    description: "A single native password editor with an accessible visibility button. The example contains a fictional value; visibility does not change submission.",
+    markup: '<h6-password-input name="password" value="Demo-only-42!" autocomplete="new-password" minlength="8" required></h6-password-input>',
+    parts: ["control", "input", "visibility-trigger", "indicator"],
+    css: `h6-password-input.password-underlined::part(control) { border-width: 0 0 1px; border-radius: 0; box-shadow: none; background: transparent; }
+h6-password-input.password-underlined::part(visibility-trigger) { border-radius: 50%; }`,
+  },
+  {
+    element: "h6-toggle-group", title: "Toggle Group", label: "Export formats", variant: "Joined toggles", className: "toggles-joined",
+    description: "Select multiple values or one optional value. Each selected identifier contributes one entry under the same name.",
+    markup: `<h6-toggle-group name="formats" value='["csv","json"]' multiple>
+  <option value="csv">CSV</option><option value="json">JSON</option><option value="xml">XML</option>
+</h6-toggle-group>`,
+    parts: ["root", "option", "selected-option", "label", "description"],
+    css: `h6-toggle-group.toggles-joined::part(root) { gap: 0; }
+h6-toggle-group.toggles-joined::part(option) { border-radius: 0; box-shadow: none; }
+h6-toggle-group.toggles-joined::part(selected-option) { text-decoration: underline; text-underline-offset: .2em; }`,
+  },
+  {
+    element: "button", title: "Button", label: "Native action buttons", field: false, variant: "Pill buttons", className: "button-pill",
+    description: "Import dist/native.css. Real buttons retain submitter, name/value, validation, reset, and external form behavior without JavaScript.",
+    markup: `<button class="hp-button" type="submit" name="action" value="save">Save example</button>
+<button class="hp-button" data-variant="outline" type="reset">Reset</button>
+<button class="hp-button" data-variant="secondary" type="button">Secondary</button>
+<button class="hp-button" data-variant="ghost" type="button">Ghost</button>
+<button class="hp-button" data-variant="destructive" type="button">Delete</button>
+<button class="hp-button" aria-busy="true" disabled type="button">Saving</button>
+<button class="hp-button" data-variant="outline" data-size="icon" aria-label="Add example" type="button">+</button>`,
+    parts: [], css: `.hp-button.button-pill { border-radius: 999px; }
+.hp-button.button-pill:not([data-size=icon]) { padding-inline: 1.25rem; }`,
+  },
+  {
     element: "h6-date-range-picker", title: "Date Range Picker", label: "Travel period", variant: "Outlined range", className: "date-range-outlined",
     description: "Two native editors and one Zag calendar submit explicitly named date boundaries. Preview a range without changing its form values.",
     markup: `<h6-date-range-picker name="period" value='["2026-10-28","2026-11-03"]' min="2026-10-01" max="2027-12-31" locale="en-US" required></h6-date-range-picker>`,

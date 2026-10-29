@@ -2,9 +2,9 @@
 
 - Status: accepted
 - Created: 2026-10-22
-- Updated: 2026-10-26
+- Updated: 2026-10-29
 - Lifecycle: living
-- Implementation: sixteen form controls, two companion elements, and a live playground
+- Implementation: twenty-one form controls, two companion elements, a native Button family, and a live playground
 
 ## Context and decision
 
@@ -38,6 +38,8 @@ Revisit the mechanism if a supported browser cannot provide reliable submission,
 - [HTML: form-associated custom elements](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face-example)
 - [Project plan](../PLAN.md)
 
+Native action buttons remain actual `<button>` elements styled by the optional `native.css`. An autonomous form-associated custom element does not become a native submitter, so replacing it would lose browser-owned action values, validation, overrides, and reset behavior. Native submitter semantics are more valuable here than a uniform custom tag. The Button gallery captures `FormData(form, submitter)`; an ordinary live `FormData(form)` has no activated action value.
+
 ## Changes
 
 - 2026-10-22: Recorded the project's defining ordinary-form integration goal. The first implementation uses form-associated hosts; specialized editors are separated from their canonical submission values in ADR-0003.
@@ -57,3 +59,5 @@ Revisit the mechanism if a supported browser cannot provide reliable submission,
 - 2026-10-24: Added Date Picker with host-owned native editing, date-only submission, explicit locale parsing, and inclusive constraints under ADR-0009.
 
 - 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.
+
+- 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.

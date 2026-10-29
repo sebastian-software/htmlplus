@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-10-26
+- Updated: 2026-10-29
 - Lifecycle: living
 
 ## Context and decision
@@ -34,6 +34,8 @@ Toggle contributes a named string while pressed and no entry while unpressed, wi
 - Browser tests cover named boundaries, order, native numeric constraints, required choices, native radio keys, label focus, repeated-value safety, reset, explicit restoration callbacks, and disabled fieldsets. Exercising a callback is distinct from verifying browser history restoration.
 - Revisit this contract when adding date ranges, money, units, or remote selection. Do not assume they share duration units or interval semantics.
 
+Checkbox preserves independent native checked and indeterminate booleans. Only checked determines submission; a mixed display is not a third serialized value. A select-all controller derives its state from application-supplied selections and normally has no name. Radio Group contributes one enabled identifier; Toggle Group uses a string-array property in both single and multiple modes and contributes repeated entries for selected identifiers. Unknown and disabled selections are omitted. Number Input separates localized native drafts from canonical numeric strings and numeric validity. Password visibility changes presentation without changing its value. [Everyday controls](../EVERYDAY-CONTROLS.md) owns the exact APIs and limits.
+
 ## Changes
 
 - 2026-10-23: Added duration, interval, and segmented choice to test three distinct value contracts in the ordinary-form playground.
@@ -47,3 +49,5 @@ Toggle contributes a named string while pressed and no entry while unpressed, wi
 - 2026-10-24: Added the Date Picker calendar-date contract, without a time component, timestamp conversion, or inferred locale order.
 
 - 2026-10-26: Added the bounded date-range value shape, boundary names, and partial-state validation under ADR-0010.
+
+- 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.

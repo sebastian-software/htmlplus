@@ -10,6 +10,7 @@
   <link rel="icon" href="./demo/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./demo/themes.css">
   <link rel="stylesheet" href="./demo/styles.css">
+  <link rel="stylesheet" href="./dist/native.css">
   <script type="module" src="./dist/demo/playground.js"></script>
 </head>
 <body>
@@ -27,7 +28,7 @@
 
   <main id="playground">
     <div class="intro">
-      <div><h1>Let HTML do the form work.</h1><p>Eighteen components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
+      <div><h1>Let HTML do the form work.</h1><p>Twenty-three components, one ordinary form. Change a field or explore a panel and see what the browser would send.</p></div>
       <span class="preview-label"><span aria-hidden="true"></span> Early preview</span>
     </div>
 
@@ -167,9 +168,48 @@
               <div><label for="updates">Product updates</label><p class="feedback" id="updates-help">An unchecked switch sends no value.</p></div>
               <div class="switch-control"><a class="recipe-link" href="./styling.html#h6-switch" aria-label="Style h6-switch"><code>&lt;h6-switch&gt;</code></a><h6-switch id="updates" name="updates" value="email" checked aria-describedby="updates-help"></h6-switch></div>
             </div>
+            <p class="field-section" id="small-controls">07 <span>Everyday form controls</span></p>
+            <div class="field">
+              <div class="field-heading"><label for="frequency-field">Notification frequency</label><a class="recipe-link" href="./styling.html#h6-radio-group" aria-label="Style h6-radio-group"><code>&lt;h6-radio-group&gt;</code></a></div>
+              <h6-radio-group id="frequency-field" name="frequency" value="weekly" required>
+                <option value="daily" data-description="A short summary every morning.">Daily</option>
+                <option value="weekly" data-description="One digest each Friday.">Weekly</option>
+                <option value="instant" disabled>Instant (unavailable)</option>
+              </h6-radio-group>
+            </div>
+            <div class="field">
+              <div class="field-heading"><label for="seats-field">Seats</label><a class="recipe-link" href="./styling.html#h6-number-input" aria-label="Style h6-number-input"><code>&lt;h6-number-input&gt;</code></a></div>
+              <h6-number-input id="seats-field" name="seats" value="3" min="1" max="20" step="1" required></h6-number-input>
+              <p class="feedback">Type a number, use the arrow keys, or hold a step button.</p>
+            </div>
+            <div class="field">
+              <div class="field-heading"><label for="password-field">Demo password</label><a class="recipe-link" href="./styling.html#h6-password-input" aria-label="Style h6-password-input"><code>&lt;h6-password-input&gt;</code></a></div>
+              <h6-password-input id="password-field" name="password" value="Demo-only-42!" minlength="8" autocomplete="new-password" required></h6-password-input>
+              <p class="feedback">A fictional value. Revealing it changes its display, not its form value.</p>
+            </div>
+            <div class="field">
+              <div class="field-heading"><label for="formats-field">Export formats</label><a class="recipe-link" href="./styling.html#h6-toggle-group" aria-label="Style h6-toggle-group"><code>&lt;h6-toggle-group&gt;</code></a></div>
+              <h6-toggle-group id="formats-field" name="formats" value='["csv","json"]' multiple>
+                <option value="csv">CSV</option><option value="json">JSON</option><option value="xml">XML</option>
+              </h6-toggle-group>
+              <p class="feedback">Multiple selections contribute repeated entries. Arrow keys move focus.</p>
+            </div>
+            <div class="field">
+              <div class="field-heading"><span class="component-label" id="selection-heading">Table selection</span><a class="recipe-link" href="./styling.html#h6-checkbox" aria-label="Style h6-checkbox"><code>&lt;h6-checkbox&gt;</code></a></div>
+              <table class="selection-table" aria-labelledby="selection-heading">
+                <thead><tr><th scope="col"><h6-checkbox id="select-all" indeterminate aria-label="Select all examples"></h6-checkbox></th><th scope="col">Example</th><th scope="col">Type</th></tr></thead>
+                <tbody>
+                  <tr><td><h6-checkbox name="selected" value="profile" checked aria-label="Select profile form"></h6-checkbox></td><th scope="row">Profile form</th><td>Form</td></tr>
+                  <tr><td><h6-checkbox name="selected" value="settings" checked aria-label="Select settings panel"></h6-checkbox></td><th scope="row">Settings panel</th><td>Panel</td></tr>
+                  <tr><td><h6-checkbox name="selected" value="filters" aria-label="Select search filters"></h6-checkbox></td><th scope="row">Search filters</th><td>Form</td></tr>
+                </tbody>
+              </table>
+              <p class="feedback" id="selection-feedback">2 of 3 selected. The header checkbox has no submitted value.</p>
+            </div>
           </fieldset>
 
-          <div class="form-actions"><button class="primary-button" type="submit">Submit demo <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></button><button class="secondary-button" type="reset">Reset form</button></div>
+          <div class="field-heading action-heading"><span class="component-label">Native actions</span><a class="recipe-link" href="./styling.html#button" aria-label="Style buttons"><code>&lt;button&gt;</code></a></div>
+          <div class="form-actions"><button class="hp-button primary-button" type="submit">Submit demo <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></button><button class="hp-button secondary-button" data-variant="outline" type="reset">Reset form</button></div>
           <p class="submission-status" id="submission-status" role="status">Sample values stay in this browser.</p>
         </form>
         <div class="experiment-bar"><label><input id="disable-fields" type="checkbox"> Disable the fieldset</label><span>Watch the entries disappear.</span></div>
@@ -177,7 +217,7 @@
 
       <aside class="inspector-column" aria-labelledby="data-heading">
         <section class="inspector">
-          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">18 entries</span></div>
+          <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">30 entries</span></div>
           <div class="inspector-toolbar"><div class="view-switch" role="group" aria-label="Data format"><button type="button" data-view="entries" aria-pressed="true">Entries</button><button type="button" data-view="json" aria-pressed="false">JSON</button></div><span class="reading-label">new FormData(form)</span></div>
           <div id="entries-view" class="data-view"><table><caption class="visually-hidden">Current form entries, preserving repeated field names</caption><thead><tr><th scope="col">Name</th><th scope="col">Value</th></tr></thead><tbody id="entries-body"></tbody></table><p id="empty-data" class="empty-data" hidden>No entries. Disabled fields are left out of FormData.</p></div>
           <div id="json-view" class="data-view" hidden><pre class="json-code" id="json-output" aria-label="Current form data as JSON"></pre><p class="json-note">Repeated names become arrays in this JSON view.</p></div>

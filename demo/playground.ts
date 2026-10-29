@@ -11,6 +11,18 @@ const validityStatus = document.querySelector<HTMLElement>("#validity-status")!;
 const status = document.querySelector<HTMLElement>("#submission-status")!;
 const tags = document.querySelector("h6-tags")!;
 const updates = document.querySelector("h6-switch")!;
+const selectAll = document.querySelector("#select-all") as HTMLElementTagNameMap["h6-checkbox"];
+const selectionRows = Array.from(document.querySelectorAll("h6-checkbox[name=selected]")) as HTMLElementTagNameMap["h6-checkbox"][];
+function syncSelection(): void {
+  const rows = selectionRows.filter(row => !row.disabled), count = rows.filter(row => row.checked).length;
+  selectAll.checked = rows.length > 0 && count === rows.length;
+  selectAll.indeterminate = count > 0 && count < rows.length;
+  selectAll.disabled = rows.length === 0;
+  document.querySelector("#selection-feedback")!.textContent = `${count} of ${rows.length} selected. The header checkbox has no submitted value.`;
+}
+selectAll.addEventListener("change", () => { for (const row of selectionRows) if (!row.disabled) row.checked = selectAll.checked; syncSelection(); });
+for (const row of selectionRows) row.addEventListener("change", syncSelection);
+syncSelection();
 let lastEvent = "Ready to edit";
 let scheduled = false;
 
@@ -99,6 +111,7 @@ form.addEventListener("invalid", () => { form.classList.add("was-validated"); sc
 form.addEventListener("reset", (event) => queueMicrotask(() => {
   if (event.defaultPrevented) return;
   form.classList.remove("was-validated");
+  syncSelection();
   lastEvent = "Form reset";
   status.textContent = "Defaults restored.";
   document.querySelector<HTMLElement>("#last-submission")!.hidden = true;
@@ -135,6 +148,13 @@ document.querySelector("#load-example")!.addEventListener("click", () => {
   document.querySelector("h6-toggle")!.pressed = false;
   document.querySelector("h6-tabs")!.value = "profile";
   document.querySelector("h6-accordion")!.value = ["delivery"];
+  document.querySelector("h6-radio-group")!.value = "weekly";
+  document.querySelector("h6-number-input")!.value = "3";
+  document.querySelector("h6-password-input")!.value = "Demo-only-42!";
+  document.querySelector("h6-password-input")!.visible = false;
+  document.querySelector("h6-toggle-group")!.value = ["csv", "json"];
+  for (const row of selectionRows) row.checked = row.defaultChecked;
+  syncSelection();
   for (const input of form.querySelectorAll<HTMLInputElement>(".native-field input")) input.value = input.defaultValue;
   lastEvent = "Example loaded";
   status.textContent = "Example values loaded. Try editing or disabling a field.";

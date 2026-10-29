@@ -5,6 +5,11 @@ Zag packages (1.46.0):
 - @zag-js/anatomy
 - @zag-js/collection
 - @zag-js/combobox
+- @zag-js/checkbox
+- @zag-js/number-input
+- @zag-js/password-input
+- @zag-js/radio-group
+- @zag-js/toggle-group
 - @zag-js/core
 - @zag-js/date-picker
 - @zag-js/date-utils
@@ -122,7 +127,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-@internationalized/date 3.12.4:
+@internationalized/date 3.12.4 and @internationalized/number 3.6.9:
 
 Copyright 2020 Adobe. All rights reserved.
 

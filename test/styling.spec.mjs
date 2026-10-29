@@ -3,7 +3,7 @@ import { test, expect } from 'playwright/test';
 test('every element has two working previews, matching form values, and its own CSS', async ({ page }) => {
   await page.goto('/styling.html');
   const navigation = page.getByRole('navigation', { name: 'Components' });
-  const names = ['Date Range Picker', 'Date Picker', 'Select', 'Combobox', 'Slider', 'Range Slider', 'Rating', 'IBAN', 'BIC / SWIFT', 'Verification code', 'Duration', 'Numeric interval', 'Tags', 'Switch', 'Segmented choice', 'Toggle', 'Accordion', 'Tabs'];
+  const names = ['Checkbox', 'Radio Group', 'Number Input', 'Password Input', 'Toggle Group', 'Button', 'Date Range Picker', 'Date Picker', 'Select', 'Combobox', 'Slider', 'Range Slider', 'Rating', 'IBAN', 'BIC / SWIFT', 'Verification code', 'Duration', 'Numeric interval', 'Tags', 'Switch', 'Segmented choice', 'Toggle', 'Accordion', 'Tabs'];
   await expect(navigation.getByRole('link')).toHaveCount(names.length);
   for (const name of names) {
     await navigation.getByRole('link', { name, exact: true }).click();
@@ -11,8 +11,8 @@ test('every element has two working previews, matching form values, and its own 
     await expect(page.locator('.recipe-preview form')).toHaveCount(2);
     const values = await page.locator('.recipe-preview form').evaluateAll((forms) => forms.map((form) => [...new FormData(form)]));
     expect(values[0]).toEqual(values[1]);
-    expect(values[0].length).toBeGreaterThan(0);
-    expect(await page.locator('#recipe-code').innerText()).toContain('::part(');
+    if (name !== 'Button') expect(values[0].length).toBeGreaterThan(0);
+    expect(await page.locator('#recipe-code').innerText()).toContain(name === 'Button' ? '.hp-button' : '::part(');
     await expect(navigation.getByRole('link', { name, exact: true })).toHaveAttribute('aria-current', 'page');
   }
 });
@@ -74,7 +74,7 @@ test('neutral defaults, focus, and recipe layout work on desktop and mobile', as
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: test.info().outputPath('styling-mobile.png'), fullPage: true });
   await page.getByRole('link', { name: 'Form playground' }).click();
-  await expect(page.getByText('23 entries', { exact: true })).toBeVisible();
+  await expect(page.getByText('30 entries', { exact: true })).toBeVisible();
   expect(await page.locator('#demo-form').evaluate((form) => [...new FormData(form)])).toEqual(before);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

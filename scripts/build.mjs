@@ -1,6 +1,6 @@
 import { build, context } from 'esbuild';
 import { spawnSync } from 'node:child_process';
-import { copyFile, mkdir, readdir, rm } from 'node:fs/promises';
+import { copyFile, mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -14,6 +14,13 @@ const entryPoints = (await Promise.all(['src', 'demo'].map(async (folder) =>
   (await readdir(new URL(`../${folder}/`, import.meta.url))).filter((name) => name.endsWith('.ts')).map((name) => `${folder}/${name}`),
 ))).flat();
 const options = { absWorkingDir: root, entryPoints, outdir: 'dist', outbase: '.', bundle: true, splitting: true, format: 'esm', platform: 'browser', target: 'es2022', sourcemap: true, chunkNames: 'chunks/[name]-[hash]', banner: { js: '/*! Third-party license notices: ../THIRD_PARTY_NOTICES.txt */' }, define: { 'process.env.NODE_ENV': '"production"' } };
+options.plugins = [{ name: 'native-styles', setup(builder) {
+  builder.onEnd(async (result) => {
+    if (result.errors.length) return;
+    const { nativeStyles } = await import(new URL(`../dist/src/native-styles.js?build=${Date.now()}`, import.meta.url));
+    await writeFile(new URL('../dist/native.css', import.meta.url), nativeStyles);
+  });
+} }];
 await mkdir(new URL('../dist/', import.meta.url), { recursive: true });
 await copyFile(new URL('../demo/shadcn.css', import.meta.url), new URL('../dist/shadcn.css', import.meta.url));
 await copyFile(new URL('../demo/themes.css', import.meta.url), new URL('../dist/themes.css', import.meta.url));

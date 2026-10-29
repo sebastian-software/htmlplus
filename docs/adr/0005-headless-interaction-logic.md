@@ -2,10 +2,10 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-10-26
+- Updated: 2026-10-29
 - Lifecycle: living
 - Scope: Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker
-- Implementation: ten Zag-backed elements, split browser modules, live examples, and eighteen styling recipes
+- Implementation: fifteen Zag-backed elements, split browser modules, live examples, and twenty-four styling recipes
 
 ## Context
 
@@ -89,6 +89,13 @@ Date Picker completes the requested catalog using Zag calendar views and the sha
 
 Date Range Picker uses the same date machine in range mode, with two host-owned editors, explicit boundary names, and visible partial selection. Both date fields share calendar views and neutral styles. Silent editor/reset changes also synchronize the machine's active range boundary through its installed INPUT.FOCUS transition; otherwise a cleared partial range can incorrectly resume at the end. Hovered days have provisional styling, while grid aria-selected reflects committed dates only. ADR-0010 records the range value and completion decisions.
 
+## Everyday controls integration, 2026-10-29
+
+Checkbox and Radio Group retain real shadow-local native inputs for interaction; their hosts own outer-form submission. Radio navigation explicitly wraps around disabled options consistently across engines. Radio Group and Toggle Group share a narrow option-reconciliation layer while retaining distinct value APIs and roles. Focus updates preserve native nodes and text nodes rather than rebuilding options.
+
+Number Input reuses Zag stepping with a native editor outside the machine's input lookup. Normalized `value`, input, and beforeinput bindings are excluded; host-owned editing and controlled machine values preserve undo, composition, drafts, and reset against deferred synchronization. Password Input reuses visibility state while a native click handler makes the visibility action available to pointer, touch, and keyboard exactly once. The host observes its actual outer form to hide visibility after successful submission. [Everyday controls](../EVERYDAY-CONTROLS.md) records APIs and verification limits.
+
+
 ## Review triggers
 
 Inspect each additional machine's form assumptions before using it. Popup placement, editable query handling, and date parsing remain gates for their respective components; this decision does not claim those are solved by the current implemented machines. Keep delivery tasks and candidate value contracts in the [project plan](../PLAN.md).
@@ -126,3 +133,5 @@ Revisit on an adapter/machine contract change, a supported-browser failure, edit
 - 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.
 
 - 2026-10-26: Retained inactive editor layout boxes and added inert semantics so native undo survives Tabs/Accordion visibility changes in Firefox.
+
+- 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.

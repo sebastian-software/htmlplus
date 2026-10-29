@@ -30,7 +30,7 @@ Resolve the effects at use through `--hp-shadow-*` fallbacks and the consuming s
 
 - Theme common colors and rounding without `::part`. Keep deliberate parts and custom states for detailed component variants; do not expose arbitrary shadow descendants as API.
 - Public defaults remain consumption fallbacks, not declarations that shadow inherited tokens. The adapter's internal properties are not public API. Its current-element selector must grow with the catalog.
-- Light/Dark appearances with independently selected palettes in both demo pages use tokens for the common theme. All eighteen elements retain an individual part-based recipe with the exact preview CSS available for copying.
+- Light/Dark appearances with independently selected palettes in both demo pages use tokens for the common theme. All twenty-three elements retain an individual part-based recipe with the exact preview CSS available for copying.
 - Focus, invalid, disabled, and selected states retain visible behavior. Browser checks cover nested and host overrides, semantic role separation, adapter precedence and missing values, radius derivation, light/dark contrast, forced colors, and FormData preservation. Firefox runs in the Linux CI container; direct macOS Firefox automation remains unavailable.
 - `selected-option` and `selected-tab` parts follow live state; Toggle exposes pressed and Switch exposes checked custom states. Native light-DOM fields inside companion elements use ordinary application CSS.
 - Revisit when a reasonable design requires private DOM access or a new element needs an additional semantic role. Keep exact values and the token inventory in the styling guide and stylesheet sources.
@@ -52,6 +52,8 @@ Date Range Picker uses the same popup tokens, primary boundary colors, accent sp
 
 - [MDN: CSS shadow parts](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/::part)
 - [MDN: custom state selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:state)
+
+Native Button primitives use an optional generated `dist/native.css` and the `hp-button` class, rather than a shadow wrapper. The stylesheet shares the same token, radius, and surface helpers, preserves ordinary CSS overrides, and works without JavaScript. The gallery includes a native Button recipe alongside twenty-three element recipes. Shadow controls continue to include their complete neutral bases. Checkbox, Radio Group, Number Input, Password Input, and Toggle Group follow the existing parts and semantic-theme contract.
 
 ## Changes
 
@@ -75,3 +77,5 @@ Date Range Picker uses the same popup tokens, primary boundary colors, accent sp
 - 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.
 
 - 2026-10-29: Added shared surface-shadow roles inspired by React Aria, explicit-scheme Light/Dark shading, and an independent Layered/Flat comparison in both demos. Preserve the shadcn color/radius contract and existing form behavior.
+
+- 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.

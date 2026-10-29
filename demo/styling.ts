@@ -25,13 +25,17 @@ for (const recipe of recipes) {
 }
 
 function markup(recipe: StylingRecipe, variant: string, id: string): string {
-  const control = recipe.markup.replace(`<${recipe.element} `, `<${recipe.element} id="${id}"${variant ? ` class="${variant}"` : ""} `);
+  const template = document.createElement("template"); template.innerHTML = recipe.markup;
+  const element = template.content.querySelector<HTMLElement>(recipe.element)!;
+  element.id = id;
+  if (variant) for (const control of template.content.querySelectorAll(recipe.element)) control.classList.add(variant);
+  const control = template.innerHTML;
   return `${recipe.field === false ? `<p class="recipe-label">${recipe.label}</p>` : `<label for="${id}">${recipe.label}</label>`}\n${control}`;
 }
 
 function renderSource(): void {
   source.textContent = format === "adapter" ? adapterCss : format === "base" ? baseCss : format === "html"
-    ? `<form>\n${markup(current, current.className, "example-field").split("\n").map((line) => `  ${line}`).join("\n")}\n</form>`
+    ? `${current.element === "button" ? '<link rel="stylesheet" href="./dist/native.css">\n' : ""}<form>\n${markup(current, current.className, "example-field").split("\n").map((line) => `  ${line}`).join("\n")}\n</form>`
     : current.css;
   copy.textContent = format === "html" ? "Copy HTML" : format === "base" ? "Copy theme CSS" : format === "adapter" ? "Copy adapter" : "Copy CSS";
   for (const button of document.querySelectorAll<HTMLButtonElement>("[data-source]")) button.setAttribute("aria-pressed", String(button.dataset.source === format));
@@ -57,7 +61,7 @@ function render(): void {
     const output = document.createElement("output"); output.setAttribute("aria-label", `${title} form data`); output.setAttribute("aria-live", "off");
     const update = (): void => { output.textContent = JSON.stringify(Array.from(new FormData(form))); };
     form.addEventListener("input", update); form.addEventListener("change", update);
-    form.addEventListener("submit", (event) => event.preventDefault());
+    form.addEventListener("submit", (event) => { event.preventDefault(); output.textContent = JSON.stringify(Array.from(new FormData(form, event.submitter))); });
     panel.append(heading, form, output);
     queueMicrotask(update);
     return panel;
