@@ -48,7 +48,11 @@ test('formatted paste retains zeros and native undo without duplicate value even
     editor.addEventListener('keydown', event => {
       event.preventDefault();
       const clipboardData = new DataTransfer(); clipboardData.setData('text/plain','00 12 34');
-      editor.dispatchEvent(new ClipboardEvent('paste', { clipboardData, bubbles:true, cancelable:true, composed:true }));
+      const paste = new ClipboardEvent('paste', { bubbles:true, cancelable:true, composed:true });
+      // Firefox drops clipboardData passed to the constructor (Mozilla bug 2027025).
+      // Provide the standard event payload explicitly for this synthetic event.
+      Object.defineProperty(paste, 'clipboardData', { value:clipboardData });
+      editor.dispatchEvent(paste);
     }, { once:true });
   });
   await input.press('F8');
