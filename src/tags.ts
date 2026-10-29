@@ -9,11 +9,13 @@ tagsTemplate.innerHTML = `<style>
   [part=control] { display: flex; flex-wrap: wrap; align-items: center; gap: .375rem; min-height: var(--hp-control-height, 2.5rem); padding: .375rem; border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: ${surfaceShadow("inset")}; }
   :host(:focus-within) [part=control] { border-color: ${theme("ring")}; outline: 2px solid ${theme("ring")}; outline-offset: 2px; }
   [part=tokens] { display: contents; }
-  [part=tag] { display: inline-flex; align-items: center; gap: .25rem; min-height: 1.625rem; max-width: 100%; padding: 0 0 0 .5rem; border: 1px solid transparent; border-radius: ${radius("sm")}; background: ${theme("secondary")}; color: ${theme("secondary-foreground")}; font-size: .75rem; font-weight: 500; line-height: 1rem; box-shadow: ${surfaceShadow("raised")}; }
+  [part=tag] { display: inline-flex; align-items: center; gap: .25rem; min-height: 1.625rem; max-width: 100%; padding: 0 0 0 .5rem; border: 1px solid transparent; border-radius: ${radius("sm")}; background: ${theme("secondary")}; color: ${theme("secondary-foreground")}; font-size: .75rem; font-weight: 500; line-height: 1rem; box-shadow: ${surfaceShadow("raised")}; cursor: default; }
   [part=tag-label] { display: block; min-width: 0; padding-block: .25rem; overflow-wrap: anywhere; }
-  [part=remove-button] { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 1.5rem; height: 1.5rem; margin: 0; padding: 0; border: none; border-radius: ${radius("sm")}; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+  /* Inset the painted hover surface while preserving the full remove hit target. */
+  [part=remove-button] { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 1.5rem; height: 1.5rem; margin: 0; padding: .1875rem; border: none; border-radius: ${radius("sm")}; background: transparent; background-clip: content-box; color: inherit; font: inherit; cursor: pointer; }
+  [part=remove-button]:disabled { cursor: default; }
   [part=remove-icon] { display: block; flex: none; width: .75rem; height: .75rem; pointer-events: none; }
-  [part=remove-button]:hover { background: ${theme("accent")}; color: ${theme("accent-foreground")}; }
+  [part=remove-button]:hover:not(:disabled) { background-color: ${theme("accent")}; color: ${theme("accent-foreground")}; }
   [part=remove-button]:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 1px; }
   [part=input] { display: block; flex: 1; min-width: 6rem; width: 6rem; height: 1.625rem; margin: 0; padding: .1875rem .25rem; border: 0; outline: none; background: transparent; color: inherit; font: inherit; }
   [part=input]::placeholder { color: ${theme("muted-foreground")}; }
