@@ -56,7 +56,7 @@ An isolated probe pinned the combobox and vanilla packages to 1.46.0 and bundled
 - Disable and re-enable through a fieldset, omit disabled values, restore declared defaults on form reset, and operate after disconnection/reconnection.
 - Use no hidden input or hidden select in the fixture and report no page errors.
 
-The minified production-mode probe bundle is 101,462 bytes, or 33,180 bytes with Node's default gzip, including the fixture class. This is a single-combobox experiment, not an incremental cost for html+, a benchmark, or a release size budget. Current build limits are in [`scripts/check-size.mjs`](../../scripts/check-size.mjs).
+The minified production-mode probe bundle is 101,462 bytes, or 33,180 bytes with Node's default gzip, including the fixture class. This is a single-combobox experiment, not an incremental cost for html+, a benchmark, or a release size budget. Current build limits are in [`scripts/sizes.mjs`](../../scripts/sizes.mjs).
 
 Important limits: external label forwarding, native undo/IME, full user-event semantics, real browser history restoration, touch interaction, assistive technologies, and a clipping-safe production popup are not established by this combobox probe. Its implementation is separate from the integrated interaction elements. Select and Combobox have since completed their integrated slice under [ADR-0008](0008-selection-popups.md); Date Picker has since completed its integrated slice under ADR-0009. The numeric controls also completed their separate integration checks. The probe did not run in Firefox; CI covers Firefox for the integrated elements.
 

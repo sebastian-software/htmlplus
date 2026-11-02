@@ -4,20 +4,71 @@
   "private": true,
   "type": "module",
   "description": "Native-feeling form controls and a live FormData playground.",
+  "sideEffects": [
+    "./lib/index.js",
+    "./lib/elements/*.js",
+    "./browser/**/*.js",
+    "./src/index.ts",
+    "./src/elements/*.ts",
+    "./demo/*.ts",
+    "./landing/*.ts"
+  ],
+  "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "node": "./lib/noop.js",
+      "deno": "./lib/noop.js",
+      "edge-light": "./lib/noop.js",
+      "workerd": "./lib/noop.js",
+      "worker": "./lib/noop.js",
+      "default": "./lib/index.js"
+    },
+    "./react": {
+      "types": "./lib/react.d.ts",
+      "default": "./lib/noop.js"
+    },
+    "./native.css": "./styles/native.css",
+    "./themes.css": "./styles/themes.css",
+    "./shadcn.css": "./styles/shadcn.css",
+    "./package.json": "./package.json",
+    "./custom-elements.json": "./custom-elements.json",
+    "./browser/*": "./browser/*",
+    "./*": {
+      "types": "./lib/elements/*.d.ts",
+      "node": "./lib/noop.js",
+      "deno": "./lib/noop.js",
+      "edge-light": "./lib/noop.js",
+      "workerd": "./lib/noop.js",
+      "worker": "./lib/noop.js",
+      "default": "./lib/elements/*.js"
+    }
+  },
+  "files": [
+    "lib",
+    "browser",
+    "styles",
+    "custom-elements.json",
+    "THIRD_PARTY_NOTICES.txt"
+  ],
   "license": "Apache-2.0",
   "customElements": "custom-elements.json",
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build.mjs",
     "build:demo": "node scripts/build-demo.mjs",
+    "build:package": "node scripts/build-package.mjs",
+    "prepack": "node scripts/build-package.mjs",
+    "test:consumer": "node scripts/check-consumer.mjs",
     "preview": "node scripts/serve.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "biome check",
     "format": "biome check --write",
     "test": "node scripts/check.mjs",
     "test:unit": "node scripts/build.mjs && node --test \"test/*.test.mjs\"",
-    "test:browser": "node scripts/build-demo.mjs && playwright test",
-    "check:size": "node scripts/build.mjs && node scripts/check-size.mjs",
+    "test:browser": "node scripts/build-demo.mjs && node scripts/check-consumer.mjs && playwright test",
+    "check:size": "node scripts/sizes.mjs --check",
+    "docs:sizes": "node scripts/sizes.mjs",
     "check:notices": "node scripts/check-notices.mjs",
     "docs:api": "node scripts/build.mjs && node scripts/generate-api.mjs"
   },
@@ -26,6 +77,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.4",
+    "@types/react": "19.3.0",
     "axe-core": "4.14.0",
     "esbuild": "0.25.12",
     "playwright": "^1.64.1",

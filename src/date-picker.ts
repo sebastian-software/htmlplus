@@ -10,6 +10,7 @@ import { textValue, upgradeProperties } from "./upgrade.js";
 import { trackTouched, visiblyInvalid } from "./touched.js";
 import { createIcon } from "./icons.js";
 import { calendarTemplate, CalendarViews } from "./calendar.js";
+import { isEditing } from "./editing.js";
 import { LocaleContext, resolvedLocale, localeWeekStart } from "./locale.js";
 import { enableImplicitSubmission } from "./implicit-submission.js";
 
@@ -203,7 +204,7 @@ export class H6DatePicker extends HTMLElement {
     if (text && !date) throw new RangeError("Use a calendar date in YYYY-MM-DD format or an empty string.");
     this.#dirty = true;
     // Reassigning a complete canonical date must not rewrite a native edit in progress.
-    if (text !== this.#canonical || !text) {
+    if (text !== this.#canonical || (!text && !isEditing(this.#input))) {
       this.#canonical = text;
       this.#input.value = date ? this.#format.format(date) : "";
     }

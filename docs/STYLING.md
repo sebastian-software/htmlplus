@@ -9,7 +9,7 @@ Every component includes its neutral light base in shadow DOM. No external style
 `h6-field` applies that base to a slotted native input, textarea, or select. These controls remain in light DOM and accept ordinary application CSS. The optional `native.css` provides the same opt-in base without JavaScript and does not style unwrapped inputs. Shadow DOM does not remove browser defaults: the library sets specific properties rather than applying a global reset. See [native fields](NATIVE-FIELDS.md).
 
 ```html
-<script type="module" src="./dist/src/index.js"></script>
+<script type="module" src="./browser/index.js"></script>
 <form>
   <label for="account">Bank account</label>
   <h6-iban id="account" name="iban" required></h6-iban>

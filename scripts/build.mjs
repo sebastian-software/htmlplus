@@ -16,7 +16,7 @@ if (!watch) {
 }
 const entryPoints = (
   await Promise.all(
-    ["src", "demo", "landing"].map(async (folder) =>
+    ["src", "src/elements", "demo", "landing"].map(async (folder) =>
       (
         await readdir(new URL(`../${folder}/`, import.meta.url))
       )

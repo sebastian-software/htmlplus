@@ -11,6 +11,7 @@ import { upgradeProperties } from "./upgrade.js";
 import { trackTouched, visiblyInvalid } from "./touched.js";
 import { createIcon } from "./icons.js";
 import { theme } from "./theme.js";
+import { isEditing } from "./editing.js";
 import { LocaleContext, resolvedLocale, localeWeekStart } from "./locale.js";
 import { enableImplicitSubmission } from "./implicit-submission.js";
 
@@ -247,7 +248,7 @@ export class H6DateRangePicker extends HTMLElement {
     const next = dateRange(value);
     this.#dirty = true;
     next.forEach((date, index) => {
-      if (date !== this.#canonical[index] || date === null)
+      if (date !== this.#canonical[index] || (date === null && !isEditing(this.#inputs[index]!)))
         this.#inputs[index]!.value = date ? this.#format.format(parseCalendarDate(date)!) : "";
     });
     this.#canonical = next;

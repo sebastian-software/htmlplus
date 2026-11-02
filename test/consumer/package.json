@@ -1,0 +1,17 @@
+{
+  "name": "htmlplus-consumer-test",
+  "private": true,
+  "type": "module",
+  "description": "Consumes the packed html+ tarball with Vite and React 19. Installed by scripts/check-consumer.mjs.",
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.2.1",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  }
+}

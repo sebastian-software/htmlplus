@@ -60,3 +60,5 @@ A version-matched Linux container provides Firefox verification in CI. Historica
 - 2026-11-02: Excluded Password Input from restoration state after back navigation restored and resubmitted its plaintext.
 
 - 2026-11-02: Dropped machine-specific test wording and the pointer to suite results in the project plan, which no longer records them.
+
+- 2026-11-02: Assigning the value a focused editor already holds no longer rewrites its text, as ADR-0012 records for controlled frameworks.

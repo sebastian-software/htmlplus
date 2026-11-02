@@ -22,7 +22,8 @@ The playground runs at <http://127.0.0.1:4173/demo/>; the project site is at <ht
 | `npm run typecheck` | Strict TypeScript |
 | `npm run test:unit` | Unit tests in `test/*.test.mjs` against the built modules |
 | `npm run test:browser` | Browser tests in `test/*.spec.mjs` |
-| `npm run check:size` | Build output against the limits in `scripts/check-size.mjs` |
+| `npm run check:size` | Size limits, and whether [the size table](docs/SIZES.md) is current; `npm run docs:sizes` regenerates it |
+| `npm run test:consumer` | Packs the tarball and builds [a Vite and React 19 app](test/consumer) with it |
 | `npm run docs:api` | Regenerates [the element reference](docs/ELEMENTS.md) from `src/` |
 | `npm test` | Everything above, as CI runs it |
 
@@ -34,7 +35,7 @@ Test failures in CI upload their traces and screenshots as a `playwright-results
 
 1. Compare it with native HTML first. Add it only if it fills a real gap and stays within [ADR-0007](docs/adr/0007-component-application-boundary.md).
 2. Define its value contract: the `FormData` entries, default, reset, validation, disabled state, and events. Record a new kind of value in an ADR.
-3. Register it in `src/index.ts`, both in the definition list and in `HTMLElementTagNameMap`.
+3. Add `src/elements/<name>.ts` to register it and declare its tag in `HTMLElementTagNameMap`, and re-export it from `src/index.ts`.
 4. Add its summary and guide link to `scripts/generate-api.mjs`, then run `npm run docs:api`.
 5. Give it a built-in neutral base with deliberate parts, and list it in `demo/shadcn.css`.
 6. Add a Base and a styled recipe to `demo/recipes.ts`, and add fields to the playground in `demo/index.html`.

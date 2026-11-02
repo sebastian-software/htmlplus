@@ -3,6 +3,7 @@ import { hostStyles, inputStyles } from "./styles.js";
 import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
 import { upgradeProperties } from "./upgrade.js";
 import { trackTouched, visiblyInvalid } from "./touched.js";
+import { isEditing } from "./editing.js";
 import { enableImplicitSubmission } from "./implicit-submission.js";
 
 export type IntervalValue = readonly [number | null, number | null];
@@ -89,7 +90,8 @@ export class H6Interval extends HTMLElement {
   set value(value: IntervalValue) {
     if (!pair(value)) throw new TypeError("h6-interval.value must be [number | null, number | null].");
     this.#dirty = true;
-    this.#write(value);
+    const unchanged = value[0] === this.value[0] && value[1] === this.value[1];
+    if (!unchanged || !this.#inputs.some(isEditing)) this.#write(value);
     this.#sync();
   }
   get defaultValue(): IntervalValue {

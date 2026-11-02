@@ -4,3 +4,10 @@ site/
 playwright-report/
 test-results/
 .DS_Store
+lib/
+browser/
+styles/
+test/consumer/node_modules/
+test/consumer/dist/
+test/consumer/dist-ssr/
+test/consumer/dist-switch/

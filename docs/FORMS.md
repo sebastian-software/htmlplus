@@ -114,7 +114,7 @@ Invalid configuration can't be replaced this way, but it signals a markup proble
 
 ## Use with a framework
 
-html+ has no framework adapters, and the project's tests don't exercise any framework. These rules follow from the elements themselves, and apply wherever you create them:
+html+ has no framework adapters. React 19 is tested through a real Vite app that installs the packed tarball, and the rules below apply wherever you create the elements:
 
 - **Attributes declare defaults; properties hold current state.** A `value` attribute sets the reset default, and it updates the current value only until a user edit or property assignment. Set `.value` for controlled updates.
 - **Some values are not strings.** Tags, Toggle Group, Accordion, Interval, Range Slider, and Date Range Picker take arrays through `.value`, and a JSON array in the `value` attribute. Slider and Rating take numbers through `.value`. See the [element reference](ELEMENTS.md).
@@ -123,4 +123,40 @@ html+ has no framework adapters, and the project's tests don't exercise any fram
 - **Standard events report user changes.** Read the new state from `input` and `change`, which bubble and are composed, so one listener on the form covers its controls. Assigning a property emits nothing, so a controlled update can't loop through these events.
 - **Two elements add their own events.** Accordion and Tabs emit a bubbling, composed `valuechange` with `detail.value`. Password Input emits `visibilitychange` with `detail.visible`, only on the host; it doesn't bubble.
 - **Forms read values directly.** `new FormData(form)` includes each control's entries, so a framework doesn't need its own hidden inputs.
-- **Types:** the build emits declarations, and `dist/src/index.d.ts` adds the elements to `HTMLElementTagNameMap`. It has no JSX typings.
+- **Types:** the package ships declarations, and each entry adds its element to `HTMLElementTagNameMap`.
+
+## Use with React 19
+
+React 19 passes props and events to custom elements natively, so no wrapper is needed. Add the JSX types with `"types": ["htmlplus/react"]` in `tsconfig.json`, and import each element once.
+
+```tsx
+import { useState } from "react";
+import "htmlplus/iban";
+
+export function Account() {
+  const [iban, setIban] = useState("");
+  return <h6-iban name="iban" value={iban} onInput={(event) => setIban(event.currentTarget.value)} />;
+}
+```
+
+- **`onInput` and `onChange` keep their native meaning.** `onInput` fires per edit. `onChange` fires when the edit is committed, as on a native field, and not per keystroke as on a React `<input>`.
+- **`value` is the current value, not the reset default.** It sets the property. Use `defaultValue` for what form reset returns to.
+- **Controlled fields keep what the person is typing.** While an editor has focus, assigning the value it already holds leaves its text, caret, and undo alone. So `1h 30m` stays readable while state holds `5400`, and `3.` or an incomplete date survives the round trip.
+- **Arrays work as props.** `h6-tags`, `h6-interval`, and the other array values take `value={array}` directly.
+
+### Server rendering
+
+Entries do nothing on the server, so `react-dom/server` renders plain tags and the browser upgrades them. React doesn't assign props to custom elements while hydrating, which has two consequences:
+
+- String, number, and boolean props reach the element as attributes, and those work as the first value. `defaultValue` does not, because React renders it under its own name.
+- Arrays can't be attributes, so they're missing until the next update. Assign them once in a ref callback:
+
+```tsx
+const tagsRef = useCallback((field: HTMLElementTagNameMap["h6-tags"] | null) => {
+  if (field) field.value = initialTags;
+}, []);
+
+return <h6-tags ref={tagsRef} name="tags" value={tags} />;
+```
+
+Elements rendered only on the client, after hydration, need neither workaround.

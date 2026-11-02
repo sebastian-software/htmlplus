@@ -84,8 +84,11 @@
 
     <section class="prose">
       <h2>You write ordinary markup</h2>
-      <p>Build the project, load one module, and use the elements inside a normal form. Labels, <code>required</code>, and <code>FormData</code> work as they do for native fields.</p>
-      <pre tabindex="0"><code>&lt;script type="module" src="/dist/src/index.js"&gt;&lt;/script&gt;
+      <p>Import the elements a page uses, then write them inside a normal form. Labels, <code>required</code>, and <code>FormData</code> work as they do for native fields, and each element costs only its own code.</p>
+      <pre tabindex="0"><code>&lt;script type="module"&gt;
+  import "htmlplus/iban";
+  import "htmlplus/tags";
+&lt;/script&gt;
 
 &lt;form&gt;
   &lt;label for="account"&gt;IBAN&lt;/label&gt;
