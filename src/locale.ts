@@ -7,14 +7,19 @@ function ancestors(element: HTMLElement): HTMLElement[] {
   while (current) {
     result.push(current);
     const root = current.getRootNode();
-    current = current.assignedSlot ?? current.parentElement ?? (root instanceof ShadowRoot ? root.host as HTMLElement : null);
+    current =
+      current.assignedSlot ?? current.parentElement ?? (root instanceof ShadowRoot ? (root.host as HTMLElement) : null);
   }
   return result;
 }
 
 function usable(language: string | null | undefined): language is string {
   if (!language) return false;
-  try { return Intl.DateTimeFormat.supportedLocalesOf([language]).length > 0; } catch { return false; }
+  try {
+    return Intl.DateTimeFormat.supportedLocalesOf([language]).length > 0;
+  } catch {
+    return false;
+  }
 }
 
 /** Only an explicit locale can fail: inherited language was not authored for this control. */
@@ -31,17 +36,31 @@ export function resolvedLocale(element: HTMLElement): string {
 
 /** Observe only the language context, rather than every mutation in the document. */
 export class LocaleContext {
-  #observer = new MutationObserver(records => records.some(record => record.attributeName === "slot") ? this.connect() : this.update());
+  #observer = new MutationObserver((records) =>
+    records.some((record) => record.attributeName === "slot") ? this.connect() : this.update(),
+  );
   #value?: string;
   #slots: EventTarget[] = [];
   #slotChanged = (): void => this.connect();
-  constructor(private readonly element: HTMLElement, private readonly changed: (locale: string) => void) {}
+  constructor(
+    private readonly element: HTMLElement,
+    private readonly changed: (locale: string) => void,
+  ) {}
   connect(): void {
     this.disconnect();
     for (const node of ancestors(this.element)) {
-      this.#observer.observe(node, { attributes: true, attributeFilter: node === this.element ? ["lang", "locale", "slot"] : ["lang", "slot"] });
-      if (node instanceof HTMLSlotElement) { this.#slots.push(node); node.addEventListener("slotchange", this.#slotChanged); }
-      if (node.shadowRoot) { this.#slots.push(node.shadowRoot); node.shadowRoot.addEventListener("slotchange", this.#slotChanged); }
+      this.#observer.observe(node, {
+        attributes: true,
+        attributeFilter: node === this.element ? ["lang", "locale", "slot"] : ["lang", "slot"],
+      });
+      if (node instanceof HTMLSlotElement) {
+        this.#slots.push(node);
+        node.addEventListener("slotchange", this.#slotChanged);
+      }
+      if (node.shadowRoot) {
+        this.#slots.push(node.shadowRoot);
+        node.shadowRoot.addEventListener("slotchange", this.#slotChanged);
+      }
     }
     this.update();
   }
@@ -53,22 +72,38 @@ export class LocaleContext {
   update(): void {
     const value = resolvedLocale(this.element);
     if (value === this.#value) return;
-    this.#value = value; this.changed(value);
+    this.#value = value;
+    this.changed(value);
   }
 }
 
 /** Inherited direction has no event, so a control reacting to it observes its ancestors. */
 export class DirectionContext {
   #observer = new MutationObserver(() => this.changed());
-  constructor(private readonly element: HTMLElement, private readonly changed: () => void) {}
-  connect(): void { for (const node of ancestors(this.element)) this.#observer.observe(node, { attributes: true, attributeFilter: ["dir"] }); }
-  disconnect(): void { this.#observer.disconnect(); }
+  constructor(
+    private readonly element: HTMLElement,
+    private readonly changed: () => void,
+  ) {}
+  connect(): void {
+    for (const node of ancestors(this.element))
+      this.#observer.observe(node, { attributes: true, attributeFilter: ["dir"] });
+  }
+  disconnect(): void {
+    this.#observer.disconnect();
+  }
 }
 
 /** Intl uses 1–7 for Monday–Sunday; Zag uses 0–6 for Sunday–Saturday. */
 export function localeWeekStart(locale: string): number {
-  const value = new Intl.Locale(locale) as Intl.Locale & { getWeekInfo?: () => { firstDay: number }; weekInfo?: { firstDay: number } };
+  const value = new Intl.Locale(locale) as Intl.Locale & {
+    getWeekInfo?: () => { firstDay: number };
+    weekInfo?: { firstDay: number };
+  };
   const firstDay = value.getWeekInfo?.().firstDay ?? value.weekInfo?.firstDay;
   // Zag's date model supplies locale week data when Intl.Locale lacks this API.
-  return firstDay === undefined ? startOfWeek(new CalendarDate(2028, 1, 1), locale).toDate("UTC").getUTCDay() : firstDay % 7;
+  return firstDay === undefined
+    ? startOfWeek(new CalendarDate(2028, 1, 1), locale)
+        .toDate("UTC")
+        .getUTCDay()
+    : firstDay % 7;
 }

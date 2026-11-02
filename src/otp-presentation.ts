@@ -30,42 +30,62 @@ export class OtpPresentation {
   #connected = false;
   constructor(private readonly input: HTMLInputElement) {
     const root = input.getRootNode() as ShadowRoot;
-    const style = document.createElement("style"); style.textContent = styles;
-    this.#control = document.createElement("div"); this.#control.part.add("control");
-    this.#slots = document.createElement("div"); this.#slots.part.add("slots"); this.#slots.setAttribute("aria-hidden", "true");
-    this.#control.append(this.#slots); root.append(style, this.#control); this.#control.append(input);
+    const style = document.createElement("style");
+    style.textContent = styles;
+    this.#control = document.createElement("div");
+    this.#control.part.add("control");
+    this.#slots = document.createElement("div");
+    this.#slots.part.add("slots");
+    this.#slots.setAttribute("aria-hidden", "true");
+    this.#control.append(this.#slots);
+    root.append(style, this.#control);
+    this.#control.append(input);
   }
   connect(): void {
-    if (this.#connected) return; this.#connected = true;
+    if (this.#connected) return;
+    this.#connected = true;
     this.#observer.observe(this.#control);
-    for (const type of ["focus", "blur", "select", "selectionchange", "keyup", "pointerup"]) this.input.addEventListener(type, this.#selection);
+    for (const type of ["focus", "blur", "select", "selectionchange", "keyup", "pointerup"])
+      this.input.addEventListener(type, this.#selection);
     this.input.ownerDocument.addEventListener("selectionchange", this.#selection);
   }
   disconnect(): void {
-    this.#connected = false; this.#observer.disconnect();
-    for (const type of ["focus", "blur", "select", "selectionchange", "keyup", "pointerup"]) this.input.removeEventListener(type, this.#selection);
+    this.#connected = false;
+    this.#observer.disconnect();
+    for (const type of ["focus", "blur", "select", "selectionchange", "keyup", "pointerup"])
+      this.input.removeEventListener(type, this.#selection);
     this.input.ownerDocument.removeEventListener("selectionchange", this.#selection);
   }
   sync(length: number): void {
     this.#control.style.setProperty("--_hp-otp-count", String(length));
-    while (this.#slots.children.length < length) { const slot = document.createElement("span"); slot.part.add("slot"); this.#slots.append(slot); }
+    while (this.#slots.children.length < length) {
+      const slot = document.createElement("span");
+      slot.part.add("slot");
+      this.#slots.append(slot);
+    }
     while (this.#slots.children.length > length) this.#slots.lastElementChild!.remove();
     this.#control.toggleAttribute("data-overflow", this.input.value.length > length || /\s/.test(this.input.value));
-    this.#measure(); this.#selection();
+    this.#measure();
+    this.#selection();
   }
   #measure(): void {
     const cell = this.#slots.firstElementChild?.getBoundingClientRect().width ?? 0;
     const gap = parseFloat(getComputedStyle(this.#slots).columnGap) || 0;
-    if (cell) { this.#control.style.setProperty("--_hp-otp-cell", `${cell}px`); this.#control.style.setProperty("--_hp-otp-pitch", `${cell + gap}px`); }
+    if (cell) {
+      this.#control.style.setProperty("--_hp-otp-cell", `${cell}px`);
+      this.#control.style.setProperty("--_hp-otp-pitch", `${cell + gap}px`);
+    }
   }
   #selection = (): void => {
     const root = this.input.getRootNode() as ShadowRoot;
     const focused = root.activeElement === this.input;
-    const start = this.input.selectionStart ?? 0, end = this.input.selectionEnd ?? start;
+    const start = this.input.selectionStart ?? 0,
+      end = this.input.selectionEnd ?? start;
     const count = this.#slots.children.length;
     Array.from(this.#slots.children).forEach((slot, index) => {
       const filled = index < this.input.value.length;
-      slot.part.toggle("filled-slot", filled); slot.toggleAttribute("data-filled", filled);
+      slot.part.toggle("filled-slot", filled);
+      slot.toggleAttribute("data-filled", filled);
       slot.part.toggle("selected-slot", focused && index >= start && index < end);
       slot.part.toggle("active-slot", focused && start === end && index === Math.min(start, count - 1));
       slot.toggleAttribute("data-end", focused && start === end && start === count && index === count - 1);

@@ -26,7 +26,8 @@ for (const recipe of recipes) {
 }
 
 function markup(recipe: StylingRecipe, variant: string, id: string): string {
-  const template = document.createElement("template"); template.innerHTML = recipe.markup;
+  const template = document.createElement("template");
+  template.innerHTML = recipe.markup;
   const element = template.content.querySelector<HTMLElement>(recipe.element)!;
   element.id = id;
   applyFieldLocale(element);
@@ -36,11 +37,31 @@ function markup(recipe: StylingRecipe, variant: string, id: string): string {
 }
 
 function renderSource(): void {
-  source.textContent = format === "adapter" ? adapterCss : format === "base" ? baseCss : format === "html"
-    ? `${["button", "h6-field"].includes(current.element) ? '<link rel="stylesheet" href="./dist/native.css">\n' : ""}<form>\n${markup(current, current.className, "example-field").split("\n").map((line) => `  ${line}`).join("\n")}\n</form>`
-    : current.css;
-  copy.textContent = format === "html" ? "Copy HTML" : format === "base" ? "Copy theme CSS" : format === "adapter" ? "Copy adapter" : "Copy CSS";
-  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-source]")) button.setAttribute("aria-pressed", String(button.dataset.source === format));
+  source.textContent =
+    format === "adapter"
+      ? adapterCss
+      : format === "base"
+        ? baseCss
+        : format === "html"
+          ? `${["button", "h6-field"].includes(current.element) ? '<link rel="stylesheet" href="./dist/native.css">\n' : ""}<form>\n${markup(
+              current,
+              current.className,
+              "example-field",
+            )
+              .split("\n")
+              .map((line) => `  ${line}`)
+              .join("\n")}\n</form>`
+          : current.css;
+  copy.textContent =
+    format === "html"
+      ? "Copy HTML"
+      : format === "base"
+        ? "Copy theme CSS"
+        : format === "adapter"
+          ? "Copy adapter"
+          : "Copy CSS";
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-source]"))
+    button.setAttribute("aria-pressed", String(button.dataset.source === format));
   status.textContent = "";
 }
 
@@ -54,46 +75,75 @@ function render(): void {
   document.querySelector("#recipe-element")!.textContent = `<${current.element}>`;
   document.querySelector("#recipe-description")!.textContent = current.description;
   exampleStyle.textContent = current.css;
-  previews.replaceChildren(...["Base", current.variant].map((title, index) => {
-    const panel = document.createElement("section"); panel.className = "recipe-preview"; panel.setAttribute("aria-label", `${title} preview`);
-    const heading = document.createElement("h3"); heading.textContent = title;
-    const form = document.createElement("form"); form.className = "recipe-form";
-    // All markup comes from the static recipes above; user values are never interpolated.
-    form.innerHTML = markup(current, index ? current.className : "", `preview-${index}`);
-    const output = document.createElement("output"); output.setAttribute("aria-label", `${title} form data`); output.setAttribute("aria-live", "off");
-    const update = (): void => { output.textContent = JSON.stringify(Array.from(new FormData(form))); };
-    form.addEventListener("input", update); form.addEventListener("change", update);
-    form.addEventListener("submit", (event) => { event.preventDefault(); output.textContent = JSON.stringify(Array.from(new FormData(form, event.submitter))); });
-    panel.append(heading, form, output);
-    queueMicrotask(update);
-    return panel;
-  }));
+  previews.replaceChildren(
+    ...["Base", current.variant].map((title, index) => {
+      const panel = document.createElement("section");
+      panel.className = "recipe-preview";
+      panel.setAttribute("aria-label", `${title} preview`);
+      const heading = document.createElement("h3");
+      heading.textContent = title;
+      const form = document.createElement("form");
+      form.className = "recipe-form";
+      // All markup comes from the static recipes above; user values are never interpolated.
+      form.innerHTML = markup(current, index ? current.className : "", `preview-${index}`);
+      const output = document.createElement("output");
+      output.setAttribute("aria-label", `${title} form data`);
+      output.setAttribute("aria-live", "off");
+      const update = (): void => {
+        output.textContent = JSON.stringify(Array.from(new FormData(form)));
+      };
+      form.addEventListener("input", update);
+      form.addEventListener("change", update);
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        output.textContent = JSON.stringify(Array.from(new FormData(form, event.submitter)));
+      });
+      panel.append(heading, form, output);
+      queueMicrotask(update);
+      return panel;
+    }),
+  );
   applyLocale();
   document.querySelector(".recipe-parts > span")!.textContent = current.selectors ? "Styling hooks" : "Public parts";
-  document.querySelector("#recipe-parts")!.replaceChildren(...(current.selectors ?? current.parts.map(part => `::part(${part})`)).map((selector) => {
-    const code = document.createElement("code"); code.textContent = selector; return code;
-  }));
+  document.querySelector("#recipe-parts")!.replaceChildren(
+    ...(current.selectors ?? current.parts.map((part) => `::part(${part})`)).map((selector) => {
+      const code = document.createElement("code");
+      code.textContent = selector;
+      return code;
+    }),
+  );
   renderSource();
 }
 
-for (const button of document.querySelectorAll<HTMLButtonElement>("[data-source]")) button.addEventListener("click", () => { format = button.dataset.source!; renderSource(); });
+for (const button of document.querySelectorAll<HTMLButtonElement>("[data-source]"))
+  button.addEventListener("click", () => {
+    format = button.dataset.source!;
+    renderSource();
+  });
 copy.addEventListener("click", async () => {
   try {
     if (!navigator.clipboard) throw new Error("Clipboard unavailable");
     await navigator.clipboard.writeText(source.textContent ?? "");
     status.textContent = "Copied to clipboard.";
-  } catch { status.textContent = "Copy unavailable. Select and copy the code above."; }
+  } catch {
+    status.textContent = "Copy unavailable. Select and copy the code above.";
+  }
 });
 window.addEventListener("hashchange", render);
 document.addEventListener("hp-locale-change", renderSource);
 render();
-await Promise.all(["themes", "shadcn"].map(async (name) => {
-  let css: string;
-  try {
-    const response = await fetch(`./${name}.css`);
-    if (!response.ok) throw new Error("Stylesheet unavailable");
-    css = await response.text();
-  } catch { css = `/* Could not load ${name}.css. Use the download link or reload the page. */`; }
-  if (name === "themes") baseCss = css; else adapterCss = css;
-}));
+await Promise.all(
+  ["themes", "shadcn"].map(async (name) => {
+    let css: string;
+    try {
+      const response = await fetch(`./${name}.css`);
+      if (!response.ok) throw new Error("Stylesheet unavailable");
+      css = await response.text();
+    } catch {
+      css = `/* Could not load ${name}.css. Use the download link or reload the page. */`;
+    }
+    if (name === "themes") baseCss = css;
+    else adapterCss = css;
+  }),
+);
 if (format === "base" || format === "adapter") renderSource();

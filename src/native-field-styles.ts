@@ -1,11 +1,14 @@
 import { theme, radius, surfaceShadow } from "./theme.js";
 
-const textInput = "input:not([type=hidden],[type=checkbox],[type=radio],[type=range],[type=color],[type=file],[type=button],[type=submit],[type=reset],[type=image])";
+const textInput =
+  "input:not([type=hidden],[type=checkbox],[type=radio],[type=range],[type=color],[type=file],[type=button],[type=submit],[type=reset],[type=image])";
 
 /** The same opt-in base works for slotted controls and the no-JavaScript stylesheet. */
 export function nativeFieldStyles(shadow: boolean): string {
-  const select = (element: string, state = ""): string => shadow ? `::slotted(${element}:not([hidden])${state})` : `:where(h6-field) > ${element}:not([hidden])${state}`;
-  const editors = (state = ""): string => [textInput, "textarea", "select"].map(element => select(element, state)).join(", ");
+  const select = (element: string, state = ""): string =>
+    shadow ? `::slotted(${element}:not([hidden])${state})` : `:where(h6-field) > ${element}:not([hidden])${state}`;
+  const editors = (state = ""): string =>
+    [textInput, "textarea", "select"].map((element) => select(element, state)).join(", ");
   return `
     ${editors()} {
       box-sizing: border-box; display: block; width: 100%; min-width: 0; margin: 0;

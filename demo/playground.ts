@@ -2,7 +2,7 @@ import "./theme.js";
 import "./locale.js";
 import "./icons.js";
 import "../src/index.js";
-import { H6TextField } from "../src/text-fields.js";
+import type { H6TextField } from "../src/text-fields.js";
 
 const form = document.querySelector<HTMLFormElement>("#demo-form")!;
 const fields = document.querySelector<HTMLFieldSetElement>("#demo-fields")!;
@@ -13,15 +13,22 @@ const status = document.querySelector<HTMLElement>("#submission-status")!;
 const tags = document.querySelector("h6-tags")!;
 const updates = document.querySelector("h6-switch")!;
 const selectAll = document.querySelector("#select-all") as HTMLElementTagNameMap["h6-checkbox"];
-const selectionRows = Array.from(document.querySelectorAll("h6-checkbox[name=selected]")) as HTMLElementTagNameMap["h6-checkbox"][];
+const selectionRows = Array.from(
+  document.querySelectorAll("h6-checkbox[name=selected]"),
+) as HTMLElementTagNameMap["h6-checkbox"][];
 function syncSelection(): void {
-  const rows = selectionRows.filter(row => !row.disabled), count = rows.filter(row => row.checked).length;
+  const rows = selectionRows.filter((row) => !row.disabled),
+    count = rows.filter((row) => row.checked).length;
   selectAll.checked = rows.length > 0 && count === rows.length;
   selectAll.indeterminate = count > 0 && count < rows.length;
   selectAll.disabled = rows.length === 0;
-  document.querySelector("#selection-feedback")!.textContent = `${count} of ${rows.length} selected. The header checkbox has no submitted value.`;
+  document.querySelector("#selection-feedback")!.textContent =
+    `${count} of ${rows.length} selected. The header checkbox has no submitted value.`;
 }
-selectAll.addEventListener("change", () => { for (const row of selectionRows) if (!row.disabled) row.checked = selectAll.checked; syncSelection(); });
+selectAll.addEventListener("change", () => {
+  for (const row of selectionRows) if (!row.disabled) row.checked = selectAll.checked;
+  syncSelection();
+});
 for (const row of selectionRows) row.addEventListener("change", syncSelection);
 syncSelection();
 let lastEvent = "Ready to edit";
@@ -51,7 +58,7 @@ function renderJson(target: HTMLElement, value: unknown): void {
     const index = match.index;
     fragment.append(document.createTextNode(text.slice(end, index)));
     const span = document.createElement("span");
-    span.className = match[1] ? text[index + match[0].length] === ":" ? "json-key" : "json-string" : "json-number";
+    span.className = match[1] ? (text[index + match[0].length] === ":" ? "json-key" : "json-string") : "json-number";
     span.textContent = match[0];
     fragment.append(span);
     end = index + match[0].length;
@@ -62,65 +69,106 @@ function renderJson(target: HTMLElement, value: unknown): void {
 
 function render(): void {
   const data = entries();
-  body.replaceChildren(...data.map(([name, value]) => {
-    const row = document.createElement("tr");
-    const key = document.createElement("td");
-    const content = document.createElement("td");
-    key.textContent = name;
-    content.textContent = value;
-    row.append(key, content);
-    return row;
-  }));
+  body.replaceChildren(
+    ...data.map(([name, value]) => {
+      const row = document.createElement("tr");
+      const key = document.createElement("td");
+      const content = document.createElement("td");
+      key.textContent = name;
+      content.textContent = value;
+      row.append(key, content);
+      return row;
+    }),
+  );
   document.querySelector("#entry-count")!.textContent = `${data.length} ${data.length === 1 ? "entry" : "entries"}`;
   document.querySelector<HTMLElement>("#empty-data")!.hidden = data.length > 0;
   renderJson(jsonOutput, grouped(data));
 
-  const invalid = Array.from(form.elements).filter((element) => "willValidate" in element && "validity" in element && Boolean(element.willValidate) && !(element.validity as ValidityState).valid).length;
+  const invalid = Array.from(form.elements).filter(
+    (element) =>
+      "willValidate" in element &&
+      "validity" in element &&
+      Boolean(element.willValidate) &&
+      !(element.validity as ValidityState).valid,
+  ).length;
   const state = fields.disabled ? "disabled" : invalid ? "invalid" : "valid";
   validityStatus.dataset.state = state;
   const dot = document.createElement("span");
   dot.className = "status-dot";
   dot.setAttribute("aria-hidden", "true");
-  validityStatus.replaceChildren(dot, document.createTextNode(fields.disabled ? "Fields disabled" : invalid ? `${invalid} ${invalid === 1 ? "field needs" : "fields need"} attention` : "All fields valid"));
+  validityStatus.replaceChildren(
+    dot,
+    document.createTextNode(
+      fields.disabled
+        ? "Fields disabled"
+        : invalid
+          ? `${invalid} ${invalid === 1 ? "field needs" : "fields need"} attention`
+          : "All fields valid",
+    ),
+  );
   document.querySelector("#last-event")!.textContent = lastEvent;
 
-  for (const [id, feedbackId] of [["iban-field", "iban-feedback"], ["bic-field", "bic-feedback"], ["otp-field", "otp-feedback"], ["duration-field", "duration-feedback"]] as const) {
+  for (const [id, feedbackId] of [
+    ["iban-field", "iban-feedback"],
+    ["bic-field", "bic-feedback"],
+    ["otp-field", "otp-feedback"],
+    ["duration-field", "duration-feedback"],
+  ] as const) {
     const field = document.getElementById(id) as H6TextField;
     const feedback = document.getElementById(feedbackId)!;
     feedback.dataset.state = fields.disabled || !field.value ? "neutral" : field.validity?.valid ? "valid" : "invalid";
-    feedback.textContent = field.validationMessage && field.hasAttribute("data-touched") ? field.validationMessage : field.detail;
+    feedback.textContent =
+      field.validationMessage && field.hasAttribute("data-touched") ? field.validationMessage : field.detail;
   }
   const interval = document.querySelector("h6-interval")!;
   const intervalFeedback = document.querySelector<HTMLElement>("#budget-feedback")!;
-  intervalFeedback.dataset.state = !fields.disabled && !interval.validity.valid && interval.hasAttribute("data-touched") ? "invalid" : "neutral";
-  intervalFeedback.textContent = intervalFeedback.dataset.state === "invalid" ? interval.validationMessage : "One control, two named values. The lower boundary cannot exceed the upper.";
+  intervalFeedback.dataset.state =
+    !fields.disabled && !interval.validity.valid && interval.hasAttribute("data-touched") ? "invalid" : "neutral";
+  intervalFeedback.textContent =
+    intervalFeedback.dataset.state === "invalid"
+      ? interval.validationMessage
+      : "One control, two named values. The lower boundary cannot exceed the upper.";
   const date = document.querySelector("h6-date-picker")!;
-  document.querySelector("#date-feedback")!.textContent = `Enter ${date.placeholder} or choose a day. The form receives YYYY-MM-DD without a time zone.`;
+  document.querySelector("#date-feedback")!.textContent =
+    `Enter ${date.placeholder} or choose a day. The form receives YYYY-MM-DD without a time zone.`;
 }
 
 function schedule(): void {
   if (scheduled) return;
   scheduled = true;
-  requestAnimationFrame(() => { scheduled = false; render(); });
+  requestAnimationFrame(() => {
+    scheduled = false;
+    render();
+  });
 }
 
-for (const type of ["input", "change", "valuechange"]) form.addEventListener(type, (event) => {
-  const target = event.target as HTMLInputElement;
-  lastEvent = `${target.name || target.id || target.localName} / ${type}`;
-  schedule();
-});
+for (const type of ["input", "change", "valuechange"])
+  form.addEventListener(type, (event) => {
+    const target = event.target as HTMLInputElement;
+    lastEvent = `${target.name || target.id || target.localName} / ${type}`;
+    schedule();
+  });
 form.addEventListener("focusout", schedule);
 document.addEventListener("hp-locale-change", schedule);
-form.addEventListener("invalid", () => { form.classList.add("was-validated"); schedule(); }, true);
-form.addEventListener("reset", (event) => queueMicrotask(() => {
-  if (event.defaultPrevented) return;
-  form.classList.remove("was-validated");
-  syncSelection();
-  lastEvent = "Form reset";
-  status.textContent = "Defaults restored.";
-  document.querySelector<HTMLElement>("#last-submission")!.hidden = true;
-  schedule();
-}));
+form.addEventListener(
+  "invalid",
+  () => {
+    form.classList.add("was-validated");
+    schedule();
+  },
+  true,
+);
+form.addEventListener("reset", (event) =>
+  queueMicrotask(() => {
+    if (event.defaultPrevented) return;
+    form.classList.remove("was-validated");
+    syncSelection();
+    lastEvent = "Form reset";
+    status.textContent = "Defaults restored.";
+    document.querySelector<HTMLElement>("#last-submission")!.hidden = true;
+    schedule();
+  }),
+);
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   const data = entries();
@@ -170,18 +218,44 @@ document.querySelector("#disable-fields")!.addEventListener("change", (event) =>
   lastEvent = fields.disabled ? "Fieldset disabled" : "Fieldset enabled";
   schedule();
 });
-for (const button of document.querySelectorAll<HTMLButtonElement>("[data-view]")) button.addEventListener("click", () => {
-  const view = button.dataset.view;
-  for (const item of document.querySelectorAll<HTMLButtonElement>("[data-view]")) item.setAttribute("aria-pressed", String(item === button));
-  document.querySelector<HTMLElement>("#entries-view")!.hidden = view !== "entries";
-  document.querySelector<HTMLElement>("#json-view")!.hidden = view !== "json";
-});
+for (const button of document.querySelectorAll<HTMLButtonElement>("[data-view]"))
+  button.addEventListener("click", () => {
+    const view = button.dataset.view;
+    for (const item of document.querySelectorAll<HTMLButtonElement>("[data-view]"))
+      item.setAttribute("aria-pressed", String(item === button));
+    document.querySelector<HTMLElement>("#entries-view")!.hidden = view !== "entries";
+    document.querySelector<HTMLElement>("#json-view")!.hidden = view !== "json";
+  });
 
-await Promise.all(["h6-switch", "h6-tags", "h6-iban", "h6-bic", "h6-otp", "h6-duration", "h6-interval", "h6-segmented", "h6-toggle", "h6-tabs", "h6-accordion", "h6-slider", "h6-range-slider", "h6-rating", "h6-select", "h6-combobox", "h6-date-picker", "h6-date-range-picker"].map((name) => customElements.whenDefined(name)));
+await Promise.all(
+  [
+    "h6-switch",
+    "h6-tags",
+    "h6-iban",
+    "h6-bic",
+    "h6-otp",
+    "h6-duration",
+    "h6-interval",
+    "h6-segmented",
+    "h6-toggle",
+    "h6-tabs",
+    "h6-accordion",
+    "h6-slider",
+    "h6-range-slider",
+    "h6-rating",
+    "h6-select",
+    "h6-combobox",
+    "h6-date-picker",
+    "h6-date-range-picker",
+  ].map((name) => customElements.whenDefined(name)),
+);
 render();
 
 try {
   const response = await fetch("./themes.css");
   if (!response.ok) throw new Error("Theme stylesheet unavailable");
   document.querySelector("#theme-code")!.textContent = await response.text();
-} catch { document.querySelector("#theme-code")!.textContent = "Theme source unavailable. Use the download link or reload the page."; }
+} catch {
+  document.querySelector("#theme-code")!.textContent =
+    "Theme source unavailable. Use the download link or reload the page.";
+}

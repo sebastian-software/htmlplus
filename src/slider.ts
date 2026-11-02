@@ -37,7 +37,25 @@ template.innerHTML = `<style>
 /** One Zag slider adapter shared only by its one-thumb and two-thumb variants. */
 class SliderControl extends HTMLElement {
   static formAssociated = true;
-  static observedAttributes = ["value", "min", "max", "step", "disabled", "readonly", "required", "name", "lower-name", "upper-name", "lower-label", "upper-label", "orientation", "dir", "aria-label", "aria-labelledby", "aria-describedby"];
+  static observedAttributes = [
+    "value",
+    "min",
+    "max",
+    "step",
+    "disabled",
+    "readonly",
+    "required",
+    "name",
+    "lower-name",
+    "upper-name",
+    "lower-label",
+    "upper-label",
+    "orientation",
+    "dir",
+    "aria-label",
+    "aria-labelledby",
+    "aria-describedby",
+  ];
   #internals = this.attachInternals();
   #root = this.attachShadow({ mode: "open" });
   #container: HTMLElement;
@@ -59,9 +77,13 @@ class SliderControl extends HTMLElement {
   #directionContext = new DirectionContext(this, () => this.#sync());
 
   protected constructor(rangeMode: boolean) {
-    super(); this.#rangeMode = rangeMode; this.#values = rangeMode ? [0, 100] : [0];
+    super();
+    this.#rangeMode = rangeMode;
+    this.#values = rangeMode ? [0, 100] : [0];
     this.#root.append(template.content.cloneNode(true));
-    this.addEventListener("click", event => { if (event.composedPath()[0] === this && !event.defaultPrevented) this.focus(); });
+    this.addEventListener("click", (event) => {
+      if (event.composedPath()[0] === this && !event.defaultPrevented) this.focus();
+    });
     trackTouched(this, () => this.#sync());
     this.#container = this.#root.querySelector("[part=root]")!;
     this.#control = this.#root.querySelector("[part=control]")!;
@@ -69,21 +91,30 @@ class SliderControl extends HTMLElement {
     this.#range = this.#root.querySelector("[part=range]")!;
     this.#output = this.#root.querySelector("[part=value-text]")!;
     this.#thumbs = Array.from({ length: rangeMode ? 2 : 1 }, (_, index) => {
-      const thumb = document.createElement("div"); thumb.part.add("thumb");
+      const thumb = document.createElement("div");
+      thumb.part.add("thumb");
       if (rangeMode) thumb.part.add(index ? "upper-thumb" : "lower-thumb");
-      this.#control.append(thumb); return thumb;
+      this.#control.append(thumb);
+      return thumb;
     });
   }
   connectedCallback(): void {
-    upgradeProperties(this, ["value"]); this.#labelContext.connect(); this.#directionContext.connect();
+    upgradeProperties(this, ["value"]);
+    this.#labelContext.connect();
+    this.#directionContext.connect();
     if (!this.#dirty) this.#values = this.defaults;
     this.#normalize();
     this.#machine = new VanillaMachine(slider.machine, {
-      id: this.#id, getRootNode: () => this.#root, ...this.#props(),
+      id: this.#id,
+      getRootNode: () => this.#root,
+      ...this.#props(),
       onValueChange: ({ value }) => {
-        const next = value.map(item => snap(item, numericBounds(this)));
+        const next = value.map((item) => snap(item, numericBounds(this)));
         if (this.#disabled || this.readOnly || next.every((item, index) => item === this.#values[index])) return;
-        this.#dirty = true; this.#values = next; this.#pendingChange = true; this.#sync();
+        this.#dirty = true;
+        this.#values = next;
+        this.#pendingChange = true;
+        this.#sync();
         this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
       },
       onValueChangeEnd: () => {
@@ -93,62 +124,182 @@ class SliderControl extends HTMLElement {
       },
     });
     this.#machine.subscribe(() => this.#render());
-    this.#render(); this.#machine.start(); this.#sync();
-    queueMicrotask(() => { if (this.isConnected) this.#sync(); });
+    this.#render();
+    this.#machine.start();
+    this.#sync();
+    queueMicrotask(() => {
+      if (this.isConnected) this.#sync();
+    });
   }
-  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#directionContext.disconnect(); this.#pendingChange = false; this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
+  disconnectedCallback(): void {
+    this.#labelContext.disconnect();
+    this.#directionContext.disconnect();
+    this.#pendingChange = false;
+    this.#machine?.stop();
+    this.#machine = undefined;
+    this.#bindings.clear();
+  }
   attributeChangedCallback(): void {
     if (!this.#dirty) this.#values = this.defaults;
-    this.#normalize(); this.#sync();
+    this.#normalize();
+    this.#sync();
   }
-  protected get values(): number[] { return [...this.#values]; }
-  protected set values(values: number[]) { this.#dirty = true; this.#values = [...values]; this.#normalize(); this.#sync(); }
+  protected get values(): number[] {
+    return [...this.#values];
+  }
+  protected set values(values: number[]) {
+    this.#dirty = true;
+    this.#values = [...values];
+    this.#normalize();
+    this.#sync();
+  }
   protected get defaults(): number[] {
     const bounds = numericBounds(this);
     let parsed: unknown;
-    try { parsed = this.#rangeMode ? JSON.parse(this.getAttribute("value") ?? "null") : this.hasAttribute("value") ? Number(this.getAttribute("value")) : bounds.min; } catch { parsed = null; }
-    const values = this.#rangeMode ? Array.isArray(parsed) && parsed.length === 2 && parsed.every(item => typeof item === "number" && Number.isFinite(item)) && parsed[0] <= parsed[1] ? parsed as number[] : [bounds.min, bounds.max] : [typeof parsed === "number" && Number.isFinite(parsed) ? parsed : bounds.min];
-    return values.map(value => snap(value, bounds));
+    try {
+      parsed = this.#rangeMode
+        ? JSON.parse(this.getAttribute("value") ?? "null")
+        : this.hasAttribute("value")
+          ? Number(this.getAttribute("value"))
+          : bounds.min;
+    } catch {
+      parsed = null;
+    }
+    const values = this.#rangeMode
+      ? Array.isArray(parsed) &&
+        parsed.length === 2 &&
+        parsed.every((item) => typeof item === "number" && Number.isFinite(item)) &&
+        parsed[0] <= parsed[1]
+        ? (parsed as number[])
+        : [bounds.min, bounds.max]
+      : [typeof parsed === "number" && Number.isFinite(parsed) ? parsed : bounds.min];
+    return values.map((value) => snap(value, bounds));
   }
-  get min(): number { return numericBounds(this).min; }
-  set min(value: number) { this.setAttribute("min", String(value)); }
-  get max(): number { return numericBounds(this).max; }
-  set max(value: number) { this.setAttribute("max", String(value)); }
-  get step(): number { return numericBounds(this).step; }
-  set step(value: number) { this.setAttribute("step", String(value)); }
-  get name(): string { return this.getAttribute("name") ?? ""; }
-  set name(value: string) { this.setAttribute("name", value); }
-  get disabled(): boolean { return this.hasAttribute("disabled"); }
-  set disabled(value: boolean) { this.toggleAttribute("disabled", Boolean(value)); }
-  get readOnly(): boolean { return this.hasAttribute("readonly"); }
-  set readOnly(value: boolean) { this.toggleAttribute("readonly", Boolean(value)); }
-  get required(): boolean { return this.hasAttribute("required"); }
-  set required(value: boolean) { this.toggleAttribute("required", Boolean(value)); }
-  get orientation(): "horizontal" | "vertical" { return this.getAttribute("orientation") === "vertical" ? "vertical" : "horizontal"; }
-  set orientation(value: "horizontal" | "vertical") { this.setAttribute("orientation", value); }
-  get form(): HTMLFormElement | null { return this.#internals.form; }
-  get labels(): NodeList { return this.#internals.labels; }
-  get validity(): ValidityState { return this.#internals.validity; }
-  get validationMessage(): string { return this.#internals.validationMessage; }
-  get willValidate(): boolean { return this.#internals.willValidate; }
-  checkValidity(): boolean { return this.#internals.checkValidity(); }
-  reportValidity(): boolean { return this.#internals.reportValidity(); }
-  setCustomValidity(message: string): void { this.#customError = String(message); this.#sync(); }
-  override focus(options?: FocusOptions): void { if (!this.#disabled) this.#thumbs[0]!.focus(options); }
-  formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; if (disabled) this.#pendingChange = false; this.#sync(); }
-  formResetCallback(): void { this.#dirty = false; this.#pendingChange = false; this.#values = this.defaults; this.removeAttribute("data-touched"); this.#sync(); }
+  get min(): number {
+    return numericBounds(this).min;
+  }
+  set min(value: number) {
+    this.setAttribute("min", String(value));
+  }
+  get max(): number {
+    return numericBounds(this).max;
+  }
+  set max(value: number) {
+    this.setAttribute("max", String(value));
+  }
+  get step(): number {
+    return numericBounds(this).step;
+  }
+  set step(value: number) {
+    this.setAttribute("step", String(value));
+  }
+  get name(): string {
+    return this.getAttribute("name") ?? "";
+  }
+  set name(value: string) {
+    this.setAttribute("name", value);
+  }
+  get disabled(): boolean {
+    return this.hasAttribute("disabled");
+  }
+  set disabled(value: boolean) {
+    this.toggleAttribute("disabled", Boolean(value));
+  }
+  get readOnly(): boolean {
+    return this.hasAttribute("readonly");
+  }
+  set readOnly(value: boolean) {
+    this.toggleAttribute("readonly", Boolean(value));
+  }
+  get required(): boolean {
+    return this.hasAttribute("required");
+  }
+  set required(value: boolean) {
+    this.toggleAttribute("required", Boolean(value));
+  }
+  get orientation(): "horizontal" | "vertical" {
+    return this.getAttribute("orientation") === "vertical" ? "vertical" : "horizontal";
+  }
+  set orientation(value: "horizontal" | "vertical") {
+    this.setAttribute("orientation", value);
+  }
+  get form(): HTMLFormElement | null {
+    return this.#internals.form;
+  }
+  get labels(): NodeList {
+    return this.#internals.labels;
+  }
+  get validity(): ValidityState {
+    return this.#internals.validity;
+  }
+  get validationMessage(): string {
+    return this.#internals.validationMessage;
+  }
+  get willValidate(): boolean {
+    return this.#internals.willValidate;
+  }
+  checkValidity(): boolean {
+    return this.#internals.checkValidity();
+  }
+  reportValidity(): boolean {
+    return this.#internals.reportValidity();
+  }
+  setCustomValidity(message: string): void {
+    this.#customError = String(message);
+    this.#sync();
+  }
+  override focus(options?: FocusOptions): void {
+    if (!this.#disabled) this.#thumbs[0]!.focus(options);
+  }
+  formDisabledCallback(disabled: boolean): void {
+    this.#formDisabled = disabled;
+    if (disabled) this.#pendingChange = false;
+    this.#sync();
+  }
+  formResetCallback(): void {
+    this.#dirty = false;
+    this.#pendingChange = false;
+    this.#values = this.defaults;
+    this.removeAttribute("data-touched");
+    this.#sync();
+  }
   formStateRestoreCallback(state: string | File | FormData): void {
     if (typeof state !== "string") return;
     try {
       const values: unknown = JSON.parse(state);
-      if (Array.isArray(values) && values.length === this.#thumbs.length && values.every(value => typeof value === "number" && Number.isFinite(value)) && (values.length === 1 || values[0] <= values[1])) this.values = values;
-    } catch { /* Ignore malformed restoration state. */ }
+      if (
+        Array.isArray(values) &&
+        values.length === this.#thumbs.length &&
+        values.every((value) => typeof value === "number" && Number.isFinite(value)) &&
+        (values.length === 1 || values[0] <= values[1])
+      )
+        this.values = values;
+    } catch {
+      /* Ignore malformed restoration state. */
+    }
   }
-  get #disabled(): boolean { return this.disabled || this.#formDisabled || Boolean(numericBounds(this).error); }
-  #normalize(): void { const bounds = numericBounds(this); this.#values = this.#values.map(value => snap(value, bounds)); }
+  get #disabled(): boolean {
+    return this.disabled || this.#formDisabled || Boolean(numericBounds(this).error);
+  }
+  #normalize(): void {
+    const bounds = numericBounds(this);
+    this.#values = this.#values.map((value) => snap(value, bounds));
+  }
   #props(): Partial<slider.Props> {
     const { min, max, step } = numericBounds(this);
-    return { min, max, step, value: this.#values, dir: direction(this), orientation: this.orientation, disabled: this.#disabled, readOnly: this.readOnly, invalid: visiblyInvalid(this), thumbCollisionBehavior: "none", minStepsBetweenThumbs: 0 };
+    return {
+      min,
+      max,
+      step,
+      value: this.#values,
+      dir: direction(this),
+      orientation: this.orientation,
+      disabled: this.#disabled,
+      readOnly: this.readOnly,
+      invalid: visiblyInvalid(this),
+      thumbCollisionBehavior: "none",
+      minStepsBetweenThumbs: 0,
+    };
   }
   #sync(): void {
     const error = this.#customError || numericBounds(this).error;
@@ -160,47 +311,89 @@ class SliderControl extends HTMLElement {
         data.append(this.getAttribute("upper-name") ?? `${this.name}.max`, String(this.#values[1]));
       }
       this.#internals.setFormValue(this.name ? data : null, JSON.stringify(this.#values));
-    } else this.#internals.setFormValue(numericBounds(this).error ? null : String(this.#values[0]), JSON.stringify(this.#values));
-    this.#machine?.updateProps(this.#props()); this.#render();
+    } else
+      this.#internals.setFormValue(
+        numericBounds(this).error ? null : String(this.#values[0]),
+        JSON.stringify(this.#values),
+      );
+    this.#machine?.updateProps(this.#props());
+    this.#render();
   }
   #render(): void {
     if (!this.#machine) return;
     const api = slider.connect(this.#machine.service, normalizeProps);
-    this.#bindings.apply(this.#container, api.getRootProps()); this.#bindings.apply(this.#control, api.getControlProps());
+    this.#bindings.apply(this.#container, api.getRootProps());
+    this.#bindings.apply(this.#control, api.getControlProps());
     this.#container.toggleAttribute("data-readonly", this.readOnly);
-    this.#bindings.apply(this.#track, api.getTrackProps()); this.#bindings.apply(this.#range, api.getRangeProps());
+    this.#bindings.apply(this.#track, api.getTrackProps());
+    this.#bindings.apply(this.#range, api.getRangeProps());
     this.#output.textContent = this.#values.join(" – ");
     const label = fieldLabel(this, this.labels, this.#rangeMode ? "Range" : "Value");
     this.#thumbs.forEach((thumb, index) => {
       this.#bindings.apply(thumb, api.getThumbProps({ index }));
       thumb.tabIndex = this.disabled || this.#formDisabled ? -1 : 0;
       thumb.removeAttribute("aria-labelledby");
-      thumb.setAttribute("aria-label", this.#rangeMode ? `${label}: ${this.getAttribute(index ? "upper-label" : "lower-label") || (index ? "Maximum" : "Minimum")}` : label);
-      thumb.setAttribute("aria-invalid", String(visiblyInvalid(this))); thumb.setAttribute("aria-readonly", String(this.readOnly));
+      thumb.setAttribute(
+        "aria-label",
+        this.#rangeMode
+          ? `${label}: ${this.getAttribute(index ? "upper-label" : "lower-label") || (index ? "Maximum" : "Minimum")}`
+          : label,
+      );
+      thumb.setAttribute("aria-invalid", String(visiblyInvalid(this)));
+      thumb.setAttribute("aria-readonly", String(this.readOnly));
       const description = referencedText(this, "aria-describedby");
-      if (description) thumb.setAttribute("aria-description", description); else thumb.removeAttribute("aria-description");
+      if (description) thumb.setAttribute("aria-description", description);
+      else thumb.removeAttribute("aria-description");
     });
   }
 }
 
 export class H6Slider extends SliderControl {
-  constructor() { super(false); }
-  get value(): number { return this.values[0]!; }
-  set value(value: number) { if (typeof value !== "number" || !Number.isFinite(value)) throw new TypeError("h6-slider.value must be finite."); this.values = [value]; }
-  get defaultValue(): number { return this.defaults[0]!; }
-  set defaultValue(value: number) { if (!Number.isFinite(value)) throw new TypeError("Default value must be finite."); this.setAttribute("value", String(value)); }
+  constructor() {
+    super(false);
+  }
+  get value(): number {
+    return this.values[0]!;
+  }
+  set value(value: number) {
+    if (typeof value !== "number" || !Number.isFinite(value)) throw new TypeError("h6-slider.value must be finite.");
+    this.values = [value];
+  }
+  get defaultValue(): number {
+    return this.defaults[0]!;
+  }
+  set defaultValue(value: number) {
+    if (!Number.isFinite(value)) throw new TypeError("Default value must be finite.");
+    this.setAttribute("value", String(value));
+  }
 }
 export class H6RangeSlider extends SliderControl {
-  constructor() { super(true); }
-  get value(): RangeSliderValue { return this.values as [number, number]; }
+  constructor() {
+    super(true);
+  }
+  get value(): RangeSliderValue {
+    return this.values as [number, number];
+  }
   set value(value: RangeSliderValue) {
-    if (!Array.isArray(value) || value.length !== 2 || !value.every(item => typeof item === "number" && Number.isFinite(item))) throw new TypeError("h6-range-slider.value must be two finite numbers.");
+    if (
+      !Array.isArray(value) ||
+      value.length !== 2 ||
+      !value.every((item) => typeof item === "number" && Number.isFinite(item))
+    )
+      throw new TypeError("h6-range-slider.value must be two finite numbers.");
     if (value[0] > value[1]) throw new RangeError("The lower boundary must not exceed the upper boundary.");
     this.values = [...value];
   }
-  get defaultValue(): RangeSliderValue { return this.defaults as [number, number]; }
+  get defaultValue(): RangeSliderValue {
+    return this.defaults as [number, number];
+  }
   set defaultValue(value: RangeSliderValue) {
-    if (!Array.isArray(value) || value.length !== 2 || !value.every(item => typeof item === "number" && Number.isFinite(item))) throw new TypeError("Default value must be two finite numbers.");
+    if (
+      !Array.isArray(value) ||
+      value.length !== 2 ||
+      !value.every((item) => typeof item === "number" && Number.isFinite(item))
+    )
+      throw new TypeError("Default value must be two finite numbers.");
     if (value[0] > value[1]) throw new RangeError("The lower boundary must not exceed the upper boundary.");
     this.setAttribute("value", JSON.stringify(value));
   }

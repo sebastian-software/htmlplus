@@ -28,7 +28,17 @@ tagsTemplate.innerHTML = `<style>
 
 export class H6Tags extends HTMLElement {
   static formAssociated = true;
-  static observedAttributes = ["value", "name", "disabled", "required", "readonly", "placeholder", "aria-label", "aria-labelledby", "aria-describedby"];
+  static observedAttributes = [
+    "value",
+    "name",
+    "disabled",
+    "required",
+    "readonly",
+    "placeholder",
+    "aria-label",
+    "aria-labelledby",
+    "aria-describedby",
+  ];
   #internals = this.attachInternals();
   #input: HTMLInputElement;
   #tokens: HTMLElement;
@@ -48,8 +58,12 @@ export class H6Tags extends HTMLElement {
     this.#input.addEventListener("keydown", this.#onKeyDown);
     this.#input.addEventListener("blur", () => this.#commit());
     trackTouched(this, () => this.#sync());
-    this.#input.addEventListener("input", (event) => { event.stopPropagation(); });
-    this.#input.addEventListener("change", (event) => { event.stopPropagation(); });
+    this.#input.addEventListener("input", (event) => {
+      event.stopPropagation();
+    });
+    this.#input.addEventListener("change", (event) => {
+      event.stopPropagation();
+    });
     root.addEventListener("click", (event) => {
       const button = (event.target as Element).closest<HTMLButtonElement>("button[data-index]");
       if (!button || this.#isDisabled || this.readOnly) return;
@@ -60,15 +74,25 @@ export class H6Tags extends HTMLElement {
     });
   }
 
-  connectedCallback(): void { upgradeProperties(this, ["value"]); this.#labelContext.connect(); this.#sync(); queueMicrotask(() => this.#label()); }
-  disconnectedCallback(): void { this.#labelContext.disconnect(); }
+  connectedCallback(): void {
+    upgradeProperties(this, ["value"]);
+    this.#labelContext.connect();
+    this.#sync();
+    queueMicrotask(() => this.#label());
+  }
+  disconnectedCallback(): void {
+    this.#labelContext.disconnect();
+  }
   attributeChangedCallback(name: string): void {
     if (name === "value" && !this.#dirty) this.#values = this.defaultValue;
     this.#sync();
   }
-  get value(): string[] { return [...this.#values]; }
+  get value(): string[] {
+    return [...this.#values];
+  }
   set value(values: readonly string[]) {
-    if (!Array.isArray(values) || !values.every((value) => typeof value === "string")) throw new TypeError("h6-tags.value must be an array of strings.");
+    if (!Array.isArray(values) || !values.every((value) => typeof value === "string"))
+      throw new TypeError("h6-tags.value must be an array of strings.");
     this.#dirty = true;
     this.#values = uniqueTags(values);
     this.#input.value = "";
@@ -79,27 +103,69 @@ export class H6Tags extends HTMLElement {
     try {
       const value: unknown = JSON.parse(this.getAttribute("value") ?? "[]");
       return Array.isArray(value) && value.every((item) => typeof item === "string") ? uniqueTags(value) : [];
-    } catch { return []; }
+    } catch {
+      return [];
+    }
   }
-  set defaultValue(values: readonly string[]) { this.setAttribute("value", JSON.stringify(uniqueTags(values))); }
-  get name(): string { return this.getAttribute("name") ?? ""; }
-  set name(value: string) { this.setAttribute("name", value); }
-  get disabled(): boolean { return this.hasAttribute("disabled"); }
-  set disabled(value: boolean) { this.toggleAttribute("disabled", Boolean(value)); }
-  get required(): boolean { return this.hasAttribute("required"); }
-  set required(value: boolean) { this.toggleAttribute("required", Boolean(value)); }
-  get readOnly(): boolean { return this.hasAttribute("readonly"); }
-  set readOnly(value: boolean) { this.toggleAttribute("readonly", Boolean(value)); }
-  get form(): HTMLFormElement | null { return this.#internals.form; }
-  get labels(): NodeList { return this.#internals.labels; }
-  get validity(): ValidityState { return this.#internals.validity; }
-  get validationMessage(): string { return this.#internals.validationMessage; }
-  get willValidate(): boolean { return this.#internals.willValidate; }
-  checkValidity(): boolean { return this.#internals.checkValidity(); }
-  reportValidity(): boolean { return this.#internals.reportValidity(); }
-  setCustomValidity(message: string): void { this.#customError = String(message); this.#sync(); }
-  override focus(options?: FocusOptions): void { this.#input.focus(options); }
-  formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; this.#sync(); }
+  set defaultValue(values: readonly string[]) {
+    this.setAttribute("value", JSON.stringify(uniqueTags(values)));
+  }
+  get name(): string {
+    return this.getAttribute("name") ?? "";
+  }
+  set name(value: string) {
+    this.setAttribute("name", value);
+  }
+  get disabled(): boolean {
+    return this.hasAttribute("disabled");
+  }
+  set disabled(value: boolean) {
+    this.toggleAttribute("disabled", Boolean(value));
+  }
+  get required(): boolean {
+    return this.hasAttribute("required");
+  }
+  set required(value: boolean) {
+    this.toggleAttribute("required", Boolean(value));
+  }
+  get readOnly(): boolean {
+    return this.hasAttribute("readonly");
+  }
+  set readOnly(value: boolean) {
+    this.toggleAttribute("readonly", Boolean(value));
+  }
+  get form(): HTMLFormElement | null {
+    return this.#internals.form;
+  }
+  get labels(): NodeList {
+    return this.#internals.labels;
+  }
+  get validity(): ValidityState {
+    return this.#internals.validity;
+  }
+  get validationMessage(): string {
+    return this.#internals.validationMessage;
+  }
+  get willValidate(): boolean {
+    return this.#internals.willValidate;
+  }
+  checkValidity(): boolean {
+    return this.#internals.checkValidity();
+  }
+  reportValidity(): boolean {
+    return this.#internals.reportValidity();
+  }
+  setCustomValidity(message: string): void {
+    this.#customError = String(message);
+    this.#sync();
+  }
+  override focus(options?: FocusOptions): void {
+    this.#input.focus(options);
+  }
+  formDisabledCallback(disabled: boolean): void {
+    this.#formDisabled = disabled;
+    this.#sync();
+  }
   formResetCallback(): void {
     this.#dirty = false;
     this.#values = this.defaultValue;
@@ -112,10 +178,14 @@ export class H6Tags extends HTMLElement {
     try {
       const value: unknown = JSON.parse(state);
       if (Array.isArray(value) && value.every((item) => typeof item === "string")) this.value = value;
-    } catch { /* Ignore an incompatible state from an earlier component version. */ }
+    } catch {
+      /* Ignore an incompatible state from an earlier component version. */
+    }
   }
 
-  get #isDisabled(): boolean { return this.disabled || this.#formDisabled; }
+  get #isDisabled(): boolean {
+    return this.disabled || this.#formDisabled;
+  }
   #label(): void {
     this.#input.setAttribute("aria-label", fieldLabel(this, this.labels, "Tags"));
     this.#input.setAttribute("aria-description", referencedText(this, "aria-describedby"));
@@ -131,14 +201,18 @@ export class H6Tags extends HTMLElement {
     this.#internals.ariaDisabled = String(this.#isDisabled);
     this.#internals.ariaRequired = String(this.required);
     if (this.#customError) this.#internals.setValidity({ customError: true }, this.#customError, this.#input);
-    else if (this.required && !this.#values.length) this.#internals.setValidity({ valueMissing: true }, "Add at least one tag.", this.#input);
+    else if (this.required && !this.#values.length)
+      this.#internals.setValidity({ valueMissing: true }, "Add at least one tag.", this.#input);
     else this.#internals.setValidity({});
     this.#input.setAttribute("aria-invalid", String(visiblyInvalid(this)));
     this.#label();
     this.#render();
   }
   #render(): void {
-    const focusedIndex = this.shadowRoot?.activeElement instanceof HTMLButtonElement ? Number((this.shadowRoot.activeElement as HTMLButtonElement).dataset.index) : -1;
+    const focusedIndex =
+      this.shadowRoot?.activeElement instanceof HTMLButtonElement
+        ? Number((this.shadowRoot.activeElement as HTMLButtonElement).dataset.index)
+        : -1;
     const tags = this.#values.map((value, index) => {
       const tag = document.createElement("span");
       tag.part.add("tag");
@@ -158,7 +232,8 @@ export class H6Tags extends HTMLElement {
       return tag;
     });
     this.#tokens.replaceChildren(...tags);
-    if (focusedIndex >= 0) this.#tokens.querySelector<HTMLButtonElement>(`button[data-index="${focusedIndex}"]`)?.focus();
+    if (focusedIndex >= 0)
+      this.#tokens.querySelector<HTMLButtonElement>(`button[data-index="${focusedIndex}"]`)?.focus();
   }
   #change(values: string[]): void {
     this.value = values;
@@ -175,8 +250,10 @@ export class H6Tags extends HTMLElement {
   }
   #onKeyDown = (event: KeyboardEvent): void => {
     if (event.isComposing || this.#isDisabled || this.readOnly) return;
-    if (event.key === "Enter" || event.key === ",") { event.preventDefault(); this.#commit(); }
-    else if (event.key === "Backspace" && !this.#input.value) {
+    if (event.key === "Enter" || event.key === ",") {
+      event.preventDefault();
+      this.#commit();
+    } else if (event.key === "Backspace" && !this.#input.value) {
       this.#tokens.querySelector<HTMLButtonElement>("[part=tag]:last-child button")?.focus();
       event.preventDefault();
     }

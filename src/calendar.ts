@@ -1,11 +1,17 @@
 import type * as datePicker from "@zag-js/date-picker";
 import { parseCalendarDate } from "./date-value.js";
-import { DomBindings } from "./zag-dom.js";
+import type { DomBindings } from "./zag-dom.js";
 import { hostStyles } from "./styles.js";
 import { theme, radius, surfaceShadow } from "./theme.js";
 
 type CalendarView = datePicker.DateView;
-interface ViewNodes { root: HTMLElement; table: HTMLTableElement; head: HTMLTableSectionElement; body: HTMLTableSectionElement; key: string; }
+interface ViewNodes {
+  root: HTMLElement;
+  table: HTMLTableElement;
+  head: HTMLTableSectionElement;
+  body: HTMLTableSectionElement;
+  key: string;
+}
 export const calendarTemplate = document.createElement("template");
 calendarTemplate.innerHTML = `<style>
   ${hostStyles}
@@ -50,9 +56,15 @@ export class CalendarViews {
   #nodes = new Map<CalendarView, ViewNodes>();
   constructor(content: HTMLElement) {
     for (const view of ["day", "month", "year"] as const) {
-      const root = document.createElement("div"); root.part.add("view", `${view}-view`);
-      const table = document.createElement("table"); table.part.add("grid");
-      const head = document.createElement("thead"), body = document.createElement("tbody"); table.append(head, body); root.append(table); content.append(root);
+      const root = document.createElement("div");
+      root.part.add("view", `${view}-view`);
+      const table = document.createElement("table");
+      table.part.add("grid");
+      const head = document.createElement("thead"),
+        body = document.createElement("tbody");
+      table.append(head, body);
+      root.append(table);
+      content.append(root);
       this.#nodes.set(view, { root, table, head, body, key: "" });
     }
   }
@@ -61,51 +73,108 @@ export class CalendarViews {
     const numbers = new Intl.NumberFormat(locale, { useGrouping: false });
     for (const [view, nodes] of this.#nodes) {
       nodes.table.lang = locale;
-      bindings.apply(nodes.root, api.getViewProps({ view })); bindings.apply(nodes.table, api.getTableProps({ view, columns: view === "day" ? 7 : 4 }));
-      bindings.apply(nodes.head, api.getTableHeaderProps({ view })); bindings.apply(nodes.body, api.getTableBodyProps({ view }));
+      bindings.apply(nodes.root, api.getViewProps({ view }));
+      bindings.apply(nodes.table, api.getTableProps({ view, columns: view === "day" ? 7 : 4 }));
+      bindings.apply(nodes.head, api.getTableHeaderProps({ view }));
+      bindings.apply(nodes.body, api.getTableBodyProps({ view }));
       retained.push(nodes.root, nodes.table, nodes.head, nodes.body);
-      const weeks = api.weeks, values = view === "month" ? api.getMonthsGrid({ columns: 4, format: "short" }) : view === "year" ? api.getYearsGrid({ columns: 4 }) : undefined;
-      const key = (view === "day" ? weeks.map(week => week.map(date => date.toString()).join(",")).join(";") : values!.map(row => row.map(item => `${item.value}:${item.label}`).join(",")).join(";")) + locale;
+      const weeks = api.weeks,
+        values =
+          view === "month"
+            ? api.getMonthsGrid({ columns: 4, format: "short" })
+            : view === "year"
+              ? api.getYearsGrid({ columns: 4 })
+              : undefined;
+      const key =
+        (view === "day"
+          ? weeks.map((week) => week.map((date) => date.toString()).join(",")).join(";")
+          : values!.map((row) => row.map((item) => `${item.value}:${item.label}`).join(",")).join(";")) + locale;
       if (key !== nodes.key) {
-        nodes.key = key; nodes.head.replaceChildren(); nodes.body.replaceChildren();
+        nodes.key = key;
+        nodes.head.replaceChildren();
+        nodes.body.replaceChildren();
         if (view === "day") {
           const row = document.createElement("tr");
-          for (const day of api.weekDays) { const cell = document.createElement("th"); cell.part.add("weekday"); cell.scope = "col"; cell.textContent = day.narrow; cell.setAttribute("aria-label", day.long); cell.title = day.long; row.append(cell); }
+          for (const day of api.weekDays) {
+            const cell = document.createElement("th");
+            cell.part.add("weekday");
+            cell.scope = "col";
+            cell.textContent = day.narrow;
+            cell.setAttribute("aria-label", day.long);
+            cell.title = day.long;
+            row.append(cell);
+          }
           nodes.head.append(row);
         }
-        const rows = view === "day" ? weeks.map(week => week.map(date => ({ label: numbers.format(date.day), value: date.toString() }))) : view === "year" ? values!.map(row => row.map(item => ({ ...item, label: numbers.format(Number(item.value)) }))) : values!;
+        const rows =
+          view === "day"
+            ? weeks.map((week) => week.map((date) => ({ label: numbers.format(date.day), value: date.toString() })))
+            : view === "year"
+              ? values!.map((row) => row.map((item) => ({ ...item, label: numbers.format(Number(item.value)) })))
+              : values!;
         for (const rowValues of rows) {
           const row = document.createElement("tr");
-          for (const item of rowValues) { const cell = document.createElement("td"), button = document.createElement("button"); button.type = "button"; button.part.add(view); button.dataset.calendarValue = String(item.value); button.textContent = item.label; cell.append(button); row.append(cell); }
+          for (const item of rowValues) {
+            const cell = document.createElement("td"),
+              button = document.createElement("button");
+            button.type = "button";
+            button.part.add(view);
+            button.dataset.calendarValue = String(item.value);
+            button.textContent = item.label;
+            cell.append(button);
+            row.append(cell);
+          }
           nodes.body.append(row);
         }
       }
       for (const row of nodes.body.rows) {
-        bindings.apply(row, api.getTableRowProps({ view })); retained.push(row);
+        bindings.apply(row, api.getTableRowProps({ view }));
+        retained.push(row);
         for (const cell of row.cells) {
           const button = cell.firstElementChild as HTMLButtonElement;
           if (view === "day") {
             const date = parseCalendarDate(button.dataset.calendarValue!);
-            if (!date) { button.disabled = true; button.tabIndex = -1; continue; }
-            const state = api.getDayTableCellState({ value: date }), props = api.getDayTableCellTriggerProps({ value: date });
+            if (!date) {
+              button.disabled = true;
+              button.tabIndex = -1;
+              continue;
+            }
+            const state = api.getDayTableCellState({ value: date }),
+              props = api.getDayTableCellTriggerProps({ value: date });
             if (api.selectionMode === "range") {
               const click = props.onclick;
               // A pointer restart must move the keyboard origin before selecting the new start.
-              props.onclick = (event: MouseEvent) => { if (event.defaultPrevented || !state.selectable) return; api.setFocusedValue(date); click?.(event); };
+              props.onclick = (event: MouseEvent) => {
+                if (event.defaultPrevented || !state.selectable) return;
+                api.setFocusedValue(date);
+                click?.(event);
+              };
             }
-            bindings.apply(cell, api.getDayTableCellProps({ value: date })); bindings.apply(button, props);
-            button.part.toggle("selected-day", state.selected); button.part.toggle("today", state.today);
+            bindings.apply(cell, api.getDayTableCellProps({ value: date }));
+            bindings.apply(button, props);
+            button.part.toggle("selected-day", state.selected);
+            button.part.toggle("today", state.today);
             if (api.selectionMode === "range") {
               const [start, end] = api.value;
               const committed = start && end && date.compare(start) >= 0 && date.compare(end) <= 0;
               cell.setAttribute("aria-selected", String(state.selected || Boolean(committed)));
             }
-            button.part.toggle("range-start", Boolean(state.firstInRange)); button.part.toggle("range-end", Boolean(state.lastInRange));
-            button.part.toggle("in-range", Boolean(state.inRange)); button.part.toggle("preview-day", Boolean(state.inHoveredRange));
+            button.part.toggle("range-start", Boolean(state.firstInRange));
+            button.part.toggle("range-end", Boolean(state.lastInRange));
+            button.part.toggle("in-range", Boolean(state.inRange));
+            button.part.toggle("preview-day", Boolean(state.inHoveredRange));
           } else {
             const value = Number(button.dataset.calendarValue);
-            bindings.apply(cell, view === "month" ? api.getMonthTableCellProps({ value }) : api.getYearTableCellProps({ value }));
-            bindings.apply(button, view === "month" ? api.getMonthTableCellTriggerProps({ value }) : api.getYearTableCellTriggerProps({ value }));
+            bindings.apply(
+              cell,
+              view === "month" ? api.getMonthTableCellProps({ value }) : api.getYearTableCellProps({ value }),
+            );
+            bindings.apply(
+              button,
+              view === "month"
+                ? api.getMonthTableCellTriggerProps({ value })
+                : api.getYearTableCellTriggerProps({ value }),
+            );
           }
           retained.push(cell, button);
         }

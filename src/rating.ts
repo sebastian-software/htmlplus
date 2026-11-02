@@ -33,7 +33,17 @@ const starPath = "m12 3 2.78 5.63L21 9.54l-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.93 
 
 export class H6Rating extends HTMLElement {
   static formAssociated = true;
-  static observedAttributes = ["value", "count", "disabled", "readonly", "required", "dir", "aria-label", "aria-labelledby", "aria-describedby"];
+  static observedAttributes = [
+    "value",
+    "count",
+    "disabled",
+    "readonly",
+    "required",
+    "dir",
+    "aria-label",
+    "aria-labelledby",
+    "aria-describedby",
+  ];
   #internals = this.attachInternals();
   #root = this.attachShadow({ mode: "open", delegatesFocus: true });
   #container: HTMLElement;
@@ -52,106 +62,233 @@ export class H6Rating extends HTMLElement {
   #labelContext = new LabelContext(this, () => this.#render());
 
   constructor() {
-    super(); this.#root.append(template.content.cloneNode(true));
+    super();
+    this.#root.append(template.content.cloneNode(true));
     trackTouched(this, () => this.#sync());
-    this.addEventListener("click", event => { if (event.composedPath()[0] === this && !event.defaultPrevented) this.focus(); });
-    this.#container = this.#root.querySelector("[part=root]")!; this.#control = this.#root.querySelector("[part=control]")!;
-    this.#label = this.#root.querySelector("[part=label]")!; this.#clear = this.#root.querySelector("[part=clear-button]")!; this.#output = this.#root.querySelector("[part=value-text]")!;
+    this.addEventListener("click", (event) => {
+      if (event.composedPath()[0] === this && !event.defaultPrevented) this.focus();
+    });
+    this.#container = this.#root.querySelector("[part=root]")!;
+    this.#control = this.#root.querySelector("[part=control]")!;
+    this.#label = this.#root.querySelector("[part=label]")!;
+    this.#clear = this.#root.querySelector("[part=clear-button]")!;
+    this.#output = this.#root.querySelector("[part=value-text]")!;
     // End pointer preview before keyboard input so Zag enters its focused key state.
     this.#control.addEventListener("keydown", () => this.#machine?.service.send({ type: "GROUP_POINTER_LEAVE" }), true);
-    this.#clear.addEventListener("click", () => { if (!this.#disabled && !this.readOnly && this.#machine) { rating.connect(this.#machine.service, normalizeProps).clearValue(); queueMicrotask(() => { if (this.isConnected) this.focus(); }); } });
+    this.#clear.addEventListener("click", () => {
+      if (!this.#disabled && !this.readOnly && this.#machine) {
+        rating.connect(this.#machine.service, normalizeProps).clearValue();
+        queueMicrotask(() => {
+          if (this.isConnected) this.focus();
+        });
+      }
+    });
   }
   connectedCallback(): void {
-    upgradeProperties(this, ["value"]); this.#labelContext.connect();
+    upgradeProperties(this, ["value"]);
+    this.#labelContext.connect();
     if (!this.#dirty) this.#value = this.defaultValue;
     this.#reconcile();
     this.#machine = new VanillaMachine(rating.machine, {
-      id: this.#id, getRootNode: () => this.#root, ...this.#props(),
+      id: this.#id,
+      getRootNode: () => this.#root,
+      ...this.#props(),
       onValueChange: ({ value }) => {
         const next = value <= 0 ? null : Math.min(this.count, Math.round(value));
         if (this.#disabled || this.readOnly || next === this.#value) return;
-        this.#dirty = true; this.#value = next; this.#sync();
+        this.#dirty = true;
+        this.#value = next;
+        this.#sync();
         this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
         this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
       },
     });
-    this.#machine.subscribe(() => this.#render()); this.#render(); this.#machine.start(); this.#sync();
-    queueMicrotask(() => { if (this.isConnected) this.#sync(); });
+    this.#machine.subscribe(() => this.#render());
+    this.#render();
+    this.#machine.start();
+    this.#sync();
+    queueMicrotask(() => {
+      if (this.isConnected) this.#sync();
+    });
   }
-  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
+  disconnectedCallback(): void {
+    this.#labelContext.disconnect();
+    this.#machine?.stop();
+    this.#machine = undefined;
+    this.#bindings.clear();
+  }
   attributeChangedCallback(): void {
     if (!this.#dirty) this.#value = this.defaultValue;
     if (this.#value !== null) this.#value = Math.min(this.count, this.#value);
-    this.#reconcile(); this.#sync();
+    this.#reconcile();
+    this.#sync();
   }
-  get value(): number | null { return this.#value; }
+  get value(): number | null {
+    return this.#value;
+  }
   set value(value: number | null) {
-    if (value !== null && (typeof value !== "number" || !Number.isInteger(value) || value < 1 || value > this.count)) throw new RangeError("h6-rating.value must be null or a whole score between 1 and count.");
-    this.#dirty = true; this.#value = value; this.#sync();
+    if (value !== null && (typeof value !== "number" || !Number.isInteger(value) || value < 1 || value > this.count))
+      throw new RangeError("h6-rating.value must be null or a whole score between 1 and count.");
+    this.#dirty = true;
+    this.#value = value;
+    this.#sync();
   }
-  get defaultValue(): number | null { const value = Number(this.getAttribute("value")); return Number.isInteger(value) && value >= 1 && value <= this.count ? value : null; }
+  get defaultValue(): number | null {
+    const value = Number(this.getAttribute("value"));
+    return Number.isInteger(value) && value >= 1 && value <= this.count ? value : null;
+  }
   set defaultValue(value: number | null) {
-    if (value !== null && (!Number.isInteger(value) || value < 1 || value > this.count)) throw new RangeError("Default score must be null or a whole score between 1 and count.");
-    if (value === null) this.removeAttribute("value"); else this.setAttribute("value", String(value));
+    if (value !== null && (!Number.isInteger(value) || value < 1 || value > this.count))
+      throw new RangeError("Default score must be null or a whole score between 1 and count.");
+    if (value === null) this.removeAttribute("value");
+    else this.setAttribute("value", String(value));
   }
-  get count(): number { const value = Number(this.getAttribute("count")); return Number.isInteger(value) && value >= 1 && value <= 10 ? value : 5; }
-  set count(value: number) { if (!Number.isInteger(value) || value < 1 || value > 10) throw new RangeError("Rating count must be between 1 and 10."); this.setAttribute("count", String(value)); }
-  get name(): string { return this.getAttribute("name") ?? ""; }
-  set name(value: string) { this.setAttribute("name", value); }
-  get disabled(): boolean { return this.hasAttribute("disabled"); }
-  set disabled(value: boolean) { this.toggleAttribute("disabled", Boolean(value)); }
-  get readOnly(): boolean { return this.hasAttribute("readonly"); }
-  set readOnly(value: boolean) { this.toggleAttribute("readonly", Boolean(value)); }
-  get required(): boolean { return this.hasAttribute("required"); }
-  set required(value: boolean) { this.toggleAttribute("required", Boolean(value)); }
-  get form(): HTMLFormElement | null { return this.#internals.form; }
-  get labels(): NodeList { return this.#internals.labels; }
-  get validity(): ValidityState { return this.#internals.validity; }
-  get validationMessage(): string { return this.#internals.validationMessage; }
-  get willValidate(): boolean { return this.#internals.willValidate; }
-  checkValidity(): boolean { return this.#internals.checkValidity(); }
-  reportValidity(): boolean { return this.#internals.reportValidity(); }
-  setCustomValidity(message: string): void { this.#customError = String(message); this.#sync(); }
-  override focus(options?: FocusOptions): void { if (!this.#disabled) this.#items[(this.#value ?? 1) - 1]?.focus(options); }
-  clear(): void { this.value = null; }
-  formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; this.#sync(); }
-  formResetCallback(): void { this.#dirty = false; this.#value = this.defaultValue; this.removeAttribute("data-touched"); this.#sync(); }
+  get count(): number {
+    const value = Number(this.getAttribute("count"));
+    return Number.isInteger(value) && value >= 1 && value <= 10 ? value : 5;
+  }
+  set count(value: number) {
+    if (!Number.isInteger(value) || value < 1 || value > 10)
+      throw new RangeError("Rating count must be between 1 and 10.");
+    this.setAttribute("count", String(value));
+  }
+  get name(): string {
+    return this.getAttribute("name") ?? "";
+  }
+  set name(value: string) {
+    this.setAttribute("name", value);
+  }
+  get disabled(): boolean {
+    return this.hasAttribute("disabled");
+  }
+  set disabled(value: boolean) {
+    this.toggleAttribute("disabled", Boolean(value));
+  }
+  get readOnly(): boolean {
+    return this.hasAttribute("readonly");
+  }
+  set readOnly(value: boolean) {
+    this.toggleAttribute("readonly", Boolean(value));
+  }
+  get required(): boolean {
+    return this.hasAttribute("required");
+  }
+  set required(value: boolean) {
+    this.toggleAttribute("required", Boolean(value));
+  }
+  get form(): HTMLFormElement | null {
+    return this.#internals.form;
+  }
+  get labels(): NodeList {
+    return this.#internals.labels;
+  }
+  get validity(): ValidityState {
+    return this.#internals.validity;
+  }
+  get validationMessage(): string {
+    return this.#internals.validationMessage;
+  }
+  get willValidate(): boolean {
+    return this.#internals.willValidate;
+  }
+  checkValidity(): boolean {
+    return this.#internals.checkValidity();
+  }
+  reportValidity(): boolean {
+    return this.#internals.reportValidity();
+  }
+  setCustomValidity(message: string): void {
+    this.#customError = String(message);
+    this.#sync();
+  }
+  override focus(options?: FocusOptions): void {
+    if (!this.#disabled) this.#items[(this.#value ?? 1) - 1]?.focus(options);
+  }
+  clear(): void {
+    this.value = null;
+  }
+  formDisabledCallback(disabled: boolean): void {
+    this.#formDisabled = disabled;
+    this.#sync();
+  }
+  formResetCallback(): void {
+    this.#dirty = false;
+    this.#value = this.defaultValue;
+    this.removeAttribute("data-touched");
+    this.#sync();
+  }
   formStateRestoreCallback(state: string | File | FormData): void {
     if (typeof state !== "string") return;
     if (state === "") this.value = null;
-    else { const value = Number(state); if (Number.isInteger(value) && value >= 1 && value <= this.count) this.value = value; }
+    else {
+      const value = Number(state);
+      if (Number.isInteger(value) && value >= 1 && value <= this.count) this.value = value;
+    }
   }
-  get #disabled(): boolean { return this.disabled || this.#formDisabled; }
-  #props(): Partial<rating.Props> { return { value: this.#value ?? -1, count: this.count, dir: direction(this), disabled: this.#disabled, readOnly: this.readOnly, required: this.required, allowHalf: false, translations: { ratingValueText: index => `${index} of ${this.count}` } }; }
+  get #disabled(): boolean {
+    return this.disabled || this.#formDisabled;
+  }
+  #props(): Partial<rating.Props> {
+    return {
+      value: this.#value ?? -1,
+      count: this.count,
+      dir: direction(this),
+      disabled: this.#disabled,
+      readOnly: this.readOnly,
+      required: this.required,
+      allowHalf: false,
+      translations: { ratingValueText: (index) => `${index} of ${this.count}` },
+    };
+  }
   #reconcile(): void {
-    const removedFocus = this.#items.slice(this.count).some(item => this.#root.activeElement === item);
+    const removedFocus = this.#items.slice(this.count).some((item) => this.#root.activeElement === item);
     while (this.#items.length < this.count) {
-      const item = document.createElement("button"); item.type = "button"; item.part.add("item");
-      const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg"); icon.setAttribute("part", "icon"); icon.setAttribute("viewBox", "0 0 24 24"); icon.setAttribute("aria-hidden", "true");
-      const path = document.createElementNS(icon.namespaceURI, "path"); path.setAttribute("d", starPath); icon.append(path); item.append(icon);
-      this.#items.push(item); this.#control.append(item);
+      const item = document.createElement("button");
+      item.type = "button";
+      item.part.add("item");
+      const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      icon.setAttribute("part", "icon");
+      icon.setAttribute("viewBox", "0 0 24 24");
+      icon.setAttribute("aria-hidden", "true");
+      const path = document.createElementNS(icon.namespaceURI, "path");
+      path.setAttribute("d", starPath);
+      icon.append(path);
+      item.append(icon);
+      this.#items.push(item);
+      this.#control.append(item);
     }
     this.#bindings.retain([this.#container, this.#control, ...this.#items.slice(0, this.count)]);
     for (const item of this.#items.splice(this.count)) item.remove();
     if (removedFocus) queueMicrotask(() => this.focus());
   }
   #sync(): void {
-    this.#internals.setFormValue(this.#value === null ? null : String(this.#value), this.#value === null ? "" : String(this.#value));
-    if (this.#value === null) this.#internals.states.delete("rated"); else this.#internals.states.add("rated");
+    this.#internals.setFormValue(
+      this.#value === null ? null : String(this.#value),
+      this.#value === null ? "" : String(this.#value),
+    );
+    if (this.#value === null) this.#internals.states.delete("rated");
+    else this.#internals.states.add("rated");
     if (this.#customError) this.#internals.setValidity({ customError: true }, this.#customError, this.#items[0]);
-    else if (this.required && this.#value === null) this.#internals.setValidity({ valueMissing: true }, "Choose a rating to continue.", this.#items[0]);
+    else if (this.required && this.#value === null)
+      this.#internals.setValidity({ valueMissing: true }, "Choose a rating to continue.", this.#items[0]);
     else this.#internals.setValidity({});
-    this.#machine?.updateProps(this.#props()); this.#render();
+    this.#machine?.updateProps(this.#props());
+    this.#render();
   }
   #render(): void {
     if (!this.#machine) return;
     const api = rating.connect(this.#machine.service, normalizeProps);
-    this.#bindings.apply(this.#container, api.getRootProps()); this.#bindings.apply(this.#control, api.getControlProps());
-    this.#label.id = String(api.getLabelProps().id); this.#label.textContent = fieldLabel(this, this.labels, "Rating");
-    this.#control.setAttribute("aria-invalid", String(visiblyInvalid(this))); this.#control.setAttribute("aria-required", String(this.required));
+    this.#bindings.apply(this.#container, api.getRootProps());
+    this.#bindings.apply(this.#control, api.getControlProps());
+    this.#label.id = String(api.getLabelProps().id);
+    this.#label.textContent = fieldLabel(this, this.labels, "Rating");
+    this.#control.setAttribute("aria-invalid", String(visiblyInvalid(this)));
+    this.#control.setAttribute("aria-required", String(this.required));
     const description = referencedText(this, "aria-describedby");
-    if (description) this.#control.setAttribute("aria-description", description); else this.#control.removeAttribute("aria-description");
-    this.#container.toggleAttribute("data-disabled", this.#disabled); this.#container.toggleAttribute("data-readonly", this.readOnly);
+    if (description) this.#control.setAttribute("aria-description", description);
+    else this.#control.removeAttribute("aria-description");
+    this.#container.toggleAttribute("data-disabled", this.#disabled);
+    this.#container.toggleAttribute("data-readonly", this.readOnly);
     this.#clear.disabled = this.#disabled || this.readOnly || this.#value === null;
     this.#clear.setAttribute("aria-label", `Clear ${this.#label.textContent}`);
     this.#output.textContent = this.#value === null ? "Not rated" : `${this.#value} of ${this.count}`;
@@ -159,7 +296,8 @@ export class H6Rating extends HTMLElement {
       this.#bindings.apply(item, api.getItemProps({ index: index + 1 }));
       // Zag uses hover/first-item state for checked; only a committed score is checked here.
       const checked = this.#value === index + 1;
-      item.setAttribute("aria-checked", String(checked)); item.toggleAttribute("data-checked", checked);
+      item.setAttribute("aria-checked", String(checked));
+      item.toggleAttribute("data-checked", checked);
       item.tabIndex = this.#disabled ? -1 : index === (this.#value ?? 1) - 1 ? 0 : -1;
       item.disabled = this.#disabled;
       item.part.toggle("selected-item", checked);

@@ -1,7 +1,9 @@
 import { spreadProps } from "@zag-js/vanilla";
 
 let sequence = 0;
-export function interactionId(kind: string): string { return `h6-${kind}-${++sequence}`; }
+export function interactionId(kind: string): string {
+  return `h6-${kind}-${++sequence}`;
+}
 
 export interface InteractionMachine<Service, Props> {
   readonly service: Service;
@@ -19,12 +21,18 @@ export class DomBindings {
   }
   retain(nodes: Element[]): void {
     const keep = new Set(nodes);
-    for (const [node, cleanup] of this.#cleanups) if (!keep.has(node)) {
-      spreadProps(node, {})(); cleanup(); this.#cleanups.delete(node);
-    }
+    for (const [node, cleanup] of this.#cleanups)
+      if (!keep.has(node)) {
+        spreadProps(node, {})();
+        cleanup();
+        this.#cleanups.delete(node);
+      }
   }
   clear(): void {
-    for (const [node, cleanup] of this.#cleanups) { spreadProps(node, {})(); cleanup(); }
+    for (const [node, cleanup] of this.#cleanups) {
+      spreadProps(node, {})();
+      cleanup();
+    }
     this.#cleanups.clear();
   }
 }
