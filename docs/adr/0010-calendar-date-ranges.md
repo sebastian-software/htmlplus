@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-26
-- Updated: 2026-10-29
+- Updated: 2026-11-02
 - Lifecycle: living
 - Scope: bounded inclusive Gregorian date ranges
 
@@ -20,7 +20,7 @@ Typed and programmatic boundaries preserve their identities and report inverted 
 
 Two native editors preserve raw drafts, selection, undo, and composition independently. The calendar uses the installed machine's guarded missing-input behavior and trigger focus fallback. Silent editor/reset changes also reset the machine's active range boundary through its installed INPUT.FOCUS transition; controlled values alone leave unfinished range progress behind. A restarted range also moves the machine's keyboard origin to the pointer-selected start, so switching input methods does not jump back to an old boundary. Provisional hover styling does not set grid aria-selected. These installed-machine assumptions and the adapter must be rechecked on dependency upgrades. Selected boundaries use primary tokens, the span uses accent tokens, and provisional preview has a distinct public part; inherited themes and detailed overrides remain separate styling layers.
 
-Focused browser checks cover selection, preview versus submitted state, partial validation and recovery, order, same-day ranges, native editing, names, reset, fieldsets, locale/zone stability, lifecycle, popup clipping, themes, and containing tabs. Existing Date Picker checks cover the shared view renderer. The project plan records full-suite results and outstanding browser/device evidence. Business availability, timestamp conversion, booking workflows, endpoints, and persistence stay application-owned under ADR-0007.
+Focused browser checks cover selection, preview versus submitted state, partial validation and recovery, order, same-day ranges, native editing, names, reset, fieldsets, locale/zone stability, lifecycle, popup clipping, themes, and containing tabs. Existing Date Picker checks cover the shared view renderer. The project plan tracks outstanding browser and device evidence. Business availability, timestamp conversion, booking workflows, endpoints, and persistence stay application-owned under ADR-0007.
 
 ## References
 
@@ -34,3 +34,5 @@ Focused browser checks cover selection, preview versus submitted state, partial 
 - 2026-10-26: Accepted two named ISO boundaries, visible partial state with complete-range validation, independent native editors, shared calendar views, and the distinction between range gestures and identified text boundaries.
 
 - 2026-10-29: Adopted ADR-0011's inherited HTML language and localized numeric displays for both boundaries and the calendar, retaining ISO values and invalid drafts.
+
+- 2026-11-02: Changed the pointer to the project plan, which no longer records suite results.

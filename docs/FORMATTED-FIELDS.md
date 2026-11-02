@@ -9,7 +9,7 @@ Formatting is presentation and editing behavior, separate from validation and su
 <h6-iban id="account" name="iban" value="DE89370400440532013000" required></h6-iban>
 ```
 
-The editor displays `DE89 3704 0044 0532 0130 00`; FormData receives `DE89370400440532013000`. Defaults and silent `.value` assignments use uppercase groups of four. `.value` remains canonical, `.displayValue` returns the current editor string, and `.defaultValue` describes the declared default. `minlength` and `maxlength` count the canonical value, not generated separators. Format errors report `patternMismatch`; check digits must be 02–98 and satisfy mod-97.
+The editor displays `DE89 3704 0044 0532 0130 00`; FormData receives `DE89370400440532013000`. Defaults and silent `.value` assignments use uppercase groups of four. `.value` remains canonical, `.displayValue` returns the current editor string, and `.defaultValue` describes the declared default. `minlength` and `maxlength` count the canonical value, not generated separators. Format errors report `patternMismatch`; check digits must be 02–98 and satisfy mod-97. Only AT, BE, CH, DE, ES, FR, GB, IE, IT, and NL are supported: a well-formed IBAN from any other country fails validation with `patternMismatch` and blocks submission.
 
 Typing and paste normalize case and grouping. Generated separators are presentation, so a collapsed Backspace/Delete skips a separator to delete a neighboring character; explicitly selecting a separator does not delete an additional character. Invalid non-whitespace characters remain available for correction and validation. Grouping does not establish account existence or ownership.
 
@@ -29,7 +29,7 @@ The browser retains the native caret, selection, horizontal scrolling, copy/cut,
 
 There is one input and one Tab stop. Its native text is spaced to match the decorative cells. Arrow keys move within that input; Shift+Arrow and Select All select a continuous range, and Backspace/Delete operate on that range. The active cell, selected cells, and caret reflect the native selection. Pointer selection still belongs to the native input. Cells are hidden from assistive technology; the input retains the field's accessible name and complete value.
 
-The string retains leading zeros. Whitespace-separated pasted codes use one native edit and contribute the unspaced value. Native maximum length limits user entry; an overlong programmatic value remains visible in a plain editor with validation instead of hiding characters beyond the cells. This is visible code entry, not password masking. No focus advance between editors or completion-triggered submission occurs.
+The string retains leading zeros. Whitespace-separated pasted codes use one native edit and contribute the unspaced value. Native maximum length limits user entry; an overlong programmatic value remains visible in a plain editor with validation instead of hiding characters beyond the cells. The editor is `type="text"` rather than `type="number"`, which would not preserve them. This is visible code entry, not password masking. No focus advance between editors or completion-triggered submission occurs.
 
 The default hints are `inputmode="numeric"` and `autocomplete="one-time-code"`. These are hints, not certification of mobile SMS autofill or password-manager integration. Physical-device and manual assistive-technology checks remain open.
 

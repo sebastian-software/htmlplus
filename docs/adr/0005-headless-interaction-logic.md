@@ -2,10 +2,10 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-10-29
+- Updated: 2026-11-02
 - Lifecycle: living
-- Scope: Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker
-- Implementation: fifteen Zag-backed elements, split browser modules, live examples, and twenty-four styling recipes
+- Scope: Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, Date Range Picker, Checkbox, Radio Group, Toggle Group, Number Input, and Password Input
+- Implementation: fifteen Zag-backed elements, split browser modules, live examples, and twenty-five styling recipes
 
 ## Context
 
@@ -15,7 +15,7 @@ The existing contract remains ordinary HTML forms, native custom elements, shado
 
 ## Decision
 
-Use Zag 1.46.0 for Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, generated IDs, and callback names stay implementation details.
+Use Zag 1.46.0 for these fifteen elements: Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, Date Range Picker, Checkbox, Radio Group, Toggle Group, Number Input, and Password Input. Use it through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, generated IDs, and callback names stay implementation details.
 
 Adopt per component after checking its actual DOM assumptions. The initial slice implemented Toggle, Accordion, and Tabs; the numeric slice adds Slider, Range Slider, and Rating. Toggle retains a native button; Accordion/Tabs generate native button triggers in shadow DOM and project caller-owned light-DOM sections. Native details/summary would be a smaller disclosure baseline but would not exercise the requested common behavior foundation and deliberate shadow styling surface. Native range remains a smaller single-thumb alternative; the explicit Zag direction shares the slider machine across one and two thumbs. ADR-0008 records the Select/Combobox slice; ADR-0010 adds range mode using the same dependency; ADR-0009 records the Date Picker slice and its native-input boundary. Do not migrate the earlier eight controls simply to standardize on one engine.
 
@@ -41,13 +41,13 @@ TypeScript emits declarations, and esbuild bundles split browser modules with ex
 
 ## Evidence: integrated elements, 2026-10-23
 
-The initial Toggle/Accordion/Tabs integration passed sixty-six browser checks across Chromium and WebKit, plus five validation unit tests. The project plan records the current suite, including subsequent theme checks. The added integration checks cover pressed values and user-event counts; defaults, custom errors, external labels, and fieldsets; keyboard modes, RTL and vertical tabs; fields in hidden panels; nested and simultaneous invalid fields with native focus; native undo across panel changes; dynamic sections; reconnection cleanup; built-in styles, text scaling, and mobile recipes. The earlier eight fields retain their existing contract checks. Assistive-technology usability, physical touch devices, Firefox on this host, and real history restoration remain unverified.
+The initial Toggle/Accordion/Tabs integration passed sixty-six browser checks across Chromium and WebKit, plus five validation unit tests. The added integration checks cover pressed values and user-event counts; defaults, custom errors, external labels, and fieldsets; keyboard modes, RTL and vertical tabs; fields in hidden panels; nested and simultaneous invalid fields with native focus; native undo across panel changes; dynamic sections; reconnection cleanup; built-in styles, text scaling, and mobile recipes. The earlier eight fields retain their existing contract checks. Assistive-technology usability, physical touch devices, and real history restoration remain unverified. Firefox is covered in CI.
 
 ## Earlier evidence: isolated combobox, 2026-10-23
 
 Official sources provide all nine initially requested interaction patterns, with date ranges available in the date-picker machine. Range Slider is the multi-thumb configuration of `@zag-js/slider`; Rating uses `@zag-js/rating-group`. The vanilla package exports `VanillaMachine`, `normalizeProps`, and `spreadProps`, so no React or other component runtime is necessary. The date-picker uses `@internationalized/date`; using that date model does not require adopting React Aria's component layer.
 
-The [isolated probe](../../experiments/zag/README.md) pins the combobox and vanilla packages to 1.46.0 and bundles them separately from html+. It runs real browser interactions against two form-associated custom elements with their own shadow roots. Chromium and WebKit pass:
+An isolated probe pinned the combobox and vanilla packages to 1.46.0 and bundled them separately from html+. It was removed on 2026-11-02, once the integrated browser suite covered more than it did; its source remains in Git history under `experiments/zag`. It ran real browser interactions against two form-associated custom elements with their own shadow roots. Chromium and WebKit passed:
 
 - Filter text, navigate options by keyboard, select a display label, and submit its identifier exactly once through `ElementInternals`.
 - Omit an unanswered required choice, block validity, and clear the error after selection.
@@ -56,9 +56,9 @@ The [isolated probe](../../experiments/zag/README.md) pins the combobox and vani
 - Disable and re-enable through a fieldset, omit disabled values, restore declared defaults on form reset, and operate after disconnection/reconnection.
 - Use no hidden input or hidden select in the fixture and report no page errors.
 
-The minified production-mode probe bundle is 101,462 bytes, or 33,180 bytes with Node's default gzip, including the fixture class. This is a single-combobox experiment, not an incremental cost for html+, a benchmark, or a release size budget. No other component bundle sizes have been measured.
+The minified production-mode probe bundle is 101,462 bytes, or 33,180 bytes with Node's default gzip, including the fixture class. This is a single-combobox experiment, not an incremental cost for html+, a benchmark, or a release size budget. Current build limits are in [`scripts/check-size.mjs`](../../scripts/check-size.mjs).
 
-Important limits: external label forwarding, native undo/IME, full user-event semantics, real browser history restoration, touch interaction, assistive technologies, and a clipping-safe production popup are not established by this combobox probe. Its implementation is separate from the integrated interaction elements. Select and Combobox have since completed their integrated slice under [ADR-0008](0008-selection-popups.md); Date Picker has since completed its integrated slice under ADR-0009. The numeric controls also completed their separate integration checks. Firefox remains untested on this host because its existing launch failure occurs before navigation.
+Important limits: external label forwarding, native undo/IME, full user-event semantics, real browser history restoration, touch interaction, assistive technologies, and a clipping-safe production popup are not established by this combobox probe. Its implementation is separate from the integrated interaction elements. Select and Combobox have since completed their integrated slice under [ADR-0008](0008-selection-popups.md); Date Picker has since completed its integrated slice under ADR-0009. The numeric controls also completed their separate integration checks. The probe did not run in Firefox; CI covers Firefox for the integrated elements.
 
 ## Tradeoffs and alternatives
 
@@ -100,7 +100,7 @@ Number Input reuses Zag stepping with a native editor outside the machine's inpu
 
 Inspect each additional machine's form assumptions before using it. Popup placement, editable query handling, and date parsing remain gates for their respective components; this decision does not claim those are solved by the current implemented machines. Keep delivery tasks and candidate value contracts in the [project plan](../PLAN.md).
 
-Revisit on an adapter/machine contract change, a supported-browser failure, editing or accessibility regressions, or a dependency cost that outweighs the behavior reused. Upgrade the machine and adapter versions together and rerun the compatibility probe.
+Revisit on an adapter/machine contract change, a supported-browser failure, editing or accessibility regressions, or a dependency cost that outweighs the behavior reused. Upgrade the machine and adapter versions together and rerun the browser suite.
 
 ## References
 
@@ -130,8 +130,10 @@ Revisit on an adapter/machine contract change, a supported-browser failure, edit
 
 - 2026-10-24: Accepted Date Picker under ADR-0009, with strict calendar dates, a native editor outside machine input synchronization, and scoped top-layer rendering.
 
-- 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.
+- 2026-10-26: Accepted the range mode of the existing date-picker machine under ADR-0010, with two host-owned editors outside machine input synchronization and shared calendar views. No new dependency.
 
 - 2026-10-26: Retained inactive editor layout boxes and added inert semantics so native undo survives Tabs/Accordion visibility changes in Firefox.
 
-- 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.
+- 2026-10-29: Extended Zag adoption to Checkbox, Radio Group, Toggle Group, Number Input, and Password Input, keeping native editors outside machine input lookup and adding a native click handler for the visibility action.
+
+- 2026-11-02: Corrected the scope and decision to all fifteen elements. Removed the isolated probe, kept its evidence here, and changed the upgrade check to rerunning the browser suite.

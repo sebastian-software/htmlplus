@@ -51,6 +51,6 @@ The gallery includes Quiet surface Select and Underlined search Combobox recipes
 
 The browser checks cover selection, query invalidation, no-result queries, native undo, composition, disabled options and fieldsets, defaults, reset/restoration callbacks, reconnection, external form association, labels/descriptions, dynamic options, invalid-field revelation, clipping, viewport collision, dismissal, focus, and Light/Dark mobile recipes. The exported artifact includes both modules, positioning dependencies, presets, adapter, and third-party notices.
 
-Physical-device pickers/autofill, manual assistive-technology combinations, real history restoration, and exact minimum browser versions remain unverified. Firefox cannot launch on this macOS host; the Linux CI matrix remains the verification path for that engine. These custom controls do not provide the native select's operating-system picker or browser-autofill integration.
+Physical-device pickers/autofill, manual assistive-technology combinations, real history restoration, and exact minimum browser versions remain unverified. Firefox is covered in CI. These custom controls do not provide the native select's operating-system picker or browser-autofill integration.
 
 See [ADR-0008](adr/0008-selection-popups.md) for rationale and tradeoffs and [ADR-0007](adr/0007-component-application-boundary.md) for application responsibilities.

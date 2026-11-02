@@ -32,6 +32,18 @@ Date Picker submits one Gregorian ISO date independently of its localized native
 
 Date Range Picker adds two explicit ISO boundaries and visible partial state, with complete-range validation under [ADR-0010](0010-calendar-date-ranges.md).
 
+## Shared form behavior
+
+Every form control must prove the following, rather than assuming it from form association:
+
+- A regular submission and `new FormData(form)` contain the expected entries exactly once. An enhanced native input and its host never both submit the same logical value, and no hidden proxy input is required.
+- Value properties, initial defaults, attribute changes, and programmatic updates have documented behavior. Programmatic assignment does not invent user input events, and user edits emit `input` and `change` without duplicates across component boundaries.
+- `name`, `form`, `disabled`, `required`, and `readonly` behave like the underlying control where they apply, including inside a disabled fieldset.
+- Reset restores declared defaults. History restoration is evaluated separately, and universal autofill is not assumed from form association.
+- Labels activate the actual editable control. Focus, keyboard operation, accessible names, and errors work without a pointer.
+- Native validity blocks submission, and applications can add and clear server-originated errors.
+- Companion elements demonstrate that their contained fields still submit correctly.
+
 ## Review trigger
 
 Revisit the mechanism if a supported browser cannot provide reliable submission, validation, labels, or reset for a proposed control. Preserve the ordinary-form integration goal while changing the component's implementation strategy.
@@ -61,12 +73,14 @@ Native action buttons remain actual `<button>` elements styled by the optional `
 
 - 2026-10-24: Added Date Picker with host-owned native editing, date-only submission, explicit locale parsing, and inclusive constraints under ADR-0009.
 
-- 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.
+- 2026-10-26: Added Date Range Picker as one form-associated host that submits two named ISO boundaries and keeps a partial selection visible in FormData while validation requires a complete range. ADR-0010 owns the contract.
 
-- 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.
+- 2026-10-29: Added five everyday controls as form-associated hosts with no hidden proxy, and kept action buttons as native `<button>` elements because an autonomous custom element cannot be a native submitter.
 
 - 2026-10-29: Added Native Field as a presentation-only companion, retaining original light-DOM control ownership instead of forwarding native form APIs through another form-associated host.
 
 - 2026-11-02: Added implicit submission for shadow editors. Enter previously did nothing in them, which broke ordinary forms such as logins.
 
 - 2026-11-02: Aligned shared control behavior with native fields: invalid presentation waits for `data-touched`, assignment coerces like native text fields, properties set before upgrade are replayed, host `change` is composed, and format errors use specific validity states rather than `customError`.
+
+- 2026-11-02: Moved the shared form-behavior checklist here from the project plan when the plan was reduced to next steps, and replaced two generic change notes with ones specific to this decision.

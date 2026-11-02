@@ -2,81 +2,30 @@
 
 **More capable HTML. Ordinary forms.**
 
-html+ provides framework-independent form controls and core UI primitives. Components handle interaction, value formats, and form participation. Your application supplies the data, business rules, and workflows.
+html+ provides framework-independent form controls and core UI primitives. Components handle interaction, value formats, and form participation. Your application supplies the data, business rules, and workflows. [ADR-0007](docs/adr/0007-component-application-boundary.md) records that boundary: an IBAN field checks format and check digits, while the application verifies the account and starts the payment.
 
-**Status:** working prototype. Twenty-four elements (twenty-one form controls, Accordion, Tabs, and Native Field), a native Button family, a live FormData playground, and a static Pages export are implemented. The project is named **html+**; its domain is [htmlplus.dev](https://htmlplus.dev). `htmlplus` is the technical slug and private package name. The `h6-` element prefix is still provisional; there is no published package.
+**Status:** prototype. Element names and APIs may still change, and the `h6-` prefix is provisional. There is no npm package: `npm i htmlplus` installs an unrelated third-party package. The name `htmlplus.dev` is reserved and not live yet.
 
-**Demo:** [Form playground](https://sebastian-software.github.io/htmlplus/) · [Styling recipes](https://sebastian-software.github.io/htmlplus/styling.html) · [Deployment checks](https://github.com/sebastian-software/htmlplus/actions/workflows/pages.yml)
+**Try it:** [project site](https://sebastian-software.github.io/htmlplus/) · [form playground](https://sebastian-software.github.io/htmlplus/demo/) · [styling gallery](https://sebastian-software.github.io/htmlplus/demo/styling.html)
 
-## What belongs in html+
+## Install today
 
-Use native HTML when it meets the interaction, form, and styling requirements. html+ fills gaps with reusable controls that expose HTML attributes, properties, DOM events, and CSS styling hooks. Form controls participate through `name`, `FormData`, validation, disabled state, and reset. Accordion and Tabs organize content while contained fields keep their own form values.
-
-The boundary is application knowledge. A component may know the rules of its value and interaction; the application decides what that value means in its workflow:
-
-- An IBAN field checks supported national formats and check digits. The application verifies account ownership and initiates payments.
-- An OTP field preserves the entered code and checks its configured format. The application delivers codes, verifies them, and manages expiry and retries.
-- A rating control manages a chosen score and hover preview. The application decides who may rate, what is being rated, and how to save the result.
-
-Applications can declare constraints and supply custom validity errors through the form API. Components expose values and events without fetching business records or starting application workflows.
-
-The value is a maintained HTML, form, and CSS contract, backed by behavior checks. [ADR-0007](docs/adr/0007-component-application-boundary.md) records this scope and its tradeoffs, with Nolan Lawson's [discussion of web components and reuse](https://nolanlawson.com/2026/10/19/do-web-components-have-a-future-if-nobody-is-writing-them/) as a reference.
-
-## Run the playground
-
-Requires Node.js 22 or later and npm.
+Clone the repository, build it, and copy the complete `dist/` directory into your static assets. Requires Node.js 22 or later and npm.
 
 ```sh
+git clone https://github.com/sebastian-software/htmlplus.git
+cd htmlplus
 npm ci
-npm run dev
+npm run build
 ```
 
-Open [http://127.0.0.1:4173](http://127.0.0.1:4173). The dev command compiles TypeScript, watches source changes, and starts a local server. Refresh the page after source changes. Stop it with Ctrl+C.
+Keep the `dist/` tree together, because the browser modules share chunks. It also holds `THIRD_PARTY_NOTICES.txt`, which must stay with the distributed modules, along with TypeScript declarations and the demo's own bundles. A Git dependency does not work, because `dist/` is ignored and nothing builds it on install.
 
-The playground shows actual `new FormData(form)` entries as fields change. Switch between an entry table and a JSON view, submit locally, reset defaults, disable the fieldset, or compare Light/Dark appearances and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Repeated field names remain separate entries; the JSON view groups repeated names into arrays. Demo submissions are captured in the browser and do not make a network request.
-
-## Styling examples
-
-Open **Styling** in the playground, or click an element's name beside a field. Each of the twenty-four elements has a live Base preview, a CSS variation, documented styling hooks, and copyable HTML and CSS. Native Field uses ordinary native-control selectors; the other elements expose public shadow parts. The neutral base is built into the components. The optional `themes.css` supplies prefixed light/dark palettes; `shadcn.css` connects an existing shadcn palette through the `hp-shadcn` class. Both files are copied into `dist/` at build time. The Surface picker compares Layered and Flat finishes independently of appearance and palette. Five `--hp-shadow-*` roles control depth across buttons, fields, handles, and popovers, inspired by the React Aria examples. Semantic token suffixes and roles match the documented shadcn theme contract, with plain CSS and no additional dependency. See the [styling guide](docs/STYLING.md) for integration, tokens, parts, and states.
-
-## Implemented elements
-
-| Element | Behavior |
-| --- | --- |
-| `h6-field` | Shared base styling around real light-DOM input, textarea, or select; the native control owns its form value |
-| `h6-switch` | Checkbox-like form value, keyboard activation, labels, required state, disabled fieldsets, and reset |
-| `h6-iban` | Canonical uppercase submission without whitespace; ten national-format profiles and the IBAN checksum |
-| `h6-bic` | Canonical uppercase submission; 8- or 11-character BIC structure checks |
-| `h6-otp` | One native text editor, numeric keyboard and OTP autofill hints, configurable pattern, preserved leading zeros |
-| `h6-duration` | Native text notation such as `1h 30m`, `90m`, or `01:30`; canonical whole seconds; `min`/`max` in seconds |
-| `h6-interval` | Two native numeric editors, explicit boundary names, order and numeric constraints, optional open ends |
-| `h6-segmented` | Compact single selection using native radio inputs and caller-supplied options |
-| `h6-tags` | Add with Enter or comma, remove individual tags, trim and deduplicate, submit repeated names, and reset |
-| `h6-toggle` | Native pressed button, checkbox-like form contribution, labels, required state, fieldsets, and reset; Zag behavior |
-| `h6-accordion` | Zag disclosure navigation, one/multiple open sections, light-DOM content, and invalid-field revelation |
-| `h6-tabs` | Zag automatic/manual activation, horizontal/vertical and RTL keys, linked panels, and contained form fields |
-| `h6-slider` | Zag pointer/keyboard selection of one bounded number, with native form participation |
-| `h6-range-slider` | Two stable Zag thumbs, ordered boundaries, and explicitly named form entries |
-| `h6-select` | Zag single selection, supplied options, clearable identifier, and a themed top-layer listbox |
-| `h6-date-range-picker` | Two native editors, Zag range selection, partial-state validation, and two named ISO date entries |
-| `h6-date-picker` | Native localized editor and Zag calendar views, strict date-only submission, inclusive bounds, and a themed top-layer popup |
-| `h6-combobox` | Zag searchable selection with a native editor, separate query, and no free-text form entry |
-| `h6-checkbox` | Native checked/mixed states, labels, reset, and checkbox-like submission; Zag behavior |
-| `h6-radio-group` | One supplied identifier, descriptions, disabled options, and keyboard selection |
-| `h6-number-input` | Native localized editing, canonical numeric submission, constraints, and Zag stepping |
-| `h6-password-input` | Native password editing and a keyboard-accessible visibility button |
-| `h6-toggle-group` | Single or multiple selection with repeated form entries, using Zag |
-| `h6-rating` | Clearable whole score, separate hover preview, and an unanswered required state; Zag behavior |
-
-The optional `dist/native.css` styles real `<button class="hp-button">` elements and native controls inside `h6-field`, including without JavaScript. Buttons have primary, secondary, outline, ghost, destructive, icon, size, and loading examples. Native submit/reset and submitter behavior stay intact. The gallery has a separate Button recipe. See [native fields](docs/NATIVE-FIELDS.md) for the wrapper and [everyday controls](docs/EVERYDAY-CONTROLS.md) for mixed table selection and the native button contract.
-
-Every component includes a neutral base appearance, with consistent editor typography and centered SVG icons where applicable. No external component stylesheet is required after registration. Override inherited `--hp-*` tokens, public parts, or ordinary CSS on wrapped native fields to customize it.
-
-The twenty-one form controls use `ElementInternals` for form participation. Accordion and Tabs keep their content in light DOM, so contained fields retain their own form association; those two hosts do not submit view state. Native Field also leaves its input in light DOM, preserving native values, attributes, labels, validation, and reset without a second submission owner. The specialized text controls keep a native input in shadow DOM. The text a person edits is separate from the canonical submission value: an IBAN displays `DE89 3704 0044 0532 0130 00` while the form receives `DE89370400440532013000`. Verification codes use visual character slots over one native input. Targeted native editing commands preserve undo during formatting; [formatted fields](docs/FORMATTED-FIELDS.md) documents the behavior and compatibility fallback.
+To explore the source instead, run `npm run dev`. The project site is at <http://127.0.0.1:4173/>, the playground at <http://127.0.0.1:4173/demo/>, and the gallery at <http://127.0.0.1:4173/demo/styling.html>. Refresh the page after source changes.
 
 ## Use a control
 
-After building, import `dist/src/index.js` as a browser ES module. It registers the twenty-four elements and exports their classes. Checkbox, Radio Group, Number Input, Password Input, Toggle Group, Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, and Date Range Picker use Zag's vanilla adapter internally; there is no runtime component framework dependency. The build type-checks TypeScript, emits declarations, and bundles browser modules with shared chunks using esbuild. Deploy the complete `dist/` tree so those chunks remain available. Source modules also export their individual classes for explicit registration. Inherited `--hp-*` custom properties, CSS parts, and ordinary selectors for native fields form the styling surface.
+`dist/src/index.js` registers all twenty-four elements and exports their classes.
 
 ```html
 <script type="module" src="/dist/src/index.js"></script>
@@ -91,24 +40,81 @@ After building, import `dist/src/index.js` as a browser ES module. It registers 
 </form>
 ```
 
-The custom form controls depend on JavaScript. Select, Combobox, Date Picker, and Date Range Picker also require the native Popover API; see the [selection guide](docs/SELECTION-CONTROLS.md) for their popup and browser boundaries. Their no-JavaScript fallback and server-side rendering integration are not implemented. Native Field and the Button family retain native behavior without JavaScript; `native.css` supplies their opt-in base appearance in that case.
+`new FormData(form)` and native submission receive the values, and labels, validation, reset, and disabled fieldsets work as with native fields. [Forms and validation](docs/FORMS.md) covers showing errors and using the elements from a framework.
 
-The bundled runtime dependencies' [third-party notices](THIRD_PARTY_NOTICES.txt) are copied into `dist/` and the static export. Keep them with the distributed browser modules.
+To load less, import one module and register it yourself. Individual modules export the class without registering it:
+
+```js
+import { H6Switch } from "/dist/src/switch.js";
+customElements.define("h6-switch", H6Switch);
+```
+
+Each element has a built-in neutral base, so no stylesheet is required. Customize it with inherited `--hp-*` tokens, CSS parts, and ordinary CSS on wrapped native fields. Optional `dist/themes.css` adds Light/Dark palettes, `dist/shadcn.css` connects an existing shadcn theme, and `dist/native.css` styles `h6-field` and `<button class="hp-button">` without JavaScript. See the [styling guide](docs/STYLING.md).
+
+## Elements
+
+There are twenty-one form controls using `ElementInternals`, plus Accordion, Tabs, and Native Field, which submit nothing themselves. Fifteen elements use Zag's vanilla adapter internally; there is no runtime component framework. [The element reference](docs/ELEMENTS.md) lists each element's attributes, properties, methods, and parts.
+
+| Element | Behavior | Reference |
+| --- | --- | --- |
+| [`h6-field`](docs/NATIVE-FIELDS.md) | Shared base styling around a real light-DOM input, textarea, or select | [API](docs/ELEMENTS.md#h6-field) |
+| [`h6-switch`](#current-value-contract) | On/off setting with a checkbox-like form value | [API](docs/ELEMENTS.md#h6-switch) |
+| [`h6-checkbox`](docs/EVERYDAY-CONTROLS.md#checkbox-and-table-selection) | Independent checked and mixed states; checkbox-like submission | [API](docs/ELEMENTS.md#h6-checkbox) |
+| [`h6-toggle`](docs/INTERACTIONS.md#toggle-a-form-field-with-a-pressed-state) | Pressed button with a checkbox-like form contribution | [API](docs/ELEMENTS.md#h6-toggle) |
+| [`h6-iban`](docs/FORMATTED-FIELDS.md#iban) | Grouped display, whitespace-free submission, ten national formats, and check digits | [API](docs/ELEMENTS.md#h6-iban) |
+| [`h6-bic`](#current-value-contract) | Uppercase submission and 8- or 11-character structure checks | [API](docs/ELEMENTS.md#h6-bic) |
+| [`h6-otp`](docs/FORMATTED-FIELDS.md#otp-and-pin-presentation) | Character slots over one native editor, autofill hints, and preserved leading zeros | [API](docs/ELEMENTS.md#h6-otp) |
+| [`h6-password-input`](docs/EVERYDAY-CONTROLS.md#password-input) | Native password editing and a keyboard-accessible visibility button | [API](docs/ELEMENTS.md#h6-password-input) |
+| [`h6-number-input`](docs/EVERYDAY-CONTROLS.md#number-input) | Localized editing, canonical numeric submission, constraints, and stepping | [API](docs/ELEMENTS.md#h6-number-input) |
+| [`h6-duration`](#additional-value-contracts) | Notation such as `1h 30m` or `01:30`, submitted as whole seconds | [API](docs/ELEMENTS.md#h6-duration) |
+| [`h6-interval`](#additional-value-contracts) | Two numeric editors with named boundaries and optional open ends | [API](docs/ELEMENTS.md#h6-interval) |
+| [`h6-slider`](docs/NUMERIC-CHOICES.md#slider) | One bounded number by pointer or keyboard | [API](docs/ELEMENTS.md#h6-slider) |
+| [`h6-range-slider`](docs/NUMERIC-CHOICES.md#range-slider) | Two stable thumbs with explicitly named form entries | [API](docs/ELEMENTS.md#h6-range-slider) |
+| [`h6-rating`](docs/NUMERIC-CHOICES.md#rating) | Clearable whole score, hover preview, and an unanswered state | [API](docs/ELEMENTS.md#h6-rating) |
+| [`h6-segmented`](#additional-value-contracts) | Compact single selection using native radio inputs | [API](docs/ELEMENTS.md#h6-segmented) |
+| [`h6-radio-group`](docs/EVERYDAY-CONTROLS.md#radio-group) | One identifier with descriptions and disabled options | [API](docs/ELEMENTS.md#h6-radio-group) |
+| [`h6-toggle-group`](docs/EVERYDAY-CONTROLS.md#toggle-group) | Single or multiple selection with repeated form entries | [API](docs/ELEMENTS.md#h6-toggle-group) |
+| [`h6-select`](docs/SELECTION-CONTROLS.md) | Single selection from supplied options in a top-layer listbox | [API](docs/ELEMENTS.md#h6-select) |
+| [`h6-combobox`](docs/SELECTION-CONTROLS.md) | Searchable selection; query text never becomes a form entry | [API](docs/ELEMENTS.md#h6-combobox) |
+| [`h6-tags`](#current-value-contract) | Add and remove tags that submit as repeated entries | [API](docs/ELEMENTS.md#h6-tags) |
+| [`h6-date-picker`](docs/DATE-PICKER.md) | Localized editor and calendar with strict date-only submission | [API](docs/ELEMENTS.md#h6-date-picker) |
+| [`h6-date-range-picker`](docs/DATE-RANGE-PICKER.md) | Two editors, range selection, and two named ISO entries | [API](docs/ELEMENTS.md#h6-date-range-picker) |
+| [`h6-accordion`](docs/INTERACTIONS.md#accordion-disclosure-sections) | Disclosure sections; contained fields keep their own form values | [API](docs/ELEMENTS.md#h6-accordion) |
+| [`h6-tabs`](docs/INTERACTIONS.md#tabs-one-visible-panel) | Linked panels; contained fields keep their own form values | [API](docs/ELEMENTS.md#h6-tabs) |
+
+Actions stay real buttons: the [native Button family](docs/EVERYDAY-CONTROLS.md#native-buttons) is `<button class="hp-button">` styled by `dist/native.css`.
+
+## Browser support
+
+html+ targets current stable Chromium, Firefox, and Safari. CI runs all three engines through Playwright. Exact minimum versions are unverified.
+
+The elements rely on these platform features:
+
+- Custom elements, shadow DOM, and `ElementInternals`, on every form control.
+- `ElementInternals.states` and `:state()`, for live state on the controls that expose it.
+- The Popover API, on Select, Combobox, Date Picker, and Date Range Picker. There is no older-browser fallback.
+- CSS `light-dark()` and `color-mix()`, in surface shadows and derived colors.
+- `document.execCommand("insertText")`, as a fallback role only. It keeps native undo while IBAN and OTP format text. If the command is unavailable or fails, ordinary native editing, canonical values, and validation keep working. See [formatted fields](docs/FORMATTED-FIELDS.md#compatibility-decision-and-evidence).
+
+Physical devices, OTP autofill, password managers, manual assistive-technology combinations, and real browser history restoration are unverified. Automated axe checks and a Playwright WebKit pass don't establish them.
+
+## Size
+
+Gzipped across every module an entry loads, `dist/src/index.js` with all elements is about 153 KB, `dist/src/date-picker.js` about 61 KB, and `dist/src/switch.js` about 4 KB. `npm run check:size` enforces the limits in [`scripts/check-size.mjs`](scripts/check-size.mjs).
 
 ## Current value contract
 
-- Text fields expose canonical `.value`, raw `.displayValue`, and `.defaultValue`. Setting `.value` is programmatic and emits no user events. Formatting for IBAN and OTP uses native edits while retaining the browser's undo history. Other text fields keep their typed notation.
-- Tags expose `.value` and `.defaultValue` as string arrays. Declarative defaults use a JSON array in the `value` attribute. Entries are trimmed and deduplicated with case-sensitive equality; their order is preserved. Enter, comma, or blur commits pending text. Backspace in an empty editor focuses the last remove button. Editing an existing tag in place is not implemented.
-- Switches expose `.checked`, `.defaultChecked`, and `.value`. An unchecked switch contributes no entry. Text fields and tags support `readonly`; switches use `disabled`.
-- Toggles expose `.pressed`, `.defaultPressed`, and the submitted string `.value` (default `on`). An unpressed toggle contributes no entry. User activation emits one `input`/`change` pair; assignment and reset emit no user events.
-- Enter in a text editor submits the form like a native field: it activates the default button, so validation and the submitter value apply. Enter that chooses a Combobox option or commits a tag does not submit.
-- Reset restores defaults and clears `data-touched`. Explicit custom errors remain until cleared with `setCustomValidity("")`, as with native fields; this does not clear format errors, which report `patternMismatch` for IBAN and BIC, and `badInput`, `rangeUnderflow`, or `rangeOverflow` for Duration.
-- Controls set `data-touched` when focus leaves them or validation fails. `aria-invalid` and destructive styling wait for it on every control; use `[data-touched]:invalid` for matching custom styling.
-- Assigning `null` or `undefined` to a string `.value` empties it; other values use `String()`. Date Picker still throws for a nonempty invalid date. Properties assigned before an element upgrades are applied when it connects.
-- Host `change` events bubble and are composed, like host `input`.
-- Format checks are local. They do not establish account ownership, BIC registration, or authentication-code validity. The IBAN profiles cover AT, BE, CH, DE, ES, FR, GB, IE, IT, and NL; they are hand-authored factual format rules checked against [Swift Registry release 103](https://www.swift.com/swift-resource/9606/download), not a bundled copy of the registry. Full registry coverage and its ongoing data-management requirements remain future work.
+Text fields are IBAN, BIC, OTP, Duration, Number Input, and Password Input. Their shared rules are below, along with the contracts for Switch, BIC, and Tags, which have no separate guide. Other elements are described in the guides linked from the [element table](#elements).
 
-Date Range Picker exposes `[start, end]` as ISO strings with `null` for empty boundaries. Its host name enables `name.start` and `name.end` entries, with explicit naming overrides. A partial selection is inspectable in FormData but blocks validation until both dates complete the range. See the [Date Range Picker guide](docs/DATE-RANGE-PICKER.md).
+- **Text fields** expose canonical `.value`, raw `.displayValue`, and `.defaultValue`. An IBAN displays `DE89 3704 0044 0532 0130 00` while the form receives `DE89370400440532013000`. Enter submits the form like a native field. Enter that chooses a Combobox option or commits a tag does not submit.
+- **Assignment** is programmatic and emits no user events. `null` or `undefined` empties a string `.value`; other values use `String()`. Properties assigned before an element upgrades are applied when it connects.
+- **Events:** host `input` and `change` bubble and are composed.
+- **Reset** restores defaults and clears `data-touched`. Explicit custom errors remain until cleared with `setCustomValidity("")`. See [forms and validation](docs/FORMS.md).
+- **Switch** exposes `.checked`, `.defaultChecked`, and `.value` (default `on`). An unchecked switch contributes no entry. It supports `disabled`, not `readonly`.
+- **BIC** normalizes case and whitespace and keeps the entered 8- or 11-character form, without adding or removing a branch identifier.
+- **Tags** expose `.value` and `.defaultValue` as string arrays; declarative defaults use a JSON array in the `value` attribute. Entries are trimmed and deduplicated with case-sensitive equality, in order. Enter, comma, or blur commits pending text. Backspace in an empty editor focuses the last remove button. Editing an existing tag in place is not implemented.
+- **Format checks are local.** They don't establish account ownership, BIC registration, or authentication-code validity.
+- **IBAN coverage** is AT, BE, CH, DE, ES, FR, GB, IE, IT, and NL. A well-formed IBAN from any other country fails validation with `patternMismatch` and blocks submission. The profiles are hand-authored format rules checked against [Swift Registry release 103](https://www.swift.com/swift-resource/9606/download), not a bundled copy of the registry.
 
 ## Additional value contracts
 
@@ -123,66 +129,58 @@ Date Range Picker exposes `[start, end]` as ISO strings with `null` for empty bo
 </h6-segmented>
 ```
 
-- Duration: `.value` is seconds as a string, `.displayValue` is the editor text. Bare integers are seconds. `HH:MM[:SS]` means hours, minutes, and optional seconds; units accept whole `h`, `m`, and `s` in that order. Reject fractions, negatives, unsafe integers, and calendar units. Empty `min` and `max` attributes are ignored. An optional empty field submits an empty string, like a native text input.
-- Interval: `.value` and `.defaultValue` are `[number | null, number | null]`; a JSON `value` attribute declares defaults. A host `name` enables submission; keys default to `name.min` and `name.max` unless overridden. Blank boundaries are omitted, and `required` requires both. Both inputs use `min`, `max`, and `step` (native default step: 1); ordering is validated without swapping. `readonly` supports inspection without editing. Restoration preserves the raw numeric editor strings.
-- Segmented: `.value` and `.defaultValue` are strings. Direct child options follow native defaults for values and labels; the first duplicate value wins. Unknown or disabled selections report `""`, are omitted, and return with their option. `required` needs an enabled selection. Options can be added, removed, or updated. Native radio arrow keys and Space select; a label click focuses the selected option. Use `disabled` for a noninteractive choice.
-- All three support ordinary form association, fieldset disabling, reset, `setCustomValidity`, `checkValidity`, and `reportValidity`. Programmatic assignments emit no user events.
+- **Duration:** `.value` is seconds as a string, and `.displayValue` is the editor text. Bare integers are seconds. `HH:MM[:SS]` means hours, minutes, and optional seconds; units accept whole `h`, `m`, and `s` in that order. Fractions, negatives, unsafe integers, and calendar units are rejected. `min` and `max` are in seconds; empty attributes are ignored. An optional empty field submits an empty string, like a native text input.
+- **Interval:** `.value` and `.defaultValue` are `[number | null, number | null]`; a JSON `value` attribute declares defaults. A host `name` enables submission; keys default to `name.min` and `name.max` unless `lower-name` and `upper-name` override them. `lower-label` and `upper-label` set the visible boundary labels (default From and To). Blank boundaries are omitted, and `required` requires both. Both inputs use `min`, `max`, and `step` (native default step: 1); ordering is validated without swapping. `readonly` allows inspection without editing. Restoration preserves the raw numeric editor strings.
+- **Segmented:** `.value` and `.defaultValue` are strings. Direct child options follow native defaults for values and labels; the first duplicate value wins. Unknown or disabled selections report `""`, are omitted, and return with their option. `required` needs an enabled selection. Options can be added, removed, or updated. Native radio arrow keys and Space select; a label click focuses the selected option. Use `disabled` for a noninteractive choice.
 
-Public styling hooks: duration exposes `input`; interval exposes `control`, `input`, `lower-input`, `upper-input`, `lower-label`, `upper-label`, and `separator`; segmented exposes `control` and `option`. All inherit the existing `--hp-*` theme properties.
+All three support ordinary form association, fieldset disabling, reset, `setCustomValidity`, `checkValidity`, and `reportValidity`. Programmatic assignments emit no user events.
 
-## Static demo and GitHub Pages
+## Without JavaScript and server rendering
 
-```sh
-npm run build:demo
-node scripts/serve.mjs --site --port 48165
+The custom form controls depend on JavaScript. There is no no-JavaScript fallback for them and no server-rendering integration: elements render no Declarative Shadow DOM, and the modules read `document` on import, so they can't be imported in a server runtime. A server can still emit the element tags and attributes for the browser to upgrade.
+
+Native Field and the Button family keep native behavior without JavaScript, and `native.css` supplies their base appearance. Accordion and Tabs keep their sections in light DOM, so that content is present before upgrade.
+
+Before upgrade, an element has no shadow root or layout, and child `<option>` elements can show as plain text. html+ ships no pre-upgrade CSS. Use `:defined` to reserve space and hide raw options, adjusting the selectors to the elements you use:
+
+```css
+:is(h6-iban, h6-select, h6-combobox):not(:defined) {
+  display: block;
+  min-height: var(--hp-control-height, 2.5rem);
+}
+:is(h6-select, h6-combobox, h6-segmented, h6-radio-group, h6-toggle-group):not(:defined) > option {
+  display: none;
+}
 ```
 
-Open `http://127.0.0.1:48165/htmlplus/`. The `site/` export contains only the demo HTML, CSS, favicon, and compiled browser modules. Relative URLs support GitHub repository subpaths and custom domains. Generated files are ignored in Git; source stays authoritative.
+This is ordinary CSS and the project's tests don't exercise it.
 
-The [Pages workflow](.github/workflows/pages.yml) runs strict compilation, unit tests, and Chromium, Firefox, and WebKit browser checks on Linux, including the actual exported artifact under `/htmlplus/`. Successful pushes to `main` and manual runs upload that artifact and deploy to the `github-pages` environment. Pull requests run verification without deploying. The public [sebastian-software/htmlplus repository](https://github.com/sebastian-software/htmlplus) uses **GitHub Actions** as its Pages publishing source. Pushes to `main` publish the verified demo at [sebastian-software.github.io/htmlplus](https://sebastian-software.github.io/htmlplus/). The demo runs entirely in the browser; it has no application backend or analytics.
+## Documents
 
-The intended custom-domain address is `https://htmlplus.dev/`. The local `/htmlplus/` route tests repository-subpath compatibility; it is not a required prefix on the custom domain. Domain DNS and GitHub Pages settings are separate deployment configuration and have not been changed by the project rename.
+**Using the elements**
 
-## Verify
+- [Element reference](docs/ELEMENTS.md): generated attributes, properties, methods, and parts for each element. [`custom-elements.json`](custom-elements.json) holds the same data for tools.
+- [Forms and validation](docs/FORMS.md): showing errors, validity flags per element, replacing messages, and framework use.
+- [Styling](docs/STYLING.md): tokens, parts, states, presets, and the shadcn adapter.
+- [Native fields](docs/NATIVE-FIELDS.md): styled native input, textarea, and select.
+- [Everyday controls](docs/EVERYDAY-CONTROLS.md): Checkbox, Radio Group, Toggle Group, Number Input, Password Input, and native buttons.
+- [Formatted fields](docs/FORMATTED-FIELDS.md): IBAN and OTP presentation and editing.
+- [Interaction elements](docs/INTERACTIONS.md): Toggle, Accordion, and Tabs.
+- [Numeric choices](docs/NUMERIC-CHOICES.md): Slider, Range Slider, and Rating.
+- [Select and Combobox](docs/SELECTION-CONTROLS.md): identifiers, queries, options, and popups.
+- [Date Picker](docs/DATE-PICKER.md) and [Date Range Picker](docs/DATE-RANGE-PICKER.md): ISO values, parsing, and calendars.
+- [Locale formatting](docs/LOCALE.md): inherited language, Intl dates and numbers, and week information.
 
-Install the test browsers once:
+**The project**
 
-```sh
-npx playwright install chromium firefox webkit
-npm test
-```
-
-The Actions verification job uses the official `mcr.microsoft.com/playwright:v1.64.1-noble` image with browsers and Linux system dependencies preinstalled. Keep its version aligned with Playwright in `package-lock.json` when upgrading.
-
-`npm test` compiles with strict TypeScript, runs the validation unit tests, then runs the integrated browser tests. The default browser matrix is Chromium, Firefox, and WebKit. Desktop/mobile layout and light and dark themes are inspected from generated screenshots.
-
-On this macOS host, Firefox exits before opening a page with `Could not find profile folder`; this resembles the [upstream Firefox/macOS app-data issue](https://github.com/microsoft/playwright/issues/42768). No system privacy settings were changed. Run the available-engine checks explicitly with:
-
-```sh
-npm test -- --project=chromium --project=webkit
-```
-
-Direct Firefox automation on this macOS host remains unavailable; the Linux container and CI include Firefox. Physical-device OTP autofill, assistive-technology combinations, and exact minimum browser versions are also unverified. A Playwright WebKit pass is not a claim of physical iPhone certification.
-
-## Project documents
-
-- [Component and application boundary](docs/adr/0007-component-application-boundary.md): the guiding principle, reusable component logic, and application responsibilities.
-- [Project plan](docs/PLAN.md): current scope and delivery order. The initial requested catalog is implemented; later candidates are recorded in the plan.
-- [Date Range Picker](docs/DATE-RANGE-PICKER.md): two named ISO boundaries, native drafts, range preview, validation, and styling.
-- [Functional locale formatting](docs/LOCALE.md): inherited HTML language, Intl dates/numbers, dynamic changes, week information, and the demo locale picker.
-- [Native fields](docs/NATIVE-FIELDS.md): styled native input, textarea, and select; light-DOM ownership, CSS overrides, and operation without JavaScript.
-- [Date Picker](docs/DATE-PICKER.md): ISO values, locale-aware parsing, raw drafts, constraints, calendar navigation, and styling.
-- [Select and Combobox](docs/SELECTION-CONTROLS.md): identifiers, queries, options, form events, popup behavior, and styling.
-- [Interaction elements](docs/INTERACTIONS.md): Toggle, Accordion, and Tabs APIs, section markup, events, native form behavior, and validation.
-- [Headless interaction decision](docs/adr/0005-headless-interaction-logic.md): accepted Zag integration for ten interaction elements, form boundaries, and dependency upgrade checks.
-- [Living architecture decisions](docs/adr/README.md): current rationale and browser evidence.
-- [Project identity](docs/adr/0006-project-identity.md): the html+ name, htmlplus.dev domain, and technical naming boundary.
-- [Playground design](docs/PLAYGROUND.md): layout and styling intent.
+- [Project plan](docs/PLAN.md): status, open decisions, and next steps.
+- [Architecture decisions](docs/adr/README.md): current rationale and browser evidence.
+- [Playground design](docs/PLAYGROUND.md): layout and styling intent of the demo.
 - [Glossary](GLOSSARY.md): shared field terminology.
-- [Project instructions](AGENTS.md): US English, Conventional Commits, and living ADRs.
+- [Changelog](CHANGELOG.md): user-visible changes.
 
-## Numeric choices
+## Contributing and license
 
-Slider, Range Slider, and Rating use Zag 1.46.0 with ElementInternals submission and no hidden inputs. Slider submits one numeric string; Range Slider submits two explicitly named boundaries; Rating submits one whole score or no entry while unanswered. Hover only previews a rating. Each has its own styling recipe and Light/Dark examples. See [numeric choice APIs and behavior](docs/NUMERIC-CHOICES.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, checks, adding an element, and deployment, and [SECURITY.md](SECURITY.md) to report a vulnerability. Repository conventions are in [AGENTS.md](AGENTS.md).
 
-The Palette picker adds Blue, Green, Orange, and Rose from the official [shadcn registry](https://github.com/shadcn-ui/ui/blob/4101ec98af37e2d812f859e3f540bceafbbc5200/apps/v4/registry/themes.ts), on the existing neutral base. These are a curated selection, not a measured popularity ranking. Appearance remains independent. Utility is retained as a custom example. Palette data is MIT-attributed in `THIRD_PARTY_NOTICES.txt`.
+html+ is licensed under the [Apache License 2.0](LICENSE). Bundled dependencies are listed in the [third-party notices](THIRD_PARTY_NOTICES.txt).
