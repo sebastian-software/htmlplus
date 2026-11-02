@@ -80,4 +80,4 @@ The native select arrow and popup remain platform-controlled. Native number, dat
 
 Invalid borders follow native `:user-invalid`, or caller-supplied `aria-invalid="true"`. Applications still own error messages, accessible descriptions, and validation timing. Autofill hints remain on the original editor; physical-device autofill, password-manager combinations, and manual assistive-technology coverage remain unverified.
 
-The [gallery](https://sebastian-software.github.io/htmlplus/styling.html#h6-field) compares Base and Underlined fields in Light/Dark. The playground includes native reference, message, and reply controls in its live FormData inspector.
+The [gallery](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-field) compares Base and Underlined fields in Light/Dark. The playground includes native reference, message, and reply controls in its live FormData inspector.

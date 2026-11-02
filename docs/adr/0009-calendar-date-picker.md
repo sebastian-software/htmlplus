@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-24
-- Updated: 2026-10-29
+- Updated: 2026-11-02
 - Lifecycle: living
 - Scope: one Gregorian calendar date; ADR-0010 defines the separate range field
 
@@ -31,9 +31,9 @@ Reuse ADR-0008's shadow-local manual-popover strategy, with a calendar-width sur
 
 ## Evidence and review triggers
 
-Strict-date unit checks cover real calendar validity, leap years, four-digit years, locale field order/separators and digits, ISO input, and the Gregorian value model. Integrated browser checks exercise calendar views and keys, raw editing/undo/composition, constraints and invalid configuration, native commit events, reset/restoration callbacks, disabled/readonly states, labels, external forms, lifecycle cleanup, clipping/dismissal, invalid-field revelation, inherited popup themes, and Light/Dark recipes. Time-zone contexts cover Los Angeles and Kiritimati, including navigation across a daylight-saving boundary. The plan records the current complete-suite result.
+Strict-date unit checks cover real calendar validity, leap years, four-digit years, locale field order/separators and digits, ISO input, and the Gregorian value model. Integrated browser checks exercise calendar views and keys, raw editing/undo/composition, constraints and invalid configuration, native commit events, reset/restoration callbacks, disabled/readonly states, labels, external forms, lifecycle cleanup, clipping/dismissal, invalid-field revelation, inherited popup themes, and Light/Dark recipes. Time-zone contexts cover Los Angeles and Kiritimati, including navigation across a daylight-saving boundary.
 
-Revisit on changed Zag editor-lookup/final-focus assumptions, date-model upgrades, parsing or locale ambiguity, accessibility regressions, or a supported-browser limitation. Date ranges now follow [ADR-0010](0010-calendar-date-ranges.md), sharing views and styles while retaining separate editors and form APIs. Time selection, unavailable-day policies, alternate calendars, and localized action text still require explicit decisions. Real history restoration, physical devices, manual assistive technologies, and Firefox on this macOS host remain unverified.
+Revisit on changed Zag editor-lookup/final-focus assumptions, date-model upgrades, parsing or locale ambiguity, accessibility regressions, or a supported-browser limitation. Date ranges now follow [ADR-0010](0010-calendar-date-ranges.md), sharing views and styles while retaining separate editors and form APIs. Time selection, unavailable-day policies, alternate calendars, and localized action text still require explicit decisions. Real history restoration, physical devices, and manual assistive technologies remain unverified. Firefox is covered in CI.
 
 ## References
 
@@ -54,3 +54,5 @@ Revisit on changed Zag editor-lookup/final-focus assumptions, date-model upgrade
 - 2026-10-26: Linked the separate date-range contract and shared calendar renderer in ADR-0010; retained the single-date API.
 
 - 2026-10-29: Replaced the explicit en-US default and fixed Latin digits with ADR-0011's inherited language context, Intl digits and week information, and silent dynamic formatting.
+
+- 2026-11-02: Dropped machine-specific test wording and the pointer to suite results in the project plan.

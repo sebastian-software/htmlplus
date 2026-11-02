@@ -44,7 +44,7 @@ An unanswered rating contributes no entry. A selected score contributes one nume
 
 Hover highlights a preview but does not change the value, FormData, or checked radio. A click, Enter, Space on the initially focused item, arrow key, or Home/End commits a score through Zag. RTL reverses horizontal arrow navigation. Only the committed score is checked; the first item remains keyboard reachable when unanswered. Keyboard input ends pointer preview before entering Zag's focused-key behavior. Native buttons have `type="button"` so choosing or clearing never submits the form.
 
-`readonly` keeps values submitted and focusable while preventing edits. `disabled` and disabled fieldsets omit the field. A clear button is disabled when unanswered, readonly, or disabled. Half scores are outside this implementation.
+`readonly` keeps values submitted and focusable while preventing edits. `disabled` and disabled fieldsets omit the field. A clear button is disabled when unanswered, readonly, or disabled. Half scores are outside this implementation: Zag supports them, but their keyboard and value semantics need agreement before they are exposed.
 
 ## Common form and styling contract
 
@@ -62,4 +62,4 @@ Rating also exposes `:state(rated)` for a committed score. Shared colors use `--
 
 ## Evidence and limits
 
-Integrated Chromium/WebKit checks cover named values, empty/hover/committed rating states, keyboard and RTL/vertical behavior, pointer dragging, touch emulation, boundary collision, dirty defaults, reset, disabled fieldsets, readonly controls, custom errors, external forms, restoration callbacks, reconnects, label focus, no hidden inputs, built-in typography/text scaling, all palette/mode combinations, and mobile recipes. Touch emulation is not physical-device certification. Firefox on this host, manual screen-reader use, and real history restoration remain unverified.
+Integrated browser checks cover named values, empty/hover/committed rating states, keyboard and RTL/vertical behavior, pointer dragging, touch emulation, boundary collision, dirty defaults, reset, disabled fieldsets, readonly controls, custom errors, external forms, restoration callbacks, reconnects, label focus, no hidden inputs, built-in typography/text scaling, all palette/mode combinations, and mobile recipes. Touch emulation is not physical-device certification. Manual screen-reader use and real history restoration remain unverified.

@@ -3,7 +3,7 @@
 - Status: accepted
 - Scope: initial prototype
 - Created: 2026-10-22
-- Updated: 2026-10-29
+- Updated: 2026-11-02
 - Lifecycle: living
 
 ## Context and decision
@@ -31,7 +31,7 @@ Resolve the effects at use through `--hp-shadow-*` fallbacks and the consuming s
 - Theme common colors and rounding without `::part`. Keep deliberate parts and custom states for detailed component variants; do not expose arbitrary shadow descendants as API.
 - Public defaults remain consumption fallbacks, not declarations that shadow inherited tokens. The adapter's internal properties are not public API. Its current-element selector must grow with the catalog.
 - Light/Dark appearances with independently selected palettes in both demo pages use tokens for the common theme. All twenty-four elements retain an individual CSS recipe with the exact preview source available for copying; Native Field uses ordinary child selectors and other elements use public parts.
-- Focus, invalid, disabled, and selected states retain visible behavior. Browser checks cover nested and host overrides, semantic role separation, adapter precedence and missing values, radius derivation, light/dark contrast, forced colors, and FormData preservation. Firefox runs in the Linux CI container; direct macOS Firefox automation remains unavailable.
+- Focus, invalid, disabled, and selected states retain visible behavior. Browser checks cover nested and host overrides, semantic role separation, adapter precedence and missing values, radius derivation, light/dark contrast, forced colors, and FormData preservation. Firefox is covered in CI.
 - `selected-option` and `selected-tab` parts follow live state; Toggle exposes pressed and Switch exposes checked custom states. Native light-DOM fields can opt into `h6-field` for the shared base and use ordinary application CSS for details.
 - Revisit when a reasonable design requires private DOM access or a new element needs an additional semantic role. Keep exact values and the token inventory in the styling guide and stylesheet sources.
 
@@ -78,10 +78,12 @@ Shadow DOM does not remove user-agent styling. Set the properties needed for the
 
 - 2026-10-24: Added Date Picker parts and Base/Framed calendar recipes, including selected-day/today states and inherited popup tokens.
 
-- 2026-10-26: Added Date Range Picker under ADR-0010 with two native editors, shared calendar views, named ISO boundaries, and inherited theme recipes.
+- 2026-10-26: Added Date Range Picker parts and Base/Outlined recipes: boundary-specific field, input, and label parts, plus `range-start`, `range-end`, `in-range`, and `preview-day` states on the shared calendar styles.
 
 - 2026-10-29: Added shared surface-shadow roles inspired by React Aria, explicit-scheme Light/Dark shading, and an independent Layered/Flat comparison in both demos. Preserve the shadcn color/radius contract and existing form behavior.
 
-- 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.
+- 2026-10-29: Added part-based recipes for the five everyday controls and the generated `native.css` with `hp-button`, which shares the token, radius, and surface helpers and exposes no shadow parts.
 
 - 2026-10-29: Added targeted native-field defaults through `h6-field`, ordinary CSS overrides, and a shared optional stylesheet for operation without JavaScript. Documented the distinction between shadow encapsulation and browser default styles.
+
+- 2026-11-02: Replaced two generic change notes with ones specific to the styling contract, and dropped machine-specific test wording. The decision is unchanged.

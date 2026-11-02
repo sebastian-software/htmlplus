@@ -1,6 +1,6 @@
 # Styling html+ controls
 
-The playground and styling gallery share independent Light/Dark appearances, Layered/Flat surfaces, and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the twenty-four elements also has its own Base preview, CSS variation, actual form entries, and copyable source. Native Field uses ordinary native-control selectors; other elements expose shadow parts. Run `npm run dev`, then open [the playground](http://localhost:4173/) or [the gallery](http://localhost:4173/styling.html).
+The playground and styling gallery share independent Light/Dark appearances, Layered/Flat surfaces, and Neutral, Blue, Green, Orange, Rose, and custom Utility palettes. Their appearance changes through inherited `--hp-*` properties. Each of the twenty-four elements also has its own Base preview, CSS variation, actual form entries, and copyable source. Native Field uses ordinary native-control selectors; other elements expose shadow parts. Run `npm run dev`, then open [the playground](http://127.0.0.1:4173/demo/) or [the gallery](http://127.0.0.1:4173/demo/styling.html).
 
 ## Built-in base
 
@@ -122,23 +122,6 @@ Only the base radius is bridged. Tailwind's derived `--radius-*` variables can h
 
 The prefixed presets and adapter are alternative sources of the same palette. Loading a preset on an ancestor creates explicit inherited `--hp-*` values, which intentionally win over generic shadcn tokens inside that scope. Use the adapter with the application's palette, or the prefixed presets with html+ overrides.
 
-## Migration from the prototype
-
-This is an intentional pre-release CSS API change. Element names remain `h6-*`; the CSS prefix is now `--hp-`. There are no ambiguous compatibility aliases.
-
-| Previous token | Replacement |
-| --- | --- |
-| `--h6-text`, `--h6-surface` | `--hp-foreground`, `--hp-background` |
-| `--h6-accent`, `--h6-accent-foreground` | `--hp-primary`, `--hp-primary-foreground` |
-| `--h6-border` | `--hp-input` for controls, `--hp-border` for separators |
-| `--h6-focus`, `--h6-placeholder`, `--h6-danger` | `--hp-ring`, `--hp-muted-foreground`, `--hp-destructive` |
-| `--h6-track`, `--h6-muted` | `--hp-muted`, `--hp-input` |
-| `--h6-tag-background`, `--h6-tag-color`, `--h6-tag-hover` | `--hp-secondary`, `--hp-secondary-foreground`, `--hp-accent` |
-| `--h6-radius`, `--h6-tag-radius` | `--hp-radius`, `--hp-radius-sm` |
-| `--h6-font-*`, `--h6-line-height`, `--h6-control-height` | Same suffixes under `--hp-` |
-
-`--h6-focus-soft` is removed; focus appearance uses `--hp-ring` and public parts. The old `demo/base.css` and `h6-base` class are replaced by the separate presets and `hp-shadcn` adapter. In particular, new `accent` means an interaction surface, not the old primary action color.
-
 ## Recipes and public parts
 
 The [recipe definitions](../demo/recipes.ts) are the single source for the gallery's preview CSS and displayed snippets.
@@ -160,6 +143,11 @@ The [recipe definitions](../demo/recipes.ts) are the single source for the galle
 | `h6-interval` | Compact numeric pair | `control`, `input`, `lower-input`, `upper-input`, `lower-label`, `upper-label`, `separator` |
 | `h6-tags` | Outlined, rounded tokens | `control`, `tokens`, `input`, `tag`, `tag-label`, `remove-button`, `remove-icon` |
 | `h6-switch` | Square track and thumb | `track`, `thumb` |
+| `h6-checkbox` | Outlined check | `root`, `input`, `control`, `indicator`, `label` |
+| `h6-radio-group` | Choice cards | `root`, `option`, `selected-option`, `input`, `control`, `label`, `description` |
+| `h6-toggle-group` | Joined toggles | `root`, `option`, `selected-option`, `label`, `description` |
+| `h6-number-input` | Tabular number | `control`, `input`, `increment-trigger`, `decrement-trigger` |
+| `h6-password-input` | Underlined password | `control`, `input`, `visibility-trigger`, `indicator` |
 | `h6-segmented` | Outlined choices with a dark selected option | `control`, `option`, `selected-option` |
 | `h6-toggle` | Pill with a light pressed state | `button` |
 | `h6-accordion` | Boxed disclosure sections | `root`, `item`, `heading`, `trigger`, `label`, `indicator`, `content` |
@@ -177,13 +165,13 @@ h6-tags.outlined::part(tag) {
 
 Toggles expose `:state(pressed)`; Tabs expose `selected-tab` alongside `tab`. Their recipes follow those live states. Accordion and Tabs project author-owned sections; native inputs inside them can use `h6-field` for the shared base and ordinary application CSS for details. See the [interaction guide](INTERACTIONS.md).
 
-Switches expose their live checked state through `:state(checked)`. Use it instead of `[checked]`, which describes the initial default. Segmented choices expose `selected-option` on the currently selected option; it moves when selection changes by pointer, keyboard, assignment, or reset. It is also an `option` part. `::part(option):checked` cannot observe the adjacent private radio input.
+Switches and Checkboxes expose their live checked state through `:state(checked)`; Checkboxes add `:state(indeterminate)`. Use it instead of `[checked]`, which describes the initial default. Segmented choices expose `selected-option` on the currently selected option; it moves when selection changes by pointer, keyboard, assignment, or reset. It is also an `option` part. `::part(option):checked` cannot observe the adjacent private radio input.
 
-Stateful styles should preserve visible keyboard focus, disabled states, invalid borders, and readable text. Avoid changing a switch's geometry without adjusting its thumb travel. The default switch keeps its thumb travel in step with its root-relative track dimensions. OTP uses decorative character cells over one real input; it does not introduce multiple editors or automatic submission. Its size and gap tokens keep the native text aligned with the cells. See [formatted fields](FORMATTED-FIELDS.md).
+Invalid styling waits for the host's `data-touched` attribute; use `[data-touched]:invalid` to match it, as [forms and validation](FORMS.md#when-errors-appear) describes. Stateful styles should preserve visible keyboard focus, disabled states, invalid borders, and readable text. Avoid changing a switch's geometry without adjusting its thumb travel. The default switch keeps its thumb travel in step with its root-relative track dimensions. OTP uses decorative character cells over one real input; it does not introduce multiple editors or automatic submission. Its size and gap tokens keep the native text aligned with the cells. See [formatted fields](FORMATTED-FIELDS.md).
 
 ## Verification
 
-The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, surface-token inheritance and local overrides, and unchanged edited FormData while switching appearances, palettes, and finishes on mobile. Gallery tests cover all twenty-five recipes, shared displayed source, deep links, and clipboard success/failure. Native Field checks also cover original node identity, native forms and labels, overrides, and styling with JavaScript disabled. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. Chromium and WebKit pass locally; Firefox cannot launch on this macOS host and remains a Linux CI check. Physical-device and manual assistive-technology coverage remain open.
+The browser suite checks built-in styling without application CSS, typography, tag text/icon alignment, keyboard removal, long labels, 200% root text sizing, and direct overrides. Theme checks cover every element's inherited text, distinct semantic roles, nested and per-host scopes, missing shadcn values, full OKLCH colors, prefixed override precedence, radius scaling and zero radius, light/dark text and focus contrast, forced colors, surface-token inheritance and local overrides, and unchanged edited FormData while switching appearances, palettes, and finishes on mobile. Gallery tests cover all twenty-five recipes, shared displayed source, deep links, and clipboard success/failure. Native Field checks also cover original node identity, native forms and labels, overrides, and styling with JavaScript disabled. The Pages fixture loads presets and adapter from the exported artifact under `/htmlplus/`. CI covers Chromium, Firefox, and WebKit. Physical-device and manual assistive-technology coverage remain open.
 
 Select, Combobox, Date Picker, and Date Range Picker keep their popup in shadow DOM while entering the native top layer. Inherited theme tokens, the shadcn bridge, and public popup parts still apply. Use `--hp-popover` and `--hp-popover-foreground` for its surface and text, and accent tokens for highlighted options. `:state(selected)` and `:state(open)` expose current state. See the [selection guide](SELECTION-CONTROLS.md).
 

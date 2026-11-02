@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-10-24
+- Updated: 2026-11-02
 - Lifecycle: living
 - Scope: product scope, component APIs, and public positioning
 
@@ -53,7 +53,7 @@ Reassess a custom element when native HTML meets the documented need with less i
 
 ## References
 
-- [README: purpose and component scope](../../README.md#what-belongs-in-html)
+- [README: purpose and component scope](../../README.md)
 - [Project plan](../PLAN.md)
 - [ADR-0001: ordinary HTML forms](0001-native-form-contract.md)
 - [ADR-0003: native editing and canonical values](0003-specialized-native-inputs.md)
@@ -66,3 +66,5 @@ Reassess a custom element when native HTML meets the documented need with less i
 - 2026-10-23: Accepted the guiding principle and component/application boundary. Added native-HTML selection criteria, concrete responsibility examples, public claim limits, and Lawson's article as contextual reference.
 
 - 2026-10-24: Updated Combobox from planned scope to implemented selection behavior; data sources, verification, and workflows remain application responsibilities.
+
+- 2026-11-02: Updated the README reference after its scope section moved into this record and the README introduction. The decision is unchanged.

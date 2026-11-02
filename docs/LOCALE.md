@@ -18,7 +18,7 @@ An inherited `lang` that is malformed or unsupported by the browser's Intl data 
 </html>
 ```
 
-Components observe `lang` changes on their current ancestor chain. Moving a component reconnects that context. Explicit `locale` takes precedence until removed. Applications can connect Palamedes or another locale source through `lang` or `locale` without a message-framework dependency in the components.
+Components observe `lang` changes on their current ancestor chain. Moving a component reconnects that context. Explicit `locale` takes precedence until removed. Applications can connect a message framework or another locale source through `lang` or `locale` without a message-framework dependency in the components.
 
 ## Dates and calendars
 
@@ -38,7 +38,7 @@ Number Input uses `Intl.NumberFormat` and the existing internationalized number 
 
 The Locale picker on both pages offers `en-US`, `en-GB`, `de-DE`, `fr-FR`, `ja-JP`, and `ar-EG`. It retains the choice within the browser tab's session and applies language to the three relevant component hosts, keeping the page's English copy and document language intact. The Arabic example also supplies RTL direction. Recipe HTML records the selected `lang` and `dir` so copied examples match their previews.
 
-This demonstrates functional formatting, not translated interface labels, validation messages, or application content. Canonical values and other form fields survive switching. Full message localization and a Palamedes adapter remain separate work.
+This demonstrates functional formatting, not translated interface labels, validation messages, or application content. Canonical values and other form fields survive switching. Full message localization and a message-framework adapter remain separate work. [Forms and validation](FORMS.md#replace-the-english-messages) shows how to replace validation messages today.
 
 Browser checks cover initial/dynamic document language, nearest/explicit overrides, shadow-host inheritance and reconnect, regional week order, localized digits and year views, absent week-info APIs, invalid drafts, silent value preservation, reset, both pages, and narrow layouts. Device and manual assistive-technology verification remain open.
 

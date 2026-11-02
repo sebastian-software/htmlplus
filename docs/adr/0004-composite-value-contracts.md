@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-10-29
+- Updated: 2026-11-02
 - Lifecycle: living
 
 ## Context and decision
@@ -50,4 +50,6 @@ Checkbox preserves independent native checked and indeterminate booleans. Only c
 
 - 2026-10-26: Added the bounded date-range value shape, boundary names, and partial-state validation under ADR-0010.
 
-- 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.
+- 2026-10-29: Added value contracts for everyday controls: checked and indeterminate stay independent with no third serialized value, Radio Group contributes one identifier, and Toggle Group contributes repeated entries from a string-array property.
+
+- 2026-11-02: Replaced the previous generic everyday-controls note with this decision-specific one. The contracts are unchanged.

@@ -35,7 +35,7 @@ For IBAN grouping and whitespace cleanup, replace only the changed text range th
 
 Check label activation, defaults, reset, fieldset disabling, canonical submission, custom errors, and undo in the integrated browser suite. Revisit the shadow boundary if actual target-device autofill fails or a reliable native-ownership approach can preserve canonical submission and undo together.
 
-Direct macOS Firefox automation still fails before page load. A version-matched Linux container now provides Firefox verification; the plan records the complete-suite evidence. Historical Safari shadow-input autofill bugs are marked fixed and do not establish a current Safari defect.
+A version-matched Linux container provides Firefox verification in CI. Historical Safari shadow-input autofill bugs are marked fixed and do not establish a current Safari defect.
 
 ## References
 
@@ -58,3 +58,5 @@ Direct macOS Firefox automation still fails before page load. A version-matched 
 - 2026-10-29: Added visible IBAN grouping and decorative OTP slots over one native input. Replaced the blanket no-formatting rule with targeted native edits, retaining undo and an explicit unsupported-command fallback.
 
 - 2026-11-02: Excluded Password Input from restoration state after back navigation restored and resubmitted its plaintext.
+
+- 2026-11-02: Dropped machine-specific test wording and the pointer to suite results in the project plan, which no longer records them.
