@@ -2,5 +2,12 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "local>sebastian-software/renovate-config"
+  ],
+  "packageRules": [
+    {
+      "description": "The CI container must match the Playwright package.",
+      "matchPackageNames": ["playwright", "mcr.microsoft.com/playwright"],
+      "groupName": "playwright"
+    }
   ]
 }

@@ -1,0 +1,3677 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "docs/ELEMENTS.md",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "dist/src/index.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Field",
+          "tagName": "h6-field",
+          "summary": "Shared base styling around a real light-DOM input, textarea, or select.",
+          "attributes": [],
+          "members": [
+            {
+              "kind": "method",
+              "name": "focus"
+            }
+          ],
+          "cssParts": []
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Switch",
+          "tagName": "h6-switch",
+          "summary": "On/off setting with a checkbox-like form value.",
+          "attributes": [
+            {
+              "name": "checked"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "checked"
+            },
+            {
+              "kind": "field",
+              "name": "defaultChecked"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "thumb"
+            },
+            {
+              "name": "track"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Iban",
+          "tagName": "h6-iban",
+          "summary": "IBAN editor with readable groups, canonical submission, and format checks.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "autocomplete"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "inputmode"
+            },
+            {
+              "name": "maxlength"
+            },
+            {
+              "name": "minlength"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "pattern"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultAutocomplete"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDisplayValue"
+            },
+            {
+              "kind": "field",
+              "name": "defaultInputMode"
+            },
+            {
+              "kind": "field",
+              "name": "defaultPattern"
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "dirty"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "displayValue"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "input"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "restorationState"
+            },
+            {
+              "kind": "field",
+              "name": "upgradedProperties"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "editorLength"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "markDirty"
+            },
+            {
+              "kind": "method",
+              "name": "normalizeValue"
+            },
+            {
+              "kind": "method",
+              "name": "presentValue"
+            },
+            {
+              "kind": "method",
+              "name": "refresh"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            },
+            {
+              "kind": "method",
+              "name": "validateValue"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "input"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Bic",
+          "tagName": "h6-bic",
+          "summary": "BIC/SWIFT editor with uppercase submission and structure checks.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "autocomplete"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "inputmode"
+            },
+            {
+              "name": "maxlength"
+            },
+            {
+              "name": "minlength"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "pattern"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultAutocomplete"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDisplayValue"
+            },
+            {
+              "kind": "field",
+              "name": "defaultInputMode"
+            },
+            {
+              "kind": "field",
+              "name": "defaultPattern"
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "dirty"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "displayValue"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "input"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "restorationState"
+            },
+            {
+              "kind": "field",
+              "name": "upgradedProperties"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "editorLength"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "markDirty"
+            },
+            {
+              "kind": "method",
+              "name": "normalizeValue"
+            },
+            {
+              "kind": "method",
+              "name": "presentValue"
+            },
+            {
+              "kind": "method",
+              "name": "refresh"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            },
+            {
+              "kind": "method",
+              "name": "validateValue"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "input"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Otp",
+          "tagName": "h6-otp",
+          "summary": "One native verification-code editor with visual character slots.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "autocomplete"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "inputmode"
+            },
+            {
+              "name": "length"
+            },
+            {
+              "name": "maxlength"
+            },
+            {
+              "name": "minlength"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "pattern"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultAutocomplete"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDisplayValue"
+            },
+            {
+              "kind": "field",
+              "name": "defaultInputMode"
+            },
+            {
+              "kind": "field",
+              "name": "defaultPattern"
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "dirty"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "displayValue"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "input"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "length"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "restorationState"
+            },
+            {
+              "kind": "field",
+              "name": "upgradedProperties"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "editorLength"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "markDirty"
+            },
+            {
+              "kind": "method",
+              "name": "normalizeValue"
+            },
+            {
+              "kind": "method",
+              "name": "presentValue"
+            },
+            {
+              "kind": "method",
+              "name": "refresh"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            },
+            {
+              "kind": "method",
+              "name": "validateValue"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "control"
+            },
+            {
+              "name": "input"
+            },
+            {
+              "name": "slot"
+            },
+            {
+              "name": "slots"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Duration",
+          "tagName": "h6-duration",
+          "summary": "Elapsed-time notation that submits whole seconds.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "autocomplete"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "inputmode"
+            },
+            {
+              "name": "max"
+            },
+            {
+              "name": "maxlength"
+            },
+            {
+              "name": "min"
+            },
+            {
+              "name": "minlength"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "pattern"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultAutocomplete"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDisplayValue"
+            },
+            {
+              "kind": "field",
+              "name": "defaultInputMode"
+            },
+            {
+              "kind": "field",
+              "name": "defaultPattern"
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "dirty"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "displayValue"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "input"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "restorationState"
+            },
+            {
+              "kind": "field",
+              "name": "upgradedProperties"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "editorLength"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "markDirty"
+            },
+            {
+              "kind": "method",
+              "name": "normalizeValue"
+            },
+            {
+              "kind": "method",
+              "name": "presentValue"
+            },
+            {
+              "kind": "method",
+              "name": "refresh"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            },
+            {
+              "kind": "method",
+              "name": "validateValue"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "input"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Interval",
+          "tagName": "h6-interval",
+          "summary": "Two numeric boundaries with explicit form names and optional open ends.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "lower-label"
+            },
+            {
+              "name": "lower-name"
+            },
+            {
+              "name": "max"
+            },
+            {
+              "name": "min"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "step"
+            },
+            {
+              "name": "upper-label"
+            },
+            {
+              "name": "upper-name"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "control"
+            },
+            {
+              "name": "input"
+            },
+            {
+              "name": "lower-input"
+            },
+            {
+              "name": "lower-label"
+            },
+            {
+              "name": "separator"
+            },
+            {
+              "name": "upper-input"
+            },
+            {
+              "name": "upper-label"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Segmented",
+          "tagName": "h6-segmented",
+          "summary": "Compact single selection using native radio inputs.",
+          "attributes": [
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "control"
+            },
+            {
+              "name": "option"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Tags",
+          "tagName": "h6-tags",
+          "summary": "Add and remove tags that submit as repeated entries.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "control"
+            },
+            {
+              "name": "input"
+            },
+            {
+              "name": "tokens"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Toggle",
+          "tagName": "h6-toggle",
+          "summary": "Persistent pressed button with a checkbox-like form value.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "pressed"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultPressed"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "pressed"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "button"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Accordion",
+          "tagName": "h6-accordion",
+          "summary": "Disclosure sections around ordinary form fields.",
+          "attributes": [
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "heading-level"
+            },
+            {
+              "name": "multiple"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "multiple"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "content"
+            },
+            {
+              "name": "heading"
+            },
+            {
+              "name": "indicator"
+            },
+            {
+              "name": "item"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "trigger"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Tabs",
+          "tagName": "h6-tabs",
+          "summary": "Tabbed panels around ordinary form fields.",
+          "attributes": [
+            {
+              "name": "activation-mode"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "orientation"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "activationMode"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "orientation"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "list"
+            },
+            {
+              "name": "panel"
+            },
+            {
+              "name": "panels"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "selected-tab"
+            },
+            {
+              "name": "tab"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Slider",
+          "tagName": "h6-slider",
+          "summary": "One bounded number chosen by pointer or keyboard.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "lower-label"
+            },
+            {
+              "name": "lower-name"
+            },
+            {
+              "name": "max"
+            },
+            {
+              "name": "min"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "orientation"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "step"
+            },
+            {
+              "name": "upper-label"
+            },
+            {
+              "name": "upper-name"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "defaults"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "max"
+            },
+            {
+              "kind": "field",
+              "name": "min"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "orientation"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "step"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "values"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "control"
+            },
+            {
+              "name": "range"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "thumb"
+            },
+            {
+              "name": "track"
+            },
+            {
+              "name": "value-text"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6RangeSlider",
+          "tagName": "h6-range-slider",
+          "summary": "Two ordered boundaries with explicitly named form entries.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "lower-label"
+            },
+            {
+              "name": "lower-name"
+            },
+            {
+              "name": "max"
+            },
+            {
+              "name": "min"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "orientation"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "step"
+            },
+            {
+              "name": "upper-label"
+            },
+            {
+              "name": "upper-name"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "defaults"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "max"
+            },
+            {
+              "kind": "field",
+              "name": "min"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "orientation"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "step"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "values"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "control"
+            },
+            {
+              "name": "lower-thumb"
+            },
+            {
+              "name": "range"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "thumb"
+            },
+            {
+              "name": "track"
+            },
+            {
+              "name": "upper-thumb"
+            },
+            {
+              "name": "value-text"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Rating",
+          "tagName": "h6-rating",
+          "summary": "Clearable whole score with a separate hover preview.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "count"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "count"
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "clear"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "clear-button"
+            },
+            {
+              "name": "control"
+            },
+            {
+              "name": "icon"
+            },
+            {
+              "name": "item"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "value-text"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Select",
+          "tagName": "h6-select",
+          "summary": "Single selection from supplied options in a top-layer listbox.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "queryText"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "upgradedProperties"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "clear"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "clear-button"
+            },
+            {
+              "name": "content"
+            },
+            {
+              "name": "control"
+            },
+            {
+              "name": "empty"
+            },
+            {
+              "name": "indicator"
+            },
+            {
+              "name": "option"
+            },
+            {
+              "name": "option-indicator"
+            },
+            {
+              "name": "option-label"
+            },
+            {
+              "name": "positioner"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "selected-option"
+            },
+            {
+              "name": "trigger"
+            },
+            {
+              "name": "value-text"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Combobox",
+          "tagName": "h6-combobox",
+          "summary": "Searchable selection that keeps query and selected identifier apart.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "query"
+            },
+            {
+              "kind": "field",
+              "name": "queryText"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "upgradedProperties"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "clear"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "clear-button"
+            },
+            {
+              "name": "content"
+            },
+            {
+              "name": "control"
+            },
+            {
+              "name": "empty"
+            },
+            {
+              "name": "indicator"
+            },
+            {
+              "name": "input"
+            },
+            {
+              "name": "option"
+            },
+            {
+              "name": "option-indicator"
+            },
+            {
+              "name": "option-label"
+            },
+            {
+              "name": "positioner"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "selected-option"
+            },
+            {
+              "name": "trigger"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6DatePicker",
+          "tagName": "h6-date-picker",
+          "summary": "Localized date editor and calendar with one ISO form entry.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "lang"
+            },
+            {
+              "name": "locale"
+            },
+            {
+              "name": "max"
+            },
+            {
+              "name": "min"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "displayValue"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "max"
+            },
+            {
+              "kind": "field",
+              "name": "min"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "clear"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "hidePicker"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            },
+            {
+              "kind": "method",
+              "name": "showPicker"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "clear-button"
+            },
+            {
+              "name": "content"
+            },
+            {
+              "name": "control"
+            },
+            {
+              "name": "day"
+            },
+            {
+              "name": "day-view"
+            },
+            {
+              "name": "grid"
+            },
+            {
+              "name": "input"
+            },
+            {
+              "name": "month"
+            },
+            {
+              "name": "month-view"
+            },
+            {
+              "name": "navigation"
+            },
+            {
+              "name": "next-button"
+            },
+            {
+              "name": "positioner"
+            },
+            {
+              "name": "prev-button"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "today"
+            },
+            {
+              "name": "trigger"
+            },
+            {
+              "name": "view"
+            },
+            {
+              "name": "view-button"
+            },
+            {
+              "name": "weekday"
+            },
+            {
+              "name": "year"
+            },
+            {
+              "name": "year-view"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6DateRangePicker",
+          "tagName": "h6-date-range-picker",
+          "summary": "Two native editors and a range calendar with two named ISO entries.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "end-label"
+            },
+            {
+              "name": "end-name"
+            },
+            {
+              "name": "lang"
+            },
+            {
+              "name": "locale"
+            },
+            {
+              "name": "max"
+            },
+            {
+              "name": "min"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "start-label"
+            },
+            {
+              "name": "start-name"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "displayValue"
+            },
+            {
+              "kind": "field",
+              "name": "endName"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "max"
+            },
+            {
+              "kind": "field",
+              "name": "min"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "startName"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "clear"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "hidePicker"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            },
+            {
+              "kind": "method",
+              "name": "showPicker"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "clear-button"
+            },
+            {
+              "name": "content"
+            },
+            {
+              "name": "control"
+            },
+            {
+              "name": "day"
+            },
+            {
+              "name": "day-view"
+            },
+            {
+              "name": "end-field"
+            },
+            {
+              "name": "end-input"
+            },
+            {
+              "name": "end-label"
+            },
+            {
+              "name": "grid"
+            },
+            {
+              "name": "input"
+            },
+            {
+              "name": "month"
+            },
+            {
+              "name": "month-view"
+            },
+            {
+              "name": "navigation"
+            },
+            {
+              "name": "next-button"
+            },
+            {
+              "name": "positioner"
+            },
+            {
+              "name": "prev-button"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "start-field"
+            },
+            {
+              "name": "start-input"
+            },
+            {
+              "name": "start-label"
+            },
+            {
+              "name": "today"
+            },
+            {
+              "name": "trigger"
+            },
+            {
+              "name": "view"
+            },
+            {
+              "name": "view-button"
+            },
+            {
+              "name": "weekday"
+            },
+            {
+              "name": "year"
+            },
+            {
+              "name": "year-view"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6Checkbox",
+          "tagName": "h6-checkbox",
+          "summary": "Native checked and mixed states with checkbox-like submission.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "checked"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "indeterminate"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "checked"
+            },
+            {
+              "kind": "field",
+              "name": "defaultChecked"
+            },
+            {
+              "kind": "field",
+              "name": "defaultIndeterminate"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "indeterminate"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "control"
+            },
+            {
+              "name": "indicator"
+            },
+            {
+              "name": "input"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "root"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6RadioGroup",
+          "tagName": "h6-radio-group",
+          "summary": "One supplied identifier, with descriptions and disabled options.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "orientation"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "defaults"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "multiple"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "orientation"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "selected"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "assign"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "control"
+            },
+            {
+              "name": "description"
+            },
+            {
+              "name": "input"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "option"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "selected-option"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6ToggleGroup",
+          "tagName": "h6-toggle-group",
+          "summary": "Single or multiple selection with repeated form entries.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "multiple"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "orientation"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "defaults"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "multiple"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "orientation"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "selected"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "assign"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "description"
+            },
+            {
+              "name": "label"
+            },
+            {
+              "name": "option"
+            },
+            {
+              "name": "root"
+            },
+            {
+              "name": "selected-option"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6NumberInput",
+          "tagName": "h6-number-input",
+          "summary": "Localized numeric editing, canonical submission, and stepping.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "autocomplete"
+            },
+            {
+              "name": "decrement-label"
+            },
+            {
+              "name": "dir"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "increment-label"
+            },
+            {
+              "name": "inputmode"
+            },
+            {
+              "name": "lang"
+            },
+            {
+              "name": "locale"
+            },
+            {
+              "name": "max"
+            },
+            {
+              "name": "maxlength"
+            },
+            {
+              "name": "min"
+            },
+            {
+              "name": "minlength"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "pattern"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "step"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultAutocomplete"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDisplayValue"
+            },
+            {
+              "kind": "field",
+              "name": "defaultInputMode"
+            },
+            {
+              "kind": "field",
+              "name": "defaultPattern"
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "dirty"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "displayValue"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "input"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "locale"
+            },
+            {
+              "kind": "field",
+              "name": "max"
+            },
+            {
+              "kind": "field",
+              "name": "min"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "restorationState"
+            },
+            {
+              "kind": "field",
+              "name": "step"
+            },
+            {
+              "kind": "field",
+              "name": "upgradedProperties"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "valueAsNumber"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "editorLength"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "markDirty"
+            },
+            {
+              "kind": "method",
+              "name": "normalizeValue"
+            },
+            {
+              "kind": "method",
+              "name": "presentValue"
+            },
+            {
+              "kind": "method",
+              "name": "refresh"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            },
+            {
+              "kind": "method",
+              "name": "validateValue"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "control"
+            },
+            {
+              "name": "decrement-trigger"
+            },
+            {
+              "name": "increment-trigger"
+            },
+            {
+              "name": "input"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "customElement": true,
+          "name": "H6PasswordInput",
+          "tagName": "h6-password-input",
+          "summary": "Native password editing and a visibility button.",
+          "attributes": [
+            {
+              "name": "aria-describedby"
+            },
+            {
+              "name": "aria-label"
+            },
+            {
+              "name": "aria-labelledby"
+            },
+            {
+              "name": "autocomplete"
+            },
+            {
+              "name": "disabled"
+            },
+            {
+              "name": "hide-label"
+            },
+            {
+              "name": "inputmode"
+            },
+            {
+              "name": "maxlength"
+            },
+            {
+              "name": "minlength"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "pattern"
+            },
+            {
+              "name": "placeholder"
+            },
+            {
+              "name": "readonly"
+            },
+            {
+              "name": "required"
+            },
+            {
+              "name": "show-label"
+            },
+            {
+              "name": "value"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "defaultAutocomplete"
+            },
+            {
+              "kind": "field",
+              "name": "defaultDisplayValue"
+            },
+            {
+              "kind": "field",
+              "name": "defaultInputMode"
+            },
+            {
+              "kind": "field",
+              "name": "defaultPattern"
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue"
+            },
+            {
+              "kind": "field",
+              "name": "dirty"
+            },
+            {
+              "kind": "field",
+              "name": "disabled"
+            },
+            {
+              "kind": "field",
+              "name": "displayValue"
+            },
+            {
+              "kind": "field",
+              "name": "form"
+            },
+            {
+              "kind": "field",
+              "name": "input"
+            },
+            {
+              "kind": "field",
+              "name": "labels"
+            },
+            {
+              "kind": "field",
+              "name": "name"
+            },
+            {
+              "kind": "field",
+              "name": "readOnly"
+            },
+            {
+              "kind": "field",
+              "name": "required"
+            },
+            {
+              "kind": "field",
+              "name": "restorationState"
+            },
+            {
+              "kind": "field",
+              "name": "upgradedProperties"
+            },
+            {
+              "kind": "field",
+              "name": "validationMessage"
+            },
+            {
+              "kind": "field",
+              "name": "validity"
+            },
+            {
+              "kind": "field",
+              "name": "value"
+            },
+            {
+              "kind": "field",
+              "name": "visible"
+            },
+            {
+              "kind": "field",
+              "name": "willValidate"
+            },
+            {
+              "kind": "method",
+              "name": "checkValidity"
+            },
+            {
+              "kind": "method",
+              "name": "editorLength"
+            },
+            {
+              "kind": "method",
+              "name": "focus"
+            },
+            {
+              "kind": "method",
+              "name": "markDirty"
+            },
+            {
+              "kind": "method",
+              "name": "normalizeValue"
+            },
+            {
+              "kind": "method",
+              "name": "presentValue"
+            },
+            {
+              "kind": "method",
+              "name": "refresh"
+            },
+            {
+              "kind": "method",
+              "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "setCustomValidity"
+            },
+            {
+              "kind": "method",
+              "name": "validateValue"
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "control"
+            },
+            {
+              "name": "indicator"
+            },
+            {
+              "name": "input"
+            },
+            {
+              "name": "visibility-trigger"
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-field",
+          "declaration": {
+            "name": "H6Field",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-switch",
+          "declaration": {
+            "name": "H6Switch",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-iban",
+          "declaration": {
+            "name": "H6Iban",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-bic",
+          "declaration": {
+            "name": "H6Bic",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-otp",
+          "declaration": {
+            "name": "H6Otp",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-duration",
+          "declaration": {
+            "name": "H6Duration",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-interval",
+          "declaration": {
+            "name": "H6Interval",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-segmented",
+          "declaration": {
+            "name": "H6Segmented",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-tags",
+          "declaration": {
+            "name": "H6Tags",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-toggle",
+          "declaration": {
+            "name": "H6Toggle",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-accordion",
+          "declaration": {
+            "name": "H6Accordion",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-tabs",
+          "declaration": {
+            "name": "H6Tabs",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-slider",
+          "declaration": {
+            "name": "H6Slider",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-range-slider",
+          "declaration": {
+            "name": "H6RangeSlider",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-rating",
+          "declaration": {
+            "name": "H6Rating",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-select",
+          "declaration": {
+            "name": "H6Select",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-combobox",
+          "declaration": {
+            "name": "H6Combobox",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-date-picker",
+          "declaration": {
+            "name": "H6DatePicker",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-date-range-picker",
+          "declaration": {
+            "name": "H6DateRangePicker",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-checkbox",
+          "declaration": {
+            "name": "H6Checkbox",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-radio-group",
+          "declaration": {
+            "name": "H6RadioGroup",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-toggle-group",
+          "declaration": {
+            "name": "H6ToggleGroup",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-number-input",
+          "declaration": {
+            "name": "H6NumberInput",
+            "module": "dist/src/index.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "h6-password-input",
+          "declaration": {
+            "name": "H6PasswordInput",
+            "module": "dist/src/index.js"
+          }
+        }
+      ]
+    }
+  ]
+}
