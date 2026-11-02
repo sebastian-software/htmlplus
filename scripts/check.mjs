@@ -5,7 +5,10 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 for (const args of [
   ['scripts/build.mjs'],
   ['scripts/build-demo.mjs', '--skip-build'],
-  ['--test', 'test/validation.test.mjs', 'test/duration.test.mjs', 'test/date-value.test.mjs'],
+  ['scripts/check-size.mjs'],
+  ['scripts/check-notices.mjs'],
+  ['scripts/generate-api.mjs', '--check'],
+  ['--test', 'test/*.test.mjs'],
   ['node_modules/playwright/cli.js', 'test', ...process.argv.slice(2)],
 ]) {
   const result = spawnSync(process.execPath, args, { cwd: root, stdio: 'inherit' });

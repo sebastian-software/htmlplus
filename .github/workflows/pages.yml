@@ -11,7 +11,8 @@ permissions:
 
 concurrency:
   group: pages-${{ github.ref }}
-  cancel-in-progress: true
+  # A newer pull request commit supersedes a run, but a deployment must not stop halfway.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verify:
@@ -32,14 +33,33 @@ jobs:
         # GitHub mounts this directory with runner ownership; Firefox checks its owner.
         run: chown "$(id -u):$(id -g)" "$HOME"
       - run: npm test
+      - uses: actions/upload-artifact@v7.0.2
+        if: failure()
+        with:
+          name: playwright-results
+          path: test-results
+          retention-days: 7
       - uses: actions/upload-pages-artifact@v5.0.0
         if: github.event_name != 'pull_request'
         with:
           path: site
 
+  minimum-node:
+    # package.json promises Node.js 22; browsers are covered by the verify job.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run test:unit
+
   deploy:
     if: github.event_name != 'pull_request'
-    needs: verify
+    needs: [verify, minimum-node]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
