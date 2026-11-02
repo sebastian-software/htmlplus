@@ -1,6 +1,8 @@
 export interface FieldValidation {
   message: string;
   detail: string;
+  /** Validity state of a nonempty message; format errors default to patternMismatch. */
+  flag?: "badInput" | "rangeUnderflow" | "rangeOverflow";
 }
 
 // Hand-authored format profiles checked against Swift's IBAN Registry, release 103.
@@ -41,7 +43,9 @@ export function validateIban(value: string): FieldValidation {
   if (!profile) return { message: "This preview supports AT, BE, CH, DE, ES, FR, GB, IE, IT, and NL.", detail: "Country format not supported in this preview." };
   if (value.length !== profile.length) return { message: `An IBAN for ${profile.country} needs ${profile.length} characters; you entered ${value.length}.`, detail: `${value.length} of ${profile.length} characters` };
   if (!profile.pattern.test(value)) return { message: `Check the account format for ${profile.country}.`, detail: "Country format does not match." };
-  if (ibanRemainder(value) !== 1) return { message: "The IBAN check digits do not match. Check the account number.", detail: "Checksum does not match." };
+  // ISO 13616 assigns check digits 02-98; 00, 01, and 99 can satisfy mod-97 only by coincidence.
+  const checkDigits = Number(value.slice(2, 4));
+  if (checkDigits < 2 || checkDigits > 98 || ibanRemainder(value) !== 1) return { message: "The IBAN check digits do not match. Check the account number.", detail: "Checksum does not match." };
   return { message: "", detail: `${profile.country} format and checksum pass. Account not verified.` };
 }
 

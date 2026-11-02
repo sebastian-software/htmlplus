@@ -33,3 +33,29 @@ test('localized digits round-trip through Intl while submission remains ASCII IS
     assert.equal(format.parse(format.format(parseCalendarDate('0001-01-01')))?.toString(),'0001-01-01');
   }
 });
+// Engines differ in the numeric patterns they ship, so these shapes are supplied directly.
+function withParts(parts, run) {
+  const original = Intl.DateTimeFormat.prototype.formatToParts;
+  Intl.DateTimeFormat.prototype.formatToParts = function (date) { return parts(date); };
+  try { run(); } finally { Intl.DateTimeFormat.prototype.formatToParts = original; }
+}
+const part = (type, value) => ({ type, value });
+const two = number => String(number).padStart(2, '0');
+test('an abbreviated numeric year still displays and parses all four digits', () => {
+  withParts(date => [part('day', two(date.getUTCDate())), part('literal', '/'), part('month', two(date.getUTCMonth() + 1)), part('literal', '/'), part('year', two(date.getUTCFullYear() % 100))], () => {
+    const format = dateTextFormat('te');
+    assert.equal(format.format(parseCalendarDate('2028-02-29')), '29/02/2028');
+    assert.equal(format.parse('29/02/2028')?.toString(), '2028-02-29');
+    assert.equal(format.format(parseCalendarDate('0001-01-01')), '01/01/0001');
+  });
+});
+test('year-day-month text is read in locale order before the ISO shortcut', () => {
+  withParts(date => [part('year', String(date.getUTCFullYear())), part('literal', '-'), part('day', two(date.getUTCDate())), part('literal', '-'), part('month', two(date.getUTCMonth() + 1))], () => {
+    const format = dateTextFormat('ky');
+    const date = parseCalendarDate('2024-11-05');
+    assert.equal(format.format(date), '2024-05-11');
+    assert.equal(format.parse(format.format(date))?.toString(), '2024-11-05');
+    // Text that cannot be this order remains an ISO date.
+    assert.equal(format.parse('2024-11-25')?.toString(), '2024-11-25');
+  });
+});

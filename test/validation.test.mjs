@@ -18,6 +18,10 @@ test('a plausible length is insufficient: checksum, structure, and support are c
   assert.match(validateIban('DE89/70400440532013000').message, /letters and numbers/);
 });
 
+test('ISO check digits are limited to 02-98, even when mod-97 happens to pass', () => {
+  for (const value of ['DE99370400440000000024', 'DE01370400440000000042']) assert.match(validateIban(value).message, /check digits/, value);
+});
+
 test('normalization preserves invalid characters for correction and BIC accepts both lengths', () => {
   assert.equal(normalizeIdentifier(' de89 3704\n0044 0532 0130 00 '), 'DE89370400440532013000');
   assert.equal(normalizeIdentifier('de89/1234'), 'DE89/1234');

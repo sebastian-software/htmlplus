@@ -2,6 +2,9 @@ import { theme, radius, surfaceShadow } from "./theme.js";
 import { uniqueTags } from "./validation.js";
 import { hostStyles } from "./styles.js";
 import { createIcon } from "./icons.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 
 const tagsTemplate = document.createElement("template");
 tagsTemplate.innerHTML = `<style>
@@ -20,12 +23,12 @@ tagsTemplate.innerHTML = `<style>
   [part=input] { display: block; flex: 1; min-width: 6rem; width: 6rem; height: 1.625rem; margin: 0; padding: .1875rem .25rem; border: 0; outline: none; background: transparent; color: inherit; font: inherit; }
   [part=input]::placeholder { color: ${theme("muted-foreground")}; }
   :host(:disabled) { opacity: .55; }
-  :host([data-visited]:invalid) [part=control] { border-color: ${theme("destructive")}; }
+  :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }
 </style><div part="control"><div part="tokens"></div><input part="input" type="text" autocomplete="off" placeholder="Add a tag…"></div>`;
 
 export class H6Tags extends HTMLElement {
   static formAssociated = true;
-  static observedAttributes = ["value", "name", "disabled", "required", "readonly", "placeholder", "aria-label"];
+  static observedAttributes = ["value", "name", "disabled", "required", "readonly", "placeholder", "aria-label", "aria-labelledby", "aria-describedby"];
   #internals = this.attachInternals();
   #input: HTMLInputElement;
   #tokens: HTMLElement;
@@ -33,6 +36,7 @@ export class H6Tags extends HTMLElement {
   #dirty = false;
   #formDisabled = false;
   #customError = "";
+  #labelContext = new LabelContext(this, () => this.#label());
 
   constructor() {
     super();
@@ -42,7 +46,8 @@ export class H6Tags extends HTMLElement {
     this.#tokens = root.querySelector('[part="tokens"]')!;
     this.#internals.role = "group";
     this.#input.addEventListener("keydown", this.#onKeyDown);
-    this.#input.addEventListener("blur", () => { this.setAttribute("data-visited", ""); this.#commit(); });
+    this.#input.addEventListener("blur", () => this.#commit());
+    trackTouched(this, () => this.#sync());
     this.#input.addEventListener("input", (event) => { event.stopPropagation(); });
     this.#input.addEventListener("change", (event) => { event.stopPropagation(); });
     root.addEventListener("click", (event) => {
@@ -55,7 +60,8 @@ export class H6Tags extends HTMLElement {
     });
   }
 
-  connectedCallback(): void { this.#sync(); queueMicrotask(() => this.#label()); }
+  connectedCallback(): void { upgradeProperties(this, ["value"]); this.#labelContext.connect(); this.#sync(); queueMicrotask(() => this.#label()); }
+  disconnectedCallback(): void { this.#labelContext.disconnect(); }
   attributeChangedCallback(name: string): void {
     if (name === "value" && !this.#dirty) this.#values = this.defaultValue;
     this.#sync();
@@ -98,7 +104,7 @@ export class H6Tags extends HTMLElement {
     this.#dirty = false;
     this.#values = this.defaultValue;
     this.#input.value = "";
-    this.removeAttribute("data-visited");
+    this.removeAttribute("data-touched");
     this.#render();
     this.#sync();
   }
@@ -111,8 +117,8 @@ export class H6Tags extends HTMLElement {
 
   get #isDisabled(): boolean { return this.disabled || this.#formDisabled; }
   #label(): void {
-    const text = this.getAttribute("aria-label") || Array.from(this.labels).map((label) => label.textContent?.trim()).filter(Boolean).join(" ") || "Tags";
-    this.#input.setAttribute("aria-label", text);
+    this.#input.setAttribute("aria-label", fieldLabel(this, this.labels, "Tags"));
+    this.#input.setAttribute("aria-description", referencedText(this, "aria-describedby"));
     this.#input.setAttribute("aria-required", String(this.required));
   }
   #sync(): void {
@@ -127,7 +133,7 @@ export class H6Tags extends HTMLElement {
     if (this.#customError) this.#internals.setValidity({ customError: true }, this.#customError, this.#input);
     else if (this.required && !this.#values.length) this.#internals.setValidity({ valueMissing: true }, "Add at least one tag.", this.#input);
     else this.#internals.setValidity({});
-    this.#input.setAttribute("aria-invalid", String(!this.validity.valid));
+    this.#input.setAttribute("aria-invalid", String(visiblyInvalid(this)));
     this.#label();
     this.#render();
   }
@@ -157,7 +163,7 @@ export class H6Tags extends HTMLElement {
   #change(values: string[]): void {
     this.value = values;
     this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
-    this.dispatchEvent(new Event("change", { bubbles: true }));
+    this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
   }
   #commit(): void {
     if (this.#isDisabled || this.readOnly) return;

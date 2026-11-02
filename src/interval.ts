@@ -1,5 +1,8 @@
 import { theme } from "./theme.js";
 import { hostStyles, inputStyles } from "./styles.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 import { enableImplicitSubmission } from "./implicit-submission.js";
 
 export type IntervalValue = readonly [number | null, number | null];
@@ -20,12 +23,13 @@ template.innerHTML = `<style>
 /** Two numeric boundaries, serialized under explicit, independent field names. */
 export class H6Interval extends HTMLElement {
   static formAssociated = true;
-  static observedAttributes = ["value", "name", "lower-name", "upper-name", "lower-label", "upper-label", "disabled", "readonly", "required", "min", "max", "step", "aria-label"];
+  static observedAttributes = ["value", "name", "lower-name", "upper-name", "lower-label", "upper-label", "disabled", "readonly", "required", "min", "max", "step", "aria-label", "aria-labelledby", "aria-describedby"];
   #internals = this.attachInternals();
   #inputs: [HTMLInputElement, HTMLInputElement];
   #dirty = false;
   #formDisabled = false;
   #customError = "";
+  #labelContext = new LabelContext(this, () => this.#sync());
 
   constructor() {
     super();
@@ -36,12 +40,12 @@ export class H6Interval extends HTMLElement {
     enableImplicitSubmission(this, this.#inputs);
     for (const input of this.#inputs) {
       input.addEventListener("input", () => { this.#dirty = true; this.#sync(); });
-      input.addEventListener("change", (event) => { event.stopPropagation(); this.dispatchEvent(new Event("change", { bubbles: true })); });
-      input.addEventListener("blur", () => { this.setAttribute("data-touched", ""); this.#sync(); });
+      input.addEventListener("change", (event) => { event.stopPropagation(); this.dispatchEvent(new Event("change", { bubbles: true, composed: true })); });
     }
-    this.addEventListener("invalid", () => { this.setAttribute("data-touched", ""); this.#sync(); });
+    trackTouched(this, () => this.#sync());
   }
-  connectedCallback(): void { this.#sync(); queueMicrotask(() => this.#sync()); }
+  connectedCallback(): void { upgradeProperties(this, ["value"]); this.#labelContext.connect(); this.#sync(); queueMicrotask(() => this.#sync()); }
+  disconnectedCallback(): void { this.#labelContext.disconnect(); }
   attributeChangedCallback(name: string): void {
     if (name === "value" && !this.#dirty) this.#write(this.defaultValue);
     this.#sync();
@@ -89,7 +93,7 @@ export class H6Interval extends HTMLElement {
   #write(value: IntervalValue): void { this.#inputs.forEach((input, index) => { input.value = value[index] === null ? "" : String(value[index]); }); }
   #sync(): void {
     const data = new FormData();
-    const label = this.getAttribute("aria-label") || Array.from(this.labels).map((item) => item.textContent?.trim()).filter(Boolean).join(" ") || "Interval";
+    const label = fieldLabel(this, this.labels, "Interval"), description = referencedText(this, "aria-describedby");
     this.#internals.ariaLabel = label;
     let flags: ValidityStateFlags = {};
     let message = "";
@@ -99,6 +103,7 @@ export class H6Interval extends HTMLElement {
       const sideLabel = this.getAttribute(`${side}-label`) ?? (index === 0 ? "From" : "To");
       this.shadowRoot!.querySelector(`[part=${side}-label]`)!.textContent = sideLabel;
       input.setAttribute("aria-label", `${label}: ${sideLabel}`);
+      input.setAttribute("aria-description", description);
       input.disabled = this.disabled || this.#formDisabled;
       input.readOnly = this.readOnly;
       input.required = this.required;
@@ -118,6 +123,6 @@ export class H6Interval extends HTMLElement {
     if (this.readOnly) { flags = {}; message = ""; }
     this.#internals.setFormValue(data, JSON.stringify(this.#inputs.map((input) => input.value)));
     this.#internals.setValidity(flags, message, anchor);
-    for (const input of this.#inputs) input.setAttribute("aria-invalid", String(this.hasAttribute("data-touched") && !this.validity.valid));
+    for (const input of this.#inputs) input.setAttribute("aria-invalid", String(visiblyInvalid(this)));
   }
 }

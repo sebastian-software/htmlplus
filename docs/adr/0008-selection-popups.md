@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-24
-- Updated: 2026-10-24
+- Updated: 2026-11-02
 - Lifecycle: living
 - Scope: Select and Combobox; Date Picker reuses the popup strategy under ADR-0009
 
@@ -55,3 +55,5 @@ Revisit on changes to Zag's omitted-hidden-control assumptions, Popover API beha
 - 2026-10-24: Accepted single-selection Select and Combobox with ElementInternals, explicit query invalidation, stable native editing, shadow-local manual popovers, scoped theming, and integrated browser evidence.
 
 - 2026-10-24: Linked the Date Picker successor integration in ADR-0009; the Select/Combobox contract is unchanged.
+
+- 2026-11-02: A disabled or removed selected option now reports an empty value but keeps the stored selection, which returns with its option. Select, Combobox, Segmented, Radio Group, and Toggle Group share one native-default option policy, replacing the earlier rule that an invalidated selection stays cleared.

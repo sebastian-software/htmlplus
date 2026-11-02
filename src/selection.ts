@@ -3,13 +3,16 @@ import * as combobox from "@zag-js/combobox";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
-import { fieldLabel, referencedText } from "./field-label.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { readOptionChoices, enabledChoice } from "./option-choices.js";
+import { textValue, upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 import { createIcon } from "./icons.js";
 import { hostStyles } from "./styles.js";
 import { radius, theme, surfaceShadow } from "./theme.js";
 import { enableImplicitSubmission } from "./implicit-submission.js";
 
-interface Choice { value: string; label: string; disabled: boolean; }
+type Choice = ReturnType<typeof readOptionChoices>[number];
 
 const template = document.createElement("template");
 template.innerHTML = `<style>
@@ -77,6 +80,7 @@ class H6Choice extends HTMLElement {
   #customError = "";
   #composing = false;
   #observer = new MutationObserver(() => this.#readOptions());
+  #labelContext = new LabelContext(this, () => this.#render());
 
   constructor(editable: boolean) {
     super(); this.#editable = editable;
@@ -117,10 +121,13 @@ class H6Choice extends HTMLElement {
       if (changed) this.#emitCommit(); else if (edited) this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
     });
     this.addEventListener("click", event => { if (event.composedPath()[0] === this) this.focus(); });
-    this.addEventListener("invalid", () => { this.setAttribute("data-touched", ""); });
+    trackTouched(this, () => this.#sync());
   }
+  protected get upgradedProperties(): readonly string[] { return ["value"]; }
   connectedCallback(): void {
+    this.#labelContext.connect();
     this.#readOptions();
+    upgradeProperties(this, this.upgradedProperties);
     this.#observer.observe(this, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["value", "label", "disabled"] });
     const props = {
       id: interactionId(this.#editable ? "combobox" : "select"), getRootNode: () => this.shadowRoot!,
@@ -144,7 +151,7 @@ class H6Choice extends HTMLElement {
     this.#sync(); queueMicrotask(() => { if (this.isConnected) this.#render(); });
   }
   disconnectedCallback(): void {
-    this.#observer.disconnect(); this.#hidePopup(); this.#select?.stop(); this.#combo?.stop();
+    this.#labelContext.disconnect(); this.#observer.disconnect(); this.#hidePopup(); this.#select?.stop(); this.#combo?.stop();
     this.#select = undefined; this.#combo = undefined; this.#bindings.clear();
   }
   attributeChangedCallback(name: string): void {
@@ -152,7 +159,7 @@ class H6Choice extends HTMLElement {
     this.#sync();
   }
   get value(): string { return this.#selectedOption?.value ?? ""; }
-  set value(value: string) { this.#dirty = true; this.#selected = String(value); this.#query = this.#selectedOption?.label ?? ""; this.#filtering = false; this.#close(); this.#sync(); }
+  set value(value: string) { this.#dirty = true; this.#selected = textValue(value); this.#query = this.#selectedOption?.label ?? ""; this.#filtering = false; this.#close(); this.#sync(); }
   get defaultValue(): string { return this.getAttribute("value") ?? ""; }
   set defaultValue(value: string) { this.setAttribute("value", String(value)); }
   get name(): string { return this.getAttribute("name") ?? ""; }
@@ -177,7 +184,7 @@ class H6Choice extends HTMLElement {
   clear(): void { this.value = ""; }
   protected get queryText(): string { return this.#query; }
   protected set queryText(value: string) {
-    this.#dirty = true; this.#query = String(value); this.#filtering = true;
+    this.#dirty = true; this.#query = textValue(value); this.#filtering = true;
     if (this.#query !== this.#selectedOption?.label) this.#selected = "";
     this.#sync();
   }
@@ -197,18 +204,17 @@ class H6Choice extends HTMLElement {
     this.value = state;
   }
   get #disabled(): boolean { return this.disabled || this.#formDisabled; }
-  get #selectedOption(): Choice | undefined { return this.#options.find(option => option.value === this.#selected && !option.disabled); }
+  get #selectedOption(): Choice | undefined { return enabledChoice(this.#options, this.#selected); }
   get #visibleOptions(): Choice[] {
     const query = this.#query.trim().toLocaleLowerCase();
     return this.#editable && this.#filtering && query ? this.#options.filter(option => option.label.toLocaleLowerCase().includes(query)) : this.#options;
   }
   #readOptions(): void {
     const previous = this.#selectedOption;
-    const seen = new Set<string>();
-    this.#options = Array.from(this.children).filter((child): child is HTMLOptionElement => child instanceof HTMLOptionElement)
-      .filter(option => { if (!option.value || seen.has(option.value)) return false; seen.add(option.value); return true; })
-      .map(option => ({ value: option.value, label: option.label, disabled: option.disabled }));
-    if (previous && !this.#selectedOption) { this.#selected = ""; if (!this.#editable) this.#query = ""; }
+    this.#options = readOptionChoices(this);
+    const seen = new Set(this.#options.map(option => option.value));
+    // The stored selection stays, so it returns with its option.
+    if (previous && !this.#selectedOption && !this.#editable) this.#query = "";
     if (this.#selectedOption && (!previous || this.#query === previous.label)) this.#query = this.#selectedOption.label;
     for (const [value, node] of this.#items) if (!seen.has(value)) { node.remove(); this.#items.delete(value); }
     this.#sync();
@@ -232,7 +238,7 @@ class H6Choice extends HTMLElement {
   }
   #close(): void { this.#select && select.connect(this.#select.service, normalizeProps).setOpen(false); this.#combo && combobox.connect(this.#combo.service, normalizeProps).setOpen(false); }
   #updateMachine(): void {
-    const props = { value: this.value ? [this.value] : [], collection: select.collection({ items: this.#visibleOptions }), disabled: this.#disabled, readOnly: this.readOnly, required: this.required, invalid: !this.validity.valid, dir: direction(this) };
+    const props = { value: this.value ? [this.value] : [], collection: select.collection({ items: this.#visibleOptions }), disabled: this.#disabled, readOnly: this.readOnly, required: this.required, invalid: visiblyInvalid(this), dir: direction(this) };
     this.#select?.updateProps(props);
     this.#combo?.updateProps({ ...props, ...(!this.#composing ? { inputValue: this.#query } : {}), placeholder: this.placeholder });
   }
@@ -266,7 +272,7 @@ class H6Choice extends HTMLElement {
     }
     target.removeAttribute("aria-labelledby"); target.setAttribute("aria-label", label);
     target.setAttribute("aria-description", referencedText(this, "aria-describedby"));
-    target.setAttribute("aria-invalid", String(!this.validity.valid)); target.setAttribute("aria-required", String(this.required));
+    target.setAttribute("aria-invalid", String(visiblyInvalid(this))); target.setAttribute("aria-required", String(this.required));
     target.setAttribute("aria-readonly", String(this.readOnly));
     this.#content.removeAttribute("aria-labelledby"); this.#content.setAttribute("aria-label", `${label} options`);
     if (this.#valueText) this.#valueText.textContent = this.#selectedOption?.label ?? this.placeholder;
@@ -298,6 +304,7 @@ class H6Choice extends HTMLElement {
 export class H6Select extends H6Choice { constructor() { super(false); } }
 export class H6Combobox extends H6Choice {
   constructor() { super(true); }
+  protected override get upgradedProperties(): readonly string[] { return ["value", "query"]; }
   get query(): string { return this.queryText; }
   set query(value: string) { this.queryText = value; }
 }

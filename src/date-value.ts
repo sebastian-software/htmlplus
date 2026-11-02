@@ -26,7 +26,6 @@ export function dateTextFormat(locale: string): DateTextFormat | null {
     const numbers = new Intl.NumberFormat(resolved, { useGrouping: false });
     const digits = new Map(Array.from({ length: 10 }, (_, digit) => [numbers.format(digit), String(digit)]));
     const ascii = (text: string): string => Array.from(text, character => digits.get(character) ?? character).join("");
-    const zero = numbers.format(0);
     const sample = parseCalendarDate("2006-11-22")!;
     const parts = formatter.formatToParts(sample.toDate("UTC"));
     const order: string[] = [];
@@ -39,13 +38,14 @@ export function dateTextFormat(locale: string): DateTextFormat | null {
     return {
       locale: resolved,
       placeholder: parts.map(part => part.type === "year" ? "YYYY" : part.type === "month" ? "MM" : part.type === "day" ? "DD" : unmark(part.value)).join(""),
-      format: date => unmark(formatter.formatToParts(date.toDate("UTC")).map(part => part.type === "year" ? zero.repeat(Math.max(0, 4 - Array.from(part.value).length)) + part.value : part.value).join("")),
+      // Some locales abbreviate numeric years; the parser and canonical value need all four digits.
+      format: date => unmark(formatter.formatToParts(date.toDate("UTC")).map(part => part.type === "year" ? Array.from(String(date.year).padStart(4, "0"), digit => numbers.format(Number(digit))).join("") : part.value).join("")),
       parse(text) {
         text = ascii(unmark(text.trim()));
-        const iso = parseCalendarDate(text); if (iso) return iso;
-        const match = matcher.exec(text); if (!match) return null;
-        const values = Object.fromEntries(order.map((name, index) => [name, match[index + 1]!]));
-        return parseCalendarDate(`${values.year}-${values.month!.padStart(2, "0")}-${values.day!.padStart(2, "0")}`);
+        // The locale order goes first: its text can also look like ISO with day and month swapped.
+        const match = matcher.exec(text);
+        const values = match && Object.fromEntries(order.map((name, index) => [name, match[index + 1]!]));
+        return values && parseCalendarDate(`${values.year}-${values.month!.padStart(2, "0")}-${values.day!.padStart(2, "0")}`) || parseCalendarDate(text);
       },
     };
   } catch { return null; }

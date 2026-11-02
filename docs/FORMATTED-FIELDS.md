@@ -9,7 +9,7 @@ Formatting is presentation and editing behavior, separate from validation and su
 <h6-iban id="account" name="iban" value="DE89370400440532013000" required></h6-iban>
 ```
 
-The editor displays `DE89 3704 0044 0532 0130 00`; FormData receives `DE89370400440532013000`. Defaults and silent `.value` assignments use uppercase groups of four. `.value` remains canonical, `.displayValue` returns the current editor string, and `.defaultValue` describes the declared default.
+The editor displays `DE89 3704 0044 0532 0130 00`; FormData receives `DE89370400440532013000`. Defaults and silent `.value` assignments use uppercase groups of four. `.value` remains canonical, `.displayValue` returns the current editor string, and `.defaultValue` describes the declared default. `minlength` and `maxlength` count the canonical value, not generated separators. Format errors report `patternMismatch`; check digits must be 02–98 and satisfy mod-97.
 
 Typing and paste normalize case and grouping. Generated separators are presentation, so a collapsed Backspace/Delete skips a separator to delete a neighboring character; explicitly selecting a separator does not delete an additional character. Invalid non-whitespace characters remain available for correction and validation. Grouping does not establish account existence or ownership.
 

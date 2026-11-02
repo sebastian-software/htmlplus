@@ -2,6 +2,7 @@ import { theme, radius } from "./theme.js";
 import * as accordion from "@zag-js/accordion";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles } from "./styles.js";
+import { upgradeProperties } from "./upgrade.js";
 import { createIcon } from "./icons.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
@@ -62,6 +63,7 @@ export class H6Accordion extends HTMLElement {
     }, true);
   }
   connectedCallback(): void {
+    upgradeProperties(this, ["value"]);
     this.#refresh();
     this.#machine = new VanillaMachine(accordion.machine, {
       id: this.#id, getRootNode: () => this.#root,

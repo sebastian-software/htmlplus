@@ -5,7 +5,9 @@ import { dateTextFormat, parseCalendarDate } from "./date-value.js";
 import type { DateTextFormat } from "./date-value.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
-import { fieldLabel, referencedText } from "./field-label.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { textValue, upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 import { createIcon } from "./icons.js";
 import { calendarTemplate, CalendarViews } from "./calendar.js";
 import { LocaleContext, resolvedLocale, localeWeekStart } from "./locale.js";
@@ -38,6 +40,7 @@ export class H6DatePicker extends HTMLElement {
   #dirty = false;
   #formDisabled = false;
   #customError = "";
+  #labelContext = new LabelContext(this, () => this.#render());
   #composing = false;
   #pendingEdit = false;
   #format: DateTextFormat = dateTextFormat("en-US")!;
@@ -86,10 +89,11 @@ export class H6DatePicker extends HTMLElement {
       const changed = Boolean(this.value || this.displayValue); this.clear(); this.focus(); if (changed) this.#emitCommit();
     });
     this.addEventListener("click", event => { if (event.composedPath()[0] === this) this.focus(); });
-    this.addEventListener("invalid", () => { this.setAttribute("data-touched", ""); });
+    trackTouched(this, () => this.#sync());
   }
   connectedCallback(): void {
-    this.#localeContext.connect();
+    this.#localeContext.connect(); this.#labelContext.connect();
+    upgradeProperties(this, ["value", "displayValue"]);
     const config = this.#config;
     this.#machine = new VanillaMachine(datePicker.machine, {
       ...this.#props, id: this.#id, getRootNode: () => this.shadowRoot!, selectionMode: "single", fixedWeeks: true,
@@ -107,7 +111,7 @@ export class H6DatePicker extends HTMLElement {
     if (config.message) this.hidePicker();
     queueMicrotask(() => { if (this.isConnected) this.#render(); });
   }
-  disconnectedCallback(): void { this.#localeContext.disconnect(); this.#hidePopup(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); this.#pendingEdit = false; }
+  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#localeContext.disconnect(); this.#hidePopup(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); this.#pendingEdit = false; }
   attributeChangedCallback(name: string): void {
     if (name === "locale" || name === "lang") this.#localeContext.update();
     if (name === "value" && !this.#dirty) this.#restoreDefault();
@@ -115,7 +119,7 @@ export class H6DatePicker extends HTMLElement {
   }
   get value(): string { return this.#canonical; }
   set value(value: string) {
-    const text = String(value), date = text ? parseCalendarDate(text) : null;
+    const text = textValue(value), date = text ? parseCalendarDate(text) : null;
     if (text && !date) throw new RangeError("Use a calendar date in YYYY-MM-DD format or an empty string.");
     this.#dirty = true;
     // Reassigning a complete canonical date must not rewrite a native edit in progress.
@@ -123,7 +127,7 @@ export class H6DatePicker extends HTMLElement {
     this.#sync(true);
   }
   get displayValue(): string { return this.#input.value; }
-  set displayValue(value: string) { this.#dirty = true; this.#input.value = String(value); this.#canonical = this.#format.parse(this.displayValue)?.toString() ?? ""; this.#sync(true); }
+  set displayValue(value: string) { this.#dirty = true; this.#input.value = textValue(value); this.#canonical = this.#format.parse(this.displayValue)?.toString() ?? ""; this.#sync(true); }
   get defaultValue(): string { return this.getAttribute("value") ?? ""; }
   set defaultValue(value: string) { this.setAttribute("value", String(value)); }
   get name(): string { return this.getAttribute("name") ?? ""; }
@@ -183,7 +187,7 @@ export class H6DatePicker extends HTMLElement {
   get #props(): Partial<datePicker.Props> {
     const config = this.#config, date = parseCalendarDate(this.#canonical);
     const selectable = date && !config.message && date.compare(config.min) >= 0 && date.compare(config.max) <= 0;
-    return { value: selectable ? [date] : [], min: config.message ? firstDate : config.min, max: config.message ? lastDate : config.max, locale: this.#format.locale, startOfWeek: localeWeekStart(this.#format.locale), disabled: this.#disabled || Boolean(config.message), readOnly: this.readOnly, required: this.required, invalid: !this.validity.valid, dir: direction(this) };
+    return { value: selectable ? [date] : [], min: config.message ? firstDate : config.min, max: config.message ? lastDate : config.max, locale: this.#format.locale, startOfWeek: localeWeekStart(this.#format.locale), disabled: this.#disabled || Boolean(config.message), readOnly: this.readOnly, required: this.required, invalid: visiblyInvalid(this), dir: direction(this) };
   }
   #restoreDefault(): void { const date = parseCalendarDate(this.defaultValue); this.#canonical = date?.toString() ?? ""; this.#input.value = date ? this.#format.format(date) : this.defaultValue; }
   #emitCommit(): void { this.dispatchEvent(new Event("input", { bubbles: true, composed: true })); this.dispatchEvent(new Event("change", { bubbles: true, composed: true })); }
@@ -216,7 +220,7 @@ export class H6DatePicker extends HTMLElement {
     this.#bindings.apply(this.#viewButton, api.getViewTriggerProps({ view: api.view })); this.#viewButton.lang = this.#format.locale; this.#viewButton.textContent = api.visibleRangeText.start === api.visibleRangeText.end ? api.visibleRangeText.start : api.visibleRangeText.formatted;
     const label = fieldLabel(this, this.labels, "Date");
     this.#input.setAttribute("aria-label", label); this.#input.setAttribute("aria-description", [referencedText(this, "aria-describedby"), `Format: ${this.#format.placeholder}; ISO YYYY-MM-DD also accepted.`].filter(Boolean).join(" "));
-    this.#input.setAttribute("aria-invalid", String(!this.validity.valid)); this.#input.setAttribute("aria-required", String(this.required));
+    this.#input.setAttribute("aria-invalid", String(visiblyInvalid(this))); this.#input.setAttribute("aria-required", String(this.required));
     this.#input.setAttribute("aria-keyshortcuts", "Alt+ArrowDown F4");
     this.#trigger.setAttribute("aria-label", `Open calendar for ${label}`); this.#trigger.setAttribute("aria-haspopup", "dialog"); this.#clear.setAttribute("aria-label", `Clear ${label}`);
     this.#content.setAttribute("role", "dialog"); this.#content.setAttribute("aria-modal", "false"); this.#content.setAttribute("aria-label", `${label} calendar`);

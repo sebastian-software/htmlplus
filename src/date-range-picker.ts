@@ -6,7 +6,9 @@ import { dateTextFormat, parseCalendarDate } from "./date-value.js";
 import type { DateTextFormat } from "./date-value.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
-import { fieldLabel, referencedText } from "./field-label.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 import { createIcon } from "./icons.js";
 import { theme } from "./theme.js";
 import { LocaleContext, resolvedLocale, localeWeekStart } from "./locale.js";
@@ -48,6 +50,7 @@ export class H6DateRangePicker extends HTMLElement {
   #dirty = false;
   #formDisabled = false;
   #customError = "";
+  #labelContext = new LabelContext(this, () => this.#render());
   #composing = [false, false];
   #pendingEdit = [false, false];
   #format: DateTextFormat = dateTextFormat("en-US")!;
@@ -114,10 +117,11 @@ export class H6DateRangePicker extends HTMLElement {
       const changed = this.displayValue.some(Boolean); this.clear(); this.focus(); if (changed) this.#emitCommit();
     });
     this.addEventListener("click", event => { if (event.composedPath()[0] === this) this.focus(); });
-    this.addEventListener("invalid", () => { this.setAttribute("data-touched", ""); });
+    trackTouched(this, () => this.#sync());
   }
   connectedCallback(): void {
-    this.#localeContext.connect();
+    this.#localeContext.connect(); this.#labelContext.connect();
+    upgradeProperties(this, ["value", "displayValue"]);
     this.#machine = new VanillaMachine(datePicker.machine, {
       ...this.#props, id: this.#id, getRootNode: () => this.shadowRoot!, selectionMode: "range", fixedWeeks: true, outsideDaySelectable: true,
       defaultFocusedValue: this.#focusDate, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -133,7 +137,7 @@ export class H6DateRangePicker extends HTMLElement {
     this.#machine.subscribe(() => this.#render()); this.#render(); this.#machine.start(); this.#sync();
     queueMicrotask(() => { if (this.isConnected) this.#render(); });
   }
-  disconnectedCallback(): void { this.#localeContext.disconnect(); this.#hidePopup(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); this.#pendingEdit = [false, false]; }
+  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#localeContext.disconnect(); this.#hidePopup(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); this.#pendingEdit = [false, false]; }
   attributeChangedCallback(name: string): void {
     if (name === "locale" || name === "lang") this.#localeContext.update();
     if (name === "value" && !this.#dirty) this.#restoreDefault();
@@ -212,7 +216,7 @@ export class H6DateRangePicker extends HTMLElement {
   get #props(): Partial<datePicker.Props> {
     const config = this.#config, [start, end] = this.#canonical.map(value => parseCalendarDate(value ?? ""));
     const selectable = !config.message && start && (!end || start.compare(end) <= 0) && [start, end].every(date => !date || date.compare(config.min) >= 0 && date.compare(config.max) <= 0);
-    return { value: selectable ? end ? [start, end] : [start] : [], min: config.message ? firstDate : config.min, max: config.message ? lastDate : config.max, locale: this.#format.locale, startOfWeek: localeWeekStart(this.#format.locale), disabled: this.#disabled || Boolean(config.message), readOnly: this.readOnly, required: this.required, invalid: !this.validity.valid, dir: direction(this) };
+    return { value: selectable ? end ? [start, end] : [start] : [], min: config.message ? firstDate : config.min, max: config.message ? lastDate : config.max, locale: this.#format.locale, startOfWeek: localeWeekStart(this.#format.locale), disabled: this.#disabled || Boolean(config.message), readOnly: this.readOnly, required: this.required, invalid: visiblyInvalid(this), dir: direction(this) };
   }
   #write(): void { this.#canonical.forEach((date, index) => { this.#inputs[index]!.value = date ? this.#format.format(parseCalendarDate(date)!) : ""; }); }
   #restoreDefault(): void {
@@ -265,7 +269,7 @@ export class H6DateRangePicker extends HTMLElement {
       const sideLabel = this.getAttribute(`${sides[index]}-label`) || `${index === 0 ? "Start" : "End"} date`; this.#labels[index]!.textContent = sideLabel;
       input.setAttribute("aria-label", `${label}: ${sideLabel}`);
       input.setAttribute("aria-description", [referencedText(this, "aria-describedby"), `Format: ${this.#format.placeholder}; ISO YYYY-MM-DD also accepted. Both dates complete a range.`].filter(Boolean).join(" "));
-      input.setAttribute("aria-invalid", String(!this.validity.valid)); input.setAttribute("aria-required", String(this.required || this.#canonical.some(Boolean))); input.setAttribute("aria-keyshortcuts", "Alt+ArrowDown F4");
+      input.setAttribute("aria-invalid", String(visiblyInvalid(this))); input.setAttribute("aria-required", String(this.required || this.#canonical.some(Boolean))); input.setAttribute("aria-keyshortcuts", "Alt+ArrowDown F4");
     });
     this.#trigger.setAttribute("aria-label", `Open calendar for ${label}`); this.#trigger.setAttribute("aria-haspopup", "dialog"); this.#clear.setAttribute("aria-label", `Clear ${label}`);
     this.#content.setAttribute("role", "dialog"); this.#content.setAttribute("aria-modal", "false"); this.#content.setAttribute("aria-label", `${label} calendar`);

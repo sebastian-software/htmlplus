@@ -30,7 +30,7 @@ An internal native checkbox provides interaction, focus, and accessible semantic
 </h6-radio-group>
 ```
 
-`.value` and `.defaultValue` are strings. Only the selected enabled identifier contributes an entry; empty, unknown, or disabled selections contribute none. Direct child options declare nonempty identifiers, labels, optional descriptions, and disabled state. The first duplicate identifier wins. Updating or reordering options preserves retained interaction nodes.
+`.value` and `.defaultValue` are strings. Only the selected enabled identifier contributes an entry; empty, unknown, or disabled selections contribute none. Direct child options declare identifiers, labels, optional descriptions, and disabled state, with native defaults: a missing `value` uses the text, missing text uses the value as its label, and the first duplicate identifier wins. A disabled or removed selection reports `""` and returns with its option. Updating or reordering options preserves retained interaction nodes.
 
 Arrow keys select and focus an enabled option, wrapping at the boundaries. Left/Right follow the current direction; Up/Down follow document order. Space selects the focused radio. The group defaults to vertical layout; `orientation="horizontal"` lays choices out in a row. `dir="rtl"` is supported. Labels focus the current selection or first enabled option. Required state means an enabled choice must be selected.
 
@@ -61,7 +61,7 @@ Zag uses a radio group with checked items in single mode and a group of pressed 
 
 `locale` controls parsing and formatting, overriding the nearest inherited HTML `lang`, with browser language as fallback. Invalid locale identifiers fall back to `en-US`. FormData uses a decimal point regardless of locale. Dynamic language changes reformat complete values from their previous numeric meaning; invalid drafts stay invalid until edited or replaced. See [Functional locale formatting](LOCALE.md).
 
-`min`, `max`, and `step` are numeric properties and attributes. Bounds default to the safe integer limits; step defaults to one. A step is anchored at an explicit minimum or zero. Native validity distinguishes missing, unparseable, underflow, overflow, and step-mismatch states. Invalid configuration is a custom error. Typed out-of-range text remains visible and invalid; blur does not clamp it. Step actions stay within bounds. This is a number editor, not a currency or arbitrary-unit parser.
+`min`, `max`, and `step` are numeric properties and attributes. Bounds default to the safe integer limits; step defaults to one. A step is anchored at an explicit minimum or zero. As with a native field, `step="any"` removes the step constraint; stepping controls then move by one and `.step` reads `1`. Native validity distinguishes missing, unparseable, underflow, overflow, and step-mismatch states. Invalid configuration is a custom error. Typed out-of-range text remains visible and invalid; blur does not clamp it. Step actions stay within bounds. This is a number editor, not a currency or arbitrary-unit parser.
 
 Arrow Up/Down and the +/- buttons use Zag stepping, including a held pointer press. Mouse-wheel changes are disabled. Native input/composition and undo remain with the editor; automatic machine input synchronization and normalized default-value binding are deliberately excluded. Formatting is only applied by explicit value assignment or step actions. Canonical serialization does not rewrite typed text.
 
@@ -78,7 +78,7 @@ Arrow Up/Down and the +/- buttons use Zag stepping, including a held pointer pre
 
 The control retains one native editor. `.value`, `.defaultValue`, `.displayValue`, `.input`, `required`, `readonly`, `pattern`, `minlength`, and `maxlength` follow the shared text-field contract. No whitespace or case normalization is applied. Use `autocomplete="new-password"` for a new password; the default is `current-password`. Like a native password field, the value is not stored in session-history form state, so back/forward navigation returns an empty field. Physical-device password-manager integration remains unverified.
 
-`.visible` controls whether the editor displays text. The visibility button is keyboard reachable and has caller-overridable names through `show-label` and `hide-label`. Visibility changes preserve the selected range and do not emit value input/change events. User visibility changes emit `visibilitychange` with `{ visible }`. Reset, restoration, and successful form submission hide the password; a submission blocked by validation does not hide it. Disconnection removes the outer-form listener.
+`.visible` controls whether the editor displays text. The visibility button is keyboard reachable and has caller-overridable names through `show-label` and `hide-label`. Visibility changes preserve the selected range and do not emit value input/change events. User visibility changes emit `visibilitychange` with `{ visible }` on the host. The event neither bubbles nor crosses shadow roots, so it cannot reach `document` listeners for the Page Visibility event of the same name; listen on the host. Reset, restoration, and successful form submission hide the password; a submission blocked by validation does not hide it. Disconnection removes the outer-form listener.
 
 The playground uses a fictional password. Its value is intentionally shown in the FormData inspector; masking the editor does not change its submitted value. Remote verification, password policy, strength estimation, and authentication belong to the application.
 
@@ -98,7 +98,7 @@ The stylesheet uses `--hp-*`, the shadcn bridge, and the shared shadow roles. It
 
 ## Shared contract and evidence
 
-All five hosts support name/form association, external labels, disabled fieldsets, native validation, persistent custom errors, defaults/reset, silent property assignment, and state-restoration callbacks. User value changes emit one bubbling input/change pair for checkbox and group changes. Native text input events remain native; step actions emit one pair for each changed value. All internal interaction controls remain in shadow DOM and do not duplicate outer form entries.
+All five hosts support name/form association, external labels, disabled fieldsets, native validation, persistent custom errors, defaults/reset, silent property assignment, and state-restoration callbacks. User value changes emit one bubbling, composed input/change pair for checkbox and group changes. Native text input events remain native; step actions emit one pair for each changed value. All internal interaction controls remain in shadow DOM and do not duplicate outer form entries.
 
 `test/everyday-controls.spec.mjs` checks table aggregation, independent mixed/checked submission, keyboard groups, disabled/dynamic options, localized numeric values, undo, password selection and visibility, outer forms, reset/reconnects, Light/Dark, surfaces, mobile, text scaling, and native buttons without JavaScript. Real browser-history restoration, physical touch devices, password managers, and manual assistive-technology checks remain separate evidence gaps. Full Palamedes message integration remains planned.
 

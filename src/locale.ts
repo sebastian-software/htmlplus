@@ -57,6 +57,14 @@ export class LocaleContext {
   }
 }
 
+/** Inherited direction has no event, so a control reacting to it observes its ancestors. */
+export class DirectionContext {
+  #observer = new MutationObserver(() => this.changed());
+  constructor(private readonly element: HTMLElement, private readonly changed: () => void) {}
+  connect(): void { for (const node of ancestors(this.element)) this.#observer.observe(node, { attributes: true, attributeFilter: ["dir"] }); }
+  disconnect(): void { this.#observer.disconnect(); }
+}
+
 /** Intl uses 1–7 for Monday–Sunday; Zag uses 0–6 for Sunday–Saturday. */
 export function localeWeekStart(locale: string): number {
   const value = new Intl.Locale(locale) as Intl.Locale & { getWeekInfo?: () => { firstDay: number }; weekInfo?: { firstDay: number } };
