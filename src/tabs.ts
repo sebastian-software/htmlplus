@@ -2,6 +2,7 @@ import { theme, radius, surfaceShadow } from "./theme.js";
 import * as tabs from "@zag-js/tabs";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles } from "./styles.js";
+import { upgradeProperties } from "./upgrade.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
 import { readSections, sectionsChanged, containsFocus, reconcileChildren, inactiveSectionStyles } from "./sections.js";
@@ -64,6 +65,7 @@ export class H6Tabs extends HTMLElement {
     }, true);
   }
   connectedCallback(): void {
+    upgradeProperties(this, ["value"]);
     this.#refresh();
     this.#machine = new VanillaMachine(tabs.machine, {
       id: this.#id, getRootNode: () => this.#root,

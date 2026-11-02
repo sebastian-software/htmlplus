@@ -1,7 +1,9 @@
 import { normalizeIdentifier, validateBic, validateIban } from "./validation.js";
 import type { FieldValidation } from "./validation.js";
 import { hostStyles, inputStyles } from "./styles.js";
-import { fieldLabel, referencedText } from "./field-label.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { textValue, upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 import { NativeTextFormat, groupedIban, ibanFormat } from "./native-format.js";
 import { OtpPresentation } from "./otp-presentation.js";
 import { enableImplicitSubmission } from "./implicit-submission.js";
@@ -15,13 +17,13 @@ template.innerHTML = `<style>
 /** A native editor with a separate canonical value owned by ElementInternals. */
 export class H6TextField extends HTMLElement {
   static formAssociated = true;
-  static observedAttributes = ["value", "name", "disabled", "readonly", "required", "pattern", "minlength", "maxlength", "placeholder", "autocomplete", "inputmode", "aria-label"];
+  static observedAttributes = ["value", "name", "disabled", "readonly", "required", "pattern", "minlength", "maxlength", "placeholder", "autocomplete", "inputmode", "aria-label", "aria-labelledby", "aria-describedby"];
   protected readonly internals = this.attachInternals();
   #input: HTMLInputElement;
   #dirty = false;
   #formDisabled = false;
   #externalError = "";
-  #touched = false;
+  #labelContext = new LabelContext(this, () => this.#label());
   detail = "";
 
   constructor() {
@@ -35,27 +37,30 @@ export class H6TextField extends HTMLElement {
     this.#input.addEventListener("input", this.#onInput);
     this.#input.addEventListener("change", (event) => {
       event.stopPropagation();
-      this.dispatchEvent(new Event("change", { bubbles: true }));
+      this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
     });
     this.#input.addEventListener("compositionend", () => this.refresh());
-    this.#input.addEventListener("blur", () => { this.#touched = true; this.refresh(); });
-    this.addEventListener("invalid", () => { this.#touched = true; this.refresh(); });
+    trackTouched(this, () => this.refresh());
   }
 
-  connectedCallback(): void { this.refresh(); queueMicrotask(() => this.#label()); }
+  protected get upgradedProperties(): readonly string[] { return ["value"]; }
+  connectedCallback(): void { upgradeProperties(this, this.upgradedProperties); this.#labelContext.connect(); this.refresh(); queueMicrotask(() => this.#label()); }
+  disconnectedCallback(): void { this.#labelContext.disconnect(); }
   attributeChangedCallback(name: string): void {
     if (name === "value" && !this.#dirty) this.#input.value = this.defaultDisplayValue;
     this.refresh();
   }
   get input(): HTMLInputElement { return this.#input; }
   get value(): string { return this.normalizeValue(this.#input.value); }
-  set value(value: string) { this.#dirty = true; this.#input.value = this.presentValue(String(value)); this.refresh(); }
+  set value(value: string) { this.#dirty = true; this.#input.value = this.presentValue(textValue(value)); this.refresh(); }
   get displayValue(): string { return this.#input.value; }
   get defaultValue(): string { return this.getAttribute("value") ?? ""; }
   protected get defaultDisplayValue(): string { return this.defaultValue; }
   protected get dirty(): boolean { return this.#dirty; }
   protected markDirty(): void { this.#dirty = true; }
   protected presentValue(value: string): string { return this.normalizeValue(value); }
+  /** Native length limits count editor text, which can differ from the canonical value. */
+  protected editorLength(length: string): string { return length; }
   protected get restorationState(): string | null { return this.#input.value; }
   set defaultValue(value: string) { this.setAttribute("value", value); }
   get name(): string { return this.getAttribute("name") ?? ""; }
@@ -86,7 +91,7 @@ export class H6TextField extends HTMLElement {
     input.setAttribute("autocomplete", this.getAttribute("autocomplete") ?? this.defaultAutocomplete);
     input.setAttribute("aria-required", String(this.required));
     for (const attribute of ["minlength", "maxlength"]) {
-      if (this.hasAttribute(attribute)) input.setAttribute(attribute, this.getAttribute(attribute)!);
+      if (this.hasAttribute(attribute)) input.setAttribute(attribute, this.editorLength(this.getAttribute(attribute)!));
       else input.removeAttribute(attribute);
     }
     this.#label();
@@ -99,7 +104,7 @@ export class H6TextField extends HTMLElement {
     if (!this.readOnly) {
       if (this.#externalError) { flags = { customError: true }; message = this.#externalError; }
       else if (this.required && !value) { flags = { valueMissing: true }; message = "Fill out this field."; }
-      else if (value && result.message) { flags = { customError: true }; message = result.message; }
+      else if (value && result.message) { flags = { [result.flag ?? "patternMismatch"]: true }; message = result.message; }
       else if (value) {
         const pattern = this.getAttribute("pattern") ?? this.defaultPattern;
         let mismatch = false;
@@ -114,15 +119,14 @@ export class H6TextField extends HTMLElement {
       }
     }
     this.internals.setValidity(flags, message, input);
-    this.toggleAttribute("data-touched", this.#touched);
-    input.setAttribute("aria-invalid", String(this.#touched && !this.validity.valid));
+    input.setAttribute("aria-invalid", String(visiblyInvalid(this)));
   }
   setCustomValidity(message: string): void { this.#externalError = String(message); this.refresh(); }
   checkValidity(): boolean { return this.internals.checkValidity(); }
   reportValidity(): boolean { return this.internals.reportValidity(); }
   override focus(options?: FocusOptions): void { this.#input.focus(options); }
   formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; this.refresh(); }
-  formResetCallback(): void { this.#dirty = false; this.#input.value = this.defaultDisplayValue; this.#touched = false; this.refresh(); }
+  formResetCallback(): void { this.#dirty = false; this.#input.value = this.defaultDisplayValue; this.removeAttribute("data-touched"); this.refresh(); }
   formStateRestoreCallback(state: string): void { this.#dirty = true; this.#input.value = state; this.refresh(); }
   #label(): void {
     this.#input.setAttribute("aria-label", fieldLabel(this, this.labels, "Text field"));
@@ -140,8 +144,10 @@ export class H6Iban extends H6TextField {
   #format = new NativeTextFormat(this.input, ibanFormat);
   protected override get defaultDisplayValue(): string { return groupedIban(this.defaultValue); }
   protected override presentValue(value: string): string { return groupedIban(value); }
+  // Grouping separators are generated, so a limit on the canonical value allows for them.
+  protected override editorLength(length: string): string { const count = Number(length); return Number.isInteger(count) && count > 0 ? String(count + Math.floor((count - 1) / 4)) : length; }
   override connectedCallback(): void { this.#format.connect(); super.connectedCallback(); }
-  disconnectedCallback(): void { this.#format.disconnect(); }
+  override disconnectedCallback(): void { super.disconnectedCallback(); this.#format.disconnect(); }
   override normalizeValue(value: string): string { return normalizeIdentifier(value); }
   override validateValue(value: string): FieldValidation { return validateIban(value); }
 }
@@ -157,7 +163,7 @@ export class H6Otp extends H6TextField {
   set length(value: number) { this.setAttribute("length", String(value)); }
   protected override get defaultDisplayValue(): string { return this.normalizeValue(this.defaultValue); }
   override connectedCallback(): void { this.#presentation.connect(); this.#format.connect(); super.connectedCallback(); }
-  disconnectedCallback(): void { this.#presentation.disconnect(); this.#format.disconnect(); }
+  override disconnectedCallback(): void { super.disconnectedCallback(); this.#presentation.disconnect(); this.#format.disconnect(); }
   override refresh(): void { super.refresh(); if (!this.hasAttribute("maxlength")) this.input.maxLength = this.length; this.#presentation?.sync(this.length); }
   override get defaultPattern(): string { return `[0-9]{${this.length}}`; }
   override get defaultInputMode(): string { return "numeric"; }

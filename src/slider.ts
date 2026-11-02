@@ -5,7 +5,10 @@ import { theme, radius, surfaceShadow } from "./theme.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
 import { numericBounds, snap } from "./numeric-value.js";
-import { fieldLabel, referencedText } from "./field-label.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { DirectionContext } from "./locale.js";
+import { upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 
 export type RangeSliderValue = readonly [number, number];
 const template = document.createElement("template");
@@ -22,7 +25,7 @@ template.innerHTML = `<style>
   [part~=thumb]:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 3px; }
   [data-disabled][part=root] { opacity: .5; }
   [data-disabled] [part~=thumb], [data-readonly] [part~=thumb] { cursor: default; }
-  :host(:invalid) [part=track] { outline: 1px solid ${theme("destructive")}; outline-offset: 2px; }
+  :host([data-touched]:invalid) [part=track] { outline: 1px solid ${theme("destructive")}; outline-offset: 2px; }
   [data-orientation=vertical][part=root] { width: fit-content; }
   [data-orientation=vertical][part=control] { height: 12rem; width: 2.5rem; }
   [data-orientation=vertical][part=track] { top: 0; left: calc(50% - .1875rem); width: .375rem; height: 100%; }
@@ -52,11 +55,14 @@ class SliderControl extends HTMLElement {
   #formDisabled = false;
   #customError = "";
   #pendingChange = false;
+  #labelContext = new LabelContext(this, () => this.#render());
+  #directionContext = new DirectionContext(this, () => this.#sync());
 
   protected constructor(rangeMode: boolean) {
     super(); this.#rangeMode = rangeMode; this.#values = rangeMode ? [0, 100] : [0];
     this.#root.append(template.content.cloneNode(true));
     this.addEventListener("click", event => { if (event.composedPath()[0] === this && !event.defaultPrevented) this.focus(); });
+    trackTouched(this, () => this.#sync());
     this.#container = this.#root.querySelector("[part=root]")!;
     this.#control = this.#root.querySelector("[part=control]")!;
     this.#track = this.#root.querySelector("[part=track]")!;
@@ -69,6 +75,7 @@ class SliderControl extends HTMLElement {
     });
   }
   connectedCallback(): void {
+    upgradeProperties(this, ["value"]); this.#labelContext.connect(); this.#directionContext.connect();
     if (!this.#dirty) this.#values = this.defaults;
     this.#normalize();
     this.#machine = new VanillaMachine(slider.machine, {
@@ -89,7 +96,7 @@ class SliderControl extends HTMLElement {
     this.#render(); this.#machine.start(); this.#sync();
     queueMicrotask(() => { if (this.isConnected) this.#sync(); });
   }
-  disconnectedCallback(): void { this.#pendingChange = false; this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
+  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#directionContext.disconnect(); this.#pendingChange = false; this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
   attributeChangedCallback(): void {
     if (!this.#dirty) this.#values = this.defaults;
     this.#normalize(); this.#sync();
@@ -129,7 +136,7 @@ class SliderControl extends HTMLElement {
   setCustomValidity(message: string): void { this.#customError = String(message); this.#sync(); }
   override focus(options?: FocusOptions): void { if (!this.#disabled) this.#thumbs[0]!.focus(options); }
   formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; if (disabled) this.#pendingChange = false; this.#sync(); }
-  formResetCallback(): void { this.#dirty = false; this.#pendingChange = false; this.#values = this.defaults; this.#sync(); }
+  formResetCallback(): void { this.#dirty = false; this.#pendingChange = false; this.#values = this.defaults; this.removeAttribute("data-touched"); this.#sync(); }
   formStateRestoreCallback(state: string | File | FormData): void {
     if (typeof state !== "string") return;
     try {
@@ -141,7 +148,7 @@ class SliderControl extends HTMLElement {
   #normalize(): void { const bounds = numericBounds(this); this.#values = this.#values.map(value => snap(value, bounds)); }
   #props(): Partial<slider.Props> {
     const { min, max, step } = numericBounds(this);
-    return { min, max, step, value: this.#values, dir: direction(this), orientation: this.orientation, disabled: this.#disabled, readOnly: this.readOnly, invalid: !this.validity.valid, thumbCollisionBehavior: "none", minStepsBetweenThumbs: 0 };
+    return { min, max, step, value: this.#values, dir: direction(this), orientation: this.orientation, disabled: this.#disabled, readOnly: this.readOnly, invalid: visiblyInvalid(this), thumbCollisionBehavior: "none", minStepsBetweenThumbs: 0 };
   }
   #sync(): void {
     const error = this.#customError || numericBounds(this).error;
@@ -169,7 +176,7 @@ class SliderControl extends HTMLElement {
       thumb.tabIndex = this.disabled || this.#formDisabled ? -1 : 0;
       thumb.removeAttribute("aria-labelledby");
       thumb.setAttribute("aria-label", this.#rangeMode ? `${label}: ${this.getAttribute(index ? "upper-label" : "lower-label") || (index ? "Maximum" : "Minimum")}` : label);
-      thumb.setAttribute("aria-invalid", String(!this.validity.valid)); thumb.setAttribute("aria-readonly", String(this.readOnly));
+      thumb.setAttribute("aria-invalid", String(visiblyInvalid(this))); thumb.setAttribute("aria-readonly", String(this.readOnly));
       const description = referencedText(this, "aria-describedby");
       if (description) thumb.setAttribute("aria-description", description); else thumb.removeAttribute("aria-description");
     });

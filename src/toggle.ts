@@ -3,6 +3,9 @@ import * as toggle from "@zag-js/toggle";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles } from "./styles.js";
 import { DomBindings } from "./zag-dom.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 import type { InteractionMachine } from "./zag-dom.js";
 
 const template = document.createElement("template");
@@ -15,7 +18,7 @@ template.innerHTML = `<style>
   button:active:not(:disabled) { box-shadow: ${surfaceShadow("pressed")}; }
   button:focus-visible { outline: 2px solid ${theme("ring")}; outline-offset: 3px; }
   button:disabled { box-shadow: none; opacity: .5; cursor: not-allowed; }
-  :host(:invalid) button { border-color: ${theme("destructive")}; }
+  :host([data-touched]:invalid) button { border-color: ${theme("destructive")}; }
   ::slotted(svg) { width: 1rem; height: 1rem; flex: none; }
   @media (forced-colors: active) { button[data-pressed] { outline: 2px solid Highlight; } }
 </style><button part="button" type="button"><slot></slot></button>`;
@@ -32,12 +35,14 @@ export class H6Toggle extends HTMLElement {
   #dirty = false;
   #formDisabled = false;
   #customError = "";
+  #labelContext = new LabelContext(this, () => this.#render());
 
   constructor() {
     super();
     this.#root.append(template.content.cloneNode(true));
     this.#button = this.#root.querySelector("button")!;
     this.#root.querySelector("slot")!.addEventListener("slotchange", () => this.#render());
+    trackTouched(this, () => this.#sync());
     this.addEventListener("click", (event) => {
       // External label activation and host.click() arrive on the host, not its button.
       if (event.composedPath()[0] !== this || event.defaultPrevented || this.#disabled || !this.#machine) return;
@@ -46,6 +51,7 @@ export class H6Toggle extends HTMLElement {
     });
   }
   connectedCallback(): void {
+    upgradeProperties(this, ["pressed"]); this.#labelContext.connect();
     this.#machine = new VanillaMachine(toggle.machine, {
       pressed: this.#pressed, disabled: this.#disabled,
       onPressedChange: (pressed) => {
@@ -58,7 +64,7 @@ export class H6Toggle extends HTMLElement {
     this.#machine.subscribe(() => this.#render());
     this.#render(); this.#machine.start(); this.#sync();
   }
-  disconnectedCallback(): void { this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
+  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
   attributeChangedCallback(name: string): void {
     if (name === "pressed" && !this.#dirty) this.#pressed = this.defaultPressed;
     this.#sync();
@@ -85,7 +91,7 @@ export class H6Toggle extends HTMLElement {
   setCustomValidity(message: string): void { this.#customError = String(message); this.#sync(); }
   override focus(options?: FocusOptions): void { this.#button.focus(options); }
   formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; this.#sync(); }
-  formResetCallback(): void { this.#dirty = false; this.#pressed = this.defaultPressed; this.#sync(); }
+  formResetCallback(): void { this.#dirty = false; this.#pressed = this.defaultPressed; this.removeAttribute("data-touched"); this.#sync(); }
   formStateRestoreCallback(state: string | File | FormData): void { this.#dirty = true; this.#pressed = state === "pressed"; this.#sync(); }
 
   get #disabled(): boolean { return this.disabled || this.#formDisabled; }
@@ -100,12 +106,10 @@ export class H6Toggle extends HTMLElement {
   }
   #render(): void {
     if (this.#machine) this.#bindings.apply(this.#button, toggle.connect(this.#machine.service, normalizeProps).getRootProps());
-    const root = this.getRootNode() as Document | ShadowRoot;
-    const references = (this.getAttribute("aria-labelledby") ?? "").split(/\s+/).map((id) => root.getElementById?.(id)?.textContent?.trim() ?? "").filter(Boolean).join(" ");
-    const name = references || this.getAttribute("aria-label") || Array.from(this.labels, (label) => label.textContent?.trim() ?? "").join(" ");
+    const name = fieldLabel(this, this.labels, "");
     if (name) this.#button.setAttribute("aria-label", name); else this.#button.removeAttribute("aria-label");
-    const description = (this.getAttribute("aria-describedby") ?? "").split(/\s+/).map((id) => root.getElementById?.(id)?.textContent?.trim() ?? "").filter(Boolean).join(" ");
+    const description = referencedText(this, "aria-describedby");
     if (description) this.#button.setAttribute("aria-description", description); else this.#button.removeAttribute("aria-description");
-    this.#button.setAttribute("aria-invalid", String(!this.validity.valid));
+    this.#button.setAttribute("aria-invalid", String(visiblyInvalid(this)));
   }
 }

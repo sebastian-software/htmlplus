@@ -1,5 +1,7 @@
 import { theme, surfaceShadow } from "./theme.js";
 import { hostStyles } from "./styles.js";
+import { upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 
 const switchTemplate = document.createElement("template");
 switchTemplate.innerHTML = `<style>
@@ -11,7 +13,7 @@ switchTemplate.innerHTML = `<style>
   :host(:state(checked)) [part=thumb] { transform: translateX(calc(1.25rem - 2px)); }
   :host(:focus-visible) { outline: 2px solid ${theme("ring")}; outline-offset: 3px; }
   :host(:disabled) { opacity: .5; cursor: not-allowed; }
-  :host(:invalid) [part=track] { border-color: ${theme("destructive")}; }
+  :host([data-touched]:invalid) [part=track] { border-color: ${theme("destructive")}; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style><span part="track" aria-hidden="true"><span part="thumb"></span></span>`;
 
@@ -29,11 +31,12 @@ export class H6Switch extends HTMLElement {
     this.attachShadow({ mode: "open" }).append(switchTemplate.content.cloneNode(true));
     this.#internals.role = "switch";
     this.addEventListener("click", this.#onClick);
+    trackTouched(this, () => this.#sync());
     this.addEventListener("keydown", (event) => { if (event.key === " ") event.preventDefault(); });
     this.addEventListener("keyup", (event) => { if (event.key === " " && !this.#isDisabled) { event.preventDefault(); this.click(); } });
   }
 
-  connectedCallback(): void { this.#sync(); }
+  connectedCallback(): void { upgradeProperties(this, ["checked"]); this.#sync(); }
   attributeChangedCallback(name: string): void {
     if (name === "checked" && !this.#dirty) this.#checked = this.hasAttribute("checked");
     this.#sync();
@@ -59,7 +62,7 @@ export class H6Switch extends HTMLElement {
   reportValidity(): boolean { return this.#internals.reportValidity(); }
   setCustomValidity(message: string): void { this.#customError = String(message); this.#sync(); }
   formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; this.#sync(); }
-  formResetCallback(): void { this.#dirty = false; this.#checked = this.defaultChecked; this.#sync(); }
+  formResetCallback(): void { this.#dirty = false; this.#checked = this.defaultChecked; this.removeAttribute("data-touched"); this.#sync(); }
   formStateRestoreCallback(state: string): void { this.#dirty = true; this.#checked = state === "checked"; this.#sync(); }
 
   get #isDisabled(): boolean { return this.disabled || this.#formDisabled; }
@@ -74,11 +77,12 @@ export class H6Switch extends HTMLElement {
     if (this.#customError) this.#internals.setValidity({ customError: true }, this.#customError);
     else if (this.required && !this.#checked) this.#internals.setValidity({ valueMissing: true }, "Turn on this option to continue.");
     else this.#internals.setValidity({});
+    this.#internals.ariaInvalid = String(visiblyInvalid(this));
   }
   #onClick = (event: MouseEvent): void => {
     if (this.#isDisabled) { event.preventDefault(); return; }
     this.checked = !this.checked;
     this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
-    this.dispatchEvent(new Event("change", { bubbles: true }));
+    this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
   };
 }

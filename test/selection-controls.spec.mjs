@@ -98,7 +98,7 @@ test('labels, descriptions, option changes, separate instances, and external for
   await expect(page.getByRole('button',{name:'Clear Delivery country',exact:true})).toBeHidden();
   expect(await entries(page)).toEqual([]);
   await page.locator('#select option[value=JP]').evaluate(option=>option.disabled=false);
-  expect(await page.locator('#select').evaluate(host=>host.value)).toBe('');
+  await expect.poll(()=>page.locator('#select').evaluate(host=>host.value)).toBe('JP');
 });
 
 test('native query editing retains undo and composition while the committed selection stays separate', async ({page}) => {

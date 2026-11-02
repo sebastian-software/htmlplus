@@ -4,7 +4,9 @@ import { hostStyles, numericAccent } from "./styles.js";
 import { theme, radius, surfaceShadow } from "./theme.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
-import { fieldLabel, referencedText } from "./field-label.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 
 const template = document.createElement("template");
 template.innerHTML = `<style>
@@ -23,7 +25,7 @@ template.innerHTML = `<style>
   [part=value-text] { color: ${theme("muted-foreground")}; font-size: .75rem; font-variant-numeric: tabular-nums; }
   [data-disabled] [part=control] { opacity: .5; }
   [data-readonly] [part~=item], [data-disabled] [part~=item] { cursor: default; }
-  :host(:invalid) [part=control] { outline: 1px solid ${theme("destructive")}; outline-offset: 3px; border-radius: ${radius("md")}; }
+  :host([data-touched]:invalid) [part=control] { outline: 1px solid ${theme("destructive")}; outline-offset: 3px; border-radius: ${radius("md")}; }
   [part=label] { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   @media (forced-colors: active) { [part~=item][data-checked] { outline: 2px solid Highlight; } [part~=item][data-highlighted] { color: Highlight; } }
 </style><div part="root"><span part="label"></span><div part="control"></div><button part="clear-button" type="button">Clear</button><span part="value-text" aria-hidden="true"></span></div>`;
@@ -47,9 +49,11 @@ export class H6Rating extends HTMLElement {
   #dirty = false;
   #formDisabled = false;
   #customError = "";
+  #labelContext = new LabelContext(this, () => this.#render());
 
   constructor() {
     super(); this.#root.append(template.content.cloneNode(true));
+    trackTouched(this, () => this.#sync());
     this.addEventListener("click", event => { if (event.composedPath()[0] === this && !event.defaultPrevented) this.focus(); });
     this.#container = this.#root.querySelector("[part=root]")!; this.#control = this.#root.querySelector("[part=control]")!;
     this.#label = this.#root.querySelector("[part=label]")!; this.#clear = this.#root.querySelector("[part=clear-button]")!; this.#output = this.#root.querySelector("[part=value-text]")!;
@@ -58,6 +62,7 @@ export class H6Rating extends HTMLElement {
     this.#clear.addEventListener("click", () => { if (!this.#disabled && !this.readOnly && this.#machine) { rating.connect(this.#machine.service, normalizeProps).clearValue(); queueMicrotask(() => { if (this.isConnected) this.focus(); }); } });
   }
   connectedCallback(): void {
+    upgradeProperties(this, ["value"]); this.#labelContext.connect();
     if (!this.#dirty) this.#value = this.defaultValue;
     this.#reconcile();
     this.#machine = new VanillaMachine(rating.machine, {
@@ -73,7 +78,7 @@ export class H6Rating extends HTMLElement {
     this.#machine.subscribe(() => this.#render()); this.#render(); this.#machine.start(); this.#sync();
     queueMicrotask(() => { if (this.isConnected) this.#sync(); });
   }
-  disconnectedCallback(): void { this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
+  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
   attributeChangedCallback(): void {
     if (!this.#dirty) this.#value = this.defaultValue;
     if (this.#value !== null) this.#value = Math.min(this.count, this.#value);
@@ -110,7 +115,7 @@ export class H6Rating extends HTMLElement {
   override focus(options?: FocusOptions): void { if (!this.#disabled) this.#items[(this.#value ?? 1) - 1]?.focus(options); }
   clear(): void { this.value = null; }
   formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; this.#sync(); }
-  formResetCallback(): void { this.#dirty = false; this.#value = this.defaultValue; this.#sync(); }
+  formResetCallback(): void { this.#dirty = false; this.#value = this.defaultValue; this.removeAttribute("data-touched"); this.#sync(); }
   formStateRestoreCallback(state: string | File | FormData): void {
     if (typeof state !== "string") return;
     if (state === "") this.value = null;
@@ -143,7 +148,7 @@ export class H6Rating extends HTMLElement {
     const api = rating.connect(this.#machine.service, normalizeProps);
     this.#bindings.apply(this.#container, api.getRootProps()); this.#bindings.apply(this.#control, api.getControlProps());
     this.#label.id = String(api.getLabelProps().id); this.#label.textContent = fieldLabel(this, this.labels, "Rating");
-    this.#control.setAttribute("aria-invalid", String(!this.validity.valid)); this.#control.setAttribute("aria-required", String(this.required));
+    this.#control.setAttribute("aria-invalid", String(visiblyInvalid(this))); this.#control.setAttribute("aria-required", String(this.required));
     const description = referencedText(this, "aria-describedby");
     if (description) this.#control.setAttribute("aria-description", description); else this.#control.removeAttribute("aria-description");
     this.#container.toggleAttribute("data-disabled", this.#disabled); this.#container.toggleAttribute("data-readonly", this.readOnly);

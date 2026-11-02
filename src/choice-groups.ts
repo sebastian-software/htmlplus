@@ -1,4 +1,7 @@
-import { fieldLabel, referencedText } from "./field-label.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { readOptionChoices } from "./option-choices.js";
+import { textValue, upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 import * as radio from "@zag-js/radio-group";
 import * as toggle from "@zag-js/toggle-group";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
@@ -33,7 +36,7 @@ const styles = `${hostStyles}
 /** Shared option reconciliation and form ownership for two selection patterns. */
 abstract class ChoiceGroup extends HTMLElement {
   static formAssociated = true;
-  static observedAttributes = ["value", "name", "disabled", "required", "multiple", "orientation", "dir", "aria-label", "aria-labelledby", "aria-describedby"];
+  static observedAttributes = ["value", "name", "disabled", "required", "orientation", "dir", "aria-label", "aria-labelledby", "aria-describedby"];
   protected current: string[] = [];
   #internals = this.attachInternals();
   #root = this.attachShadow({ mode: "open", delegatesFocus: true });
@@ -47,6 +50,7 @@ abstract class ChoiceGroup extends HTMLElement {
   #dirty = false;
   #formDisabled = false;
   #error = "";
+  #labelContext = new LabelContext(this, () => this.#render());
   protected constructor(private readonly radioMode: boolean) {
     super(); this.#root.innerHTML = `<style>${styles}</style><div part="root"></div>`; this.#control = this.#root.querySelector("div")!;
     this.#root.addEventListener("input", event => {
@@ -67,10 +71,11 @@ abstract class ChoiceGroup extends HTMLElement {
       const next = choices[(index + (forward ? 1 : -1) + choices.length) % choices.length]!;
       event.preventDefault(); this.#commit([next.value]); this.#items.get(next.value)?.input?.focus();
     });
-    this.addEventListener("invalid", () => this.setAttribute("data-touched", ""));
+    trackTouched(this, () => this.#sync());
     this.addEventListener("click", event => { if (event.composedPath()[0] === this) this.focus(); });
   }
   connectedCallback(): void {
+    upgradeProperties(this, ["value"]); this.#labelContext.connect();
     const onChange = (value: string[]): void => this.#commit(value);
     const shared = { id: this.#id, getRootNode: () => this.#root, disabled: this.#disabled, dir: direction(this) };
     if (this.radioMode) this.#radio = new VanillaMachine(radio.machine, { ...shared, value: this.selected[0] ?? null, onValueChange: ({ value }) => onChange(value ? [value] : []) });
@@ -79,16 +84,9 @@ abstract class ChoiceGroup extends HTMLElement {
     machine.subscribe(() => this.#render()); this.#sync(); machine.start();
     this.#observer.observe(this, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["value", "label", "disabled", "data-description"] });
   }
-  disconnectedCallback(): void { this.#observer.disconnect(); this.#radio?.stop(); this.#toggle?.stop(); this.#radio = undefined; this.#toggle = undefined; this.#bindings.clear(); }
+  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#observer.disconnect(); this.#radio?.stop(); this.#toggle?.stop(); this.#radio = undefined; this.#toggle = undefined; this.#bindings.clear(); }
   attributeChangedCallback(name: string): void { if (name === "value" && !this.#dirty) this.current = this.defaults; this.#sync(); }
-  get #choices(): Choice[] {
-    const seen = new Set<string>();
-    return Array.from(this.children).filter((node): node is HTMLOptionElement => node instanceof HTMLOptionElement).flatMap(option => {
-      const value = option.getAttribute("value") ?? "";
-      if (!value || seen.has(value)) return []; seen.add(value);
-      return [{ value, label: option.label || value, description: option.dataset.description ?? "", disabled: option.disabled }];
-    });
-  }
+  get #choices(): Choice[] { return readOptionChoices(this); }
   protected get selected(): string[] {
     const enabled = new Set(this.#choices.filter(choice => !choice.disabled).map(choice => choice.value));
     const values = [...new Set(this.current)].filter(value => enabled.has(value));
@@ -140,7 +138,7 @@ abstract class ChoiceGroup extends HTMLElement {
     const missing = this.required && value.length === 0;
     this.#internals.setValidity(this.#error ? { customError: true } : missing ? { valueMissing: true } : {}, this.#error || (missing ? "Choose an option." : ""), anchor?.input ?? anchor?.node);
     const shared = { disabled: this.#disabled, orientation: this.orientation, dir: direction(this) };
-    this.#radio?.updateProps({ ...shared, value: value[0] ?? null, required: this.required, invalid: !this.validity.valid });
+    this.#radio?.updateProps({ ...shared, value: value[0] ?? null, required: this.required, invalid: visiblyInvalid(this) });
     this.#toggle?.updateProps({ ...shared, value, multiple: this.multiple }); this.#render();
     for (const [choice, item] of this.#items) if (item.input) item.input.checked = value.includes(choice);
   }
@@ -152,7 +150,7 @@ abstract class ChoiceGroup extends HTMLElement {
     this.#control.removeAttribute("aria-labelledby");
     this.#control.setAttribute("aria-label", fieldLabel(this, this.labels, this.radioMode ? "Options" : "Toggles"));
     this.#control.setAttribute("aria-description", referencedText(this, "aria-describedby"));
-    this.#control.setAttribute("aria-invalid", String(!this.validity.valid));
+    this.#control.setAttribute("aria-invalid", String(visiblyInvalid(this)));
     const keep: Element[] = [this.#control]; const values = new Set<string>();
     for (const choice of this.#choices) {
       values.add(choice.value); let item = this.#items.get(choice.value);
@@ -196,11 +194,12 @@ abstract class ChoiceGroup extends HTMLElement {
 export class H6RadioGroup extends ChoiceGroup {
   constructor() { super(true); }
   get value(): string { return this.selected[0] ?? ""; }
-  set value(value: string) { this.assign(value ? [String(value)] : []); }
+  set value(value: string) { const text = textValue(value); this.assign(text ? [text] : []); }
   get defaultValue(): string { return this.getAttribute("value") ?? ""; }
   set defaultValue(value: string) { this.setAttribute("value", value); }
 }
 export class H6ToggleGroup extends ChoiceGroup {
+  static override observedAttributes = [...ChoiceGroup.observedAttributes, "multiple"];
   constructor() { super(false); }
   get value(): string[] { return this.selected; }
   set value(value: string[]) { this.assign(Array.isArray(value) ? value.map(String) : []); }

@@ -68,3 +68,5 @@ Native action buttons remain actual `<button>` elements styled by the optional `
 - 2026-10-29: Added Native Field as a presentation-only companion, retaining original light-DOM control ownership instead of forwarding native form APIs through another form-associated host.
 
 - 2026-11-02: Added implicit submission for shadow editors. Enter previously did nothing in them, which broke ordinary forms such as logins.
+
+- 2026-11-02: Aligned shared control behavior with native fields: invalid presentation waits for `data-touched`, assignment coerces like native text fields, properties set before upgrade are replayed, host `change` is composed, and format errors use specific validity states rather than `customError`.

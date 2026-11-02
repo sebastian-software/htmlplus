@@ -1,4 +1,6 @@
-import { fieldLabel, referencedText } from "./field-label.js";
+import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
+import { upgradeProperties } from "./upgrade.js";
+import { trackTouched, visiblyInvalid } from "./touched.js";
 import * as checkbox from "@zag-js/checkbox";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { hostStyles } from "./styles.js";
@@ -35,17 +37,19 @@ export class H6Checkbox extends HTMLElement {
   #dirty = false;
   #formDisabled = false;
   #error = "";
+  #labelContext = new LabelContext(this, () => this.#render());
   constructor() {
     super(); this.#root.append(template.content.cloneNode(true)); this.#input = this.#root.querySelector("input")!;
     this.#root.addEventListener("input", event => event.stopPropagation());
     this.#root.addEventListener("change", event => event.stopPropagation());
     this.#root.querySelector("slot")!.addEventListener("slotchange", () => this.#render());
-    this.addEventListener("invalid", () => this.setAttribute("data-touched", ""));
+    trackTouched(this, () => this.#sync());
     this.addEventListener("click", event => {
       if (event.composedPath()[0] === this && !event.defaultPrevented && !this.#disabled && !this.readOnly) { this.#input.focus(); this.#input.click(); }
     });
   }
   connectedCallback(): void {
+    upgradeProperties(this, ["checked", "indeterminate"]); this.#labelContext.connect();
     this.#machine = new VanillaMachine(checkbox.machine, { id: this.#id, getRootNode: () => this.#root,
       checked: this.#state, disabled: this.#disabled, readOnly: this.readOnly,
       onCheckedChange: ({ checked }) => {
@@ -56,7 +60,7 @@ export class H6Checkbox extends HTMLElement {
     });
     this.#machine.subscribe(() => this.#render()); this.#render(); this.#machine.start(); this.#sync();
   }
-  disconnectedCallback(): void { this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
+  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
   attributeChangedCallback(name: string): void {
     if (!this.#dirty) { if (name === "checked") this.#checked = this.defaultChecked; if (name === "indeterminate") this.#indeterminate = this.defaultIndeterminate; }
     this.#sync();
@@ -100,7 +104,7 @@ export class H6Checkbox extends HTMLElement {
     this.#internals.setFormValue(this.#checked ? this.value : null, JSON.stringify({ checked: this.#checked, indeterminate: this.#indeterminate }));
     this.#internals.setValidity(this.#error ? { customError: true } : this.required && !this.#checked ? { valueMissing: true } : {}, this.#error || (this.required && !this.#checked ? "Select this option to continue." : ""), this.#input);
     for (const [state, active] of [["checked", this.#checked], ["indeterminate", this.#indeterminate]] as const) active ? this.#internals.states.add(state) : this.#internals.states.delete(state);
-    this.#machine?.updateProps({ checked: this.#state, disabled: this.#disabled, readOnly: this.readOnly, invalid: !this.validity.valid }); this.#render();
+    this.#machine?.updateProps({ checked: this.#state, disabled: this.#disabled, readOnly: this.readOnly, invalid: visiblyInvalid(this) }); this.#render();
   }
   #render(): void {
     if (!this.#machine) return;
