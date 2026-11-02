@@ -7,6 +7,7 @@ import { fieldLabel, referencedText } from "./field-label.js";
 import { createIcon } from "./icons.js";
 import { hostStyles } from "./styles.js";
 import { radius, theme, surfaceShadow } from "./theme.js";
+import { enableImplicitSubmission } from "./implicit-submission.js";
 
 interface Choice { value: string; label: string; disabled: boolean; }
 
@@ -91,6 +92,8 @@ class H6Choice extends HTMLElement {
     if (editable) {
       this.#input = document.createElement("input"); this.#input.part.add("input"); this.#control.append(this.#input);
       this.#trigger.className = "input-trigger";
+      // Zag prevents keydown while Enter picks an option, which suppresses this keypress.
+      enableImplicitSubmission(this, [this.#input]);
       this.#input.addEventListener("keydown", event => {
         if (this.#composing) event.stopImmediatePropagation();
         else if (event.key === "Tab") this.#close();

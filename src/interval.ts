@@ -1,5 +1,6 @@
 import { theme } from "./theme.js";
 import { hostStyles, inputStyles } from "./styles.js";
+import { enableImplicitSubmission } from "./implicit-submission.js";
 
 export type IntervalValue = readonly [number | null, number | null];
 
@@ -32,6 +33,7 @@ export class H6Interval extends HTMLElement {
     root.append(template.content.cloneNode(true));
     this.#inputs = [root.querySelectorAll("input")[0]!, root.querySelectorAll("input")[1]!];
     this.#internals.role = "group";
+    enableImplicitSubmission(this, this.#inputs);
     for (const input of this.#inputs) {
       input.addEventListener("input", () => { this.#dirty = true; this.#sync(); });
       input.addEventListener("change", (event) => { event.stopPropagation(); this.dispatchEvent(new Event("change", { bubbles: true })); });

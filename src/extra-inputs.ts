@@ -26,6 +26,8 @@ function wrap(host: H6TextField, buttons: string): HTMLElement {
   const control = document.createElement("div"); control.part.add("control"); control.innerHTML = buttons;
   control.prepend(host.input); root.append(style, control); return control;
 }
+// The editor never displays grouping, so a separator is more likely a mistaken decimal mark than a group.
+function parseNumber(text: string, locale: string): number { return new NumberParser(locale, { useGrouping: false }).parse(text); }
 function label(host: H6TextField): void {
   host.input.setAttribute("aria-label", fieldLabel(host, host.labels, "Text field"));
   host.input.setAttribute("aria-description", referencedText(host, "aria-describedby"));
@@ -52,6 +54,8 @@ export class H6PasswordInput extends H6TextField {
     });
   }
   override get defaultAutocomplete(): AutoFill { return "current-password"; }
+  // Like a native password field, keep the secret out of session-history form state.
+  protected override get restorationState(): string | null { return null; }
   override formStateRestoreCallback(state: string): void { this.#visible = false; super.formStateRestoreCallback(state); }
   get visible(): boolean { return this.#visible; }
   set visible(value: boolean) { this.#visible = Boolean(value); this.refresh(); }
@@ -95,7 +99,7 @@ export class H6NumberInput extends H6TextField {
   #activeLocale = "en-US";
   #localeDraft = false;
   #localeContext = new LocaleContext(this, requested => {
-    const raw = this.input.value, value = this.#localeDraft ? NaN : new NumberParser(this.#activeLocale).parse(raw);
+    const raw = this.input.value, value = this.#localeDraft ? NaN : parseNumber(raw, this.#activeLocale);
     try { this.#activeLocale = new Intl.NumberFormat(requested).resolvedOptions().locale; } catch { this.#activeLocale = "en-US"; }
     if (!this.dirty) this.input.value = this.defaultDisplayValue;
     else if (raw.trim() && Number.isFinite(value)) this.input.value = new Intl.NumberFormat(this.locale, { useGrouping: false, maximumFractionDigits: 20 }).format(value);
@@ -119,7 +123,7 @@ export class H6NumberInput extends H6TextField {
     super.attributeChangedCallback(name);
   }
   set locale(value: string) { this.setAttribute("locale", value); }
-  get valueAsNumber(): number { return this.#localeDraft ? NaN : new NumberParser(this.locale).parse(this.input.value); }
+  get valueAsNumber(): number { return this.#localeDraft ? NaN : parseNumber(this.input.value, this.locale); }
   set valueAsNumber(value: number) { this.value = Number.isFinite(value) ? String(value) : ""; }
   get min(): number { return this.hasAttribute("min") ? Number(this.getAttribute("min")) : Number.MIN_SAFE_INTEGER; }
   set min(value: number) { this.setAttribute("min", String(value)); }
@@ -127,7 +131,7 @@ export class H6NumberInput extends H6TextField {
   set max(value: number) { this.setAttribute("max", String(value)); }
   get step(): number { return this.hasAttribute("step") ? Number(this.getAttribute("step")) : 1; }
   set step(value: number) { this.setAttribute("step", String(value)); }
-  override normalizeValue(value: string): string { const number = this.#localeDraft ? NaN : new NumberParser(this.locale).parse(value); return value.trim() && Number.isFinite(number) ? String(number) : ""; }
+  override normalizeValue(value: string): string { const number = this.#localeDraft ? NaN : parseNumber(value, this.locale); return value.trim() && Number.isFinite(number) ? String(number) : ""; }
   override get value(): string { return this.normalizeValue(this.input.value); }
   override set value(value: string) {
     this.#localeDraft = false;

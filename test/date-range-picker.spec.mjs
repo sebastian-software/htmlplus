@@ -33,7 +33,7 @@ test('typing preserves drafts and inverted ranges, targets missing end on submit
  await open(page);await expect(page.locator('#range [part~=selected-day]')).toHaveCount(0);await page.keyboard.press('Escape');await expect(end(page)).toHaveValue('2028-02-27');
  await start(page).fill('2028-01-31');expect(await page.locator('#range').evaluate(host=>host.validity.rangeUnderflow)).toBe(true);expect(await entries(page)).toEqual([['period.start','2028-01-31'],['period.end','2028-02-27']]);
  await start(page).fill('2028-02-29');await end(page).fill('2029-01-01');expect(await page.locator('#range').evaluate(host=>host.validity.rangeOverflow)).toBe(true);
- await end(page).fill('2028-03-02');await end(page).press('Enter');await page.locator('#submit').click();expect(await page.evaluate(()=>submits)).toBe(1);await expect(start(page)).toHaveValue('2028-02-29');await expect(end(page)).toHaveValue('2028-03-02');
+ await end(page).fill('2028-03-02');await end(page).press('Enter');await expect.poll(()=>page.evaluate(()=>submits)).toBe(1);await expect(start(page)).toHaveValue('2028-02-29');await expect(end(page)).toHaveValue('2028-03-02');
 });
 
 test('programmatic tuples, names, optional partials, reset, disabled fieldsets, readonly, and custom errors stay silent',async({page})=>{

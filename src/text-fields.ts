@@ -4,6 +4,7 @@ import { hostStyles, inputStyles } from "./styles.js";
 import { fieldLabel, referencedText } from "./field-label.js";
 import { NativeTextFormat, groupedIban, ibanFormat } from "./native-format.js";
 import { OtpPresentation } from "./otp-presentation.js";
+import { enableImplicitSubmission } from "./implicit-submission.js";
 
 const template = document.createElement("template");
 template.innerHTML = `<style>
@@ -30,6 +31,7 @@ export class H6TextField extends HTMLElement {
     this.#input = root.querySelector("input")!;
     this.#input.spellcheck = false;
     this.internals.role = "group";
+    enableImplicitSubmission(this, [this.#input]);
     this.#input.addEventListener("input", this.#onInput);
     this.#input.addEventListener("change", (event) => {
       event.stopPropagation();
@@ -54,6 +56,7 @@ export class H6TextField extends HTMLElement {
   protected get dirty(): boolean { return this.#dirty; }
   protected markDirty(): void { this.#dirty = true; }
   protected presentValue(value: string): string { return this.normalizeValue(value); }
+  protected get restorationState(): string | null { return this.#input.value; }
   set defaultValue(value: string) { this.setAttribute("value", value); }
   get name(): string { return this.getAttribute("name") ?? ""; }
   set name(value: string) { this.setAttribute("name", value); }
@@ -88,7 +91,7 @@ export class H6TextField extends HTMLElement {
     }
     this.#label();
     const value = this.value;
-    this.internals.setFormValue(value, input.value);
+    this.internals.setFormValue(value, this.restorationState);
     const result = this.validateValue(value);
     this.detail = result.detail;
     let flags: ValidityStateFlags = {};

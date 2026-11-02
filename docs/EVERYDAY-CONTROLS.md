@@ -57,7 +57,7 @@ Zag uses a radio group with checked items in single mode and a group of pressed 
 <h6-number-input id="seats" name="seats" value="3" min="1" max="20" step="1" required></h6-number-input>
 ```
 
-`.value` is a canonical numeric string, or an empty string for empty/unparseable text. Assign canonical strings through `.value`, or numbers through `.valueAsNumber`. `.displayValue` and `.input` expose the native editor and its raw localized text. Empty/unparseable text produces `NaN` for `.valueAsNumber`; a partial draft remains visible and blocks submission when invalid. The host contributes one string entry, including an empty string while unanswered.
+`.value` is a canonical numeric string, or an empty string for empty/unparseable text. Assign canonical strings through `.value`, or numbers through `.valueAsNumber`. `.displayValue` and `.input` expose the native editor and its raw localized text. Empty/unparseable text produces `NaN` for `.valueAsNumber`; a partial draft remains visible and blocks submission when invalid. Group separators count as unparseable, so a mistaken decimal mark can never multiply a value. The host contributes one string entry, including an empty string while unanswered.
 
 `locale` controls parsing and formatting, overriding the nearest inherited HTML `lang`, with browser language as fallback. Invalid locale identifiers fall back to `en-US`. FormData uses a decimal point regardless of locale. Dynamic language changes reformat complete values from their previous numeric meaning; invalid drafts stay invalid until edited or replaced. See [Functional locale formatting](LOCALE.md).
 
@@ -76,7 +76,7 @@ Arrow Up/Down and the +/- buttons use Zag stepping, including a held pointer pre
 </h6-password-input>
 ```
 
-The control retains one native editor. `.value`, `.defaultValue`, `.displayValue`, `.input`, `required`, `readonly`, `pattern`, `minlength`, and `maxlength` follow the shared text-field contract. No whitespace or case normalization is applied. Use `autocomplete="new-password"` for a new password; the default is `current-password`. Physical-device password-manager integration remains unverified.
+The control retains one native editor. `.value`, `.defaultValue`, `.displayValue`, `.input`, `required`, `readonly`, `pattern`, `minlength`, and `maxlength` follow the shared text-field contract. No whitespace or case normalization is applied. Use `autocomplete="new-password"` for a new password; the default is `current-password`. Like a native password field, the value is not stored in session-history form state, so back/forward navigation returns an empty field. Physical-device password-manager integration remains unverified.
 
 `.visible` controls whether the editor displays text. The visibility button is keyboard reachable and has caller-overridable names through `show-label` and `hide-label`. Visibility changes preserve the selected range and do not emit value input/change events. User visibility changes emit `visibilitychange` with `{ visible }`. Reset, restoration, and successful form submission hide the password; a submission blocked by validation does not hide it. Disconnection removes the outer-form listener.
 
