@@ -110,7 +110,7 @@ test('radius scales derive from local bases and allow zero and explicit size ove
 });
 
 test('light, dark, utility, and surface examples preserve edited form data and work on mobile', async ({ page, request }) => {
-  await page.goto('/');
+  await page.goto('/demo/');
   await page.getByRole('textbox', { name:'Verification code', exact:true }).fill('001234');
   await page.getByRole('button', { name:'Priority handling', exact:true }).click();
   const before = await page.locator('#demo-form').evaluate(form => [...new FormData(form)]);
@@ -130,14 +130,14 @@ test('light, dark, utility, and surface examples preserve edited form data and w
   await page.locator('.theme-source summary').click();
   await expect(page.locator('#theme-code')).toContainText('.hp-dark');
   expect(await page.locator('#theme-code').textContent()).toBe(await (await request.get('/demo/themes.css')).text());
-  await page.goto('/styling.html#h6-tags');
+  await page.goto('/demo/styling.html#h6-tags');
   await page.getByLabel('Appearance').selectOption('dark');
   await expect(page.locator('.recipe-preview').first().locator('[part=control]')).toHaveCSS('background-color','rgb(23, 23, 23)');
   await expect(page.getByLabel('Base form data')).toContainText('html');
 });
 
 test('neutral light and dark palettes keep readable text and visible keyboard focus, including forced colors', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/demo/');
   for (const mode of ['base','dark']) {
     if (mode === 'utility') { await page.getByLabel('Appearance').selectOption('base'); await page.getByLabel('Palette').selectOption('utility'); } else { await page.getByLabel('Palette').selectOption('neutral'); await page.getByLabel('Appearance').selectOption(mode); }
     const editor=page.getByRole('textbox', {name:'IBAN',exact:true});

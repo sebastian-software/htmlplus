@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>html+: more capable HTML, ordinary forms</title>
+  <meta name="description" content="Form controls HTML doesn't have, such as IBAN, tags, and date ranges, as custom elements that submit through plain FormData.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="./demo/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="./landing/fonts/public-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./landing/landing.css">
+  <script type="module" src="./dist/landing/landing.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the content</a>
+  <header class="site-header">
+    <a class="wordmark" href="./" aria-label="html plus home">html<span aria-hidden="true">+</span></a>
+    <nav aria-label="Main">
+      <a href="./demo/">Playground</a>
+      <a href="./demo/styling.html">Styling</a>
+      <a href="https://github.com/sebastian-software/htmlplus">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <h1><span>More capable HTML.</span> <span>Ordinary forms.</span></h1>
+      <p class="lead">html+ adds the form fields HTML doesn't have, such as IBAN, tags, and date ranges. They are custom elements that submit through plain <code>FormData</code>, with no framework and no hidden inputs.</p>
+
+      <div class="sheet">
+        <form id="sheet-form" class="sheet-fields" aria-label="Live example">
+          <div class="box">
+            <label for="iban">IBAN</label>
+            <h6-iban id="iban" name="iban" value="DE89370400440532013000" required></h6-iban>
+          </div>
+          <div class="box">
+            <label for="topics">Topics</label>
+            <h6-tags id="topics" name="topics" value='["html", "forms"]' placeholder="Add a topic"></h6-tags>
+          </div>
+          <div class="box box-inline">
+            <label for="updates">Product updates</label>
+            <h6-switch id="updates" name="updates" value="email" checked></h6-switch>
+          </div>
+          <button class="reset" type="reset">Reset form</button>
+        </form>
+        <div class="sheet-result">
+          <h2 id="result-heading">What the form receives</h2>
+          <table aria-labelledby="result-heading">
+            <thead><tr><th scope="col">Name</th><th scope="col">Value</th></tr></thead>
+            <tbody id="result-rows"></tbody>
+          </table>
+          <p id="result-status" class="status"></p>
+        </div>
+      </div>
+      <p class="sheet-note">This form is live. Change a field and the table shows the actual <code>new FormData(form)</code> entries. Notice that the IBAN reads in groups of four but submits without spaces.</p>
+      <noscript><p class="sheet-note">The live example needs JavaScript.</p></noscript>
+
+      <p class="actions">
+        <a class="action" href="./demo/">Open the playground</a>
+        <a class="action action-quiet" href="./demo/styling.html">See styling recipes</a>
+      </p>
+    </section>
+
+    <section class="prose">
+      <h2>The gap in HTML forms</h2>
+      <p>Native forms handle naming, submission, validation, labels, disabling, and reset. Then a project needs a tag field or a bank account number, and that work moves into framework code: hidden inputs, value syncing, and a separate validation path.</p>
+      <p>html+ keeps the native contract for those fields. Each one has a <code>name</code>, appears in <code>FormData</code>, blocks an invalid submission, follows a disabled fieldset, and returns to its default on reset. Where a native control already does the job, keep using it.</p>
+    </section>
+
+    <section class="boundary">
+      <h2>Where a component stops</h2>
+      <p>A component knows the rules of its value and interaction. It never fetches your records or starts your workflows.</p>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th scope="col">Field</th><th scope="col">The component</th><th scope="col">Your application</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">IBAN</th><td>Checks national formats and check digits</td><td>Verifies the account owner and initiates payments</td></tr>
+            <tr><th scope="row">Verification code</th><td>Keeps the entered code and checks its format</td><td>Sends codes, verifies them, and handles expiry and retries</td></tr>
+            <tr><th scope="row">Rating</th><td>Manages the chosen score and hover preview</td><td>Decides who may rate, and saves the result</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>You write ordinary markup</h2>
+      <p>Build the project, load one module, and use the elements inside a normal form. Labels, <code>required</code>, and <code>FormData</code> work as they do for native fields.</p>
+      <pre tabindex="0"><code>&lt;script type="module" src="/dist/src/index.js"&gt;&lt;/script&gt;
+
+&lt;form&gt;
+  &lt;label for="account"&gt;IBAN&lt;/label&gt;
+  &lt;h6-iban id="account" name="iban" required&gt;&lt;/h6-iban&gt;
+
+  &lt;label for="topics"&gt;Topics&lt;/label&gt;
+  &lt;h6-tags id="topics" name="topics"&gt;&lt;/h6-tags&gt;
+
+  &lt;button&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+      <p>Each element brings a neutral base appearance. Restyle it with inherited <code>--hp-*</code> tokens and CSS parts, in plain CSS or on top of a shadcn palette.</p>
+    </section>
+
+    <section class="catalog">
+      <h2>Twenty-four elements</h2>
+      <p>Open any element to see a live preview and copyable styling recipe.</p>
+      <div class="catalog-groups">
+        <div>
+          <h3>Text with a format</h3>
+          <ul>
+            <li><a href="./demo/styling.html#h6-iban">IBAN</a></li>
+            <li><a href="./demo/styling.html#h6-bic">BIC / SWIFT</a></li>
+            <li><a href="./demo/styling.html#h6-otp">Verification code</a></li>
+            <li><a href="./demo/styling.html#h6-duration">Duration</a></li>
+            <li><a href="./demo/styling.html#h6-password-input">Password</a></li>
+            <li><a href="./demo/styling.html#h6-tags">Tags</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Numbers</h3>
+          <ul>
+            <li><a href="./demo/styling.html#h6-number-input">Number input</a></li>
+            <li><a href="./demo/styling.html#h6-slider">Slider</a></li>
+            <li><a href="./demo/styling.html#h6-range-slider">Range slider</a></li>
+            <li><a href="./demo/styling.html#h6-interval">Interval</a></li>
+            <li><a href="./demo/styling.html#h6-rating">Rating</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Dates</h3>
+          <ul>
+            <li><a href="./demo/styling.html#h6-date-picker">Date picker</a></li>
+            <li><a href="./demo/styling.html#h6-date-range-picker">Date range picker</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Choices</h3>
+          <ul>
+            <li><a href="./demo/styling.html#h6-select">Select</a></li>
+            <li><a href="./demo/styling.html#h6-combobox">Combobox</a></li>
+            <li><a href="./demo/styling.html#h6-segmented">Segmented</a></li>
+            <li><a href="./demo/styling.html#h6-radio-group">Radio group</a></li>
+            <li><a href="./demo/styling.html#h6-toggle-group">Toggle group</a></li>
+            <li><a href="./demo/styling.html#h6-checkbox">Checkbox</a></li>
+            <li><a href="./demo/styling.html#h6-switch">Switch</a></li>
+            <li><a href="./demo/styling.html#h6-toggle">Toggle</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Around your fields</h3>
+          <ul>
+            <li><a href="./demo/styling.html#h6-field">Native field</a></li>
+            <li><a href="./demo/styling.html#h6-tabs">Tabs</a></li>
+            <li><a href="./demo/styling.html#h6-accordion">Accordion</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>Where the project stands</h2>
+      <p>html+ is a working prototype. All twenty-four elements run through browser checks in Chromium, Firefox, and WebKit on every change, but some things are not done yet:</p>
+      <ul>
+        <li>There is no npm package. To try it, clone the repository and build it.</li>
+        <li>Element names may still change, because the <code>h6-</code> prefix is provisional.</li>
+        <li>Most elements need JavaScript. Server-side rendering is not implemented.</li>
+        <li>Screen reader combinations and password manager autofill on real devices have not been checked by hand.</li>
+      </ul>
+      <p>The code is open source under the Apache License 2.0. The <a href="https://github.com/sebastian-software/htmlplus#readme">README</a> covers installation and browser support, and the <a href="https://github.com/sebastian-software/htmlplus/blob/main/docs/PLAN.md">project plan</a> lists what comes next.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>This site has no backend and no analytics. <a href="./dist/THIRD_PARTY_NOTICES.txt">Third-party notices</a></p>
+  </footer>
+</body>
+</html>

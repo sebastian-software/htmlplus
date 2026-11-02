@@ -181,7 +181,7 @@ await Promise.all(["h6-switch", "h6-tags", "h6-iban", "h6-bic", "h6-otp", "h6-du
 render();
 
 try {
-  const response = await fetch("./demo/themes.css");
+  const response = await fetch("./themes.css");
   if (!response.ok) throw new Error("Theme stylesheet unavailable");
   document.querySelector("#theme-code")!.textContent = await response.text();
 } catch { document.querySelector("#theme-code")!.textContent = "Theme source unavailable. Use the download link or reload the page."; }

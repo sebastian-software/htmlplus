@@ -2,7 +2,7 @@ import { test, expect } from 'playwright/test';
 
 const data = (page) => page.evaluate(() => [...new FormData(document.querySelector('#demo-form'))]);
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/demo/');
   await expect(page.getByText('33 entries', { exact: true })).toBeVisible();
 });
 

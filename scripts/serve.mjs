@@ -7,7 +7,7 @@ const siteMode = process.argv.includes('--site');
 const root = fileURLToPath(new URL(siteMode ? '../site/' : '../', import.meta.url));
 const portArgument = process.argv.indexOf('--port');
 const port = Number(portArgument >= 0 ? process.argv[portArgument + 1] : process.env.PORT || 4173);
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.map': 'application/json', '.txt': 'text/plain; charset=utf-8' };
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.map': 'application/json', '.txt': 'text/plain; charset=utf-8', '.woff2': 'font/woff2' };
 
 export const server = createServer(async (request, response) => {
   try {
@@ -17,10 +17,12 @@ export const server = createServer(async (request, response) => {
     const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
     const base = siteMode ? '/htmlplus/' : '/';
     if (!pathname.startsWith(base)) { response.writeHead(404); response.end('Not found'); return; }
-    let relative = pathname === base ? siteMode ? 'index.html' : 'demo/index.html' : pathname.slice(base.length);
-    if (!siteMode && relative === 'styling.html') relative = 'demo/styling.html';
+    // Source and export share one layout, so relative URLs work in both.
+    let relative = pathname.slice(base.length);
+    if (relative === '') relative = siteMode ? 'index.html' : 'landing/index.html';
+    else if (relative.endsWith('/')) relative += 'index.html';
     const path = resolve(root, relative);
-    if (!path.startsWith(root.endsWith(sep) ? root : root + sep) || !(siteMode && ['index.html', 'styling.html'].includes(relative) || /^(demo|dist)\//.test(relative)) || !types[extname(path)]) {
+    if (!path.startsWith(root.endsWith(sep) ? root : root + sep) || !(relative === 'index.html' && siteMode || /^(demo|dist|landing)\//.test(relative)) || !types[extname(path)]) {
       response.writeHead(404); response.end('Not found'); return;
     }
     const content = await readFile(path);
@@ -30,5 +32,5 @@ export const server = createServer(async (request, response) => {
     response.writeHead(error instanceof URIError ? 400 : 404); response.end('Not found');
   }
 });
-server.listen(port, '127.0.0.1', () => console.log(`html+ playground: http://127.0.0.1:${port}`));
+server.listen(port, '127.0.0.1', () => console.log(`html+ site: http://127.0.0.1:${port}/ and playground: http://127.0.0.1:${port}/demo/`));
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => server.close(() => process.exit(0)));

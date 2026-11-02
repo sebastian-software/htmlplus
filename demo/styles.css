@@ -107,7 +107,7 @@
   .explanation p { font-size:13px; color:var(--muted-foreground); max-width:440px; }
   .explanation .scope-note { margin-top:16px; font-size:11px; }
   .markup-example { background:var(--hp-muted); border-radius:10px; padding:19px 22px; min-width:0; align-self:start; }
-  .markup-title { color:var(--muted-foreground); font-size:10px; margin-bottom:12px; }
+  .markup-title { color:var(--foreground); font-size:10px; margin-bottom:12px; }
   .markup-example pre { margin:0; font-size:11px; line-height:1.85; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--ink); }
   .noscript-note { padding:20px; color:var(--danger); }
 }

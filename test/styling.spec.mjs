@@ -1,7 +1,7 @@
 import { test, expect } from 'playwright/test';
 
 test('every element has two working previews, matching form values, and its own CSS', async ({ page }) => {
-  await page.goto('/styling.html');
+  await page.goto('/demo/styling.html');
   const navigation = page.getByRole('navigation', { name: 'Components' });
   const names = ['Native Field', 'Checkbox', 'Radio Group', 'Number Input', 'Password Input', 'Toggle Group', 'Button', 'Date Range Picker', 'Date Picker', 'Select', 'Combobox', 'Slider', 'Range Slider', 'Rating', 'IBAN', 'BIC / SWIFT', 'Verification code', 'Duration', 'Numeric interval', 'Tags', 'Switch', 'Segmented choice', 'Toggle', 'Accordion', 'Tabs'];
   await expect(navigation.getByRole('link')).toHaveCount(names.length);
@@ -19,7 +19,7 @@ test('every element has two working previews, matching form values, and its own 
 
 test('deep links expose copyable HTML, actual preview CSS, and the shared base stylesheet', async ({ page, request }) => {
   await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (text) => { window.copiedRecipe = text; } } }));
-  await page.goto('/styling.html#h6-duration');
+  await page.goto('/demo/styling.html#h6-duration');
   await expect(page.locator('#recipe-heading')).toHaveText('Duration');
   await page.getByRole('button', { name: 'Copy CSS', exact: true }).click();
   await expect(page.locator('#copy-status')).toHaveText('Copied to clipboard.');
@@ -39,14 +39,14 @@ test('deep links expose copyable HTML, actual preview CSS, and the shared base s
 
 test('copy failure leaves selectable source and a useful status', async ({ page }) => {
   await page.addInitScript(() => Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async () => { throw new Error('Denied'); } } }));
-  await page.goto('/styling.html#h6-tags');
+  await page.goto('/demo/styling.html#h6-tags');
   await page.getByRole('button', { name: 'Copy CSS', exact: true }).click();
   await expect(page.locator('#copy-status')).toHaveText('Copy unavailable. Select and copy the code above.');
   await expect(page.locator('#recipe-code')).toContainText('h6-tags.tags-outlined::part(tag)');
 });
 
 test('selected option styling follows keyboard selection without changing the value contract', async ({ page }) => {
-  await page.goto('/styling.html#h6-segmented');
+  await page.goto('/demo/styling.html#h6-segmented');
   const variant = page.getByRole('region', { name: 'Outlined choices preview', exact: true });
   await variant.getByRole('radio', { name: 'Standard', exact: true }).focus();
   await variant.getByRole('radio', { name: 'Standard', exact: true }).press('ArrowRight');
@@ -60,7 +60,7 @@ test('selected option styling follows keyboard selection without changing the va
 });
 
 test('neutral defaults, focus, and recipe layout work on desktop and mobile', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/demo/');
   expect(await page.locator('.primary-button').evaluate((element) => getComputedStyle(element).backgroundColor)).toBe('rgb(23, 23, 23)');
   const before = await page.locator('#demo-form').evaluate((form) => [...new FormData(form)]);
   await page.getByRole('link', { name: 'Style h6-tags', exact: true }).click();
@@ -75,6 +75,6 @@ test('neutral defaults, focus, and recipe layout work on desktop and mobile', as
   await page.screenshot({ path: test.info().outputPath('styling-mobile.png'), fullPage: true });
   await page.getByRole('link', { name: 'Form playground' }).click();
   await expect(page.getByText('33 entries', { exact: true })).toBeVisible();
-  expect(await page.locator('#demo-form').evaluate((form) => [...new FormData(form)])).toEqual(before);
+  await expect.poll(() => page.locator('#demo-form').evaluate((form) => [...new FormData(form)])).toEqual(before);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

@@ -2,7 +2,7 @@ import { test, expect } from 'playwright/test';
 
 const data = (page) => page.locator('#demo-form').evaluate((form) => [...new FormData(form)]);
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/demo/');
   await expect(page.getByText('33 entries', { exact: true })).toBeVisible();
 });
 
@@ -196,7 +196,7 @@ test('interaction base styles and icon metrics work without an application style
 });
 
 test('new styling recipes use their displayed overrides and retain their form contracts on mobile', async ({ page }) => {
-  await page.goto('/styling.html#h6-tabs');
+  await page.goto('/demo/styling.html#h6-tabs');
   const variant = page.getByRole('region', { name: 'Underline preview', exact: true });
   await variant.getByRole('tab', { name: 'Receipts', exact: true }).click();
   const selected = variant.locator('[part~=selected-tab]');

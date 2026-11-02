@@ -90,7 +90,7 @@ render();
 await Promise.all(["themes", "shadcn"].map(async (name) => {
   let css: string;
   try {
-    const response = await fetch(`./demo/${name}.css`);
+    const response = await fetch(`./${name}.css`);
     if (!response.ok) throw new Error("Stylesheet unavailable");
     css = await response.text();
   } catch { css = `/* Could not load ${name}.css. Use the download link or reload the page. */`; }

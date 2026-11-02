@@ -7,17 +7,17 @@
   <meta name="description" content="Copyable CSS styling recipes for every html+ form element. Neutral defaults, live variations, and public CSS parts.">
   <meta name="application-name" content="html+">
   <title>html+ — Styling recipes</title>
-  <link rel="icon" href="./demo/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./demo/themes.css">
-  <link rel="stylesheet" href="./demo/styles.css">
-  <link rel="stylesheet" href="./dist/native.css">
-  <link rel="stylesheet" href="./demo/styling.css">
-  <script type="module" src="./dist/demo/styling.js"></script>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./themes.css">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../dist/native.css">
+  <link rel="stylesheet" href="./styling.css">
+  <script type="module" src="../dist/demo/styling.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#recipes">Skip to the recipes</a>
   <header class="masthead">
-    <a class="wordmark" href="./" aria-label="html plus home">html<span>+</span></a>
+    <a class="wordmark" href="../" aria-label="html plus home">html<span>+</span></a>
     <span class="masthead-label">Styling recipes</span>
     <div class="masthead-actions"><label class="theme-picker" for="locale">Locale <select id="locale" aria-description="Changes date and number displays; interface labels stay English."><option value="en-US">en-US</option><option value="en-GB">en-GB</option><option value="de-DE">de-DE</option><option value="fr-FR">fr-FR</option><option value="ja-JP">ja-JP</option><option value="ar-EG" data-direction="rtl">ar-EG</option></select></label>
       <label class="theme-picker" for="theme">Appearance <select id="theme"><option value="base">Light</option><option value="dark">Dark</option></select></label>
@@ -25,7 +25,7 @@
       <label class="theme-picker" for="palette">Palette <select id="palette"><option value="neutral">Neutral</option><option value="blue">Blue</option><option value="green">Green</option><option value="orange">Orange</option><option value="rose">Rose</option><option value="utility">Utility (custom)</option></select></label><a class="text-link recipes-link" href="./">Form playground <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></a></div>
   </header>
   <main id="recipes">
-    <div class="intro"><div><h1>Style every element.</h1><p>Neutral defaults built into every element. Explore variations using only CSS overrides.</p></div><a class="secondary-button download-base" href="./demo/shadcn.css" download="htmlplus-shadcn.css">shadcn adapter <span class="icon" data-icon="arrow-down" aria-hidden="true"></span></a></div>
+    <div class="intro"><div><h1>Style every element.</h1><p>Neutral defaults built into every element. Explore variations using only CSS overrides.</p></div><a class="secondary-button download-base" href="./shadcn.css" download="htmlplus-shadcn.css">shadcn adapter <span class="icon" data-icon="arrow-down" aria-hidden="true"></span></a></div>
     <div class="recipe-layout">
       <nav class="recipe-navigation" aria-label="Components"><p>Elements</p><div id="recipe-links"></div></nav>
       <section class="recipe-content" aria-labelledby="recipe-heading">
@@ -38,7 +38,7 @@
           <pre tabindex="0" aria-label="Example code"><code id="recipe-code"></code></pre>
           <p class="copy-status" id="copy-status" role="status"></p>
         </section>
-        <details class="base-explanation"><summary>How the base styles work</summary><p>Each element includes its own neutral base. Change inherited <code>--hp-*</code> tokens for colors, radius, and surface depth, or use a recipe for a specific part. Compare Layered and Flat with the Surface picker. The Appearance picker applies the same <a href="./demo/themes.css">light and dark presets</a> as the playground.</p><p>To reuse an existing shadcn theme, load the adapter and add <code>hp-shadcn</code> to its scope. It reads your existing semantic variables, including nested dark scopes. Explicit <code>--hp-*</code> overrides take precedence.</p><pre><code>&lt;link rel="stylesheet" href="./htmlplus-shadcn.css"&gt;
+        <details class="base-explanation"><summary>How the base styles work</summary><p>Each element includes its own neutral base. Change inherited <code>--hp-*</code> tokens for colors, radius, and surface depth, or use a recipe for a specific part. Compare Layered and Flat with the Surface picker. The Appearance picker applies the same <a href="./themes.css">light and dark presets</a> as the playground.</p><p>To reuse an existing shadcn theme, load the adapter and add <code>hp-shadcn</code> to its scope. It reads your existing semantic variables, including nested dark scopes. Explicit <code>--hp-*</code> overrides take precedence.</p><pre><code>&lt;link rel="stylesheet" href="./htmlplus-shadcn.css"&gt;
 &lt;form class="hp-shadcn"&gt;
   &lt;!-- Your shadcn theme supplies --background, --primary, etc. --&gt;
 &lt;/form&gt;</code></pre><p>These examples use plain CSS. They do not require React, Tailwind, or shadcn/ui.</p></details>

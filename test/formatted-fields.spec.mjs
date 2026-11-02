@@ -1,6 +1,6 @@
 import { test, expect } from 'playwright/test';
 
-test.beforeEach(async ({ page }) => { await page.goto('/'); await expect(page.locator('#entry-count')).toHaveText('33 entries'); });
+test.beforeEach(async ({ page }) => { await page.goto('/demo/'); await expect(page.locator('#entry-count')).toHaveText('33 entries'); });
 const entry = (page, name) => page.locator('#demo-form').evaluate((form, name) => new FormData(form).get(name), name);
 
 test('IBAN groups defaults and assignments while keeping canonical submission and invalid characters', async ({ page }) => {
@@ -80,7 +80,7 @@ test('unavailable native formatting commands leave ordinary editing and canonica
 });
 
 test('slot geometry adapts to mobile, text scaling, local styles, Light/Dark and forced colors', async ({ page }) => {
-  await page.goto('/styling.html#h6-otp');
+  await page.goto('/demo/styling.html#h6-otp');
   await page.setViewportSize({ width:320,height:800 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const base = page.getByRole('region', { name:'Base preview',exact:true });
