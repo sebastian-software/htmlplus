@@ -348,7 +348,7 @@ export class H6DatePicker extends HTMLElement {
     } catch {
       /* A plain ISO value is also accepted as restoration state. */
     }
-    this.value = state;
+    if (!state || parseCalendarDate(state)) this.value = state;
   }
   get #disabled(): boolean {
     return this.disabled || this.#formDisabled;
