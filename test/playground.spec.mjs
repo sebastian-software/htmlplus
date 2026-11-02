@@ -1,7 +1,7 @@
 import { test, expect } from 'playwright/test';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/demo/');
   await expect(page.getByText('All fields valid', { exact: true })).toBeVisible();
 });
 

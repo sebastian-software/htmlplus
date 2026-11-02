@@ -217,7 +217,7 @@ export class H6DatePicker extends HTMLElement {
     this.#bindings.apply(this.#positioner, api.getPositionerProps()); this.#bindings.apply(this.#content, api.getContentProps());
     this.#bindings.apply(this.#navigation, api.getViewControlProps({ view: api.view }));
     this.#bindings.apply(this.#previous, api.getPrevTriggerProps({ view: api.view })); this.#bindings.apply(this.#next, api.getNextTriggerProps({ view: api.view }));
-    this.#bindings.apply(this.#viewButton, api.getViewTriggerProps({ view: api.view })); this.#viewButton.lang = this.#format.locale; this.#viewButton.textContent = api.visibleRangeText.start === api.visibleRangeText.end ? api.visibleRangeText.start : api.visibleRangeText.formatted;
+    this.#bindings.apply(this.#viewButton, api.getViewTriggerProps({ view: api.view })); this.#viewButton.lang = this.#format.locale; this.#viewButton.textContent = api.visibleRangeText.start === api.visibleRangeText.end ? api.visibleRangeText.start : api.visibleRangeText.formatted; this.#viewButton.setAttribute("aria-label", `${this.#viewButton.textContent}: change calendar view`);
     const label = fieldLabel(this, this.labels, "Date");
     this.#input.setAttribute("aria-label", label); this.#input.setAttribute("aria-description", [referencedText(this, "aria-describedby"), `Format: ${this.#format.placeholder}; ISO YYYY-MM-DD also accepted.`].filter(Boolean).join(" "));
     this.#input.setAttribute("aria-invalid", String(visiblyInvalid(this))); this.#input.setAttribute("aria-required", String(this.required));

@@ -1,0 +1,136 @@
+@font-face {
+  font-family: "Public Sans";
+  src: url("./fonts/public-sans-latin-wght-normal.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+  /* Printed forms use a pale "dropout" ink for their structure; entries are written in blue. */
+  --paper: #f1f6f3;
+  --field: #ffffff;
+  --text: #15241e;
+  --muted: #4a5f56;
+  --dropout: #1f7a5c;
+  --ink: #1b33b5;
+  --hover-wash: #dcebe4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --paper: #10201a;
+    --field: #182c24;
+    --text: #e6f0eb;
+    --muted: #a5bbb1;
+    --dropout: #62bb9c;
+    --ink: #aebcff;
+    --hover-wash: #1f382e;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--text);
+  font: 400 1.0625rem/1.6 "Public Sans", system-ui, sans-serif;
+}
+a { color: var(--ink); text-underline-offset: .18em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .9em; }
+h1, h2, h3 { margin: 0; line-height: 1.1; text-wrap: balance; }
+h2 { font-size: clamp(1.625rem, 3.4vw, 2.25rem); font-weight: 750; letter-spacing: -.015em; }
+h3 { font-size: 1.0625rem; font-weight: 700; }
+p { margin: 0; }
+
+.skip-link { position: absolute; inset-inline-start: 1rem; top: -4rem; padding: .5rem .75rem; background: var(--field); }
+.skip-link:focus { top: .75rem; }
+
+.site-header, main, .site-footer { width: min(100% - 2rem, 70rem); margin-inline: auto; }
+.site-header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 2rem; padding-block: 1.25rem; }
+.wordmark { color: var(--text); font-size: 1.375rem; font-weight: 800; letter-spacing: -.02em; text-decoration: none; }
+.wordmark span { color: var(--ink); }
+nav { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; }
+
+.hero { padding-block: clamp(1.5rem, 6vw, 4.5rem) 0; }
+h1 { font-size: clamp(3rem, 8.4vw, 6.25rem); font-weight: 800; line-height: .98; letter-spacing: -.035em; }
+h1 span { display: block; }
+.lead { max-width: 38rem; margin-block-start: 1.75rem; font-size: clamp(1.125rem, 2vw, 1.3125rem); line-height: 1.5; }
+
+/* The form sheet: the page's one loud element. */
+.sheet {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  margin-block-start: clamp(2rem, 5vw, 3.5rem);
+  border: 2px solid var(--dropout);
+  background: var(--field);
+  --hp-foreground: var(--ink);
+  --hp-background: transparent;
+  --hp-input: var(--dropout);
+  --hp-ring: var(--ink);
+  --hp-primary: var(--ink);
+  --hp-primary-foreground: var(--field);
+  --hp-muted-foreground: var(--muted);
+  --hp-accent: var(--hover-wash);
+  --hp-accent-foreground: var(--text);
+  --hp-secondary: var(--hover-wash);
+  --hp-secondary-foreground: var(--ink);
+  --hp-control-height: 2.75rem;
+  --hp-radius: .125rem;
+}
+.sheet-fields { display: flex; flex-direction: column; min-width: 0; }
+.box { padding: .625rem 1rem 1rem; border-block-end: 1px solid var(--dropout); }
+.box label { display: block; margin-block-end: .375rem; color: var(--dropout); font-size: .875rem; font-weight: 600; }
+.box h6-iban { font-size: 1.1875rem; }
+.box-inline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .875rem; }
+.box-inline label { margin: 0; }
+.reset { align-self: start; margin: .875rem 1rem 1rem; padding: .4375rem .875rem; border: 1px solid var(--dropout); background: transparent; color: var(--text); font: inherit; font-size: .9375rem; cursor: pointer; }
+.reset:hover { background: var(--hover-wash); }
+
+.sheet-result { min-width: 0; padding: 1rem; border-inline-start: 2px solid var(--dropout); }
+.sheet-result h2 { font-size: 1.0625rem; font-weight: 700; letter-spacing: 0; }
+.sheet-result table { margin-block-start: .625rem; }
+.sheet-result td { color: var(--ink); font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .875rem; overflow-wrap: anywhere; }
+.status { margin-block-start: .875rem; color: var(--muted); font-size: .9375rem; }
+.status[data-invalid] { color: var(--text); font-weight: 600; }
+.sheet-note { max-width: 42rem; margin-block-start: .875rem; color: var(--muted); font-size: .9375rem; }
+
+table { width: 100%; border-collapse: collapse; text-align: start; }
+th, td { padding: .5rem .75rem .5rem 0; border-block-end: 1px solid color-mix(in srgb, var(--dropout) 40%, transparent); vertical-align: top; text-align: start; }
+thead th { color: var(--dropout); font-size: .875rem; font-weight: 600; }
+tbody th { font-weight: 650; }
+
+.actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-block-start: 1.75rem; }
+.action { padding: .6875rem 1.125rem; border: 2px solid var(--ink); background: var(--ink); color: var(--paper); font-weight: 650; text-decoration: none; }
+.action:hover { background: transparent; color: var(--ink); }
+.action-quiet { background: transparent; color: var(--ink); }
+.action-quiet:hover { background: var(--hover-wash); }
+
+main > section:not(.hero) { margin-block-start: clamp(3.5rem, 8vw, 6rem); }
+.prose { max-width: 42rem; }
+.prose p, .prose ul, .prose pre { margin-block-start: 1rem; }
+.prose li + li { margin-block-start: .375rem; }
+.prose ul { padding-inline-start: 1.25rem; }
+pre { overflow-x: auto; padding: 1rem; border: 1px solid var(--dropout); background: var(--field); line-height: 1.5; }
+
+.boundary > p { max-width: 42rem; margin-block-start: 1rem; }
+.table-scroll { margin-block-start: 1.25rem; overflow-x: auto; }
+.table-scroll table { min-width: 36rem; }
+
+.catalog > p { margin-block-start: 1rem; }
+.catalog-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 2rem; margin-block-start: 1.75rem; }
+.catalog-groups ul { margin: .625rem 0 0; padding: 0; list-style: none; }
+.catalog-groups li + li { margin-block-start: .25rem; }
+
+.site-footer { margin-block-start: clamp(3.5rem, 8vw, 6rem); padding-block: 1.5rem 2.5rem; border-block-start: 1px solid var(--dropout); color: var(--muted); font-size: .9375rem; }
+
+@media (max-width: 44rem) {
+  .sheet { grid-template-columns: minmax(0, 1fr); }
+  .sheet-result { border-inline-start: 0; border-block-start: 2px solid var(--dropout); }
+}
+@media (forced-colors: active) {
+  .action { border-color: LinkText; }
+}

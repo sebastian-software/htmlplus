@@ -262,7 +262,7 @@ export class H6DateRangePicker extends HTMLElement {
     this.#bindings.apply(this.#positioner, api.getPositionerProps()); this.#bindings.apply(this.#content, api.getContentProps());
     this.#bindings.apply(this.#navigation, api.getViewControlProps({ view: api.view }));
     this.#bindings.apply(this.#previous, api.getPrevTriggerProps({ view: api.view })); this.#bindings.apply(this.#next, api.getNextTriggerProps({ view: api.view }));
-    this.#bindings.apply(this.#viewButton, api.getViewTriggerProps({ view: api.view })); this.#viewButton.lang = this.#format.locale; this.#viewButton.textContent = api.visibleRangeText.start === api.visibleRangeText.end ? api.visibleRangeText.start : api.visibleRangeText.formatted;
+    this.#bindings.apply(this.#viewButton, api.getViewTriggerProps({ view: api.view })); this.#viewButton.lang = this.#format.locale; this.#viewButton.textContent = api.visibleRangeText.start === api.visibleRangeText.end ? api.visibleRangeText.start : api.visibleRangeText.formatted; this.#viewButton.setAttribute("aria-label", `${this.#viewButton.textContent}: change calendar view`);
     const label = fieldLabel(this, this.labels, "Date range");
     this.#control.setAttribute("role", "group"); this.#control.setAttribute("aria-label", label);
     this.#inputs.forEach((input, index) => {

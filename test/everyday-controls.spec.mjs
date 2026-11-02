@@ -2,7 +2,7 @@ import { test, expect } from 'playwright/test';
 
 const data = page => page.locator('#demo-form').evaluate(form => [...new FormData(form)]);
 const values = async (page, name) => (await data(page)).filter(([key]) => key === name).map(([, value]) => value);
-test.beforeEach(async ({ page }) => { await page.goto('/'); await expect(page.locator('#entry-count')).toHaveText('33 entries'); });
+test.beforeEach(async ({ page }) => { await page.goto('/demo/'); await expect(page.locator('#entry-count')).toHaveText('33 entries'); });
 
 test('table selection derives mixed state and submits only selected row identifiers', async ({ page }) => {
   const all = page.getByRole('checkbox', { name: 'Select all examples', exact: true });
@@ -165,7 +165,7 @@ test('native button stylesheet preserves submitter values, validation, external 
 
 test('new recipes support light/dark, local tokens, mobile, text scaling, and both surfaces', async ({ page }) => {
   for (const element of ['h6-checkbox','h6-radio-group','h6-number-input','h6-password-input','h6-toggle-group','button']) {
-    await page.goto(`/styling.html#${element}`); await expect(page.locator('.recipe-preview')).toHaveCount(2);
+    await page.goto(`/demo/styling.html#${element}`); await expect(page.locator('.recipe-preview')).toHaveCount(2);
     const before = await page.locator('.recipe-form').evaluateAll(forms => forms.map(form => [...new FormData(form)]));
     for (const mode of ['dark','base']) {
       await page.getByRole('combobox', { name:'Appearance',exact:true }).selectOption(mode);
@@ -176,7 +176,7 @@ test('new recipes support light/dark, local tokens, mobile, text scaling, and bo
     }
     await page.setViewportSize({ width:390,height:844 }); expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
-  await page.goto('/'); await page.evaluate(() => { document.querySelectorAll('link[rel=stylesheet]').forEach(link => link.remove()); document.documentElement.style.fontSize = '200%'; });
+  await page.goto('/demo/'); await page.evaluate(() => { document.querySelectorAll('link[rel=stylesheet]').forEach(link => link.remove()); document.documentElement.style.fontSize = '200%'; });
   expect(await page.locator('#select-all [part=control]').evaluate(control => control.getBoundingClientRect().width)).toBe(32);
   expect(await page.locator('#password-field [part=visibility-trigger] svg').evaluate(icon => icon.getBoundingClientRect().width)).toBe(32);
   await page.locator('#formats-field').evaluate(control => control.style.setProperty('--hp-primary','#065f46'));

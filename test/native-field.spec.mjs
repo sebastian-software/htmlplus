@@ -60,7 +60,7 @@ test('the opt-in stylesheet styles native fields and preserves their form behavi
 });
 
 test('native recipes support light/dark, mobile, text scaling, focus, and forced colors', async ({page}) => {
-  await page.goto('/styling.html#h6-field');
+  await page.goto('/demo/styling.html#h6-field');
   const base = page.getByRole('region',{name:'Base preview',exact:true}); const variant = page.getByRole('region',{name:'Underlined fields preview',exact:true});
   const before = await base.locator('form').evaluate(form => [...new FormData(form)]);
   for (const theme of ['dark','base']) {
@@ -77,7 +77,7 @@ test('native recipes support light/dark, mobile, text scaling, focus, and forced
 });
 
 test('the live playground submits wrapped native values and the fieldset controls them normally', async ({page}) => {
-  await page.goto('/#native-fields'); await expect(page.locator('#entry-count')).toHaveText('33 entries');
+  await page.goto('/demo/#native-fields'); await expect(page.locator('#entry-count')).toHaveText('33 entries');
   await page.getByRole('textbox',{name:'Reference',exact:true}).fill('REF-42'); await page.getByRole('textbox',{name:'Message',exact:true}).fill('A native text area.'); await page.getByRole('combobox',{name:'Reply via',exact:true}).selectOption('phone');
   const data = await page.locator('#demo-form').evaluate(form => [...new FormData(form)]);
   expect(data.filter(([name]) => ['reference','message','reply_via'].includes(name))).toEqual([['reference','REF-42'],['message','A native text area.'],['reply_via','phone']]);

@@ -85,7 +85,7 @@ test('locale switches preserve invalid drafts, canonical numbers, reset, and rec
 });
 
 test('playground and recipes offer functional locales without translating labels or changing form data', async ({ page }) => {
-  await page.goto('/'); const before = await page.locator('#demo-form').evaluate(form => [...new FormData(form)]);
+  await page.goto('/demo/'); const before = await page.locator('#demo-form').evaluate(form => [...new FormData(form)]);
   for (const [locale,display] of [['en-GB','28/10/2026'],['de-DE','28.10.2026'],['ja-JP','2026/10/28'],['ar-EG','٢٨/١٠/٢٠٢٦']]) {
     await page.getByRole('combobox',{name:'Locale',exact:true}).selectOption(locale);
     await expect(page.getByRole('textbox',{name:'Delivery date',exact:true})).toHaveValue(display);
@@ -93,7 +93,7 @@ test('playground and recipes offer functional locales without translating labels
     await expect(page.getByRole('button',{name:'Submit demo',exact:true})).toBeVisible();
   }
   await page.getByRole('combobox',{name:'Locale',exact:true}).selectOption('de-DE');
-  await page.goto('/styling.html#h6-date-range-picker');
+  await page.goto('/demo/styling.html#h6-date-range-picker');
   await expect(page.getByRole('combobox',{name:'Locale',exact:true})).toHaveValue('de-DE');
   await expect(page.getByRole('region',{name:'Base preview',exact:true}).getByRole('textbox').first()).toHaveValue('28.10.2026');
   await page.getByRole('combobox',{name:'Appearance',exact:true}).selectOption('dark');

@@ -10,10 +10,10 @@ if (!watch) {
   const result = spawnSync(process.execPath, ['node_modules/typescript/bin/tsc', '-p', 'tsconfig.json', '--emitDeclarationOnly'], { cwd: root, stdio: 'inherit' });
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
-const entryPoints = (await Promise.all(['src', 'demo'].map(async (folder) =>
+const entryPoints = (await Promise.all(['src', 'demo', 'landing'].map(async (folder) =>
   (await readdir(new URL(`../${folder}/`, import.meta.url))).filter((name) => name.endsWith('.ts')).map((name) => `${folder}/${name}`),
 ))).flat();
-const options = { absWorkingDir: root, entryPoints, outdir: 'dist', outbase: '.', bundle: true, splitting: true, format: 'esm', platform: 'browser', target: 'es2022', sourcemap: true, chunkNames: 'chunks/[name]-[hash]', banner: { js: '/*! Third-party license notices: ../THIRD_PARTY_NOTICES.txt */' }, define: { 'process.env.NODE_ENV': '"production"' } };
+const options = { absWorkingDir: root, entryPoints, outdir: 'dist', outbase: '.', bundle: true, splitting: true, format: 'esm', platform: 'browser', target: 'es2022', sourcemap: true, minify: !watch, chunkNames: 'chunks/[name]-[hash]', banner: { js: '/*! Third-party license notices: ../THIRD_PARTY_NOTICES.txt */' }, define: { 'process.env.NODE_ENV': '"production"' } };
 options.plugins = [{ name: 'native-styles', setup(builder) {
   builder.onEnd(async (result) => {
     if (result.errors.length) return;

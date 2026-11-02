@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { copyFile, mkdir, readdir, rm, writeFile } from 'node:fs/promises';
+import { copyFile, cp, mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 
@@ -11,9 +11,11 @@ if (!process.argv.includes('--skip-build')) {
 const site = join(root, 'site');
 await rm(site, { recursive: true, force: true });
 await mkdir(join(site, 'demo'), { recursive: true });
-await copyFile(join(root, 'demo/index.html'), join(site, 'index.html'));
-await copyFile(join(root, 'demo/styling.html'), join(site, 'styling.html'));
-for (const name of ['styles.css', 'shadcn.css', 'themes.css', 'styling.css', 'favicon.svg']) await copyFile(join(root, 'demo', name), join(site, 'demo', name));
+await mkdir(join(site, 'landing'), { recursive: true });
+await copyFile(join(root, 'landing/index.html'), join(site, 'index.html'));
+await copyFile(join(root, 'landing/landing.css'), join(site, 'landing/landing.css'));
+await cp(join(root, 'landing/fonts'), join(site, 'landing/fonts'), { recursive: true });
+for (const name of ['index.html', 'styling.html', 'styles.css', 'shadcn.css', 'themes.css', 'styling.css', 'favicon.svg']) await copyFile(join(root, 'demo', name), join(site, 'demo', name));
 async function copyModules(source, destination) {
   await mkdir(destination, { recursive: true });
   for (const file of await readdir(source, { withFileTypes: true })) {
@@ -23,4 +25,4 @@ async function copyModules(source, destination) {
 }
 await copyModules(join(root, 'dist'), join(site, 'dist'));
 await writeFile(join(site, '.nojekyll'), '');
-console.log('Static demo exported to site/ with relative asset URLs.');
+console.log('Static site exported to site/ with relative asset URLs.');

@@ -133,7 +133,7 @@ test('top-layer popups escape clipping, flip at viewport edges, dismiss, and pre
 
 test('both recipes theme open popups in light and dark, retain values, and fit mobile', async ({page}) => {
   for(const [tag,label] of [['select','Shipping method'],['combobox','Destination country']]) {
-    await page.goto(`/styling.html#h6-${tag}`);
+    await page.goto(`/demo/styling.html#h6-${tag}`);
     const before=await page.locator('.recipe-form').evaluateAll(forms=>forms.map(form=>[...new FormData(form)]));
     for(const mode of ['base','dark']) {
       await page.getByLabel('Appearance').selectOption(mode);await page.getByLabel('Palette').selectOption('blue');

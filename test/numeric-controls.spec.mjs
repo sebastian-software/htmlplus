@@ -110,7 +110,7 @@ test('numeric defaults include usable styles, scale with text, and support neste
 });
 
 test('all palette and appearance combinations preserve form values and style new recipes on mobile',async({page})=>{
- await page.goto('/');const before=await page.locator('#demo-form').evaluate(form=>[...new FormData(form)]);const colors=new Set();
+ await page.goto('/demo/');const before=await page.locator('#demo-form').evaluate(form=>[...new FormData(form)]);const colors=new Set();
  for(const mode of ['base','dark']) {
   await page.getByLabel('Appearance').selectOption(mode);
   for(const palette of ['neutral','blue','green','orange','rose','utility']) {
@@ -130,7 +130,7 @@ test('all palette and appearance combinations preserve form values and style new
  }
  expect(colors.size).toBe(6);
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
- await page.goto('/styling.html#h6-slider');await page.getByLabel('Appearance').selectOption('dark');await page.getByLabel('Palette').selectOption('green');
+ await page.goto('/demo/styling.html#h6-slider');await page.getByLabel('Appearance').selectOption('dark');await page.getByLabel('Palette').selectOption('green');
  for(const name of ['Slider','Range Slider','Rating']){await page.getByRole('navigation',{name:'Components'}).getByRole('link',{name,exact:true}).click();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);const values=await page.locator('.recipe-preview form').evaluateAll(forms=>forms.map(form=>[...new FormData(form)]));expect(values[0]).toEqual(values[1]);}
  await page.screenshot({path:test.info().outputPath('numeric-recipes-dark-green-mobile.png'),fullPage:true});
 });

@@ -7,16 +7,16 @@
   <meta name="description" content="An interactive playground for html+ form controls. Edit native-feeling fields and inspect the actual FormData, live.">
   <meta name="application-name" content="html+">
   <title>html+ — Form playground</title>
-  <link rel="icon" href="./demo/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./demo/themes.css">
-  <link rel="stylesheet" href="./demo/styles.css">
-  <link rel="stylesheet" href="./dist/native.css">
-  <script type="module" src="./dist/demo/playground.js"></script>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./themes.css">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../dist/native.css">
+  <script type="module" src="../dist/demo/playground.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#playground">Skip to the playground</a>
   <header class="masthead">
-    <a class="wordmark" href="./" aria-label="html plus home">html<span>+</span></a>
+    <a class="wordmark" href="../" aria-label="html plus home">html<span>+</span></a>
     <span class="masthead-label">Form playground</span>
     <div class="masthead-actions">
       <label class="theme-picker" for="locale">Locale <select id="locale" aria-description="Changes date and number displays; interface labels stay English."><option value="en-US">en-US</option><option value="en-GB">en-GB</option><option value="de-DE">de-DE</option><option value="fr-FR">fr-FR</option><option value="ja-JP">ja-JP</option><option value="ar-EG" data-direction="rtl">ar-EG</option></select></label>
@@ -209,7 +209,7 @@
             </div>
             <p class="field-section" id="native-fields">08 <span>Native HTML, shared styling</span></p>
             <div class="field">
-              <div class="field-heading"><label for="reference">Reference</label><a class="recipe-link" href="./styling.html#h6-field" aria-label="Style native fields"><code>&lt;h6-field&gt;</code></a></div>
+              <div class="field-heading"><label for="reference">Reference</label><a class="recipe-link" href="./styling.html#h6-field" aria-label="Style h6-field"><code>&lt;h6-field&gt;</code></a></div>
               <h6-field><input id="reference" name="reference" value="ORDER-1042" autocomplete="off" aria-describedby="reference-feedback"></h6-field>
               <p class="feedback" id="reference-feedback">The real input owns its value, validation, and form entry. The wrapper supplies its base style.</p>
             </div>
@@ -224,7 +224,7 @@
             </div>
           </fieldset>
 
-          <div class="field-heading action-heading"><span class="component-label">Native actions</span><a class="recipe-link" href="./styling.html#button" aria-label="Style buttons"><code>&lt;button&gt;</code></a></div>
+          <div class="field-heading action-heading"><span class="component-label">Native actions</span><a class="recipe-link" href="./styling.html#button" aria-label="Style button"><code>&lt;button&gt;</code></a></div>
           <div class="form-actions"><button class="hp-button primary-button" type="submit">Submit demo <span class="icon" data-icon="arrow-up-right" aria-hidden="true"></span></button><button class="hp-button secondary-button" data-variant="outline" type="reset">Reset form</button></div>
           <p class="submission-status" id="submission-status" role="status">Sample values stay in this browser.</p>
         </form>
@@ -235,7 +235,7 @@
         <section class="inspector">
           <div class="inspector-heading"><div class="data-title"><span class="live-light" aria-hidden="true"></span><h2 id="data-heading">Live form data</h2></div><span id="entry-count" class="entry-count">33 entries</span></div>
           <div class="inspector-toolbar"><div class="view-switch" role="group" aria-label="Data format"><button type="button" data-view="entries" aria-pressed="true">Entries</button><button type="button" data-view="json" aria-pressed="false">JSON</button></div><span class="reading-label">new FormData(form)</span></div>
-          <div id="entries-view" class="data-view"><table><caption class="visually-hidden">Current form entries, preserving repeated field names</caption><thead><tr><th scope="col">Name</th><th scope="col">Value</th></tr></thead><tbody id="entries-body"></tbody></table><p id="empty-data" class="empty-data" hidden>No entries. Disabled fields are left out of FormData.</p></div>
+          <div id="entries-view" class="data-view" tabindex="0" role="region" aria-label="Form entries table"><table><caption class="visually-hidden">Current form entries, preserving repeated field names</caption><thead><tr><th scope="col">Name</th><th scope="col">Value</th></tr></thead><tbody id="entries-body"></tbody></table><p id="empty-data" class="empty-data" hidden>No entries. Disabled fields are left out of FormData.</p></div>
           <div id="json-view" class="data-view" hidden><pre class="json-code" id="json-output" aria-label="Current form data as JSON"></pre><p class="json-note">Repeated names become arrays in this JSON view.</p></div>
           <div class="inspector-status"><span id="validity-status"><span class="status-dot" aria-hidden="true"></span> All fields valid</span><span id="last-event">Ready to edit</span></div>
         </section>
@@ -244,7 +244,7 @@
         <details class="theme-source">
           <summary>Theme CSS</summary>
           <p>These palettes and light/dark presets use only <code>--hp-*</code> variables. Apply <code>hp-light</code> or <code>hp-dark</code> to any theme scope. Add a palette class such as <code>hp-blue</code> to that same scope.</p>
-          <p><a href="./demo/themes.css" download="htmlplus-themes.css">Download themes</a> · <a href="./demo/shadcn.css" download="htmlplus-shadcn.css">shadcn adapter</a></p>
+          <p><a href="./themes.css" download="htmlplus-themes.css">Download themes</a> · <a href="./shadcn.css" download="htmlplus-shadcn.css">shadcn adapter</a></p>
           <pre tabindex="0" aria-label="Light and dark theme CSS"><code id="theme-code">Loading theme CSS…</code></pre>
         </details>
         <details class="last-submission" id="last-submission" hidden><summary>Last submitted data</summary><pre id="submitted-output"></pre></details>

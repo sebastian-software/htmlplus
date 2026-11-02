@@ -69,7 +69,7 @@ test('popup keyboard entry, boundaries, clipping, dismissal, and labels stay sco
 });
 
 test('recipes theme the calendar in light and dark, preserve form data, and fit mobile',async({page})=>{
- await page.goto('/styling.html#h6-date-picker');const before=await page.locator('.recipe-form').evaluateAll(forms=>forms.map(form=>[...new FormData(form)]));
+ await page.goto('/demo/styling.html#h6-date-picker');const before=await page.locator('.recipe-form').evaluateAll(forms=>forms.map(form=>[...new FormData(form)]));
  for(const mode of ['base','dark']){await page.getByLabel('Appearance').selectOption(mode);await page.getByLabel('Palette').selectOption('blue');const base=page.getByRole('region',{name:'Base preview',exact:true});await base.getByRole('button',{name:'Open calendar for Delivery date',exact:true}).click();await expect(base.getByRole('dialog')).toBeVisible();await expect(base.locator('[part~=selected-day]')).toHaveCount(1);await page.keyboard.press('Escape');expect(await page.locator('.recipe-form').evaluateAll(forms=>forms.map(form=>[...new FormData(form)]))).toEqual(before);}
  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:test.info().outputPath('date-picker-dark-blue-mobile.png'),fullPage:true});
 });
