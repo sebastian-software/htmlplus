@@ -12,6 +12,8 @@
     "build:demo": "node scripts/build-demo.mjs",
     "preview": "node scripts/serve.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "biome check",
+    "format": "biome check --write",
     "test": "node scripts/check.mjs",
     "test:unit": "node scripts/build.mjs && node --test \"test/*.test.mjs\"",
     "test:browser": "node scripts/build-demo.mjs && playwright test",
@@ -23,6 +25,7 @@
     "node": ">=22"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.6.4",
     "axe-core": "4.14.0",
     "esbuild": "0.25.12",
     "playwright": "^1.64.1",

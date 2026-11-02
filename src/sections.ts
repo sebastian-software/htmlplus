@@ -27,13 +27,21 @@ export function readSections(host: HTMLElement, id: string): Section[] {
     values.add(value);
     const slot = `${id}-${encodeURIComponent(value)}`;
     if (child.slot !== slot) child.slot = slot;
-    result.push({ element: child, value, label: child.dataset.label || value, disabled: child.hasAttribute("data-disabled"), slot });
+    result.push({
+      element: child,
+      value,
+      label: child.dataset.label || value,
+      disabled: child.hasAttribute("data-disabled"),
+      slot,
+    });
   }
   return result;
 }
 
 export function sectionsChanged(records: MutationRecord[], host: HTMLElement): boolean {
-  return records.some((record) => record.type === "childList" ? record.target === host : (record.target as Element).parentElement === host);
+  return records.some((record) =>
+    record.type === "childList" ? record.target === host : (record.target as Element).parentElement === host,
+  );
 }
 
 export function containsFocus(section: Section): boolean {
@@ -41,6 +49,8 @@ export function containsFocus(section: Section): boolean {
 }
 
 export function reconcileChildren(parent: Element, children: Element[]): void {
-  children.forEach((child, index) => { if (parent.children[index] !== child) parent.insertBefore(child, parent.children[index] ?? null); });
+  children.forEach((child, index) => {
+    if (parent.children[index] !== child) parent.insertBefore(child, parent.children[index] ?? null);
+  });
   while (parent.children.length > children.length) parent.lastElementChild!.remove();
 }

@@ -32,40 +32,107 @@ export class H6Switch extends HTMLElement {
     this.#internals.role = "switch";
     this.addEventListener("click", this.#onClick);
     trackTouched(this, () => this.#sync());
-    this.addEventListener("keydown", (event) => { if (event.key === " ") event.preventDefault(); });
-    this.addEventListener("keyup", (event) => { if (event.key === " " && !this.#isDisabled) { event.preventDefault(); this.click(); } });
+    this.addEventListener("keydown", (event) => {
+      if (event.key === " ") event.preventDefault();
+    });
+    this.addEventListener("keyup", (event) => {
+      if (event.key === " " && !this.#isDisabled) {
+        event.preventDefault();
+        this.click();
+      }
+    });
   }
 
-  connectedCallback(): void { upgradeProperties(this, ["checked"]); this.#sync(); }
+  connectedCallback(): void {
+    upgradeProperties(this, ["checked"]);
+    this.#sync();
+  }
   attributeChangedCallback(name: string): void {
     if (name === "checked" && !this.#dirty) this.#checked = this.hasAttribute("checked");
     this.#sync();
   }
-  get checked(): boolean { return this.#checked; }
-  set checked(value: boolean) { this.#dirty = true; this.#checked = Boolean(value); this.#sync(); }
-  get defaultChecked(): boolean { return this.hasAttribute("checked"); }
-  set defaultChecked(value: boolean) { this.toggleAttribute("checked", Boolean(value)); }
-  get value(): string { return this.getAttribute("value") ?? "on"; }
-  set value(value: string) { this.setAttribute("value", value); }
-  get name(): string { return this.getAttribute("name") ?? ""; }
-  set name(value: string) { this.setAttribute("name", value); }
-  get disabled(): boolean { return this.hasAttribute("disabled"); }
-  set disabled(value: boolean) { this.toggleAttribute("disabled", Boolean(value)); }
-  get required(): boolean { return this.hasAttribute("required"); }
-  set required(value: boolean) { this.toggleAttribute("required", Boolean(value)); }
-  get form(): HTMLFormElement | null { return this.#internals.form; }
-  get labels(): NodeList { return this.#internals.labels; }
-  get validity(): ValidityState { return this.#internals.validity; }
-  get validationMessage(): string { return this.#internals.validationMessage; }
-  get willValidate(): boolean { return this.#internals.willValidate; }
-  checkValidity(): boolean { return this.#internals.checkValidity(); }
-  reportValidity(): boolean { return this.#internals.reportValidity(); }
-  setCustomValidity(message: string): void { this.#customError = String(message); this.#sync(); }
-  formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; this.#sync(); }
-  formResetCallback(): void { this.#dirty = false; this.#checked = this.defaultChecked; this.removeAttribute("data-touched"); this.#sync(); }
-  formStateRestoreCallback(state: string): void { this.#dirty = true; this.#checked = state === "checked"; this.#sync(); }
+  get checked(): boolean {
+    return this.#checked;
+  }
+  set checked(value: boolean) {
+    this.#dirty = true;
+    this.#checked = Boolean(value);
+    this.#sync();
+  }
+  get defaultChecked(): boolean {
+    return this.hasAttribute("checked");
+  }
+  set defaultChecked(value: boolean) {
+    this.toggleAttribute("checked", Boolean(value));
+  }
+  get value(): string {
+    return this.getAttribute("value") ?? "on";
+  }
+  set value(value: string) {
+    this.setAttribute("value", value);
+  }
+  get name(): string {
+    return this.getAttribute("name") ?? "";
+  }
+  set name(value: string) {
+    this.setAttribute("name", value);
+  }
+  get disabled(): boolean {
+    return this.hasAttribute("disabled");
+  }
+  set disabled(value: boolean) {
+    this.toggleAttribute("disabled", Boolean(value));
+  }
+  get required(): boolean {
+    return this.hasAttribute("required");
+  }
+  set required(value: boolean) {
+    this.toggleAttribute("required", Boolean(value));
+  }
+  get form(): HTMLFormElement | null {
+    return this.#internals.form;
+  }
+  get labels(): NodeList {
+    return this.#internals.labels;
+  }
+  get validity(): ValidityState {
+    return this.#internals.validity;
+  }
+  get validationMessage(): string {
+    return this.#internals.validationMessage;
+  }
+  get willValidate(): boolean {
+    return this.#internals.willValidate;
+  }
+  checkValidity(): boolean {
+    return this.#internals.checkValidity();
+  }
+  reportValidity(): boolean {
+    return this.#internals.reportValidity();
+  }
+  setCustomValidity(message: string): void {
+    this.#customError = String(message);
+    this.#sync();
+  }
+  formDisabledCallback(disabled: boolean): void {
+    this.#formDisabled = disabled;
+    this.#sync();
+  }
+  formResetCallback(): void {
+    this.#dirty = false;
+    this.#checked = this.defaultChecked;
+    this.removeAttribute("data-touched");
+    this.#sync();
+  }
+  formStateRestoreCallback(state: string): void {
+    this.#dirty = true;
+    this.#checked = state === "checked";
+    this.#sync();
+  }
 
-  get #isDisabled(): boolean { return this.disabled || this.#formDisabled; }
+  get #isDisabled(): boolean {
+    return this.disabled || this.#formDisabled;
+  }
   #sync(): void {
     this.#internals.setFormValue(this.#checked ? this.value : null, this.#checked ? "checked" : "unchecked");
     this.#internals.ariaChecked = String(this.#checked);
@@ -75,12 +142,16 @@ export class H6Switch extends HTMLElement {
     if (this.#checked) this.#internals.states.add("checked");
     else this.#internals.states.delete("checked");
     if (this.#customError) this.#internals.setValidity({ customError: true }, this.#customError);
-    else if (this.required && !this.#checked) this.#internals.setValidity({ valueMissing: true }, "Turn on this option to continue.");
+    else if (this.required && !this.#checked)
+      this.#internals.setValidity({ valueMissing: true }, "Turn on this option to continue.");
     else this.#internals.setValidity({});
     this.#internals.ariaInvalid = String(visiblyInvalid(this));
   }
   #onClick = (event: MouseEvent): void => {
-    if (this.#isDisabled) { event.preventDefault(); return; }
+    if (this.#isDisabled) {
+      event.preventDefault();
+      return;
+    }
     this.checked = !this.checked;
     this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
     this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));

@@ -1,36 +1,77 @@
-import { build, context } from 'esbuild';
-import { spawnSync } from 'node:child_process';
-import { copyFile, mkdir, readdir, rm, writeFile } from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
+import { build, context } from "esbuild";
+import { spawnSync } from "node:child_process";
+import { copyFile, mkdir, readdir, rm, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
-const root = fileURLToPath(new URL('../', import.meta.url));
-const watch = process.argv.includes('--watch');
+const root = fileURLToPath(new URL("../", import.meta.url));
+const watch = process.argv.includes("--watch");
 if (!watch) {
-  await rm(new URL('../dist/', import.meta.url), { recursive: true, force: true });
-  const result = spawnSync(process.execPath, ['node_modules/typescript/bin/tsc', '-p', 'tsconfig.json', '--emitDeclarationOnly'], { cwd: root, stdio: 'inherit' });
+  await rm(new URL("../dist/", import.meta.url), { recursive: true, force: true });
+  const result = spawnSync(
+    process.execPath,
+    ["node_modules/typescript/bin/tsc", "-p", "tsconfig.json", "--emitDeclarationOnly"],
+    { cwd: root, stdio: "inherit" },
+  );
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
-const entryPoints = (await Promise.all(['src', 'demo', 'landing'].map(async (folder) =>
-  (await readdir(new URL(`../${folder}/`, import.meta.url))).filter((name) => name.endsWith('.ts')).map((name) => `${folder}/${name}`),
-))).flat();
-const options = { absWorkingDir: root, entryPoints, outdir: 'dist', outbase: '.', bundle: true, splitting: true, format: 'esm', platform: 'browser', target: 'es2022', sourcemap: true, minify: !watch, chunkNames: 'chunks/[name]-[hash]', banner: { js: '/*! Third-party license notices: ../THIRD_PARTY_NOTICES.txt */' }, define: { 'process.env.NODE_ENV': '"production"' } };
-options.plugins = [{ name: 'native-styles', setup(builder) {
-  builder.onEnd(async (result) => {
-    if (result.errors.length) return;
-    const { nativeStyles } = await import(new URL(`../dist/src/native-styles.js?build=${Date.now()}`, import.meta.url));
-    await writeFile(new URL('../dist/native.css', import.meta.url), nativeStyles);
-  });
-} }];
-await mkdir(new URL('../dist/', import.meta.url), { recursive: true });
-await copyFile(new URL('../demo/shadcn.css', import.meta.url), new URL('../dist/shadcn.css', import.meta.url));
-await copyFile(new URL('../demo/themes.css', import.meta.url), new URL('../dist/themes.css', import.meta.url));
+const entryPoints = (
+  await Promise.all(
+    ["src", "demo", "landing"].map(async (folder) =>
+      (
+        await readdir(new URL(`../${folder}/`, import.meta.url))
+      )
+        .filter((name) => name.endsWith(".ts"))
+        .map((name) => `${folder}/${name}`),
+    ),
+  )
+).flat();
+const options = {
+  absWorkingDir: root,
+  entryPoints,
+  outdir: "dist",
+  outbase: ".",
+  bundle: true,
+  splitting: true,
+  format: "esm",
+  platform: "browser",
+  target: "es2022",
+  sourcemap: true,
+  minify: !watch,
+  chunkNames: "chunks/[name]-[hash]",
+  banner: { js: "/*! Third-party license notices: ../THIRD_PARTY_NOTICES.txt */" },
+  define: { "process.env.NODE_ENV": '"production"' },
+};
+options.plugins = [
+  {
+    name: "native-styles",
+    setup(builder) {
+      builder.onEnd(async (result) => {
+        if (result.errors.length) return;
+        const { nativeStyles } = await import(
+          new URL(`../dist/src/native-styles.js?build=${Date.now()}`, import.meta.url)
+        );
+        await writeFile(new URL("../dist/native.css", import.meta.url), nativeStyles);
+      });
+    },
+  },
+];
+await mkdir(new URL("../dist/", import.meta.url), { recursive: true });
+await copyFile(new URL("../demo/shadcn.css", import.meta.url), new URL("../dist/shadcn.css", import.meta.url));
+await copyFile(new URL("../demo/themes.css", import.meta.url), new URL("../dist/themes.css", import.meta.url));
 if (watch) {
   const compiler = await context(options);
   await compiler.watch();
-  for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, async () => { await compiler.dispose(); process.exit(0); });
-  console.log('Watching browser modules. Refresh the playground after changes.');
+  for (const signal of ["SIGINT", "SIGTERM"])
+    process.on(signal, async () => {
+      await compiler.dispose();
+      process.exit(0);
+    });
+  console.log("Watching browser modules. Refresh the playground after changes.");
 } else {
   await build(options);
-  await copyFile(new URL('../THIRD_PARTY_NOTICES.txt', import.meta.url), new URL('../dist/THIRD_PARTY_NOTICES.txt', import.meta.url));
-  console.log('Browser modules and declarations built.');
+  await copyFile(
+    new URL("../THIRD_PARTY_NOTICES.txt", import.meta.url),
+    new URL("../dist/THIRD_PARTY_NOTICES.txt", import.meta.url),
+  );
+  console.log("Browser modules and declarations built.");
 }

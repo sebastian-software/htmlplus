@@ -24,12 +24,20 @@ const compoundStyles = `
   :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }
 `;
 function wrap(host: H6TextField, buttons: string): HTMLElement {
-  const root = host.shadowRoot!; const style = document.createElement("style"); style.textContent = compoundStyles;
-  const control = document.createElement("div"); control.part.add("control"); control.innerHTML = buttons;
-  control.prepend(host.input); root.append(style, control); return control;
+  const root = host.shadowRoot!;
+  const style = document.createElement("style");
+  style.textContent = compoundStyles;
+  const control = document.createElement("div");
+  control.part.add("control");
+  control.innerHTML = buttons;
+  control.prepend(host.input);
+  root.append(style, control);
+  return control;
 }
 // The editor never displays grouping, so a separator is more likely a mistaken decimal mark than a group.
-function parseNumber(text: string, locale: string): number { return new NumberParser(locale, { useGrouping: false }).parse(text); }
+function parseNumber(text: string, locale: string): number {
+  return new NumberParser(locale, { useGrouping: false }).parse(text);
+}
 function label(host: H6TextField): void {
   host.input.setAttribute("aria-label", fieldLabel(host, host.labels, "Text field"));
   host.input.setAttribute("aria-description", referencedText(host, "aria-describedby"));
@@ -46,54 +54,123 @@ export class H6PasswordInput extends H6TextField {
   #form?: HTMLFormElement | null;
   constructor() {
     super();
-    this.#control = wrap(this, '<button part="visibility-trigger" type="button"><svg part="indicator" aria-hidden="true" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path data-slash d="m3 3 18 18"/></svg></button>');
+    this.#control = wrap(
+      this,
+      '<button part="visibility-trigger" type="button"><svg part="indicator" aria-hidden="true" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path data-slash d="m3 3 18 18"/></svg></button>',
+    );
     this.#trigger = this.#control.querySelector("button")!;
     this.#trigger.addEventListener("click", () => {
       if (this.input.disabled) return;
-      const start = this.input.selectionStart, end = this.input.selectionEnd;
+      const start = this.input.selectionStart,
+        end = this.input.selectionEnd;
       passwordInput.connect(this.#machine!.service, normalizeProps).toggleVisible();
-      this.input.focus({ preventScroll: true }); if (start !== null && end !== null) this.input.setSelectionRange(start, end);
+      this.input.focus({ preventScroll: true });
+      if (start !== null && end !== null) this.input.setSelectionRange(start, end);
     });
   }
-  override get defaultAutocomplete(): AutoFill { return "current-password"; }
-  protected override get upgradedProperties(): readonly string[] { return ["value", "visible"]; }
+  override get defaultAutocomplete(): AutoFill {
+    return "current-password";
+  }
+  protected override get upgradedProperties(): readonly string[] {
+    return ["value", "visible"];
+  }
   // Like a native password field, keep the secret out of session-history form state.
-  protected override get restorationState(): string | null { return null; }
-  override formStateRestoreCallback(state: string): void { this.#visible = false; super.formStateRestoreCallback(state); }
-  get visible(): boolean { return this.#visible; }
-  set visible(value: boolean) { this.#visible = Boolean(value); this.refresh(); }
+  protected override get restorationState(): string | null {
+    return null;
+  }
+  override formStateRestoreCallback(state: string): void {
+    this.#visible = false;
+    super.formStateRestoreCallback(state);
+  }
+  get visible(): boolean {
+    return this.#visible;
+  }
+  set visible(value: boolean) {
+    this.#visible = Boolean(value);
+    this.refresh();
+  }
   override connectedCallback(): void {
     super.connectedCallback();
-    this.#machine = new VanillaMachine(passwordInput.machine, { id: this.#id, getRootNode: () => this.shadowRoot!, visible: this.#visible,
-      onVisibilityChange: ({ visible }) => { this.#visible = visible; this.refresh(); this.dispatchEvent(new CustomEvent("visibilitychange", { detail: { visible } })); },
+    this.#machine = new VanillaMachine(passwordInput.machine, {
+      id: this.#id,
+      getRootNode: () => this.shadowRoot!,
+      visible: this.#visible,
+      onVisibilityChange: ({ visible }) => {
+        this.#visible = visible;
+        this.refresh();
+        this.dispatchEvent(new CustomEvent("visibilitychange", { detail: { visible } }));
+      },
     });
-    this.#machine.subscribe(() => this.#render()); this.refresh(); this.#machine.start(); this.formAssociatedCallback(this.form);
+    this.#machine.subscribe(() => this.#render());
+    this.refresh();
+    this.#machine.start();
+    this.formAssociatedCallback(this.form);
   }
-  override disconnectedCallback(): void { super.disconnectedCallback(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); this.#form?.removeEventListener("submit", this.#hide); this.#form = null; }
-  formAssociatedCallback(form: HTMLFormElement | null): void { this.#form?.removeEventListener("submit", this.#hide); this.#form = form; form?.addEventListener("submit", this.#hide); }
-  #hide = (): void => { this.visible = false; };
-  override formResetCallback(): void { this.#visible = false; super.formResetCallback(); }
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.#machine?.stop();
+    this.#machine = undefined;
+    this.#bindings.clear();
+    this.#form?.removeEventListener("submit", this.#hide);
+    this.#form = null;
+  }
+  formAssociatedCallback(form: HTMLFormElement | null): void {
+    this.#form?.removeEventListener("submit", this.#hide);
+    this.#form = form;
+    form?.addEventListener("submit", this.#hide);
+  }
+  #hide = (): void => {
+    this.visible = false;
+  };
+  override formResetCallback(): void {
+    this.#visible = false;
+    super.formResetCallback();
+  }
   override refresh(): void {
     super.refresh();
-    this.#machine?.updateProps({ visible: this.#visible, disabled: this.input.disabled, readOnly: this.readOnly, required: this.required, invalid: visiblyInvalid(this),
-      autoComplete: this.getAttribute("autocomplete") === "new-password" ? "new-password" : "current-password", dir: direction(this),
-      translations: { visibilityTrigger: visible => this.getAttribute(visible ? "hide-label" : "show-label") || (visible ? "Hide password" : "Show password") },
-    }); this.#render();
+    this.#machine?.updateProps({
+      visible: this.#visible,
+      disabled: this.input.disabled,
+      readOnly: this.readOnly,
+      required: this.required,
+      invalid: visiblyInvalid(this),
+      autoComplete: this.getAttribute("autocomplete") === "new-password" ? "new-password" : "current-password",
+      dir: direction(this),
+      translations: {
+        visibilityTrigger: (visible) =>
+          this.getAttribute(visible ? "hide-label" : "show-label") || (visible ? "Hide password" : "Show password"),
+      },
+    });
+    this.#render();
   }
   #render(): void {
     if (!this.#machine) return;
     const api = passwordInput.connect(this.#machine.service, normalizeProps);
-    this.#bindings.apply(this.#control, api.getControlProps()); this.#bindings.apply(this.input, api.getInputProps());
+    this.#bindings.apply(this.#control, api.getControlProps());
+    this.#bindings.apply(this.input, api.getInputProps());
     // Native click handles keyboard, touch, and pointer exactly once.
-    const props = api.getVisibilityTriggerProps(); delete props.onpointerdown;
-    this.#bindings.apply(this.#trigger, props); this.#trigger.tabIndex = this.input.disabled ? -1 : 0;
+    const props = api.getVisibilityTriggerProps();
+    delete props.onpointerdown;
+    this.#bindings.apply(this.#trigger, props);
+    this.#trigger.tabIndex = this.input.disabled ? -1 : 0;
     this.#trigger.removeAttribute("aria-expanded");
-    this.#trigger.querySelector<SVGElement>("[data-slash]")!.style.display = this.#visible ? "none" : ""; label(this);
+    this.#trigger.querySelector<SVGElement>("[data-slash]")!.style.display = this.#visible ? "none" : "";
+    label(this);
   }
 }
 
 export class H6NumberInput extends H6TextField {
-  static override observedAttributes = [...H6TextField.observedAttributes, "min", "max", "step", "locale", "lang", "dir", "increment-label", "decrement-label"];
+  static override observedAttributes = [
+    ...H6TextField.observedAttributes,
+    "min",
+    "max",
+    "step",
+    "locale",
+    "lang",
+    "dir",
+    "increment-label",
+    "decrement-label",
+  ];
   #id = interactionId("number");
   #machine?: InteractionMachine<numberInput.Service, numberInput.Props>;
   #bindings = new DomBindings();
@@ -101,91 +178,208 @@ export class H6NumberInput extends H6TextField {
   #silent = false;
   #activeLocale = "en-US";
   #localeDraft = false;
-  #localeContext = new LocaleContext(this, requested => {
-    const raw = this.input.value, value = this.#localeDraft ? NaN : parseNumber(raw, this.#activeLocale);
-    try { this.#activeLocale = new Intl.NumberFormat(requested).resolvedOptions().locale; } catch { this.#activeLocale = "en-US"; }
+  #localeContext = new LocaleContext(this, (requested) => {
+    const raw = this.input.value,
+      value = this.#localeDraft ? NaN : parseNumber(raw, this.#activeLocale);
+    try {
+      this.#activeLocale = new Intl.NumberFormat(requested).resolvedOptions().locale;
+    } catch {
+      this.#activeLocale = "en-US";
+    }
     if (!this.dirty) this.input.value = this.defaultDisplayValue;
-    else if (raw.trim() && Number.isFinite(value)) this.input.value = new Intl.NumberFormat(this.locale, { useGrouping: false, maximumFractionDigits: 20 }).format(value);
+    else if (raw.trim() && Number.isFinite(value))
+      this.input.value = new Intl.NumberFormat(this.locale, { useGrouping: false, maximumFractionDigits: 20 }).format(
+        value,
+      );
     else this.#localeDraft = Boolean(raw.trim());
-    this.input.lang = this.locale; this.refresh();
+    this.input.lang = this.locale;
+    this.refresh();
   });
   constructor() {
-    super(); this.#control = wrap(this, '<button part="decrement-trigger" type="button" aria-label="Decrease value"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><button part="increment-trigger" type="button" aria-label="Increase value"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg></button>');
+    super();
+    this.#control = wrap(
+      this,
+      '<button part="decrement-trigger" type="button" aria-label="Decrease value"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button><button part="increment-trigger" type="button" aria-label="Increase value"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg></button>',
+    );
     this.input.id = `${this.#id}-editor`;
-    this.input.addEventListener("input", () => { this.#localeDraft = false; }, true);
+    this.input.addEventListener(
+      "input",
+      () => {
+        this.#localeDraft = false;
+      },
+      true,
+    );
   }
-  get locale(): string { return this.#activeLocale; }
-  override get defaultInputMode(): string { return "decimal"; }
-  protected override get upgradedProperties(): readonly string[] { return ["value", "valueAsNumber"]; }
+  get locale(): string {
+    return this.#activeLocale;
+  }
+  override get defaultInputMode(): string {
+    return "decimal";
+  }
+  protected override get upgradedProperties(): readonly string[] {
+    return ["value", "valueAsNumber"];
+  }
   protected override get defaultDisplayValue(): string {
     const value = Number(this.defaultValue);
-    return this.defaultValue.trim() && Number.isFinite(value) ? new Intl.NumberFormat(this.locale, { useGrouping: false, maximumFractionDigits: 20 }).format(value) : "";
+    return this.defaultValue.trim() && Number.isFinite(value)
+      ? new Intl.NumberFormat(this.locale, { useGrouping: false, maximumFractionDigits: 20 }).format(value)
+      : "";
   }
   override attributeChangedCallback(name: string): void {
     if (name === "locale" || name === "lang") this.#localeContext.update();
     if (name === "value" && !this.dirty) this.#localeDraft = false;
     super.attributeChangedCallback(name);
   }
-  set locale(value: string) { this.setAttribute("locale", value); }
-  get valueAsNumber(): number { return this.#localeDraft ? NaN : parseNumber(this.input.value, this.locale); }
-  set valueAsNumber(value: number) { this.value = Number.isFinite(value) ? String(value) : ""; }
-  get min(): number { return this.hasAttribute("min") ? Number(this.getAttribute("min")) : Number.MIN_SAFE_INTEGER; }
-  set min(value: number) { this.setAttribute("min", String(value)); }
-  get max(): number { return this.hasAttribute("max") ? Number(this.getAttribute("max")) : Number.MAX_SAFE_INTEGER; }
-  set max(value: number) { this.setAttribute("max", String(value)); }
-  get #anyStep(): boolean { return this.getAttribute("step")?.trim().toLowerCase() === "any"; }
+  set locale(value: string) {
+    this.setAttribute("locale", value);
+  }
+  get valueAsNumber(): number {
+    return this.#localeDraft ? NaN : parseNumber(this.input.value, this.locale);
+  }
+  set valueAsNumber(value: number) {
+    this.value = Number.isFinite(value) ? String(value) : "";
+  }
+  get min(): number {
+    return this.hasAttribute("min") ? Number(this.getAttribute("min")) : Number.MIN_SAFE_INTEGER;
+  }
+  set min(value: number) {
+    this.setAttribute("min", String(value));
+  }
+  get max(): number {
+    return this.hasAttribute("max") ? Number(this.getAttribute("max")) : Number.MAX_SAFE_INTEGER;
+  }
+  set max(value: number) {
+    this.setAttribute("max", String(value));
+  }
+  get #anyStep(): boolean {
+    return this.getAttribute("step")?.trim().toLowerCase() === "any";
+  }
   // As with native step="any", no step constraint applies; stepping controls still move by one.
-  get step(): number { return this.hasAttribute("step") && !this.#anyStep ? Number(this.getAttribute("step")) : 1; }
-  set step(value: number | "any") { this.setAttribute("step", String(value)); }
-  override normalizeValue(value: string): string { const number = this.#localeDraft ? NaN : parseNumber(value, this.locale); return value.trim() && Number.isFinite(number) ? String(number) : ""; }
-  override get value(): string { return this.normalizeValue(this.input.value); }
+  get step(): number {
+    return this.hasAttribute("step") && !this.#anyStep ? Number(this.getAttribute("step")) : 1;
+  }
+  set step(value: number | "any") {
+    this.setAttribute("step", String(value));
+  }
+  override normalizeValue(value: string): string {
+    const number = this.#localeDraft ? NaN : parseNumber(value, this.locale);
+    return value.trim() && Number.isFinite(number) ? String(number) : "";
+  }
+  override get value(): string {
+    return this.normalizeValue(this.input.value);
+  }
   override set value(value: string) {
     this.#localeDraft = false;
-    const text = textValue(value), number = Number(text); const formatted = text.trim() && Number.isFinite(number) ? new Intl.NumberFormat(this.locale, { useGrouping: false, maximumFractionDigits: 20 }).format(number) : "";
+    const text = textValue(value),
+      number = Number(text);
+    const formatted =
+      text.trim() && Number.isFinite(number)
+        ? new Intl.NumberFormat(this.locale, { useGrouping: false, maximumFractionDigits: 20 }).format(number)
+        : "";
     // The base setter owns dirty/default behavior; restore the localized editor afterward.
-    super.value = text; this.input.value = formatted; this.refresh();
+    super.value = text;
+    this.input.value = formatted;
+    this.refresh();
   }
   override connectedCallback(): void {
     this.#localeContext.connect();
     if (!this.dirty) this.input.value = this.defaultDisplayValue;
-    super.connectedCallback(); this.#machine = new VanillaMachine(numberInput.machine, { id: this.#id, getRootNode: () => this.shadowRoot!, value: this.input.value,
+    super.connectedCallback();
+    this.#machine = new VanillaMachine(numberInput.machine, {
+      id: this.#id,
+      getRootNode: () => this.shadowRoot!,
+      value: this.input.value,
       onValueChange: ({ value, valueAsNumber }) => {
         if (this.#silent || this.input.disabled || this.readOnly) return;
         // Blur/Enter formatting must not rewrite an equivalent native draft.
-        if (Object.is(valueAsNumber, this.valueAsNumber)) { this.refresh(); return; }
-        this.markDirty(); this.#localeDraft = false; this.input.value = value;
+        if (Object.is(valueAsNumber, this.valueAsNumber)) {
+          this.refresh();
+          return;
+        }
+        this.markDirty();
+        this.#localeDraft = false;
+        this.input.value = value;
         this.refresh();
         for (const type of ["input", "change"]) this.dispatchEvent(new Event(type, { bubbles: true, composed: true }));
       },
     });
-    this.#machine.subscribe(() => this.#render()); this.refresh(); this.#silent = true; this.#machine.start(); this.#silent = false;
+    this.#machine.subscribe(() => this.#render());
+    this.refresh();
+    this.#silent = true;
+    this.#machine.start();
+    this.#silent = false;
   }
-  override disconnectedCallback(): void { super.disconnectedCallback(); this.#localeContext.disconnect(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
-  override formResetCallback(): void { this.#localeDraft = false; super.formResetCallback(); }
-  override formStateRestoreCallback(state: string): void { this.#localeDraft = false; super.formStateRestoreCallback(state); }
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.#localeContext.disconnect();
+    this.#machine?.stop();
+    this.#machine = undefined;
+    this.#bindings.clear();
+  }
+  override formResetCallback(): void {
+    this.#localeDraft = false;
+    super.formResetCallback();
+  }
+  override formStateRestoreCallback(state: string): void {
+    this.#localeDraft = false;
+    super.formStateRestoreCallback(state);
+  }
   override refresh(): void {
     super.refresh();
-    const raw = this.input.value.trim(), value = this.valueAsNumber;
-    let flags: ValidityStateFlags = {}, message = "";
+    const raw = this.input.value.trim(),
+      value = this.valueAsNumber;
+    let flags: ValidityStateFlags = {},
+      message = "";
     if (!this.readOnly && !this.validity.customError) {
-      if (![this.min, this.max, this.step].every(Number.isFinite) || this.min > this.max || this.step <= 0) { flags = { customError: true }; message = "Set finite bounds and a positive step."; }
-      else if (raw && !Number.isFinite(value)) { flags = { badInput: true }; message = "Enter a number."; }
-      else if (this.required && !raw) { flags = { valueMissing: true }; message = "Enter a number."; }
-      else if (raw && value < this.min) { flags = { rangeUnderflow: true }; message = `Use a value of at least ${this.min}.`; }
-      else if (raw && value > this.max) { flags = { rangeOverflow: true }; message = `Use a value no greater than ${this.max}.`; }
-      else if (raw && !this.#anyStep) {
-        const base = this.hasAttribute("min") ? this.min : 0, ticks = (value - base) / this.step;
-        if (Math.abs(ticks - Math.round(ticks)) > 1e-7) { flags = { stepMismatch: true }; message = `Use increments of ${this.step}.`; }
+      if (![this.min, this.max, this.step].every(Number.isFinite) || this.min > this.max || this.step <= 0) {
+        flags = { customError: true };
+        message = "Set finite bounds and a positive step.";
+      } else if (raw && !Number.isFinite(value)) {
+        flags = { badInput: true };
+        message = "Enter a number.";
+      } else if (this.required && !raw) {
+        flags = { valueMissing: true };
+        message = "Enter a number.";
+      } else if (raw && value < this.min) {
+        flags = { rangeUnderflow: true };
+        message = `Use a value of at least ${this.min}.`;
+      } else if (raw && value > this.max) {
+        flags = { rangeOverflow: true };
+        message = `Use a value no greater than ${this.max}.`;
+      } else if (raw && !this.#anyStep) {
+        const base = this.hasAttribute("min") ? this.min : 0,
+          ticks = (value - base) / this.step;
+        if (Math.abs(ticks - Math.round(ticks)) > 1e-7) {
+          flags = { stepMismatch: true };
+          message = `Use increments of ${this.step}.`;
+        }
       }
       this.internals.setValidity(flags, message, this.input);
       this.input.setAttribute("aria-invalid", String(visiblyInvalid(this)));
     }
     this.#silent = true;
     const validBounds = [this.min, this.max, this.step].every(Number.isFinite) && this.min <= this.max && this.step > 0;
-    this.#machine?.updateProps({ value: this.input.value, min: validBounds ? this.min : 0, max: validBounds ? this.max : 100, step: validBounds ? this.step : 1, locale: this.locale, dir: direction(this),
-      disabled: this.input.disabled || !validBounds, readOnly: this.readOnly, required: this.required, invalid: visiblyInvalid(this), clampValueOnBlur: false, allowOverflow: false, formatOptions: { useGrouping: false, maximumFractionDigits: 20 },
-      translations: { incrementLabel: this.getAttribute("increment-label") || "Increase value", decrementLabel: this.getAttribute("decrement-label") || "Decrease value" },
-    }); this.#silent = false; this.#render();
+    this.#machine?.updateProps({
+      value: this.input.value,
+      min: validBounds ? this.min : 0,
+      max: validBounds ? this.max : 100,
+      step: validBounds ? this.step : 1,
+      locale: this.locale,
+      dir: direction(this),
+      disabled: this.input.disabled || !validBounds,
+      readOnly: this.readOnly,
+      required: this.required,
+      invalid: visiblyInvalid(this),
+      clampValueOnBlur: false,
+      allowOverflow: false,
+      formatOptions: { useGrouping: false, maximumFractionDigits: 20 },
+      translations: {
+        incrementLabel: this.getAttribute("increment-label") || "Increase value",
+        decrementLabel: this.getAttribute("decrement-label") || "Decrease value",
+      },
+    });
+    this.#silent = false;
+    this.#render();
   }
   #render(): void {
     if (!this.#machine) return;
@@ -193,10 +387,17 @@ export class H6NumberInput extends H6TextField {
     this.#bindings.apply(this.#control, api.getControlProps());
     const props = api.getInputProps();
     // Leave composition and native edit history to the editor; Zag handles stepping.
-    delete props.onbeforeinput; delete props.oninput; delete props.value; delete props.id; delete props.pattern;
-    this.#bindings.apply(this.input, props); label(this);
-    const increment = this.#control.querySelector("[part=increment-trigger]")!, decrement = this.#control.querySelector("[part=decrement-trigger]")!;
-    this.#bindings.apply(increment, api.getIncrementTriggerProps()); this.#bindings.apply(decrement, api.getDecrementTriggerProps());
+    delete props.onbeforeinput;
+    delete props.oninput;
+    delete props.value;
+    delete props.id;
+    delete props.pattern;
+    this.#bindings.apply(this.input, props);
+    label(this);
+    const increment = this.#control.querySelector("[part=increment-trigger]")!,
+      decrement = this.#control.querySelector("[part=decrement-trigger]")!;
+    this.#bindings.apply(increment, api.getIncrementTriggerProps());
+    this.#bindings.apply(decrement, api.getDecrementTriggerProps());
     // Zag names an input it deliberately does not own; point at the actual editor.
     for (const trigger of [increment, decrement]) trigger.setAttribute("aria-controls", this.input.id);
   }

@@ -37,15 +37,31 @@ export function ibanRemainder(value: string): number {
 export function validateIban(value: string): FieldValidation {
   if (!value) return { message: "", detail: "Paste an IBAN, with or without spaces." };
   if (!/^[A-Z]{2}\d{2}[A-Z0-9]*$/.test(value)) {
-    return { message: "Start with a two-letter country code and two check digits; use letters and numbers only.", detail: "Check the IBAN format." };
+    return {
+      message: "Start with a two-letter country code and two check digits; use letters and numbers only.",
+      detail: "Check the IBAN format.",
+    };
   }
   const profile = ibanProfiles[value.slice(0, 2)];
-  if (!profile) return { message: "This preview supports AT, BE, CH, DE, ES, FR, GB, IE, IT, and NL.", detail: "Country format not supported in this preview." };
-  if (value.length !== profile.length) return { message: `An IBAN for ${profile.country} needs ${profile.length} characters; you entered ${value.length}.`, detail: `${value.length} of ${profile.length} characters` };
-  if (!profile.pattern.test(value)) return { message: `Check the account format for ${profile.country}.`, detail: "Country format does not match." };
+  if (!profile)
+    return {
+      message: "This preview supports AT, BE, CH, DE, ES, FR, GB, IE, IT, and NL.",
+      detail: "Country format not supported in this preview.",
+    };
+  if (value.length !== profile.length)
+    return {
+      message: `An IBAN for ${profile.country} needs ${profile.length} characters; you entered ${value.length}.`,
+      detail: `${value.length} of ${profile.length} characters`,
+    };
+  if (!profile.pattern.test(value))
+    return { message: `Check the account format for ${profile.country}.`, detail: "Country format does not match." };
   // ISO 13616 assigns check digits 02-98; 00, 01, and 99 can satisfy mod-97 only by coincidence.
   const checkDigits = Number(value.slice(2, 4));
-  if (checkDigits < 2 || checkDigits > 98 || ibanRemainder(value) !== 1) return { message: "The IBAN check digits do not match. Check the account number.", detail: "Checksum does not match." };
+  if (checkDigits < 2 || checkDigits > 98 || ibanRemainder(value) !== 1)
+    return {
+      message: "The IBAN check digits do not match. Check the account number.",
+      detail: "Checksum does not match.",
+    };
   return { message: "", detail: `${profile.country} format and checksum pass. Account not verified.` };
 }
 
@@ -53,7 +69,10 @@ export function validateBic(value: string): FieldValidation {
   if (!value) return { message: "", detail: "An 8- or 11-character business identifier." };
   // ISO 9362 permits an alphanumeric business-party prefix, not only bank letters.
   if (!/^[A-Z0-9]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/.test(value)) {
-    return { message: "Use 8 or 11 letters and numbers, with a two-letter country code in positions 5–6.", detail: "Check the BIC structure." };
+    return {
+      message: "Use 8 or 11 letters and numbers, with a two-letter country code in positions 5–6.",
+      detail: "Check the BIC structure.",
+    };
   }
   return { message: "", detail: `${value.length}-character structure passes. Registration not verified.` };
 }

@@ -9,7 +9,10 @@ export class H6Field extends HTMLElement {
   constructor() {
     super();
     const root = this.attachShadow({ mode: "open" });
-    root.adoptedStyleSheets = [sheet]; root.append(document.createElement("slot"));
+    root.adoptedStyleSheets = [sheet];
+    root.append(document.createElement("slot"));
   }
-  override focus(options?: FocusOptions): void { this.querySelector<HTMLElement>("input:not([type=hidden]), textarea, select")?.focus(options); }
+  override focus(options?: FocusOptions): void {
+    this.querySelector<HTMLElement>("input:not([type=hidden]), textarea, select")?.focus(options);
+  }
 }

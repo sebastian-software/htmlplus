@@ -10,4 +10,6 @@ export function upgradeProperties(element: HTMLElement, names: readonly string[]
 }
 
 /** Value assignment follows native text fields: only null and undefined mean empty. */
-export function textValue(value: unknown): string { return value === null || value === undefined ? "" : String(value); }
+export function textValue(value: unknown): string {
+  return value === null || value === undefined ? "" : String(value);
+}

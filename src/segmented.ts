@@ -43,65 +43,153 @@ export class H6Segmented extends HTMLElement {
       event.stopPropagation();
       const input = event.target;
       if (!(input instanceof HTMLInputElement)) return;
-      this.#value = input.value; this.#dirty = true; this.#sync();
+      this.#value = input.value;
+      this.#dirty = true;
+      this.#sync();
       this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
     });
     // Native input events already bubble across the shadow boundary once.
     root.addEventListener("input", (event) => {
       const input = event.target;
-      if (input instanceof HTMLInputElement) { this.#value = input.value; this.#dirty = true; this.#sync(); }
+      if (input instanceof HTMLInputElement) {
+        this.#value = input.value;
+        this.#dirty = true;
+        this.#sync();
+      }
     });
     trackTouched(this, () => this.#sync());
   }
   connectedCallback(): void {
-    upgradeProperties(this, ["value"]); this.#labelContext.connect();
-    this.#observer.observe(this, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["value", "disabled", "label"] });
-    this.#render(); queueMicrotask(() => this.#sync());
+    upgradeProperties(this, ["value"]);
+    this.#labelContext.connect();
+    this.#observer.observe(this, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: ["value", "disabled", "label"],
+    });
+    this.#render();
+    queueMicrotask(() => this.#sync());
   }
-  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#observer.disconnect(); }
-  attributeChangedCallback(name: string): void { if (name === "value" && !this.#dirty) this.#value = this.defaultValue; this.#sync(); }
-  get value(): string { return enabledChoice(this.#options, this.#value)?.value ?? ""; }
-  set value(value: string) { this.#dirty = true; this.#value = textValue(value); this.#sync(); }
-  get defaultValue(): string { return this.getAttribute("value") ?? ""; }
-  set defaultValue(value: string) { this.setAttribute("value", value); }
-  get name(): string { return this.getAttribute("name") ?? ""; }
-  set name(value: string) { this.setAttribute("name", value); }
-  get disabled(): boolean { return this.hasAttribute("disabled"); }
-  set disabled(value: boolean) { this.toggleAttribute("disabled", Boolean(value)); }
-  get required(): boolean { return this.hasAttribute("required"); }
-  set required(value: boolean) { this.toggleAttribute("required", Boolean(value)); }
-  get form(): HTMLFormElement | null { return this.#internals.form; }
-  get labels(): NodeList { return this.#internals.labels; }
-  get validity(): ValidityState { return this.#internals.validity; }
-  get validationMessage(): string { return this.#internals.validationMessage; }
-  get willValidate(): boolean { return this.#internals.willValidate; }
-  checkValidity(): boolean { return this.#internals.checkValidity(); }
-  reportValidity(): boolean { return this.#internals.reportValidity(); }
-  setCustomValidity(message: string): void { this.#customError = String(message); this.#sync(); }
-  override focus(options?: FocusOptions): void {
-    (this.#control.querySelector<HTMLInputElement>("input:checked:not(:disabled)") ?? this.#control.querySelector<HTMLInputElement>("input:not(:disabled)"))?.focus(options);
+  disconnectedCallback(): void {
+    this.#labelContext.disconnect();
+    this.#observer.disconnect();
   }
-  formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; this.#sync(); }
-  formResetCallback(): void { this.#dirty = false; this.#value = this.defaultValue; this.removeAttribute("data-touched"); this.#sync(); }
-  formStateRestoreCallback(state: string): void { this.value = state; }
-  get #options(): ReturnType<typeof readOptionChoices> { return readOptionChoices(this); }
-  #render(): void {
-    const focusedValue = this.shadowRoot?.activeElement instanceof HTMLInputElement ? this.shadowRoot.activeElement.value : null;
-    this.#control.replaceChildren(...this.#options.map((option) => {
-      const label = document.createElement("label");
-      const input = document.createElement("input"); input.type = "radio"; input.name = "choice"; input.value = option.value;
-      const text = document.createElement("span"); text.part.add("option"); text.textContent = option.label;
-      label.append(input, text); return label;
-    }));
+  attributeChangedCallback(name: string): void {
+    if (name === "value" && !this.#dirty) this.#value = this.defaultValue;
     this.#sync();
-    if (focusedValue !== null) Array.from(this.#control.querySelectorAll("input")).find((input) => input.value === focusedValue && !input.disabled)?.focus();
+  }
+  get value(): string {
+    return enabledChoice(this.#options, this.#value)?.value ?? "";
+  }
+  set value(value: string) {
+    this.#dirty = true;
+    this.#value = textValue(value);
+    this.#sync();
+  }
+  get defaultValue(): string {
+    return this.getAttribute("value") ?? "";
+  }
+  set defaultValue(value: string) {
+    this.setAttribute("value", value);
+  }
+  get name(): string {
+    return this.getAttribute("name") ?? "";
+  }
+  set name(value: string) {
+    this.setAttribute("name", value);
+  }
+  get disabled(): boolean {
+    return this.hasAttribute("disabled");
+  }
+  set disabled(value: boolean) {
+    this.toggleAttribute("disabled", Boolean(value));
+  }
+  get required(): boolean {
+    return this.hasAttribute("required");
+  }
+  set required(value: boolean) {
+    this.toggleAttribute("required", Boolean(value));
+  }
+  get form(): HTMLFormElement | null {
+    return this.#internals.form;
+  }
+  get labels(): NodeList {
+    return this.#internals.labels;
+  }
+  get validity(): ValidityState {
+    return this.#internals.validity;
+  }
+  get validationMessage(): string {
+    return this.#internals.validationMessage;
+  }
+  get willValidate(): boolean {
+    return this.#internals.willValidate;
+  }
+  checkValidity(): boolean {
+    return this.#internals.checkValidity();
+  }
+  reportValidity(): boolean {
+    return this.#internals.reportValidity();
+  }
+  setCustomValidity(message: string): void {
+    this.#customError = String(message);
+    this.#sync();
+  }
+  override focus(options?: FocusOptions): void {
+    (
+      this.#control.querySelector<HTMLInputElement>("input:checked:not(:disabled)") ??
+      this.#control.querySelector<HTMLInputElement>("input:not(:disabled)")
+    )?.focus(options);
+  }
+  formDisabledCallback(disabled: boolean): void {
+    this.#formDisabled = disabled;
+    this.#sync();
+  }
+  formResetCallback(): void {
+    this.#dirty = false;
+    this.#value = this.defaultValue;
+    this.removeAttribute("data-touched");
+    this.#sync();
+  }
+  formStateRestoreCallback(state: string): void {
+    this.value = state;
+  }
+  get #options(): ReturnType<typeof readOptionChoices> {
+    return readOptionChoices(this);
+  }
+  #render(): void {
+    const focusedValue =
+      this.shadowRoot?.activeElement instanceof HTMLInputElement ? this.shadowRoot.activeElement.value : null;
+    this.#control.replaceChildren(
+      ...this.#options.map((option) => {
+        const label = document.createElement("label");
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "choice";
+        input.value = option.value;
+        const text = document.createElement("span");
+        text.part.add("option");
+        text.textContent = option.label;
+        label.append(input, text);
+        return label;
+      }),
+    );
+    this.#sync();
+    if (focusedValue !== null)
+      Array.from(this.#control.querySelectorAll("input"))
+        .find((input) => input.value === focusedValue && !input.disabled)
+        ?.focus();
   }
   #sync(): void {
-    const options = this.#options, enabledValue = enabledChoice(options, this.#value)?.value ?? null;
+    const options = this.#options,
+      enabledValue = enabledChoice(options, this.#value)?.value ?? null;
     for (const input of this.#control.querySelectorAll("input")) {
       input.checked = input.value === enabledValue;
       input.nextElementSibling!.part.toggle("selected-option", input.checked);
-      input.disabled = this.disabled || this.#formDisabled || Boolean(options.find((item) => item.value === input.value)?.disabled);
+      input.disabled =
+        this.disabled || this.#formDisabled || Boolean(options.find((item) => item.value === input.value)?.disabled);
       input.setAttribute("aria-required", String(this.required));
     }
     this.#internals.ariaLabel = fieldLabel(this, this.labels, "Choose an option");
@@ -109,7 +197,11 @@ export class H6Segmented extends HTMLElement {
     this.#internals.setFormValue(enabledValue, this.#value);
     const anchor = this.#control.querySelector<HTMLInputElement>("input:not(:disabled)");
     const message = this.#customError || (this.required && !enabledValue ? "Choose an option." : "");
-    this.#internals.setValidity(message ? this.#customError ? { customError: true } : { valueMissing: true } : {}, message, anchor ?? undefined);
+    this.#internals.setValidity(
+      message ? (this.#customError ? { customError: true } : { valueMissing: true }) : {},
+      message,
+      anchor ?? undefined,
+    );
     this.#internals.ariaInvalid = String(visiblyInvalid(this));
   }
 }

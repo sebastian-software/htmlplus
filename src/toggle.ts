@@ -25,7 +25,15 @@ template.innerHTML = `<style>
 
 export class H6Toggle extends HTMLElement {
   static formAssociated = true;
-  static observedAttributes = ["pressed", "disabled", "required", "value", "aria-label", "aria-labelledby", "aria-describedby"];
+  static observedAttributes = [
+    "pressed",
+    "disabled",
+    "required",
+    "value",
+    "aria-label",
+    "aria-labelledby",
+    "aria-describedby",
+  ];
   #internals = this.attachInternals();
   #root = this.attachShadow({ mode: "open", delegatesFocus: true });
   #button: HTMLButtonElement;
@@ -51,65 +59,140 @@ export class H6Toggle extends HTMLElement {
     });
   }
   connectedCallback(): void {
-    upgradeProperties(this, ["pressed"]); this.#labelContext.connect();
+    upgradeProperties(this, ["pressed"]);
+    this.#labelContext.connect();
     this.#machine = new VanillaMachine(toggle.machine, {
-      pressed: this.#pressed, disabled: this.#disabled,
+      pressed: this.#pressed,
+      disabled: this.#disabled,
       onPressedChange: (pressed) => {
         if (this.#disabled || pressed === this.#pressed) return;
-        this.#dirty = true; this.#pressed = pressed; this.#sync();
+        this.#dirty = true;
+        this.#pressed = pressed;
+        this.#sync();
         this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
         this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
       },
     });
     this.#machine.subscribe(() => this.#render());
-    this.#render(); this.#machine.start(); this.#sync();
+    this.#render();
+    this.#machine.start();
+    this.#sync();
   }
-  disconnectedCallback(): void { this.#labelContext.disconnect(); this.#machine?.stop(); this.#machine = undefined; this.#bindings.clear(); }
+  disconnectedCallback(): void {
+    this.#labelContext.disconnect();
+    this.#machine?.stop();
+    this.#machine = undefined;
+    this.#bindings.clear();
+  }
   attributeChangedCallback(name: string): void {
     if (name === "pressed" && !this.#dirty) this.#pressed = this.defaultPressed;
     this.#sync();
   }
-  get pressed(): boolean { return this.#pressed; }
-  set pressed(value: boolean) { this.#dirty = true; this.#pressed = Boolean(value); this.#sync(); }
-  get defaultPressed(): boolean { return this.hasAttribute("pressed"); }
-  set defaultPressed(value: boolean) { this.toggleAttribute("pressed", Boolean(value)); }
-  get value(): string { return this.getAttribute("value") ?? "on"; }
-  set value(value: string) { this.setAttribute("value", String(value)); }
-  get name(): string { return this.getAttribute("name") ?? ""; }
-  set name(value: string) { this.setAttribute("name", value); }
-  get disabled(): boolean { return this.hasAttribute("disabled"); }
-  set disabled(value: boolean) { this.toggleAttribute("disabled", Boolean(value)); }
-  get required(): boolean { return this.hasAttribute("required"); }
-  set required(value: boolean) { this.toggleAttribute("required", Boolean(value)); }
-  get form(): HTMLFormElement | null { return this.#internals.form; }
-  get labels(): NodeList { return this.#internals.labels; }
-  get validity(): ValidityState { return this.#internals.validity; }
-  get validationMessage(): string { return this.#internals.validationMessage; }
-  get willValidate(): boolean { return this.#internals.willValidate; }
-  checkValidity(): boolean { return this.#internals.checkValidity(); }
-  reportValidity(): boolean { return this.#internals.reportValidity(); }
-  setCustomValidity(message: string): void { this.#customError = String(message); this.#sync(); }
-  override focus(options?: FocusOptions): void { this.#button.focus(options); }
-  formDisabledCallback(disabled: boolean): void { this.#formDisabled = disabled; this.#sync(); }
-  formResetCallback(): void { this.#dirty = false; this.#pressed = this.defaultPressed; this.removeAttribute("data-touched"); this.#sync(); }
-  formStateRestoreCallback(state: string | File | FormData): void { this.#dirty = true; this.#pressed = state === "pressed"; this.#sync(); }
+  get pressed(): boolean {
+    return this.#pressed;
+  }
+  set pressed(value: boolean) {
+    this.#dirty = true;
+    this.#pressed = Boolean(value);
+    this.#sync();
+  }
+  get defaultPressed(): boolean {
+    return this.hasAttribute("pressed");
+  }
+  set defaultPressed(value: boolean) {
+    this.toggleAttribute("pressed", Boolean(value));
+  }
+  get value(): string {
+    return this.getAttribute("value") ?? "on";
+  }
+  set value(value: string) {
+    this.setAttribute("value", String(value));
+  }
+  get name(): string {
+    return this.getAttribute("name") ?? "";
+  }
+  set name(value: string) {
+    this.setAttribute("name", value);
+  }
+  get disabled(): boolean {
+    return this.hasAttribute("disabled");
+  }
+  set disabled(value: boolean) {
+    this.toggleAttribute("disabled", Boolean(value));
+  }
+  get required(): boolean {
+    return this.hasAttribute("required");
+  }
+  set required(value: boolean) {
+    this.toggleAttribute("required", Boolean(value));
+  }
+  get form(): HTMLFormElement | null {
+    return this.#internals.form;
+  }
+  get labels(): NodeList {
+    return this.#internals.labels;
+  }
+  get validity(): ValidityState {
+    return this.#internals.validity;
+  }
+  get validationMessage(): string {
+    return this.#internals.validationMessage;
+  }
+  get willValidate(): boolean {
+    return this.#internals.willValidate;
+  }
+  checkValidity(): boolean {
+    return this.#internals.checkValidity();
+  }
+  reportValidity(): boolean {
+    return this.#internals.reportValidity();
+  }
+  setCustomValidity(message: string): void {
+    this.#customError = String(message);
+    this.#sync();
+  }
+  override focus(options?: FocusOptions): void {
+    this.#button.focus(options);
+  }
+  formDisabledCallback(disabled: boolean): void {
+    this.#formDisabled = disabled;
+    this.#sync();
+  }
+  formResetCallback(): void {
+    this.#dirty = false;
+    this.#pressed = this.defaultPressed;
+    this.removeAttribute("data-touched");
+    this.#sync();
+  }
+  formStateRestoreCallback(state: string | File | FormData): void {
+    this.#dirty = true;
+    this.#pressed = state === "pressed";
+    this.#sync();
+  }
 
-  get #disabled(): boolean { return this.disabled || this.#formDisabled; }
+  get #disabled(): boolean {
+    return this.disabled || this.#formDisabled;
+  }
   #sync(): void {
     this.#internals.setFormValue(this.#pressed ? this.value : null, this.#pressed ? "pressed" : "unpressed");
-    if (this.#pressed) this.#internals.states.add("pressed"); else this.#internals.states.delete("pressed");
+    if (this.#pressed) this.#internals.states.add("pressed");
+    else this.#internals.states.delete("pressed");
     if (this.#customError) this.#internals.setValidity({ customError: true }, this.#customError, this.#button);
-    else if (this.required && !this.#pressed) this.#internals.setValidity({ valueMissing: true }, "Select this option to continue.", this.#button);
+    else if (this.required && !this.#pressed)
+      this.#internals.setValidity({ valueMissing: true }, "Select this option to continue.", this.#button);
     else this.#internals.setValidity({});
     this.#machine?.updateProps({ pressed: this.#pressed, disabled: this.#disabled });
     this.#render();
   }
   #render(): void {
-    if (this.#machine) this.#bindings.apply(this.#button, toggle.connect(this.#machine.service, normalizeProps).getRootProps());
+    if (this.#machine)
+      this.#bindings.apply(this.#button, toggle.connect(this.#machine.service, normalizeProps).getRootProps());
     const name = fieldLabel(this, this.labels, "");
-    if (name) this.#button.setAttribute("aria-label", name); else this.#button.removeAttribute("aria-label");
+    if (name) this.#button.setAttribute("aria-label", name);
+    else this.#button.removeAttribute("aria-label");
     const description = referencedText(this, "aria-describedby");
-    if (description) this.#button.setAttribute("aria-description", description); else this.#button.removeAttribute("aria-description");
+    if (description) this.#button.setAttribute("aria-description", description);
+    else this.#button.removeAttribute("aria-description");
     this.#button.setAttribute("aria-invalid", String(visiblyInvalid(this)));
   }
 }
