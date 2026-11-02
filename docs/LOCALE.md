@@ -6,6 +6,8 @@ Date Picker, Date Range Picker, and Number Input resolve a BCP 47 locale from:
 2. The nearest nonempty HTML `lang`, starting with the component itself and walking its ancestors, including shadow hosts and assigned slots.
 3. The document language, then the browser language, with `en-US` as the final fallback.
 
+An inherited `lang` that is malformed or unsupported by the browser's Intl data is skipped, because page language was not authored for one control and must not block its form. An invalid explicit `locale` remains a configuration error on date controls.
+
 ```html
 <html lang="de-DE">
   <!-- German numeric order and separators, inherited from HTML. -->
@@ -28,7 +30,7 @@ Changing locale reformats complete dates and closes an open calendar without cha
 
 ## Numbers and direction
 
-Number Input uses `Intl.NumberFormat` and the existing internationalized number parser. Complete edited values are reformatted from their previous numeric meaning: `3.75` becomes `3,75` in `de-DE`, while FormData still contains `3.75`. Invalid drafts stay invalid until edited or replaced. Number Input retains its existing `en-US` fallback for invalid locale identifiers; date controls report invalid configuration instead.
+Number Input uses `Intl.NumberFormat` and the existing internationalized number parser. Complete edited values are reformatted from their previous numeric meaning: `3.75` becomes `3,75` in `de-DE`, while FormData still contains `3.75`. Invalid drafts stay invalid until edited or replaced. The editor never displays grouping, so group separators are not accepted: `1,5` in `en-US` or `1.5` in `de-DE` stays visible as an invalid draft and is never read as `15`. Number Input retains its existing `en-US` fallback for an invalid explicit `locale`; date controls report invalid configuration instead.
 
 `lang` chooses formatting conventions. `dir` remains the independent HTML direction contract; controls respect their computed direction. Applications displaying RTL content should supply `dir="rtl"` in the appropriate scope. Calendar navigation icons mirror in RTL.
 

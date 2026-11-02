@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-22
-- Updated: 2026-10-29
+- Updated: 2026-11-02
 - Lifecycle: living
 - Implementation: twenty-one form controls, three companion elements, a native Button family, and a live playground
 
@@ -19,6 +19,7 @@ Use the platform's form mechanisms. Existing native inputs may remain the submis
 - Each field has one clearly defined submission owner and documented serialization. Collections can produce repeated names; compound values need explicit naming.
 - Form association does not implement keyboard interaction, focus, constraints, reset callbacks, or restoration behavior automatically. These remain component responsibilities where the native control does not provide them.
 - Framework convenience bindings may be added later without becoming necessary to submit a form.
+- A native editor in a shadow root has no form owner, so the browser cannot submit implicitly for it. Text editors therefore follow HTML's implicit submission: Enter activates the form's default button, including validation and the submitter value, and does nothing if that button is disabled. A form without a submit button submits only when it has at most one blocking field. This runs after the native `change` and respects `preventDefault`. Enter that already has a control-specific meaning, such as choosing a highlighted Combobox option or committing a tag, does not submit.
 - Compare implementations with a real HTML form before expanding the catalog. Separate current behavior from intended support claims.
 
 Accordion and Tabs are companion elements rather than submission owners. Their sections stay in light DOM so contained inputs preserve their original form association. Hidden panels retain their values and constraints. Interactive validation reveals the first invalid section; secondary hidden invalid fields suppress only their native validation UI during that attempt, not submission blocking. See the [interaction guide](../INTERACTIONS.md).
@@ -65,3 +66,5 @@ Native action buttons remain actual `<button>` elements styled by the optional `
 - 2026-10-29: Added everyday controls and the native Button contract; documented mixed selection, host-owned forms, and the required Zag/native editing adaptations.
 
 - 2026-10-29: Added Native Field as a presentation-only companion, retaining original light-DOM control ownership instead of forwarding native form APIs through another form-associated host.
+
+- 2026-11-02: Added implicit submission for shadow editors. Enter previously did nothing in them, which broke ordinary forms such as logins.

@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-22
-- Updated: 2026-10-29
+- Updated: 2026-11-02
 - Lifecycle: living
 - Scope: initial prototype
 
@@ -10,7 +10,7 @@
 
 IBAN, BIC, OTP, and duration are text fields with domain-specific normalization. The first spike enhanced a light-DOM input and rewrote its value after each input event. A manual undo check showed that transformed characters could no longer be undone. Keeping a native input alone does not preserve native editing if the component repeatedly replaces its text.
 
-Keep one native input in the component's shadow root, and make the custom host the form-associated submission owner. Retain the browser's text-editing history. Derive the canonical value and supply it through `ElementInternals.setFormValue(canonical, displayText)`. IBAN now displays uppercase groups of four while the form receives the identifier without spaces; duration retains its typed notation.
+Keep one native input in the component's shadow root, and make the custom host the form-associated submission owner. Retain the browser's text-editing history. Derive the canonical value and supply it through `ElementInternals.setFormValue(canonical, displayText)`. Password Input passes `null` as its state, because the browser would otherwise keep the plaintext in session history, unlike a native password field. IBAN now displays uppercase groups of four while the form receives the identifier without spaces; duration retains its typed notation.
 
 Constraints, defaults, disabled state, labels, and canonical `.value` live on the host. The raw `.displayValue` is readable separately. Programmatic `.value` assignment may replace the editor's text, as native programmatic assignment does. User formatting must use native editing operations rather than assigning the value or implementing a parallel undo stack. Native editor events update form values without a second application state object.
 
@@ -56,3 +56,5 @@ Direct macOS Firefox automation still fails before page load. A version-matched 
 - 2026-10-26: Preserved native undo across inactive Tabs/Accordion sections using zero-size clipped wrappers and inert semantics, after Linux Firefox exposed editor reconstruction under display:none.
 
 - 2026-10-29: Added visible IBAN grouping and decorative OTP slots over one native input. Replaced the blanket no-formatting rule with targeted native edits, retaining undo and an explicit unsupported-command fallback.
+
+- 2026-11-02: Excluded Password Input from restoration state after back navigation restored and resubmitted its plaintext.

@@ -10,6 +10,7 @@ import { fieldLabel, referencedText } from "./field-label.js";
 import { createIcon } from "./icons.js";
 import { theme } from "./theme.js";
 import { LocaleContext, resolvedLocale, localeWeekStart } from "./locale.js";
+import { enableImplicitSubmission } from "./implicit-submission.js";
 
 export type DateRangeValue = [string | null, string | null];
 const firstDate = parseCalendarDate("0001-01-01")!;
@@ -75,6 +76,7 @@ export class H6DateRangePicker extends HTMLElement {
     this.#root = shadow.querySelector("[part=root]")!; this.#control = shadow.querySelector("[part=control]")!;
     const original = shadow.querySelector("input")!; this.#inputs = [original, original.cloneNode() as HTMLInputElement];
     this.#control.replaceChildren();
+    enableImplicitSubmission(this, this.#inputs);
     this.#inputs.forEach((input, index) => {
       input.id = `${this.#id}-${sides[index]}`; input.part.add(`${sides[index]}-input`);
       const wrapper = document.createElement("div"), label = document.createElement("label");

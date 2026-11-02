@@ -9,6 +9,7 @@ import { fieldLabel, referencedText } from "./field-label.js";
 import { createIcon } from "./icons.js";
 import { calendarTemplate, CalendarViews } from "./calendar.js";
 import { LocaleContext, resolvedLocale, localeWeekStart } from "./locale.js";
+import { enableImplicitSubmission } from "./implicit-submission.js";
 
 const firstDate = parseCalendarDate("0001-01-01")!;
 const lastDate = parseCalendarDate("9999-12-31")!;
@@ -60,6 +61,7 @@ export class H6DatePicker extends HTMLElement {
     this.#trigger = button("trigger", "calendar"); this.#clear = button("clear-button", "close"); this.#control.append(this.#trigger, this.#clear);
     this.#previous = button("prev-button", "chevron-left"); this.#viewButton = button("view-button"); this.#next = button("next-button", "chevron-right"); this.#navigation.append(this.#previous, this.#viewButton, this.#next);
     this.#views = new CalendarViews(this.#content);
+    enableImplicitSubmission(this, [this.#input]);
     this.#input.addEventListener("input", event => {
       event.stopPropagation(); if (this.#disabled || this.readOnly) return;
       this.#dirty = true; this.#pendingEdit = true;

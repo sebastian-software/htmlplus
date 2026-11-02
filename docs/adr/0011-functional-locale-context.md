@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-29
-- Updated: 2026-10-29
+- Updated: 2026-11-02
 - Lifecycle: living
 - Scope: functional date and number displays; message translation stays separate
 
@@ -19,6 +19,7 @@ Both demo pages offer a functional Locale picker, with a tab-session preference 
 ## Consequences and alternatives
 
 - Explicit locale remains available for mixed contexts. Requiring it everywhere would ignore authored HTML language.
+- Skip an inherited language that is malformed or lacks Intl data. A page attribute not authored for one control must not disable it or block its form. An invalid explicit locale is authored for the control, so date controls still report it. Number Input parses without grouping, matching its display, so a mistaken decimal mark becomes an invalid draft rather than a tenfold value.
 - Browser language is a fallback rather than an override of document or application choices.
 - Reuse platform locale data instead of maintaining format strings and regional week-start tables. Intl does not provide a general date parser; the editor derives a strict numeric parser from format parts and localized digits.
 - Gregorian arithmetic remains a deliberate limit. Alternate calendars, time fields, and message catalogs need their own APIs and evidence.
@@ -40,3 +41,4 @@ Unit checks round-trip localized digits, separators, strict ISO dates, and four-
 ## Changes
 
 - 2026-10-29: Accepted inherited and dynamic HTML language, explicit locale precedence, Intl functional displays, stable canonical values, preserved drafts, and an English-copy demo with a functional locale picker.
+- 2026-11-02: Unusable inherited languages now fall through to the next source instead of blocking date controls. Number Input no longer accepts group separators, which were erased on blur or misread as a larger value.

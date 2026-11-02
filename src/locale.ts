@@ -12,14 +12,21 @@ function ancestors(element: HTMLElement): HTMLElement[] {
   return result;
 }
 
+function usable(language: string | null | undefined): language is string {
+  if (!language) return false;
+  try { return Intl.DateTimeFormat.supportedLocalesOf([language]).length > 0; } catch { return false; }
+}
+
+/** Only an explicit locale can fail: inherited language was not authored for this control. */
 export function resolvedLocale(element: HTMLElement): string {
   const explicit = element.getAttribute("locale")?.trim();
   if (explicit) return explicit;
   for (const node of ancestors(element)) {
     const language = node.getAttribute("lang")?.trim();
-    if (language) return language;
+    if (usable(language)) return language;
   }
-  return element.ownerDocument.documentElement.lang || element.ownerDocument.defaultView?.navigator.language || "en-US";
+  const fallbacks = [element.ownerDocument.documentElement.lang, element.ownerDocument.defaultView?.navigator.language];
+  return fallbacks.find(usable) ?? "en-US";
 }
 
 /** Observe only the language context, rather than every mutation in the document. */
