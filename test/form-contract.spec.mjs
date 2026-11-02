@@ -698,3 +698,48 @@ test.describe("editor and environment details", () => {
     });
   }
 });
+
+test("incompatible restoration state is ignored instead of throwing", async ({ page }) => {
+  // Firefox restores state on reload and can hand a control a value it never saved.
+  await load(page, "<form></form>");
+  const failures = await page.evaluate(() => {
+    const names = [
+      "iban",
+      "bic",
+      "otp",
+      "duration",
+      "interval",
+      "segmented",
+      "tags",
+      "switch",
+      "toggle",
+      "slider",
+      "range-slider",
+      "rating",
+      "select",
+      "combobox",
+      "date-picker",
+      "date-range-picker",
+      "checkbox",
+      "radio-group",
+      "toggle-group",
+      "number-input",
+      "password-input",
+    ];
+    const form = document.forms[0];
+    const result = [];
+    for (const name of names) {
+      const element = document.createElement(`h6-${name}`);
+      form.append(element);
+      for (const state of ["5400", "not a value", "{}", "[1]", '["a","b","c","d"]', "null", ""]) {
+        try {
+          element.formStateRestoreCallback(state);
+        } catch (error) {
+          result.push(`h6-${name} with ${state}: ${error.message}`);
+        }
+      }
+    }
+    return result;
+  });
+  expect(failures).toEqual([]);
+});
