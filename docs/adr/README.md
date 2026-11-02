@@ -19,5 +19,6 @@ When a decision changes, edit the same record, update its date and change notes,
 | [0009](0009-calendar-date-picker.md) | accepted | Gregorian date-only values, native editing, and Zag calendar navigation |
 | [0010](0010-calendar-date-ranges.md) | accepted | Two named date boundaries, visible partial state, and complete-range validation |
 | [0011](0011-functional-locale-context.md) | accepted | Inherited HTML language, Intl functional displays, and stable canonical date/number values |
+| [0012](0012-package-entry-points.md) | accepted | One registering import per element, unbundled modules for bundlers, and React 19 without wrappers |
 
 Acceptance of a design constraint is distinct from implementation completion. Twenty-one form controls, Accordion, Tabs, Native Field, a native Button family, a live playground, and a tested static export are implemented; compatibility limits are documented in the project README.

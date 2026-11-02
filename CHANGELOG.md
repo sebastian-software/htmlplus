@@ -6,6 +6,9 @@ User-visible changes to html+. No package has been published yet, so everything 
 
 ### Added
 
+- One import per element, such as `htmlplus/iban`, that registers just that element. `htmlplus` registers all of them, and every entry is safe to import during server rendering.
+- A packable npm structure with separate modules for bundlers, a prebuilt `browser/` folder, and JSX types for React 19 in `htmlplus/react`.
+- [Element sizes](docs/SIZES.md), generated per element.
 - Project site at the root of the Pages deployment. The playground and styling gallery moved to `/demo/`.
 - Generated [element reference](docs/ELEMENTS.md) and `custom-elements.json` manifest.
 - Apache License 2.0.
@@ -13,6 +16,8 @@ User-visible changes to html+. No package has been published yet, so everything 
 
 ### Changed
 
+- Assigning the value a focused editor already holds no longer rewrites its text, so controlled frameworks keep the caret, undo, and drafts.
+- Modules no longer expose unregistered classes at `dist/src/<name>.js` as an API. Import `htmlplus/<name>`.
 - Enter in a text editor now submits the form like a native field.
 - Number Input no longer accepts group separators; they produce an invalid draft.
 - `aria-invalid` and error styling now appear on every control only after a blur or a failed submission.

@@ -1,14 +1,6 @@
-import { H6Switch } from "../src/switch.js";
-import { H6Tags } from "../src/tags.js";
-import { H6Iban } from "../src/text-fields.js";
-
-for (const [name, definition] of [
-  ["h6-iban", H6Iban],
-  ["h6-tags", H6Tags],
-  ["h6-switch", H6Switch],
-] as const) {
-  if (!customElements.get(name)) customElements.define(name, definition);
-}
+import "../src/elements/switch.js";
+import "../src/elements/tags.js";
+import { H6Iban } from "../src/elements/iban.js";
 
 const form = document.querySelector<HTMLFormElement>("#sheet-form")!;
 const rows = document.querySelector<HTMLElement>("#result-rows")!;

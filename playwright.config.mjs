@@ -3,6 +3,7 @@ import { defineConfig, devices } from "playwright/test";
 export default defineConfig({
   testDir: "./test",
   testMatch: "*.spec.mjs",
+  testIgnore: "consumer/**",
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: 0,
@@ -19,6 +20,12 @@ export default defineConfig({
     {
       command: "node scripts/serve.mjs --site --port 48165",
       url: "http://127.0.0.1:48165/htmlplus/",
+      reuseExistingServer: false,
+    },
+    {
+      command: "npx vite preview --host 127.0.0.1 --port 48167 --strictPort",
+      cwd: "test/consumer",
+      url: "http://127.0.0.1:48167/",
       reuseExistingServer: false,
     },
   ],

@@ -201,7 +201,7 @@ const manifest = {
   modules: [
     {
       kind: "javascript-module",
-      path: "dist/src/index.js",
+      path: "lib/index.js",
       declarations: Object.entries(surfaces).map(([tag, surface]) => ({
         kind: "class",
         customElement: true,
@@ -218,7 +218,7 @@ const manifest = {
       exports: Object.keys(surfaces).map((tag) => ({
         kind: "custom-element-definition",
         name: tag,
-        declaration: { name: className(tag), module: "dist/src/index.js" },
+        declaration: { name: className(tag), module: "lib/index.js" },
       })),
     },
   ],

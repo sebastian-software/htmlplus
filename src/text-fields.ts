@@ -6,6 +6,7 @@ import { textValue, upgradeProperties } from "./upgrade.js";
 import { trackTouched, visiblyInvalid } from "./touched.js";
 import { NativeTextFormat, groupedIban, ibanFormat } from "./native-format.js";
 import { OtpPresentation } from "./otp-presentation.js";
+import { isEditing } from "./editing.js";
 import { enableImplicitSubmission } from "./implicit-submission.js";
 
 const template = document.createElement("template");
@@ -81,8 +82,10 @@ export class H6TextField extends HTMLElement {
     return this.normalizeValue(this.#input.value);
   }
   set value(value: string) {
+    const text = textValue(value);
     this.#dirty = true;
-    this.#input.value = this.presentValue(textValue(value));
+    if (!isEditing(this.#input) || this.normalizeValue(text) !== this.value)
+      this.#input.value = this.presentValue(text);
     this.refresh();
   }
   get displayValue(): string {

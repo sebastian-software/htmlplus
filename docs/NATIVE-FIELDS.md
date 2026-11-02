@@ -7,7 +7,7 @@
 Import the component module and place one native control directly inside each wrapper. Labels target the native control's ID; constraints and form attributes belong on that control too.
 
 ```html
-<script type="module" src="./dist/src/index.js"></script>
+<script type="module" src="./browser/index.js"></script>
 <form>
   <label for="email">Email</label>
   <h6-field>

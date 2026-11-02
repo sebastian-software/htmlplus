@@ -10,25 +10,30 @@ html+ provides framework-independent form controls and core UI primitives. Compo
 
 ## Install today
 
-Clone the repository, build it, and copy the complete `dist/` directory into your static assets. Requires Node.js 22 or later and npm.
+No package is published yet, so build a tarball from a clone. Requires Node.js 22 or later and npm.
 
 ```sh
 git clone https://github.com/sebastian-software/htmlplus.git
 cd htmlplus
 npm ci
-npm run build
+npm pack
 ```
 
-Keep the `dist/` tree together, because the browser modules share chunks. It also holds `THIRD_PARTY_NOTICES.txt`, which must stay with the distributed modules, along with TypeScript declarations and the demo's own bundles. A Git dependency does not work, because `dist/` is ignored and nothing builds it on install.
+Then install `htmlplus-0.1.0.tgz` in your project. A Git dependency does not work, because the built files are ignored in Git. The name `htmlplus` in these examples is a placeholder until the [package name](docs/PLAN.md#open-decisions) is decided.
 
 To explore the source instead, run `npm run dev`. The project site is at <http://127.0.0.1:4173/>, the playground at <http://127.0.0.1:4173/demo/>, and the gallery at <http://127.0.0.1:4173/demo/styling.html>. Refresh the page after source changes.
 
 ## Use a control
 
-`dist/src/index.js` registers all twenty-four elements and exports their classes.
+Import an element once and use it in ordinary markup. Importing registers it, so there is nothing else to call.
+
+```js
+import "htmlplus/iban";
+import "htmlplus/tags";
+import "htmlplus/switch";
+```
 
 ```html
-<script type="module" src="/dist/src/index.js"></script>
 <form>
   <label for="account">IBAN</label>
   <h6-iban id="account" name="iban" required></h6-iban>
@@ -40,16 +45,18 @@ To explore the source instead, run `npm run dev`. The project site is at <http:/
 </form>
 ```
 
-`new FormData(form)` and native submission receive the values, and labels, validation, reset, and disabled fieldsets work as with native fields. [Forms and validation](docs/FORMS.md) covers showing errors and using the elements from a framework.
+`new FormData(form)` and native submission receive the values, and labels, validation, reset, and disabled fieldsets work as with native fields. [Forms and validation](docs/FORMS.md) covers showing errors and using the elements with React.
 
-To load less, import one module and register it yourself. Individual modules export the class without registering it:
+| Import | What it does |
+| --- | --- |
+| `htmlplus/<name>`, such as `htmlplus/date-picker` | Registers that element and exports its class |
+| `htmlplus` | Registers all twenty-four elements and exports their classes |
+| `htmlplus/react` | JSX types for React 19 |
+| `htmlplus/native.css`, `themes.css`, `shadcn.css` | The optional stylesheets |
 
-```js
-import { H6Switch } from "/dist/src/switch.js";
-customElements.define("h6-switch", H6Switch);
-```
+Each entry is safe to import during server rendering, where it does nothing. Without a bundler, use the prebuilt modules in `browser/`, such as `<script type="module" src="/htmlplus/browser/elements/iban.js"></script>`. Keep that folder together with its `chunks/`, and keep `THIRD_PARTY_NOTICES.txt` with the distributed modules.
 
-Each element has a built-in neutral base, so no stylesheet is required. Customize it with inherited `--hp-*` tokens, CSS parts, and ordinary CSS on wrapped native fields. Optional `dist/themes.css` adds Light/Dark palettes, `dist/shadcn.css` connects an existing shadcn theme, and `dist/native.css` styles `h6-field` and `<button class="hp-button">` without JavaScript. See the [styling guide](docs/STYLING.md).
+Each element has a built-in neutral base, so no stylesheet is required. Customize it with inherited `--hp-*` tokens, CSS parts, and ordinary CSS on wrapped native fields. Optional `themes.css` adds Light/Dark palettes, `shadcn.css` connects an existing shadcn theme, and `native.css` styles `h6-field` and `<button class="hp-button">` without JavaScript. See the [styling guide](docs/STYLING.md).
 
 ## Elements
 
@@ -82,7 +89,7 @@ There are twenty-one form controls using `ElementInternals`, plus Accordion, Tab
 | [`h6-accordion`](docs/INTERACTIONS.md#accordion-disclosure-sections) | Disclosure sections; contained fields keep their own form values | [API](docs/ELEMENTS.md#h6-accordion) |
 | [`h6-tabs`](docs/INTERACTIONS.md#tabs-one-visible-panel) | Linked panels; contained fields keep their own form values | [API](docs/ELEMENTS.md#h6-tabs) |
 
-Actions stay real buttons: the [native Button family](docs/EVERYDAY-CONTROLS.md#native-buttons) is `<button class="hp-button">` styled by `dist/native.css`.
+Actions stay real buttons: the [native Button family](docs/EVERYDAY-CONTROLS.md#native-buttons) is `<button class="hp-button">` styled by `native.css`.
 
 ## Browser support
 
@@ -100,7 +107,7 @@ Physical devices, OTP autofill, password managers, manual assistive-technology c
 
 ## Size
 
-Gzipped across every module an entry loads, `dist/src/index.js` with all elements is about 153 KB, `dist/src/date-picker.js` about 61 KB, and `dist/src/switch.js` about 4 KB. `npm run check:size` enforces the limits in [`scripts/check-size.mjs`](scripts/check-size.mjs).
+[Element sizes](docs/SIZES.md) lists what each element costs on its own, from about 2 KB gzipped for `h6-switch` to about 50 KB for `h6-date-range-picker`. All twenty-four elements together are about 120 KB, and importing only the ones a page uses keeps the rest out of its bundle.
 
 ## Current value contract
 

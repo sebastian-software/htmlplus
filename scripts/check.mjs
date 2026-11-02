@@ -6,10 +6,11 @@ for (const args of [
   ["node_modules/@biomejs/biome/bin/biome", "check"],
   ["scripts/build.mjs"],
   ["scripts/build-demo.mjs", "--skip-build"],
-  ["scripts/check-size.mjs"],
+  ["scripts/sizes.mjs", "--check"],
   ["scripts/check-notices.mjs"],
   ["scripts/generate-api.mjs", "--check"],
   ["--test", "test/*.test.mjs"],
+  ["scripts/check-consumer.mjs"],
   ["node_modules/playwright/cli.js", "test", ...process.argv.slice(2)],
 ]) {
   const result = spawnSync(process.execPath, args, { cwd: root, stdio: "inherit" });

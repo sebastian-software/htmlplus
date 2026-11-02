@@ -10,6 +10,7 @@ import { trackTouched, visiblyInvalid } from "./touched.js";
 import { createIcon } from "./icons.js";
 import { hostStyles } from "./styles.js";
 import { radius, theme, surfaceShadow } from "./theme.js";
+import { isEditing } from "./editing.js";
 import { enableImplicitSubmission } from "./implicit-submission.js";
 
 type Choice = ReturnType<typeof readOptionChoices>[number];
@@ -238,6 +239,10 @@ class H6Choice extends HTMLElement {
   }
   set value(value: string) {
     this.#dirty = true;
+    if (this.#input && isEditing(this.#input) && textValue(value) === this.value) {
+      this.#sync();
+      return;
+    }
     this.#selected = textValue(value);
     this.#query = this.#selectedOption?.label ?? "";
     this.#filtering = false;
