@@ -212,6 +212,11 @@ test("password visibility works with keyboard without value events, preserves se
   expect(await page.evaluate(() => window.passwordEvents)).toEqual([]);
   await host.getByRole("button", { name: "Hide password", exact: true }).press("Space");
   await expect(input).toHaveAttribute("type", "password");
+  // Zag treats a click without pointer details as keyboard activation; it must still toggle only once.
+  await host.getByRole("button", { name: "Show password", exact: true }).evaluate((button) => button.click());
+  await expect(input).toHaveAttribute("type", "text");
+  await host.getByRole("button", { name: "Hide password", exact: true }).evaluate((button) => button.click());
+  await expect(input).toHaveAttribute("type", "password");
   await input.fill("Changed-demo-42!");
   await host.getByRole("button", { name: "Show password", exact: true }).click();
   await expect(input).toHaveAttribute("type", "text");
