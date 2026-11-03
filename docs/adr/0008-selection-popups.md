@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-24
-- Updated: 2026-11-02
+- Updated: 2026-11-03
 - Lifecycle: living
 - Scope: Select and Combobox; Date Picker reuses the popup strategy under ADR-0009
 
@@ -36,6 +36,8 @@ Integrated Chromium and WebKit checks exercise form values and event counts, kno
 
 CI covers Chromium, Firefox, and WebKit. Physical-device interaction/autofill, manual assistive-technology coverage, and real history restoration remain unverified. Date Picker has since completed its separate integration under ADR-0009.
 
+Under [ADR-0013](0013-platform-first.md), core CSS anchor positioning is Baseline and should replace Floating UI on these popovers if Zag lets positioning be left out of the bundle. Select should move to a shadow-local native `<select>` once customizable `<select>` is Baseline.
+
 Revisit on changes to Zag's omitted-hidden-control assumptions, Popover API behavior, focus/dismissal regressions, theme inheritance, or supported-browser requirements. Multiple selection, remote integration, grouped options, and virtualization require explicit additional scope and evidence.
 
 ## References
@@ -57,5 +59,7 @@ Revisit on changes to Zag's omitted-hidden-control assumptions, Popover API beha
 - 2026-10-24: Linked the Date Picker successor integration in ADR-0009; the Select/Combobox contract is unchanged.
 
 - 2026-11-02: A disabled or removed selected option now reports an empty value but keeps the stored selection, which returns with its option. Select, Combobox, Segmented, Radio Group, and Toggle Group share one native-default option policy, replacing the earlier rule that an invalidated selection stays cleared.
+
+- 2026-11-03: Following ADR-0013, anchor positioning is the intended replacement for Floating UI, and native customizable `<select>` the intended Select once it is Baseline.
 
 - 2026-11-02: Dropped machine-specific test wording and the pointer to suite results in the project plan.

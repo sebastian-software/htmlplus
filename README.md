@@ -93,7 +93,7 @@ Actions stay real buttons: the [native Button family](docs/EVERYDAY-CONTROLS.md#
 
 ## Browser support
 
-html+ targets current stable Chromium, Firefox, and Safari. CI runs all three engines through Playwright. Exact minimum versions are unverified.
+html+ assumes every feature that is [Baseline](https://web-platform-dx.github.io/web-features/), newly or widely available, and adds no fallbacks for them. Features that are not yet Baseline are only used as progressive enhancement. [ADR-0013](docs/adr/0013-platform-first.md) records this floor. CI runs current stable Chromium, Firefox, and WebKit through Playwright.
 
 The elements rely on these platform features:
 

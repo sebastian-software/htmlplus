@@ -12,7 +12,7 @@ When a decision changes, edit the same record, update its date and change notes,
 | [0002](0002-css-styling-contract.md) | accepted | Semantic --hp- themes, shared surface depth, shadcn adapter, shadow parts, and opt-in native-field styling |
 | [0003](0003-specialized-native-inputs.md) | accepted | Separate canonical submission, preserve native edit history, and format IBAN/OTP presentation |
 | [0004](0004-composite-value-contracts.md) | accepted | Explicit units, boundary names, and selection identifiers |
-| [0005](0005-headless-interaction-logic.md) | accepted | Zag for fifteen interactions behind native custom elements |
+| [0005](0005-headless-interaction-logic.md) | accepted | Zag behind native custom elements, narrowed by ADR-0013 to behavior no Baseline feature covers |
 | [0006](0006-project-identity.md) | accepted | html+ is the project name and `hplus-` the element prefix; htmlplus.dev is its reserved domain, not live yet |
 | [0007](0007-component-application-boundary.md) | accepted | Reusable component behavior; application-owned data, business decisions, and workflows |
 | [0008](0008-selection-popups.md) | accepted | Zag single selection and shadow-local top-layer popups |
@@ -20,5 +20,6 @@ When a decision changes, edit the same record, update its date and change notes,
 | [0010](0010-calendar-date-ranges.md) | accepted | Two named date boundaries, visible partial state, and complete-range validation |
 | [0011](0011-functional-locale-context.md) | accepted | Inherited HTML language, Intl functional displays, and stable canonical date/number values |
 | [0012](0012-package-entry-points.md) | accepted | One registering import per element, unbundled modules for bundlers, and React 19 without wrappers |
+| [0013](0013-platform-first.md) | accepted | Current Baseline as the browser floor, platform first per element, and complete Zag bindings |
 
 Acceptance of a design constraint is distinct from implementation completion. Twenty-one form controls, Accordion, Tabs, Native Field, a native Button family, a live playground, and a tested static export are implemented; compatibility limits are documented in the project README.
