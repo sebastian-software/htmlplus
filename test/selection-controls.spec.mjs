@@ -71,7 +71,8 @@ test("combobox search invalidates the old identifier, filters, selects, and neve
   ]);
   await expect(input).toBeFocused();
   await input.fill("nowhere");
-  await expect(page.getByRole("status")).toHaveText("No options found.");
+  await expect(page.locator("#combo [part=empty]")).toHaveText("No options found.");
+  await expect(page.locator("#combo [part=empty]")).toHaveRole("status");
   await input.press("Enter");
   await input.press("Escape");
   await expect(input).toHaveValue("nowhere");
@@ -181,6 +182,21 @@ test("labels, descriptions, option changes, separate instances, and external for
   await expect.poll(() => page.locator("#select").evaluate((host) => host.value)).toBe("JP");
 });
 
+test("typing announces the option count, while only the empty state announces no options", async ({ page }) => {
+  await bare(page);
+  const input = page.locator("#combo input");
+  const announcement = page.locator("#combo [data-live-announcer][role=status]");
+  await input.click();
+  await input.press("ControlOrMeta+a");
+  await input.pressSequentially("ne", { delay: 50 });
+  await expect(announcement).toHaveText("1 option");
+  await input.pressSequentially("xyz", { delay: 50 });
+  await expect(page.locator("#combo [part=empty]")).toHaveText("No options found.");
+  // Zag announces results a second after typing stops.
+  await page.waitForTimeout(1_200);
+  await expect(announcement).toHaveText("");
+});
+
 test("native query editing retains undo and composition while the committed selection stays separate", async ({
   page,
 }) => {
@@ -205,7 +221,8 @@ test("native query editing retains undo and composition while the committed sele
     input.dispatchEvent(new CompositionEvent("compositionend", { bubbles: true, data: "日本" })),
   );
   await expect(input).toHaveValue("日本");
-  await expect(page.getByRole("status")).toHaveText("No options found.");
+  await expect(page.locator("#combo [part=empty]")).toHaveText("No options found.");
+  await expect(page.locator("#combo [part=empty]")).toHaveRole("status");
 });
 
 test("top-layer popups escape clipping, flip at viewport edges, dismiss, and preserve focus order", async ({

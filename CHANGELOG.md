@@ -29,6 +29,7 @@ User-visible changes to html+. No package has been published yet, so everything 
 
 ### Fixed
 
+- With Zag 1.47, Combobox announced "no results" twice. Its own empty state is now the only one, and the option count is announced as "1 option" or "3 options".
 - Number Input erased a value containing a separator on blur, and could read `1,5` as `15`.
 - An unusable inherited `lang` disabled date fields and blocked their form.
 - Password Input kept its plaintext in session history.
