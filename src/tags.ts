@@ -26,7 +26,7 @@ tagsTemplate.innerHTML = `<style>
   :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }
 </style><div part="control"><div part="tokens"></div><input part="input" type="text" autocomplete="off" placeholder="Add a tag…"></div>`;
 
-export class H6Tags extends HTMLElement {
+export class HPlusTags extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = [
     "value",
@@ -92,7 +92,7 @@ export class H6Tags extends HTMLElement {
   }
   set value(values: readonly string[]) {
     if (!Array.isArray(values) || !values.every((value) => typeof value === "string"))
-      throw new TypeError("h6-tags.value must be an array of strings.");
+      throw new TypeError("hplus-tags.value must be an array of strings.");
     this.#dirty = true;
     this.#values = uniqueTags(values);
     this.#input.value = "";

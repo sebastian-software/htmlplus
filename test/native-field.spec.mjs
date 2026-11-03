@@ -3,17 +3,17 @@ import { test, expect } from "playwright/test";
 const markup = (
   css = false,
 ) => `<!doctype html><html lang="en-US"><head><meta name="viewport" content="width=device-width,initial-scale=1">${css ? '<link rel="stylesheet" href="/dist/native.css">' : '<script type="module" src="/dist/src/index.js"></script>'}</head><body>
-<form id="form"><fieldset id="fields"><label for="email">Email</label><h6-field id="email-wrap"><input id="email" name="email" type="email" value="ada@example.test" placeholder="Email address" autocomplete="email" required></h6-field>
-<label for="note">Note</label><h6-field><textarea id="note" name="note" rows="3">Keep this draft.</textarea></h6-field>
-<label for="choice">Choice</label><h6-field><select id="choice" name="choice"><option value="a" selected>First option</option><option value="b">Second option</option></select></h6-field>
-<h6-field hidden><input name="hidden-wrapper" value="retained"></h6-field><h6-field><input id="hidden-control" name="hidden-control" value="retained" hidden></h6-field>
+<form id="form"><fieldset id="fields"><label for="email">Email</label><hplus-field id="email-wrap"><input id="email" name="email" type="email" value="ada@example.test" placeholder="Email address" autocomplete="email" required></hplus-field>
+<label for="note">Note</label><hplus-field><textarea id="note" name="note" rows="3">Keep this draft.</textarea></hplus-field>
+<label for="choice">Choice</label><hplus-field><select id="choice" name="choice"><option value="a" selected>First option</option><option value="b">Second option</option></select></hplus-field>
+<hplus-field hidden><input name="hidden-wrapper" value="retained"></hplus-field><hplus-field><input id="hidden-control" name="hidden-control" value="retained" hidden></hplus-field>
 </fieldset><button id="submit">Submit</button><button type="reset">Reset</button></form>
-<input id="unwrapped" aria-label="Unwrapped"><form id="external"></form><h6-field><input id="outside" name="outside" value="external" form="external" aria-label="Outside"></h6-field>
+<input id="unwrapped" aria-label="Unwrapped"><form id="external"></form><hplus-field><input id="outside" name="outside" value="external" form="external" aria-label="Outside"></hplus-field>
 <script>window.submissions=0;document.querySelector('#form').addEventListener('submit',event=>{event.preventDefault();submissions++});</script></body></html>`;
 async function fixture(page, css = false) {
   await page.route("**/native-fields", (route) => route.fulfill({ contentType: "text/html", body: markup(css) }));
   await page.goto("/native-fields");
-  if (!css) await page.waitForFunction(() => customElements.get("h6-field"));
+  if (!css) await page.waitForFunction(() => customElements.get("hplus-field"));
 }
 const entries = (page) => page.locator("#form").evaluate((form) => [...new FormData(form)]);
 
@@ -25,7 +25,7 @@ test("native fields keep their original nodes, labels, form owners, validation, 
   expect(
     await page
       .locator("#form")
-      .evaluate((form) => [...form.elements].some((element) => element.localName === "h6-field")),
+      .evaluate((form) => [...form.elements].some((element) => element.localName === "hplus-field")),
   ).toBe(false);
   expect(
     await page
@@ -62,7 +62,7 @@ test("native fields keep their original nodes, labels, form owners, validation, 
     ["outside", "external"],
   ]);
   await expect(page.locator("#hidden-control")).toBeHidden();
-  await expect(page.locator("h6-field[hidden]")).toBeHidden();
+  await expect(page.locator("hplus-field[hidden]")).toBeHidden();
 });
 
 test("built-in base, scoped overrides, placeholders, and shadcn tokens work without a page reset", async ({ page }) => {
@@ -82,7 +82,7 @@ test("built-in base, scoped overrides, placeholders, and shadcn tokens work with
   });
   await expect(page.locator("#email")).toHaveCSS("background-color", "rgb(239, 246, 255)");
   await expect(page.locator("#email")).toHaveCSS("border-radius", "16px");
-  await page.addStyleTag({ content: "h6-field > input { border-radius: 2px; }" });
+  await page.addStyleTag({ content: "hplus-field > input { border-radius: 2px; }" });
   await expect(page.locator("#email")).toHaveCSS("border-radius", "2px");
   expect(
     await page.locator("#unwrapped").evaluate((input) => ({
@@ -120,7 +120,7 @@ test("the opt-in stylesheet styles native fields and preserves their form behavi
     await page.getByRole("button", { name: "Reset", exact: true }).click();
     expect(await entries(page)).toEqual(before);
     await expect(page.locator("#hidden-control")).toBeHidden();
-    await expect(page.locator("h6-field[hidden]")).toBeHidden();
+    await expect(page.locator("hplus-field[hidden]")).toBeHidden();
     expect(await page.locator("#unwrapped").evaluate((input) => input.getBoundingClientRect().height)).not.toBe(40);
   } finally {
     await context.close();
@@ -128,7 +128,7 @@ test("the opt-in stylesheet styles native fields and preserves their form behavi
 });
 
 test("native recipes support light/dark, mobile, text scaling, focus, and forced colors", async ({ page }) => {
-  await page.goto("/demo/styling.html#h6-field");
+  await page.goto("/demo/styling.html#hplus-field");
   const base = page.getByRole("region", { name: "Base preview", exact: true });
   const variant = page.getByRole("region", { name: "Underlined fields preview", exact: true });
   const before = await base.locator("form").evaluate((form) => [...new FormData(form)]);

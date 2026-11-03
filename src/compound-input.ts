@@ -1,5 +1,5 @@
 import { fieldLabel, referencedText } from "./field-label.js";
-import type { H6TextField } from "./text-fields.js";
+import type { HPlusTextField } from "./text-fields.js";
 import { radius, surfaceShadow, theme } from "./theme.js";
 
 const compoundStyles = `
@@ -14,7 +14,7 @@ const compoundStyles = `
   svg { width: 1rem; height: 1rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
   :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }
 `;
-export function wrap(host: H6TextField, buttons: string): HTMLElement {
+export function wrap(host: HPlusTextField, buttons: string): HTMLElement {
   const root = host.shadowRoot!;
   const style = document.createElement("style");
   style.textContent = compoundStyles;
@@ -25,7 +25,7 @@ export function wrap(host: H6TextField, buttons: string): HTMLElement {
   root.append(style, control);
   return control;
 }
-export function label(host: H6TextField): void {
+export function label(host: HPlusTextField): void {
   host.input.setAttribute("aria-label", fieldLabel(host, host.labels, "Text field"));
   host.input.setAttribute("aria-description", referencedText(host, "aria-describedby"));
 }

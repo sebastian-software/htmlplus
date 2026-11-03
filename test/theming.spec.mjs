@@ -2,28 +2,28 @@ import { test, expect } from "playwright/test";
 
 const markup = `<!doctype html><html lang="en"><head><script type="module" src="/dist/src/index.js"></script></head><body>
 <form id="theme-form"><div id="scope">
-<h6-iban name="iban" value="DE89370400440532013000" aria-label="IBAN"></h6-iban>
-<h6-bic name="bic" value="COBADEFFXXX" aria-label="BIC"></h6-bic>
-<h6-otp name="code" value="004271" aria-label="Code"></h6-otp>
-<h6-duration name="duration" value="1h" aria-label="Duration"></h6-duration>
-<h6-interval name="budget" value="[1,2]" aria-label="Budget"></h6-interval>
-<h6-tags name="tags" value='["forms"]' aria-label="Tags"></h6-tags>
-<h6-switch name="updates" checked aria-label="Updates"></h6-switch>
-<h6-segmented name="delivery" value="a" aria-label="Delivery"><option value="a">A</option><option value="b">B</option></h6-segmented>
-<h6-toggle name="priority" pressed>Priority</h6-toggle>
-<h6-checkbox checked name="check" aria-label="Check">Check</h6-checkbox>
-<h6-radio-group name="radio" value="a" aria-label="Radio"><option value="a">A</option></h6-radio-group>
-<h6-toggle-group name="toggles" value='["a"]' aria-label="Toggles"><option value="a">A</option></h6-toggle-group>
-<h6-number-input name="number" value="2" aria-label="Number"></h6-number-input>
-<h6-password-input name="password" value="demo" aria-label="Password"></h6-password-input>
-<h6-tabs aria-label="Profile"><section data-value="a" data-label="Profile"><input name="display_name" value="Ada" aria-label="Name"></section></h6-tabs>
-<h6-accordion><section data-value="a" data-label="Details"><input name="note" value="Hello" aria-label="Note"></section></h6-accordion>
-<div id="nested"><h6-iban id="nested-iban" aria-label="Nested IBAN"></h6-iban></div>
+<hplus-iban name="iban" value="DE89370400440532013000" aria-label="IBAN"></hplus-iban>
+<hplus-bic name="bic" value="COBADEFFXXX" aria-label="BIC"></hplus-bic>
+<hplus-otp name="code" value="004271" aria-label="Code"></hplus-otp>
+<hplus-duration name="duration" value="1h" aria-label="Duration"></hplus-duration>
+<hplus-interval name="budget" value="[1,2]" aria-label="Budget"></hplus-interval>
+<hplus-tags name="tags" value='["forms"]' aria-label="Tags"></hplus-tags>
+<hplus-switch name="updates" checked aria-label="Updates"></hplus-switch>
+<hplus-segmented name="delivery" value="a" aria-label="Delivery"><option value="a">A</option><option value="b">B</option></hplus-segmented>
+<hplus-toggle name="priority" pressed>Priority</hplus-toggle>
+<hplus-checkbox checked name="check" aria-label="Check">Check</hplus-checkbox>
+<hplus-radio-group name="radio" value="a" aria-label="Radio"><option value="a">A</option></hplus-radio-group>
+<hplus-toggle-group name="toggles" value='["a"]' aria-label="Toggles"><option value="a">A</option></hplus-toggle-group>
+<hplus-number-input name="number" value="2" aria-label="Number"></hplus-number-input>
+<hplus-password-input name="password" value="demo" aria-label="Password"></hplus-password-input>
+<hplus-tabs aria-label="Profile"><section data-value="a" data-label="Profile"><input name="display_name" value="Ada" aria-label="Name"></section></hplus-tabs>
+<hplus-accordion><section data-value="a" data-label="Details"><input name="note" value="Hello" aria-label="Note"></section></hplus-accordion>
+<div id="nested"><hplus-iban id="nested-iban" aria-label="Nested IBAN"></hplus-iban></div>
 </div></form></body></html>`;
 async function bare(page) {
   await page.route("**/theme-controls", (route) => route.fulfill({ contentType: "text/html", body: markup }));
   await page.goto("/theme-controls");
-  await page.waitForFunction(() => document.querySelector("h6-tabs")?.shadowRoot?.querySelector("[role=tab]"));
+  await page.waitForFunction(() => document.querySelector("hplus-tabs")?.shadowRoot?.querySelector("[role=tab]"));
 }
 const data = (page) => page.locator("#theme-form").evaluate((form) => [...new FormData(form)]);
 
@@ -52,17 +52,17 @@ test("public theme tokens inherit through every shadow root and allow nested and
     "number-input",
     "password-input",
   ]) {
-    await expect(page.locator(`#scope > h6-${tag}`)).toHaveCSS("color", "rgb(18, 52, 86)");
+    await expect(page.locator(`#scope > hplus-${tag}`)).toHaveCSS("color", "rgb(18, 52, 86)");
   }
-  await expect(page.locator("#scope > h6-iban input")).toHaveCSS("background-color", "rgb(241, 245, 249)");
-  await expect(page.locator("#scope > h6-iban input")).toHaveCSS("border-radius", "16px");
+  await expect(page.locator("#scope > hplus-iban input")).toHaveCSS("background-color", "rgb(241, 245, 249)");
+  await expect(page.locator("#scope > hplus-iban input")).toHaveCSS("border-radius", "16px");
   await expect(page.locator("#nested-iban input")).toHaveCSS("background-color", "rgb(224, 242, 254)");
   await expect(page.locator("#nested-iban input")).toHaveCSS("border-radius", "8px");
   await expect(page.locator("#nested-iban input")).toHaveCSS("color", "rgb(12, 74, 110)");
   await page.addStyleTag({
     content: "#scope { --hp-shadow-inset: none; } #nested-iban { --hp-shadow-inset: inset 0 2px 3px rgb(0 0 0 / .2); }",
   });
-  await expect(page.locator("#scope > h6-iban input")).toHaveCSS("box-shadow", "none");
+  await expect(page.locator("#scope > hplus-iban input")).toHaveCSS("box-shadow", "none");
   await expect(page.locator("#nested-iban input")).toHaveCSS("box-shadow", /inset/);
   expect(await data(page)).toEqual(before);
 });
@@ -73,22 +73,22 @@ test("primary, accent, secondary, input, border, ring, and destructive retain di
     content:
       "#scope { --hp-primary:#065f46; --hp-primary-foreground:#ecfdf5; --hp-accent:#fef3c7; --hp-accent-foreground:#78350f; --hp-secondary:#dbeafe; --hp-secondary-foreground:#1e3a8a; --hp-border:#9333ea; --hp-input:#0369a1; --hp-ring:#c2410c; --hp-destructive:#be123c; }",
   });
-  const button = page.locator("h6-toggle button");
+  const button = page.locator("hplus-toggle button");
   await expect(button).toHaveCSS("background-color", "rgb(6, 95, 70)");
   await expect(button).toHaveCSS("color", "rgb(236, 253, 245)");
-  await expect(page.locator("h6-switch [part=track]")).toHaveCSS("background-color", "rgb(6, 95, 70)");
-  await expect(page.locator("h6-tags [part=tag]")).toHaveCSS("background-color", "rgb(219, 234, 254)");
-  await expect(page.locator("h6-tags [part=tag]")).toHaveCSS("color", "rgb(30, 58, 138)");
-  await expect(page.locator("#scope > h6-iban input")).toHaveCSS("border-color", "rgb(3, 105, 161)");
-  await expect(page.locator("h6-accordion [part=item]")).toHaveCSS("border-bottom-color", "rgb(147, 51, 234)");
+  await expect(page.locator("hplus-switch [part=track]")).toHaveCSS("background-color", "rgb(6, 95, 70)");
+  await expect(page.locator("hplus-tags [part=tag]")).toHaveCSS("background-color", "rgb(219, 234, 254)");
+  await expect(page.locator("hplus-tags [part=tag]")).toHaveCSS("color", "rgb(30, 58, 138)");
+  await expect(page.locator("#scope > hplus-iban input")).toHaveCSS("border-color", "rgb(3, 105, 161)");
+  await expect(page.locator("hplus-accordion [part=item]")).toHaveCSS("border-bottom-color", "rgb(147, 51, 234)");
   await button.click();
   await button.hover();
   await expect(button).toHaveCSS("background-color", "rgb(254, 243, 199)");
   await expect(button).toHaveCSS("color", "rgb(120, 53, 15)");
-  const editor = page.locator("#scope > h6-iban input");
+  const editor = page.locator("#scope > hplus-iban input");
   await editor.focus();
   await expect(editor).toHaveCSS("outline-color", "rgb(194, 65, 12)");
-  await page.locator("#scope > h6-iban").evaluate((host) => {
+  await page.locator("#scope > hplus-iban").evaluate((host) => {
     host.setCustomValidity("Account rejected");
     host.reportValidity();
   });
@@ -100,19 +100,19 @@ test("shadcn adapter resolves nested generic themes locally and preserves prefix
   await page.addStyleTag({ url: "/dist/shadcn.css" });
   await page.locator("#scope").evaluate((scope) => scope.classList.add("hp-shadcn"));
   await page
-    .locator("#scope > h6-toggle-group")
+    .locator("#scope > hplus-toggle-group")
     .evaluate((control) => control.style.setProperty("--primary", "#065f46"));
-  await expect(page.locator("#scope > h6-toggle-group [part~=selected-option]")).toHaveCSS(
+  await expect(page.locator("#scope > hplus-toggle-group [part~=selected-option]")).toHaveCSS(
     "background-color",
     "rgb(6, 95, 70)",
   );
   // An absent application token must leave the component fallback usable.
-  await expect(page.locator("#scope > h6-iban input")).toHaveCSS("background-color", "rgb(255, 255, 255)");
+  await expect(page.locator("#scope > hplus-iban input")).toHaveCSS("background-color", "rgb(255, 255, 255)");
   await page.addStyleTag({
     content:
       ":root { --background:#ffffff; --foreground:#171717; --primary:#166534; --radius:10px; } #nested { --background:oklch(0.205 0 0); --foreground:#fafafa; --radius:20px; }",
   });
-  await expect(page.locator("h6-toggle button")).toHaveCSS("background-color", "rgb(22, 101, 52)");
+  await expect(page.locator("hplus-toggle button")).toHaveCSS("background-color", "rgb(22, 101, 52)");
   await expect(page.locator("#nested-iban input")).toHaveCSS("background-color", "oklch(0.205 0 0)");
   await expect(page.locator("#nested-iban input")).toHaveCSS("color", "rgb(250, 250, 250)");
   await expect(page.locator("#nested-iban input")).toHaveCSS("border-radius", "16px");
@@ -140,17 +140,17 @@ test("radius scales derive from local bases and allow zero and explicit size ove
     scope.style.setProperty("--radius", "10px");
     scope.style.setProperty("--radius-md", "99px");
   });
-  await expect(page.locator("#scope > h6-iban input")).toHaveCSS("border-radius", "8px");
-  await expect(page.locator("h6-tabs [part=list]")).toHaveCSS("border-radius", "10px");
-  await expect(page.locator("h6-tabs [part~=tab]")).toHaveCSS("border-radius", "6px");
+  await expect(page.locator("#scope > hplus-iban input")).toHaveCSS("border-radius", "8px");
+  await expect(page.locator("hplus-tabs [part=list]")).toHaveCSS("border-radius", "10px");
+  await expect(page.locator("hplus-tabs [part~=tab]")).toHaveCSS("border-radius", "6px");
   await page.locator("#scope").evaluate((scope) => scope.style.setProperty("--hp-radius", "20px"));
-  await expect(page.locator("#scope > h6-iban input")).toHaveCSS("border-radius", "16px");
-  await expect(page.locator("h6-tags [part=tag]")).toHaveCSS("border-radius", "12px");
+  await expect(page.locator("#scope > hplus-iban input")).toHaveCSS("border-radius", "16px");
+  await expect(page.locator("hplus-tags [part=tag]")).toHaveCSS("border-radius", "12px");
   await page.locator("#scope").evaluate((scope) => scope.style.setProperty("--hp-radius", "0px"));
-  await expect(page.locator("h6-tags [part=tag]")).toHaveCSS("border-radius", "0px");
-  await page.locator("h6-tags").evaluate((host) => host.style.setProperty("--hp-radius-sm", "3px"));
-  await expect(page.locator("h6-tags [part=tag]")).toHaveCSS("border-radius", "3px");
-  await expect(page.locator("h6-tags [part=control]")).toHaveCSS("border-radius", "0px");
+  await expect(page.locator("hplus-tags [part=tag]")).toHaveCSS("border-radius", "0px");
+  await page.locator("hplus-tags").evaluate((host) => host.style.setProperty("--hp-radius-sm", "3px"));
+  await expect(page.locator("hplus-tags [part=tag]")).toHaveCSS("border-radius", "3px");
+  await expect(page.locator("hplus-tags [part=control]")).toHaveCSS("border-radius", "0px");
 });
 
 test("light, dark, utility, and surface examples preserve edited form data and work on mobile", async ({
@@ -170,23 +170,23 @@ test("light, dark, utility, and surface examples preserve edited form data and w
       await page.getByLabel("Appearance").selectOption(mode);
     }
     await expect(page.locator("html")).toHaveCSS("color-scheme", mode === "dark" ? "dark" : "light");
-    await expect(page.locator("h6-otp input")).toHaveValue("001234");
+    await expect(page.locator("hplus-otp input")).toHaveValue("001234");
     for (const surface of ["flat", "layered"]) {
       await page.getByRole("combobox", { name: "Surface", exact: true }).selectOption(surface);
-      await expect(page.locator("h6-otp [part~=slot]").first()).toHaveCSS(
+      await expect(page.locator("hplus-otp [part~=slot]").first()).toHaveCSS(
         "box-shadow",
         surface === "flat" ? "none" : /inset/,
       );
       expect(await page.locator("#demo-form").evaluate((form) => [...new FormData(form)])).toEqual(before);
     }
-    await expect(page.locator("h6-toggle button")).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator("hplus-toggle button")).toHaveAttribute("aria-pressed", "true");
     await page.setViewportSize({ width: 390, height: 844 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
   await page.locator(".theme-source summary").click();
   await expect(page.locator("#theme-code")).toContainText(".hp-dark");
   expect(await page.locator("#theme-code").textContent()).toBe(await (await request.get("/demo/themes.css")).text());
-  await page.goto("/demo/styling.html#h6-tags");
+  await page.goto("/demo/styling.html#hplus-tags");
   await page.getByLabel("Appearance").selectOption("dark");
   await expect(page.locator(".recipe-preview").first().locator("[part=control]")).toHaveCSS(
     "background-color",

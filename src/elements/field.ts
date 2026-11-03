@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Field } from "../native-field.js";
+import { HPlusField } from "../native-field.js";
 
-export { H6Field };
+export { HPlusField };
 
-define("h6-field", H6Field);
+define("hplus-field", HPlusField);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-field": H6Field;
+    "hplus-field": HPlusField;
   }
 }

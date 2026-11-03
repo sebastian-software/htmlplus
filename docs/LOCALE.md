@@ -11,10 +11,10 @@ An inherited `lang` that is malformed or unsupported by the browser's Intl data 
 ```html
 <html lang="de-DE">
   <!-- German numeric order and separators, inherited from HTML. -->
-  <h6-date-picker name="delivery" value="2028-02-29"></h6-date-picker>
-  <h6-date-range-picker name="period" value='["2028-02-29","2028-03-02"]'></h6-date-range-picker>
+  <hplus-date-picker name="delivery" value="2028-02-29"></hplus-date-picker>
+  <hplus-date-range-picker name="period" value='["2028-02-29","2028-03-02"]'></hplus-date-range-picker>
   <!-- An explicit locale overrides inherited language. -->
-  <h6-date-picker name="invoice" value="2028-02-29" locale="en-GB"></h6-date-picker>
+  <hplus-date-picker name="invoice" value="2028-02-29" locale="en-GB"></hplus-date-picker>
 </html>
 ```
 

@@ -39,7 +39,7 @@ interface Entry {
   slot: HTMLSlotElement;
 }
 
-export class H6Accordion extends HTMLElement {
+export class HPlusAccordion extends HTMLElement {
   static observedAttributes = ["value", "multiple", "disabled", "dir", "heading-level"];
   #root = this.attachShadow({ mode: "open" });
   #container: HTMLDivElement;
@@ -124,7 +124,7 @@ export class H6Accordion extends HTMLElement {
   }
   set value(value: string[]) {
     if (!Array.isArray(value) || !value.every((item) => typeof item === "string"))
-      throw new TypeError("h6-accordion.value must be an array of strings.");
+      throw new TypeError("hplus-accordion.value must be an array of strings.");
     this.#setValue(value, false);
   }
   get multiple(): boolean {

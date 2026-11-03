@@ -2,14 +2,14 @@ import { test, expect } from "playwright/test";
 
 const markup = `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><script type="module" src="/dist/src/index.js"></script></head><body>
 <form id="numeric-form"><fieldset id="fields">
-<label for="level">Output level</label><h6-slider id="level" name="level" min="0" max="100" step="5" value="20"></h6-slider>
-<label for="price">Price filter</label><h6-range-slider id="price" name="price" value="[20,80]" step="5"></h6-range-slider>
-<label for="rating">Experience</label><h6-rating id="rating" name="rating" required></h6-rating>
+<label for="level">Output level</label><hplus-slider id="level" name="level" min="0" max="100" step="5" value="20"></hplus-slider>
+<label for="price">Price filter</label><hplus-range-slider id="price" name="price" value="[20,80]" step="5"></hplus-range-slider>
+<label for="rating">Experience</label><hplus-rating id="rating" name="rating" required></hplus-rating>
 </fieldset><button type="submit">Submit</button></form></body></html>`;
 async function bare(page) {
   await page.route("**/numeric-controls", (route) => route.fulfill({ contentType: "text/html", body: markup }));
   await page.goto("/numeric-controls");
-  await page.waitForFunction(() => document.querySelector("h6-rating")?.shadowRoot?.querySelector("[role=radio]"));
+  await page.waitForFunction(() => document.querySelector("hplus-rating")?.shadowRoot?.querySelector("[role=radio]"));
   await page.evaluate(() => {
     window.events = [];
     window.submits = 0;
@@ -89,7 +89,7 @@ test("range thumbs retain identities, stop at collision, and submit explicitly n
   ]);
   await page.locator("#price").evaluate((host) => host.removeAttribute("name"));
   expect((await entries(page)).some(([key]) => ["from", "to"].includes(key))).toBe(false);
-  expect(await page.locator("h6-slider input, h6-range-slider input, h6-rating input").count()).toBe(0);
+  expect(await page.locator("hplus-slider input, hplus-range-slider input, hplus-rating input").count()).toBe(0);
 });
 
 test("rating separates unanswered, hover preview, committed score, clear, and required validation", async ({
@@ -143,7 +143,7 @@ test("disabled fieldsets, readonly controls, external forms, restoration, and re
   await page.getByRole("radio", { name: "5 of 5", exact: true }).click();
   expect(await page.locator("#rating").evaluate((host) => host.value)).toBe(4);
   await page.evaluate(() => {
-    for (const tag of ["h6-slider", "h6-range-slider", "h6-rating"]) {
+    for (const tag of ["hplus-slider", "hplus-range-slider", "hplus-rating"]) {
       const host = document.querySelector(tag);
       host.readOnly = false;
       host.remove();
@@ -313,10 +313,10 @@ test("all palette and appearance combinations preserve form values and style new
       await page.getByLabel("Palette").selectOption(palette);
       await expect(page.locator("html")).toHaveCSS("color-scheme", mode === "dark" ? "dark" : "light");
       const color = await page
-        .locator("h6-slider [part=range]")
+        .locator("hplus-slider [part=range]")
         .evaluate((element) => getComputedStyle(element).backgroundColor);
       if (mode === "base") colors.add(color);
-      const ratios = await page.locator("h6-slider [part=range]").evaluate((element) => {
+      const ratios = await page.locator("hplus-slider [part=range]").evaluate((element) => {
         const canvas = document.createElement("canvas");
         canvas.width = canvas.height = 1;
         const ctx = canvas.getContext("2d");
@@ -347,7 +347,7 @@ test("all palette and appearance combinations preserve form values and style new
   expect(colors.size).toBe(6);
   await page.setViewportSize({ width: 390, height: 844 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.goto("/demo/styling.html#h6-slider");
+  await page.goto("/demo/styling.html#hplus-slider");
   await page.getByLabel("Appearance").selectOption("dark");
   await page.getByLabel("Palette").selectOption("green");
   for (const name of ["Slider", "Range Slider", "Rating"]) {

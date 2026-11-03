@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Checkbox } from "../checkbox.js";
+import { HPlusCheckbox } from "../checkbox.js";
 
-export { H6Checkbox };
+export { HPlusCheckbox };
 
-define("h6-checkbox", H6Checkbox);
+define("hplus-checkbox", HPlusCheckbox);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-checkbox": H6Checkbox;
+    "hplus-checkbox": HPlusCheckbox;
   }
 }

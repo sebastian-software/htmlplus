@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Tags } from "../tags.js";
+import { HPlusTags } from "../tags.js";
 
-export { H6Tags };
+export { HPlusTags };
 
-define("h6-tags", H6Tags);
+define("hplus-tags", HPlusTags);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-tags": H6Tags;
+    "hplus-tags": HPlusTags;
   }
 }

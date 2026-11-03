@@ -1,6 +1,6 @@
 import { test, expect } from "playwright/test";
 const markup = `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width,initial-scale=1"><script type="module" src="/dist/src/index.js"></script><style>body{font:14px system-ui;margin:24px}form{max-width:340px}label{display:block;margin:12px 0}fieldset{border:0;padding:0;margin:0}</style></head><body>
-<form id="form"><fieldset id="fields"><label for="date">Delivery date</label><p id="hint">Choose a delivery day.</p><h6-date-picker id="date" name="date" value="2028-02-29" min="2028-02-01" max="2028-12-31" required aria-describedby="hint"></h6-date-picker></fieldset><button id="after" type="button">After date</button><button id="submit">Submit</button></form><script>window.events=[];window.submits=0;for(const type of ['input','change'])document.querySelector('form').addEventListener(type,e=>events.push(type));document.querySelector('form').addEventListener('submit',e=>{e.preventDefault();submits++});</script></body></html>`;
+<form id="form"><fieldset id="fields"><label for="date">Delivery date</label><p id="hint">Choose a delivery day.</p><hplus-date-picker id="date" name="date" value="2028-02-29" min="2028-02-01" max="2028-12-31" required aria-describedby="hint"></hplus-date-picker></fieldset><button id="after" type="button">After date</button><button id="submit">Submit</button></form><script>window.events=[];window.submits=0;for(const type of ['input','change'])document.querySelector('form').addEventListener(type,e=>events.push(type));document.querySelector('form').addEventListener('submit',e=>{e.preventDefault();submits++});</script></body></html>`;
 async function bare(page) {
   await page.route("**/date-controls", (route) => route.fulfill({ contentType: "text/html", body: markup }));
   await page.goto("/date-controls");
@@ -15,7 +15,7 @@ test("calendar selection, keyboard days/months/years, clearing, and focus share 
 }) => {
   await bare(page);
   expect(await entries(page)).toEqual([["date", "2028-02-29"]]);
-  expect(await page.locator("h6-date-picker input[name],input[type=hidden]").count()).toBe(0);
+  expect(await page.locator("hplus-date-picker input[name],input[type=hidden]").count()).toBe(0);
   await open(page);
   await expect(page.getByRole("dialog", { name: "Delivery date calendar" })).toBeVisible();
   await expect(day(page, "2028-02-29")).toBeFocused();
@@ -215,7 +215,7 @@ test("popup keyboard entry, boundaries, clipping, dismissal, and labels stay sco
 });
 
 test("recipes theme the calendar in light and dark, preserve form data, and fit mobile", async ({ page }) => {
-  await page.goto("/demo/styling.html#h6-date-picker");
+  await page.goto("/demo/styling.html#hplus-date-picker");
   const before = await page
     .locator(".recipe-form")
     .evaluateAll((forms) => forms.map((form) => [...new FormData(form)]));
@@ -262,11 +262,11 @@ test("invalid-field revelation and nested shadcn popup themes preserve native fo
     form.classList.add("hp-shadcn");
     form.style.setProperty("--popover", "#fef3c7");
     form.style.setProperty("--popover-foreground", "#78350f");
-    const tabs = document.createElement("h6-tabs");
+    const tabs = document.createElement("hplus-tabs");
     tabs.setAttribute("aria-label", "Delivery details");
     tabs.innerHTML =
       '<section data-value="first" data-label="Overview">Overview</section><section data-value="second" data-label="Schedule"></section>';
-    const date = form.querySelector("h6-date-picker");
+    const date = form.querySelector("hplus-date-picker");
     date.clear();
     tabs.children[1].append(date);
     form.prepend(tabs);

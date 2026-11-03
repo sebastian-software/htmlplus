@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6DatePicker } from "../date-picker.js";
+import { HPlusDatePicker } from "../date-picker.js";
 
-export { H6DatePicker };
+export { HPlusDatePicker };
 
-define("h6-date-picker", H6DatePicker);
+define("hplus-date-picker", HPlusDatePicker);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-date-picker": H6DatePicker;
+    "hplus-date-picker": HPlusDatePicker;
   }
 }

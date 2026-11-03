@@ -1,12 +1,12 @@
 # Date Picker
 
-`h6-date-picker` combines a native text editor, Zag 1.46.0 calendar behavior, and native form association. It selects one Gregorian calendar date without a time of day or a time zone. Applications own availability checks and the workflow around that date.
+`hplus-date-picker` combines a native text editor, Zag 1.46.0 calendar behavior, and native form association. It selects one Gregorian calendar date without a time of day or a time zone. Applications own availability checks and the workflow around that date.
 
 ```html
 <label for="delivery-date">Delivery date</label>
-<h6-date-picker id="delivery-date" name="delivery_date"
+<hplus-date-picker id="delivery-date" name="delivery_date"
   value="2026-10-28" min="2026-10-01" max="2027-12-31"
-  locale="en-US" required></h6-date-picker>
+  locale="en-US" required></hplus-date-picker>
 ```
 
 The example displays `10/28/2026` and contributes `delivery_date=2026-10-28` to FormData. Open its calendar with the calendar button, Alt+ArrowDown, or F4. Use the heading to switch between day, month, and year views. Arrow keys, Home/End, PageUp/PageDown, and Enter navigate and select through Zag. Shift+PageUp/PageDown changes larger periods. Escape dismisses the popup. Calendar selection returns focus to the calendar button; Clear and an external label focus the editor.

@@ -55,7 +55,7 @@ const rows = await Promise.all(names.map(async (name) => ({ name, ...(await meas
 rows.sort((a, b) => a.gzipped - b.gzipped);
 const all = { name: "all", ...(await measure("src/index.ts")) };
 const row = ({ name, minified, gzipped, own }) =>
-  `| ${name === "all" ? "All elements" : `\`h6-${name}\``} | ${kilobytes(minified)} | ${kilobytes(gzipped)} | ${own}% |`;
+  `| ${name === "all" ? "All elements" : `\`hplus-${name}\``} | ${kilobytes(minified)} | ${kilobytes(gzipped)} | ${own}% |`;
 
 const table = [
   "# Element sizes",
@@ -82,7 +82,7 @@ if (check) {
   // Compression output varies by platform, so only minified bytes decide whether the table is stale.
   const current = await readFile(output, "utf8").catch(() => "");
   for (const item of [...rows, all]) {
-    const label = item.name === "all" ? "All elements" : `\`h6-${item.name}\``;
+    const label = item.name === "all" ? "All elements" : `\`hplus-${item.name}\``;
     if (!current.includes(`| ${label} | ${kilobytes(item.minified)} |`)) {
       failed = true;
       console.error(`docs/SIZES.md is out of date for ${label}. Run npm run docs:sizes.`);

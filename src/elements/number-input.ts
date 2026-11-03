@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6NumberInput } from "../number-input.js";
+import { HPlusNumberInput } from "../number-input.js";
 
-export { H6NumberInput };
+export { HPlusNumberInput };
 
-define("h6-number-input", H6NumberInput);
+define("hplus-number-input", HPlusNumberInput);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-number-input": H6NumberInput;
+    "hplus-number-input": HPlusNumberInput;
   }
 }

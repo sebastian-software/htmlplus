@@ -16,6 +16,7 @@ User-visible changes to html+. No package has been published yet, so everything 
 
 ### Changed
 
+- Elements use the `hplus-` prefix instead of `h6-`, such as `<hplus-select>`, and classes use `HPlus` instead of `H6`, such as `HPlusSelect`. There are no aliases for the old names.
 - Assigning the value a focused editor already holds no longer rewrites its text, so controlled frameworks keep the caret, undo, and drafts.
 - Modules no longer expose unregistered classes at `dist/src/<name>.js` as an API. Import `htmlplus/<name>`.
 - Enter in a text editor now submits the form like a native field.

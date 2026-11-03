@@ -1,6 +1,6 @@
 import "../src/elements/switch.js";
 import "../src/elements/tags.js";
-import { H6Iban } from "../src/elements/iban.js";
+import { HPlusIban } from "../src/elements/iban.js";
 
 const form = document.querySelector<HTMLFormElement>("#sheet-form")!;
 const rows = document.querySelector<HTMLElement>("#result-rows")!;
@@ -19,9 +19,9 @@ function show(): void {
       return row;
     }),
   );
-  const invalid = Array.from(form.elements).find((element) => element instanceof H6Iban && !element.validity.valid) as
-    | H6Iban
-    | undefined;
+  const invalid = Array.from(form.elements).find(
+    (element) => element instanceof HPlusIban && !element.validity.valid,
+  ) as HPlusIban | undefined;
   status.toggleAttribute("data-invalid", Boolean(invalid));
   status.textContent = invalid ? `A submit would be blocked: ${invalid.validationMessage}` : "All fields valid.";
 }

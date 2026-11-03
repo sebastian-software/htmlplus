@@ -41,68 +41,68 @@
             <legend class="visually-hidden">Component examples</legend>
             <p class="field-section">01 <span>State & sections</span></p>
             <div class="field">
-              <div class="field-heading"><span class="component-label">Toggle</span><a class="recipe-link" href="./styling.html#h6-toggle" aria-label="Style h6-toggle"><code>&lt;h6-toggle&gt;</code></a></div>
-              <h6-toggle id="priority-field" name="priority" value="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg>Priority handling</h6-toggle>
+              <div class="field-heading"><span class="component-label">Toggle</span><a class="recipe-link" href="./styling.html#hplus-toggle" aria-label="Style hplus-toggle"><code>&lt;hplus-toggle&gt;</code></a></div>
+              <hplus-toggle id="priority-field" name="priority" value="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/></svg>Priority handling</hplus-toggle>
               <p class="feedback">A pressed button submits its value. Try Space or Enter.</p>
             </div>
             <div class="field">
-              <div class="field-heading"><span class="component-label">Contact details</span><a class="recipe-link" href="./styling.html#h6-tabs" aria-label="Style h6-tabs"><code>&lt;h6-tabs&gt;</code></a></div>
-              <h6-tabs id="contact-tabs" value="profile" aria-label="Contact details">
+              <div class="field-heading"><span class="component-label">Contact details</span><a class="recipe-link" href="./styling.html#hplus-tabs" aria-label="Style hplus-tabs"><code>&lt;hplus-tabs&gt;</code></a></div>
+              <hplus-tabs id="contact-tabs" value="profile" aria-label="Contact details">
                 <section data-value="profile" data-label="Profile">
-                  <label class="native-field">Display name<h6-field><input name="display_name" value="Ada Lovelace" required></h6-field></label>
+                  <label class="native-field">Display name<hplus-field><input name="display_name" value="Ada Lovelace" required></hplus-field></label>
                 </section>
                 <section data-value="receipts" data-label="Receipts">
-                  <label class="native-field">Receipt email<h6-field><input name="receipt_email" type="email" value="ada@example.test" required></h6-field></label>
+                  <label class="native-field">Receipt email<hplus-field><input name="receipt_email" type="email" value="ada@example.test" required></hplus-field></label>
                 </section>
-              </h6-tabs>
+              </hplus-tabs>
               <p class="feedback">Both panels contribute their fields. Arrow keys move between tabs.</p>
             </div>
             <div class="field">
-              <div class="field-heading"><span class="component-label">Delivery instructions</span><a class="recipe-link" href="./styling.html#h6-accordion" aria-label="Style h6-accordion"><code>&lt;h6-accordion&gt;</code></a></div>
-              <h6-accordion id="delivery-accordion" value='["delivery"]'>
+              <div class="field-heading"><span class="component-label">Delivery instructions</span><a class="recipe-link" href="./styling.html#hplus-accordion" aria-label="Style hplus-accordion"><code>&lt;hplus-accordion&gt;</code></a></div>
+              <hplus-accordion id="delivery-accordion" value='["delivery"]'>
                 <section data-value="delivery" data-label="Delivery">
-                  <label class="native-field">Delivery note<h6-field><input name="delivery_note" value="Ring the bell" required></h6-field></label>
+                  <label class="native-field">Delivery note<hplus-field><input name="delivery_note" value="Ring the bell" required></hplus-field></label>
                 </section>
                 <section data-value="gift" data-label="Gift">
-                  <label class="native-field">Gift message<h6-field><input name="gift_message" value="Enjoy your gift!"></h6-field></label>
+                  <label class="native-field">Gift message<hplus-field><input name="gift_message" value="Enjoy your gift!"></hplus-field></label>
                 </section>
-              </h6-accordion>
+              </hplus-accordion>
               <p class="feedback">Closed sections keep their form values. Invalid fields reveal their section.</p>
             </div>
             <p class="field-section">02 <span>Identifiers & verification</span></p>
             <div class="field">
-              <div class="field-heading"><label for="iban-field">IBAN</label><a class="recipe-link" href="./styling.html#h6-iban" aria-label="Style h6-iban"><code>&lt;h6-iban&gt;</code></a></div>
-              <h6-iban id="iban-field" name="iban" value="DE89370400440532013000" placeholder="DE89 3704 0044 0532 0130 00" aria-describedby="iban-feedback" required></h6-iban>
+              <div class="field-heading"><label for="iban-field">IBAN</label><a class="recipe-link" href="./styling.html#hplus-iban" aria-label="Style hplus-iban"><code>&lt;hplus-iban&gt;</code></a></div>
+              <hplus-iban id="iban-field" name="iban" value="DE89370400440532013000" placeholder="DE89 3704 0044 0532 0130 00" aria-describedby="iban-feedback" required></hplus-iban>
               <p class="feedback" id="iban-feedback">Country format and checksum validation.</p>
             </div>
 
             <div class="paired-fields">
               <div class="field">
-                <div class="field-heading"><label for="bic-field">BIC / SWIFT</label><a class="recipe-link" href="./styling.html#h6-bic" aria-label="Style h6-bic"><code>&lt;h6-bic&gt;</code></a></div>
-                <h6-bic id="bic-field" name="bic" value="COBADEFFXXX" placeholder="COBADEFFXXX" aria-describedby="bic-feedback"></h6-bic>
+                <div class="field-heading"><label for="bic-field">BIC / SWIFT</label><a class="recipe-link" href="./styling.html#hplus-bic" aria-label="Style hplus-bic"><code>&lt;hplus-bic&gt;</code></a></div>
+                <hplus-bic id="bic-field" name="bic" value="COBADEFFXXX" placeholder="COBADEFFXXX" aria-describedby="bic-feedback"></hplus-bic>
                 <p class="feedback" id="bic-feedback">8 or 11 characters.</p>
               </div>
               <div class="field">
-                <div class="field-heading"><label for="otp-field">Verification code</label><a class="recipe-link" href="./styling.html#h6-otp" aria-label="Style h6-otp"><code>&lt;h6-otp&gt;</code></a></div>
-                <h6-otp length="6" id="otp-field" name="code" value="004271" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" placeholder="000000" aria-describedby="otp-feedback" required></h6-otp>
+                <div class="field-heading"><label for="otp-field">Verification code</label><a class="recipe-link" href="./styling.html#hplus-otp" aria-label="Style hplus-otp"><code>&lt;hplus-otp&gt;</code></a></div>
+                <hplus-otp length="6" id="otp-field" name="code" value="004271" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" placeholder="000000" aria-describedby="otp-feedback" required></hplus-otp>
                 <p class="feedback" id="otp-feedback">A six-digit code, including leading zeros.</p>
               </div>
             </div>
 
             <p class="field-section" id="selection-examples">03 <span>Options & search</span></p>
             <div class="field">
-              <div class="field-heading"><label for="shipping-field">Shipping method</label><a class="recipe-link" href="./styling.html#h6-select" aria-label="Style h6-select"><code>&lt;h6-select&gt;</code></a></div>
-              <h6-select id="shipping-field" name="shipping" value="standard" aria-describedby="shipping-feedback" required>
+              <div class="field-heading"><label for="shipping-field">Shipping method</label><a class="recipe-link" href="./styling.html#hplus-select" aria-label="Style hplus-select"><code>&lt;hplus-select&gt;</code></a></div>
+              <hplus-select id="shipping-field" name="shipping" value="standard" aria-describedby="shipping-feedback" required>
                 <option value="economy">Economy · 5–7 days</option>
                 <option value="standard">Standard · 2–3 days</option>
                 <option value="express">Express · next day</option>
                 <option value="pickup" disabled>Pickup · unavailable</option>
-              </h6-select>
+              </hplus-select>
               <p class="feedback" id="shipping-feedback">Choose a label; the form receives its identifier. Clear leaves it unanswered.</p>
             </div>
             <div class="field">
-              <div class="field-heading"><label for="country-field">Destination country</label><a class="recipe-link" href="./styling.html#h6-combobox" aria-label="Style h6-combobox"><code>&lt;h6-combobox&gt;</code></a></div>
-              <h6-combobox id="country-field" name="country" value="DE" placeholder="Search countries…" aria-describedby="country-feedback" required>
+              <div class="field-heading"><label for="country-field">Destination country</label><a class="recipe-link" href="./styling.html#hplus-combobox" aria-label="Style hplus-combobox"><code>&lt;hplus-combobox&gt;</code></a></div>
+              <hplus-combobox id="country-field" name="country" value="DE" placeholder="Search countries…" aria-describedby="country-feedback" required>
                 <option value="AT">Austria</option>
                 <option value="BE">Belgium</option>
                 <option value="FR">France</option>
@@ -111,115 +111,115 @@
                 <option value="NL">Netherlands</option>
                 <option value="GB">United Kingdom</option>
                 <option value="US">United States</option>
-              </h6-combobox>
+              </hplus-combobox>
               <p class="feedback" id="country-feedback">Type to filter, then choose. Search text alone contributes no form entry.</p>
             </div>
             <div class="field" id="date-example">
-              <div class="field-heading"><label for="date-field">Delivery date</label><a class="recipe-link" href="./styling.html#h6-date-picker" aria-label="Style h6-date-picker"><code>&lt;h6-date-picker&gt;</code></a></div>
-              <h6-date-picker id="date-field" name="delivery_date" value="2026-10-28" min="2026-10-01" max="2027-12-31" aria-describedby="date-feedback" required></h6-date-picker>
+              <div class="field-heading"><label for="date-field">Delivery date</label><a class="recipe-link" href="./styling.html#hplus-date-picker" aria-label="Style hplus-date-picker"><code>&lt;hplus-date-picker&gt;</code></a></div>
+              <hplus-date-picker id="date-field" name="delivery_date" value="2026-10-28" min="2026-10-01" max="2027-12-31" aria-describedby="date-feedback" required></hplus-date-picker>
               <p class="feedback" id="date-feedback">Enter MM/DD/YYYY or choose a day. The form receives YYYY-MM-DD without a time zone.</p>
             </div>
             <div class="field" id="date-range-example">
-              <div class="field-heading"><label for="date-range-field">Travel period</label><a class="recipe-link" href="./styling.html#h6-date-range-picker" aria-label="Style h6-date-range-picker"><code>&lt;h6-date-range-picker&gt;</code></a></div>
-              <h6-date-range-picker id="date-range-field" name="period" value='["2026-10-28","2026-11-03"]' min="2026-10-01" max="2027-12-31" aria-describedby="date-range-feedback" required></h6-date-range-picker>
+              <div class="field-heading"><label for="date-range-field">Travel period</label><a class="recipe-link" href="./styling.html#hplus-date-range-picker" aria-label="Style hplus-date-range-picker"><code>&lt;hplus-date-range-picker&gt;</code></a></div>
+              <hplus-date-range-picker id="date-range-field" name="period" value='["2026-10-28","2026-11-03"]' min="2026-10-01" max="2027-12-31" aria-describedby="date-range-feedback" required></hplus-date-range-picker>
               <p class="feedback" id="date-range-feedback">Choose two days or type both dates. The form receives period.start and period.end as YYYY-MM-DD.</p>
             </div>
             <p class="field-section">04 <span>Numeric choices</span></p>
             <div class="field">
-              <div class="field-heading"><label for="volume-field">Volume</label><a class="recipe-link" href="./styling.html#h6-slider" aria-label="Style h6-slider"><code>&lt;h6-slider&gt;</code></a></div>
-              <h6-slider id="volume-field" name="volume" value="35" min="0" max="100" step="5" aria-describedby="volume-feedback"></h6-slider>
+              <div class="field-heading"><label for="volume-field">Volume</label><a class="recipe-link" href="./styling.html#hplus-slider" aria-label="Style hplus-slider"><code>&lt;hplus-slider&gt;</code></a></div>
+              <hplus-slider id="volume-field" name="volume" value="35" min="0" max="100" step="5" aria-describedby="volume-feedback"></hplus-slider>
               <p class="feedback" id="volume-feedback">Drag or use arrow keys. Submitted as one number.</p>
             </div>
             <div class="field">
-              <div class="field-heading"><label for="price-field">Price filter (USD)</label><a class="recipe-link" href="./styling.html#h6-range-slider" aria-label="Style h6-range-slider"><code>&lt;h6-range-slider&gt;</code></a></div>
-              <h6-range-slider id="price-field" name="price" lower-name="price_min" upper-name="price_max" value="[100,350]" min="0" max="500" step="10" aria-describedby="price-feedback"></h6-range-slider>
+              <div class="field-heading"><label for="price-field">Price filter (USD)</label><a class="recipe-link" href="./styling.html#hplus-range-slider" aria-label="Style hplus-range-slider"><code>&lt;hplus-range-slider&gt;</code></a></div>
+              <hplus-range-slider id="price-field" name="price" lower-name="price_min" upper-name="price_max" value="[100,350]" min="0" max="500" step="10" aria-describedby="price-feedback"></hplus-range-slider>
               <p class="feedback" id="price-feedback">Two named boundaries. Handles stop at each other.</p>
             </div>
             <div class="field">
-              <div class="field-heading"><label for="rating-field">Experience rating</label><a class="recipe-link" href="./styling.html#h6-rating" aria-label="Style h6-rating"><code>&lt;h6-rating&gt;</code></a></div>
-              <h6-rating id="rating-field" name="rating" value="4" aria-describedby="rating-feedback"></h6-rating>
+              <div class="field-heading"><label for="rating-field">Experience rating</label><a class="recipe-link" href="./styling.html#hplus-rating" aria-label="Style hplus-rating"><code>&lt;hplus-rating&gt;</code></a></div>
+              <hplus-rating id="rating-field" name="rating" value="4" aria-describedby="rating-feedback"></hplus-rating>
               <p class="feedback" id="rating-feedback">Hover previews a score. Choose to commit; Clear removes the entry.</p>
             </div>
             <p class="field-section">05 <span>Values with more to say</span></p>
             <div class="field">
-              <div class="field-heading"><label for="duration-field">Session duration</label><a class="recipe-link" href="./styling.html#h6-duration" aria-label="Style h6-duration"><code>&lt;h6-duration&gt;</code></a></div>
-              <h6-duration id="duration-field" name="duration" value="1h 30m" min="60" max="86400" required aria-describedby="duration-feedback" placeholder="1h 30m"></h6-duration>
+              <div class="field-heading"><label for="duration-field">Session duration</label><a class="recipe-link" href="./styling.html#hplus-duration" aria-label="Style hplus-duration"><code>&lt;hplus-duration&gt;</code></a></div>
+              <hplus-duration id="duration-field" name="duration" value="1h 30m" min="60" max="86400" required aria-describedby="duration-feedback" placeholder="1h 30m"></hplus-duration>
               <p class="feedback" id="duration-feedback">Try 1h 30m, 90m, or 01:30. Submitted in seconds.</p>
             </div>
             <div class="field">
-              <div class="field-heading"><label for="budget-field">Budget range (USD)</label><a class="recipe-link" href="./styling.html#h6-interval" aria-label="Style h6-interval"><code>&lt;h6-interval&gt;</code></a></div>
-              <h6-interval id="budget-field" name="budget" lower-name="budget_min" upper-name="budget_max" value="[200,800]" min="0" max="10000" step="50" required aria-describedby="budget-feedback"></h6-interval>
+              <div class="field-heading"><label for="budget-field">Budget range (USD)</label><a class="recipe-link" href="./styling.html#hplus-interval" aria-label="Style hplus-interval"><code>&lt;hplus-interval&gt;</code></a></div>
+              <hplus-interval id="budget-field" name="budget" lower-name="budget_min" upper-name="budget_max" value="[200,800]" min="0" max="10000" step="50" required aria-describedby="budget-feedback"></hplus-interval>
               <p class="feedback" id="budget-feedback">One control, two named values. The lower boundary cannot exceed the upper.</p>
             </div>
             <p class="field-section">06 <span>Choices & collections</span></p>
             <div class="field">
-              <div class="field-heading"><label for="delivery-field">Delivery speed</label><a class="recipe-link" href="./styling.html#h6-segmented" aria-label="Style h6-segmented"><code>&lt;h6-segmented&gt;</code></a></div>
-              <h6-segmented id="delivery-field" name="delivery" value="standard" required aria-describedby="delivery-feedback">
+              <div class="field-heading"><label for="delivery-field">Delivery speed</label><a class="recipe-link" href="./styling.html#hplus-segmented" aria-label="Style hplus-segmented"><code>&lt;hplus-segmented&gt;</code></a></div>
+              <hplus-segmented id="delivery-field" name="delivery" value="standard" required aria-describedby="delivery-feedback">
                 <option value="economy">Economy</option><option value="standard">Standard</option><option value="express">Express</option>
-              </h6-segmented>
+              </hplus-segmented>
               <p class="feedback" id="delivery-feedback">Native radio keys. The form receives the selected identifier.</p>
             </div>
             <div class="field tags-field">
-              <div class="field-heading"><label for="topics">Topics</label><a class="recipe-link" href="./styling.html#h6-tags" aria-label="Style h6-tags"><code>&lt;h6-tags&gt;</code></a></div>
-              <h6-tags id="topics" name="topics" value='["html", "web-components"]' required aria-describedby="topics-feedback"></h6-tags>
+              <div class="field-heading"><label for="topics">Topics</label><a class="recipe-link" href="./styling.html#hplus-tags" aria-label="Style hplus-tags"><code>&lt;hplus-tags&gt;</code></a></div>
+              <hplus-tags id="topics" name="topics" value='["html", "web-components"]' required aria-describedby="topics-feedback"></hplus-tags>
               <p class="feedback" id="topics-feedback">Enter or comma adds a tag. Each tag is a separate form entry.</p>
             </div>
 
             <div class="switch-field">
               <div><label for="updates">Product updates</label><p class="feedback" id="updates-help">An unchecked switch sends no value.</p></div>
-              <div class="switch-control"><a class="recipe-link" href="./styling.html#h6-switch" aria-label="Style h6-switch"><code>&lt;h6-switch&gt;</code></a><h6-switch id="updates" name="updates" value="email" checked aria-describedby="updates-help"></h6-switch></div>
+              <div class="switch-control"><a class="recipe-link" href="./styling.html#hplus-switch" aria-label="Style hplus-switch"><code>&lt;hplus-switch&gt;</code></a><hplus-switch id="updates" name="updates" value="email" checked aria-describedby="updates-help"></hplus-switch></div>
             </div>
             <p class="field-section" id="small-controls">07 <span>Everyday form controls</span></p>
             <div class="field">
-              <div class="field-heading"><label for="frequency-field">Notification frequency</label><a class="recipe-link" href="./styling.html#h6-radio-group" aria-label="Style h6-radio-group"><code>&lt;h6-radio-group&gt;</code></a></div>
-              <h6-radio-group id="frequency-field" name="frequency" value="weekly" required>
+              <div class="field-heading"><label for="frequency-field">Notification frequency</label><a class="recipe-link" href="./styling.html#hplus-radio-group" aria-label="Style hplus-radio-group"><code>&lt;hplus-radio-group&gt;</code></a></div>
+              <hplus-radio-group id="frequency-field" name="frequency" value="weekly" required>
                 <option value="daily" data-description="A short summary every morning.">Daily</option>
                 <option value="weekly" data-description="One digest each Friday.">Weekly</option>
                 <option value="instant" disabled>Instant (unavailable)</option>
-              </h6-radio-group>
+              </hplus-radio-group>
             </div>
             <div class="field">
-              <div class="field-heading"><label for="seats-field">Seats</label><a class="recipe-link" href="./styling.html#h6-number-input" aria-label="Style h6-number-input"><code>&lt;h6-number-input&gt;</code></a></div>
-              <h6-number-input id="seats-field" name="seats" value="3" min="1" max="20" step="1" required></h6-number-input>
+              <div class="field-heading"><label for="seats-field">Seats</label><a class="recipe-link" href="./styling.html#hplus-number-input" aria-label="Style hplus-number-input"><code>&lt;hplus-number-input&gt;</code></a></div>
+              <hplus-number-input id="seats-field" name="seats" value="3" min="1" max="20" step="1" required></hplus-number-input>
               <p class="feedback">Type a number, use the arrow keys, or hold a step button.</p>
             </div>
             <div class="field">
-              <div class="field-heading"><label for="password-field">Demo password</label><a class="recipe-link" href="./styling.html#h6-password-input" aria-label="Style h6-password-input"><code>&lt;h6-password-input&gt;</code></a></div>
-              <h6-password-input id="password-field" name="password" value="Demo-only-42!" minlength="8" autocomplete="new-password" required></h6-password-input>
+              <div class="field-heading"><label for="password-field">Demo password</label><a class="recipe-link" href="./styling.html#hplus-password-input" aria-label="Style hplus-password-input"><code>&lt;hplus-password-input&gt;</code></a></div>
+              <hplus-password-input id="password-field" name="password" value="Demo-only-42!" minlength="8" autocomplete="new-password" required></hplus-password-input>
               <p class="feedback">A fictional value. Revealing it changes its display, not its form value.</p>
             </div>
             <div class="field">
-              <div class="field-heading"><label for="formats-field">Export formats</label><a class="recipe-link" href="./styling.html#h6-toggle-group" aria-label="Style h6-toggle-group"><code>&lt;h6-toggle-group&gt;</code></a></div>
-              <h6-toggle-group id="formats-field" name="formats" value='["csv","json"]' multiple>
+              <div class="field-heading"><label for="formats-field">Export formats</label><a class="recipe-link" href="./styling.html#hplus-toggle-group" aria-label="Style hplus-toggle-group"><code>&lt;hplus-toggle-group&gt;</code></a></div>
+              <hplus-toggle-group id="formats-field" name="formats" value='["csv","json"]' multiple>
                 <option value="csv">CSV</option><option value="json">JSON</option><option value="xml">XML</option>
-              </h6-toggle-group>
+              </hplus-toggle-group>
               <p class="feedback">Multiple selections contribute repeated entries. Arrow keys move focus.</p>
             </div>
             <div class="field">
-              <div class="field-heading"><span class="component-label" id="selection-heading">Table selection</span><a class="recipe-link" href="./styling.html#h6-checkbox" aria-label="Style h6-checkbox"><code>&lt;h6-checkbox&gt;</code></a></div>
+              <div class="field-heading"><span class="component-label" id="selection-heading">Table selection</span><a class="recipe-link" href="./styling.html#hplus-checkbox" aria-label="Style hplus-checkbox"><code>&lt;hplus-checkbox&gt;</code></a></div>
               <table class="selection-table" aria-labelledby="selection-heading">
-                <thead><tr><th scope="col"><h6-checkbox id="select-all" indeterminate aria-label="Select all examples"></h6-checkbox></th><th scope="col">Example</th><th scope="col">Type</th></tr></thead>
+                <thead><tr><th scope="col"><hplus-checkbox id="select-all" indeterminate aria-label="Select all examples"></hplus-checkbox></th><th scope="col">Example</th><th scope="col">Type</th></tr></thead>
                 <tbody>
-                  <tr><td><h6-checkbox name="selected" value="profile" checked aria-label="Select profile form"></h6-checkbox></td><th scope="row">Profile form</th><td>Form</td></tr>
-                  <tr><td><h6-checkbox name="selected" value="settings" checked aria-label="Select settings panel"></h6-checkbox></td><th scope="row">Settings panel</th><td>Panel</td></tr>
-                  <tr><td><h6-checkbox name="selected" value="filters" aria-label="Select search filters"></h6-checkbox></td><th scope="row">Search filters</th><td>Form</td></tr>
+                  <tr><td><hplus-checkbox name="selected" value="profile" checked aria-label="Select profile form"></hplus-checkbox></td><th scope="row">Profile form</th><td>Form</td></tr>
+                  <tr><td><hplus-checkbox name="selected" value="settings" checked aria-label="Select settings panel"></hplus-checkbox></td><th scope="row">Settings panel</th><td>Panel</td></tr>
+                  <tr><td><hplus-checkbox name="selected" value="filters" aria-label="Select search filters"></hplus-checkbox></td><th scope="row">Search filters</th><td>Form</td></tr>
                 </tbody>
               </table>
               <p class="feedback" id="selection-feedback">2 of 3 selected. The header checkbox has no submitted value.</p>
             </div>
             <p class="field-section" id="native-fields">08 <span>Native HTML, shared styling</span></p>
             <div class="field">
-              <div class="field-heading"><label for="reference">Reference</label><a class="recipe-link" href="./styling.html#h6-field" aria-label="Style h6-field"><code>&lt;h6-field&gt;</code></a></div>
-              <h6-field><input id="reference" name="reference" value="ORDER-1042" autocomplete="off" aria-describedby="reference-feedback"></h6-field>
+              <div class="field-heading"><label for="reference">Reference</label><a class="recipe-link" href="./styling.html#hplus-field" aria-label="Style hplus-field"><code>&lt;hplus-field&gt;</code></a></div>
+              <hplus-field><input id="reference" name="reference" value="ORDER-1042" autocomplete="off" aria-describedby="reference-feedback"></hplus-field>
               <p class="feedback" id="reference-feedback">The real input owns its value, validation, and form entry. The wrapper supplies its base style.</p>
             </div>
             <div class="field">
               <div class="field-heading"><label for="message">Message</label></div>
-              <h6-field><textarea id="message" name="message" rows="3">Please leave the parcel at reception.</textarea></h6-field>
+              <hplus-field><textarea id="message" name="message" rows="3">Please leave the parcel at reception.</textarea></hplus-field>
             </div>
             <div class="field">
               <div class="field-heading"><label for="reply-via">Reply via</label></div>
-              <h6-field><select id="reply-via" name="reply_via"><option value="email" selected>Email</option><option value="phone">Phone</option><option value="none">No reply needed</option></select></h6-field>
+              <hplus-field><select id="reply-via" name="reply_via"><option value="email" selected>Email</option><option value="phone">Phone</option><option value="none">No reply needed</option></select></hplus-field>
               <p class="feedback">A native select keeps its platform picker. Appearance follows the same theme.</p>
             </div>
           </fieldset>
@@ -254,10 +254,10 @@
     <section class="explanation" id="how-it-works" aria-labelledby="how-heading">
       <div class="explanation-copy"><h2 id="how-heading">A regular form, with a little more vocabulary.</h2><p>Every control participates through the browser’s form APIs. Specialized fields keep a real text input inside, while their normalized value goes into the form.</p><p class="scope-note">This preview checks ten IBAN country formats and their check digits, plus BIC structure. It does not verify bank accounts, BIC registration, or authentication codes.</p></div>
       <div class="markup-example"><div class="markup-title">The entire integration</div><pre><code>&lt;form&gt;
-  &lt;h6-iban name="iban" required&gt;&lt;/h6-iban&gt;
-  &lt;h6-duration name="seconds"&gt;&lt;/h6-duration&gt;
-  &lt;h6-tags name="topics"&gt;&lt;/h6-tags&gt;
-  &lt;h6-switch name="updates"&gt;&lt;/h6-switch&gt;
+  &lt;hplus-iban name="iban" required&gt;&lt;/hplus-iban&gt;
+  &lt;hplus-duration name="seconds"&gt;&lt;/hplus-duration&gt;
+  &lt;hplus-tags name="topics"&gt;&lt;/hplus-tags&gt;
+  &lt;hplus-switch name="updates"&gt;&lt;/hplus-switch&gt;
   &lt;button&gt;Submit&lt;/button&gt;
 &lt;/form&gt;</code></pre></div>
     </section>

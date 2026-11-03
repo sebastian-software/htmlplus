@@ -8,13 +8,15 @@ try {
 }
 
 export function applyFieldLocale(element: HTMLElement): void {
-  if (!element.matches("h6-date-picker, h6-date-range-picker, h6-number-input")) return;
+  if (!element.matches("hplus-date-picker, hplus-date-range-picker, hplus-number-input")) return;
   element.lang = picker.value;
   element.dir = picker.selectedOptions[0]?.dataset.direction ?? "ltr";
 }
 export function applyLocale(): void {
   // Page copy stays English; these hosts demonstrate the HTML language contract.
-  for (const element of document.querySelectorAll<HTMLElement>("h6-date-picker, h6-date-range-picker, h6-number-input"))
+  for (const element of document.querySelectorAll<HTMLElement>(
+    "hplus-date-picker, hplus-date-range-picker, hplus-number-input",
+  ))
     applyFieldLocale(element);
 }
 picker.addEventListener("change", () => {

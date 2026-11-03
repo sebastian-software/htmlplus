@@ -8,7 +8,7 @@ test("the exported Pages artifact works under a repository subpath", async ({ pa
   await page.goto(`${site}demo/`);
   await expect(page.getByText("All fields valid", { exact: true })).toBeVisible();
   await expect(page.getByText("33 entries", { exact: true })).toBeVisible();
-  expect(await page.locator("h6-interval").evaluate((control) => control.value)).toEqual([200, 800]);
+  expect(await page.locator("hplus-interval").evaluate((control) => control.value)).toEqual([200, 800]);
   expect(await page.locator(".inspector").evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe(
     "rgba(0, 0, 0, 0)",
   );
@@ -16,8 +16,8 @@ test("the exported Pages artifact works under a repository subpath", async ({ pa
   const notices = await request.get(`${site}dist/THIRD_PARTY_NOTICES.txt`);
   expect(notices.ok()).toBe(true);
   expect(await notices.text()).toContain("proxy-compare");
-  await page.getByRole("link", { name: "Style h6-switch", exact: true }).click();
-  await expect(page).toHaveURL(`${site}demo/styling.html#h6-switch`);
+  await page.getByRole("link", { name: "Style hplus-switch", exact: true }).click();
+  await expect(page).toHaveURL(`${site}demo/styling.html#hplus-switch`);
   await expect(page.locator("#recipe-heading")).toHaveText("Switch");
   await page.getByRole("button", { name: "Theme CSS", exact: true }).click();
   await expect(page.locator("#recipe-code")).toContainText(".hp-dark");
@@ -46,8 +46,8 @@ test("the project site explains the project and shows real FormData", async ({ p
     /topics\s*forms/,
     /updates\s*email/,
   ]);
-  await expect(page.locator("h6-iban input")).toHaveValue("DE89 3704 0044 0532 0130 00");
-  await page.locator("h6-iban input").fill("DE00");
+  await expect(page.locator("hplus-iban input")).toHaveValue("DE89 3704 0044 0532 0130 00");
+  await page.locator("hplus-iban input").fill("DE00");
   await expect(page.locator("#result-status")).toContainText("A submit would be blocked");
   await page.getByRole("button", { name: "Reset form" }).click();
   await expect(page.locator("#result-status")).toHaveText("All fields valid.");

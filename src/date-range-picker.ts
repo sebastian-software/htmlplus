@@ -31,7 +31,7 @@ function dateRange(value: unknown): DateRangeValue {
 }
 
 /** Two native editors and two named form values around Zag's range calendar. */
-export class H6DateRangePicker extends HTMLElement {
+export class HPlusDateRangePicker extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = [
     "value",

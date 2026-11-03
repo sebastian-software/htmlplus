@@ -2,7 +2,7 @@ import "./theme.js";
 import "./locale.js";
 import "./icons.js";
 import "../src/index.js";
-import type { H6TextField } from "../src/text-fields.js";
+import type { HPlusTextField } from "../src/text-fields.js";
 
 const form = document.querySelector<HTMLFormElement>("#demo-form")!;
 const fields = document.querySelector<HTMLFieldSetElement>("#demo-fields")!;
@@ -10,12 +10,12 @@ const body = document.querySelector<HTMLTableSectionElement>("#entries-body")!;
 const jsonOutput = document.querySelector<HTMLElement>("#json-output")!;
 const validityStatus = document.querySelector<HTMLElement>("#validity-status")!;
 const status = document.querySelector<HTMLElement>("#submission-status")!;
-const tags = document.querySelector("h6-tags")!;
-const updates = document.querySelector("h6-switch")!;
-const selectAll = document.querySelector("#select-all") as HTMLElementTagNameMap["h6-checkbox"];
+const tags = document.querySelector("hplus-tags")!;
+const updates = document.querySelector("hplus-switch")!;
+const selectAll = document.querySelector("#select-all") as HTMLElementTagNameMap["hplus-checkbox"];
 const selectionRows = Array.from(
-  document.querySelectorAll("h6-checkbox[name=selected]"),
-) as HTMLElementTagNameMap["h6-checkbox"][];
+  document.querySelectorAll("hplus-checkbox[name=selected]"),
+) as HTMLElementTagNameMap["hplus-checkbox"][];
 function syncSelection(): void {
   const rows = selectionRows.filter((row) => !row.disabled),
     count = rows.filter((row) => row.checked).length;
@@ -114,13 +114,13 @@ function render(): void {
     ["otp-field", "otp-feedback"],
     ["duration-field", "duration-feedback"],
   ] as const) {
-    const field = document.getElementById(id) as H6TextField;
+    const field = document.getElementById(id) as HPlusTextField;
     const feedback = document.getElementById(feedbackId)!;
     feedback.dataset.state = fields.disabled || !field.value ? "neutral" : field.validity?.valid ? "valid" : "invalid";
     feedback.textContent =
       field.validationMessage && field.hasAttribute("data-touched") ? field.validationMessage : field.detail;
   }
-  const interval = document.querySelector("h6-interval")!;
+  const interval = document.querySelector("hplus-interval")!;
   const intervalFeedback = document.querySelector<HTMLElement>("#budget-feedback")!;
   intervalFeedback.dataset.state =
     !fields.disabled && !interval.validity.valid && interval.hasAttribute("data-touched") ? "invalid" : "neutral";
@@ -128,7 +128,7 @@ function render(): void {
     intervalFeedback.dataset.state === "invalid"
       ? interval.validationMessage
       : "One control, two named values. The lower boundary cannot exceed the upper.";
-  const date = document.querySelector("h6-date-picker")!;
+  const date = document.querySelector("hplus-date-picker")!;
   document.querySelector("#date-feedback")!.textContent =
     `Enter ${date.placeholder} or choose a day. The form receives YYYY-MM-DD without a time zone.`;
 }
@@ -182,29 +182,29 @@ form.addEventListener("submit", (event) => {
 document.querySelector("#load-example")!.addEventListener("click", () => {
   fields.disabled = false;
   document.querySelector<HTMLInputElement>("#disable-fields")!.checked = false;
-  document.querySelector("h6-iban")!.value = "de89 3704 0044 0532 0130 00";
-  document.querySelector("h6-bic")!.value = "cobadeffxxx";
-  document.querySelector("h6-otp")!.value = "004271";
-  document.querySelector("h6-duration")!.value = "1h 30m";
-  document.querySelector("h6-interval")!.value = [200, 800];
-  document.querySelector("h6-segmented")!.value = "standard";
-  document.querySelector("h6-slider")!.value = 35;
-  document.querySelector("h6-range-slider")!.value = [100, 350];
-  document.querySelector("h6-rating")!.value = 4;
-  document.querySelector("h6-select")!.value = "standard";
-  document.querySelector("h6-combobox")!.value = "DE";
-  document.querySelector("h6-date-picker")!.value = "2026-10-28";
-  document.querySelector("h6-date-range-picker")!.value = ["2026-10-28", "2026-11-03"];
+  document.querySelector("hplus-iban")!.value = "de89 3704 0044 0532 0130 00";
+  document.querySelector("hplus-bic")!.value = "cobadeffxxx";
+  document.querySelector("hplus-otp")!.value = "004271";
+  document.querySelector("hplus-duration")!.value = "1h 30m";
+  document.querySelector("hplus-interval")!.value = [200, 800];
+  document.querySelector("hplus-segmented")!.value = "standard";
+  document.querySelector("hplus-slider")!.value = 35;
+  document.querySelector("hplus-range-slider")!.value = [100, 350];
+  document.querySelector("hplus-rating")!.value = 4;
+  document.querySelector("hplus-select")!.value = "standard";
+  document.querySelector("hplus-combobox")!.value = "DE";
+  document.querySelector("hplus-date-picker")!.value = "2026-10-28";
+  document.querySelector("hplus-date-range-picker")!.value = ["2026-10-28", "2026-11-03"];
   tags.value = ["html", "web-components"];
   updates.checked = true;
-  document.querySelector("h6-toggle")!.pressed = false;
-  document.querySelector("h6-tabs")!.value = "profile";
-  document.querySelector("h6-accordion")!.value = ["delivery"];
-  document.querySelector("h6-radio-group")!.value = "weekly";
-  document.querySelector("h6-number-input")!.value = "3";
-  document.querySelector("h6-password-input")!.value = "Demo-only-42!";
-  document.querySelector("h6-password-input")!.visible = false;
-  document.querySelector("h6-toggle-group")!.value = ["csv", "json"];
+  document.querySelector("hplus-toggle")!.pressed = false;
+  document.querySelector("hplus-tabs")!.value = "profile";
+  document.querySelector("hplus-accordion")!.value = ["delivery"];
+  document.querySelector("hplus-radio-group")!.value = "weekly";
+  document.querySelector("hplus-number-input")!.value = "3";
+  document.querySelector("hplus-password-input")!.value = "Demo-only-42!";
+  document.querySelector("hplus-password-input")!.visible = false;
+  document.querySelector("hplus-toggle-group")!.value = ["csv", "json"];
   for (const row of selectionRows) row.checked = row.defaultChecked;
   syncSelection();
   for (const input of form.querySelectorAll<HTMLInputElement>(".native-field input")) input.value = input.defaultValue;
@@ -229,24 +229,24 @@ for (const button of document.querySelectorAll<HTMLButtonElement>("[data-view]")
 
 await Promise.all(
   [
-    "h6-switch",
-    "h6-tags",
-    "h6-iban",
-    "h6-bic",
-    "h6-otp",
-    "h6-duration",
-    "h6-interval",
-    "h6-segmented",
-    "h6-toggle",
-    "h6-tabs",
-    "h6-accordion",
-    "h6-slider",
-    "h6-range-slider",
-    "h6-rating",
-    "h6-select",
-    "h6-combobox",
-    "h6-date-picker",
-    "h6-date-range-picker",
+    "hplus-switch",
+    "hplus-tags",
+    "hplus-iban",
+    "hplus-bic",
+    "hplus-otp",
+    "hplus-duration",
+    "hplus-interval",
+    "hplus-segmented",
+    "hplus-toggle",
+    "hplus-tabs",
+    "hplus-accordion",
+    "hplus-slider",
+    "hplus-range-slider",
+    "hplus-rating",
+    "hplus-select",
+    "hplus-combobox",
+    "hplus-date-picker",
+    "hplus-date-range-picker",
   ].map((name) => customElements.whenDefined(name)),
 );
 render();

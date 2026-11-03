@@ -4,9 +4,9 @@ Generated from the running browser modules by `npm run docs:api`. Do not edit it
 
 Parts are the shadow parts present after rendering, including the open calendar for date elements. Options add `option`-related parts where the element renders them.
 
-## `h6-field`
+## `hplus-field`
 
-Shared base styling around a real light-DOM input, textarea, or select. [Guide](NATIVE-FIELDS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-field)
+Shared base styling around a real light-DOM input, textarea, or select. [Guide](NATIVE-FIELDS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-field)
 
 - **Submits through its host:** no
 - **Attributes:** None
@@ -14,9 +14,9 @@ Shared base styling around a real light-DOM input, textarea, or select. [Guide](
 - **Methods:** `focus`
 - **Parts:** None
 
-## `h6-switch`
+## `hplus-switch`
 
-On/off setting with a checkbox-like form value. [Guide](../README.md#current-value-contract) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-switch)
+On/off setting with a checkbox-like form value. [Guide](../README.md#current-value-contract) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-switch)
 
 - **Submits through its host:** yes
 - **Attributes:** `checked`, `disabled`, `required`, `value`
@@ -24,19 +24,9 @@ On/off setting with a checkbox-like form value. [Guide](../README.md#current-val
 - **Methods:** `checkValidity`, `reportValidity`, `setCustomValidity`
 - **Parts:** `thumb`, `track`
 
-## `h6-iban`
+## `hplus-iban`
 
-IBAN editor with readable groups, canonical submission, and format checks. [Guide](FORMATTED-FIELDS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-iban)
-
-- **Submits through its host:** yes
-- **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `autocomplete`, `disabled`, `inputmode`, `maxlength`, `minlength`, `name`, `pattern`, `placeholder`, `readonly`, `required`, `value`
-- **Properties:** `defaultAutocomplete`, `defaultDisplayValue`, `defaultInputMode`, `defaultPattern`, `defaultValue`, `dirty`, `disabled`, `displayValue`, `form`, `input`, `labels`, `name`, `readOnly`, `required`, `restorationState`, `upgradedProperties`, `validationMessage`, `validity`, `value`, `willValidate`
-- **Methods:** `checkValidity`, `editorLength`, `focus`, `markDirty`, `normalizeValue`, `presentValue`, `refresh`, `reportValidity`, `setCustomValidity`, `validateValue`
-- **Parts:** `input`
-
-## `h6-bic`
-
-BIC/SWIFT editor with uppercase submission and structure checks. [Guide](../README.md#current-value-contract) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-bic)
+IBAN editor with readable groups, canonical submission, and format checks. [Guide](FORMATTED-FIELDS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-iban)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `autocomplete`, `disabled`, `inputmode`, `maxlength`, `minlength`, `name`, `pattern`, `placeholder`, `readonly`, `required`, `value`
@@ -44,9 +34,19 @@ BIC/SWIFT editor with uppercase submission and structure checks. [Guide](../READ
 - **Methods:** `checkValidity`, `editorLength`, `focus`, `markDirty`, `normalizeValue`, `presentValue`, `refresh`, `reportValidity`, `setCustomValidity`, `validateValue`
 - **Parts:** `input`
 
-## `h6-otp`
+## `hplus-bic`
 
-One native verification-code editor with visual character slots. [Guide](FORMATTED-FIELDS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-otp)
+BIC/SWIFT editor with uppercase submission and structure checks. [Guide](../README.md#current-value-contract) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-bic)
+
+- **Submits through its host:** yes
+- **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `autocomplete`, `disabled`, `inputmode`, `maxlength`, `minlength`, `name`, `pattern`, `placeholder`, `readonly`, `required`, `value`
+- **Properties:** `defaultAutocomplete`, `defaultDisplayValue`, `defaultInputMode`, `defaultPattern`, `defaultValue`, `dirty`, `disabled`, `displayValue`, `form`, `input`, `labels`, `name`, `readOnly`, `required`, `restorationState`, `upgradedProperties`, `validationMessage`, `validity`, `value`, `willValidate`
+- **Methods:** `checkValidity`, `editorLength`, `focus`, `markDirty`, `normalizeValue`, `presentValue`, `refresh`, `reportValidity`, `setCustomValidity`, `validateValue`
+- **Parts:** `input`
+
+## `hplus-otp`
+
+One native verification-code editor with visual character slots. [Guide](FORMATTED-FIELDS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-otp)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `autocomplete`, `disabled`, `inputmode`, `length`, `maxlength`, `minlength`, `name`, `pattern`, `placeholder`, `readonly`, `required`, `value`
@@ -54,9 +54,9 @@ One native verification-code editor with visual character slots. [Guide](FORMATT
 - **Methods:** `checkValidity`, `editorLength`, `focus`, `markDirty`, `normalizeValue`, `presentValue`, `refresh`, `reportValidity`, `setCustomValidity`, `validateValue`
 - **Parts:** `control`, `input`, `slot`, `slots`
 
-## `h6-duration`
+## `hplus-duration`
 
-Elapsed-time notation that submits whole seconds. [Guide](../README.md#additional-value-contracts) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-duration)
+Elapsed-time notation that submits whole seconds. [Guide](../README.md#additional-value-contracts) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-duration)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `autocomplete`, `disabled`, `inputmode`, `max`, `maxlength`, `min`, `minlength`, `name`, `pattern`, `placeholder`, `readonly`, `required`, `value`
@@ -64,9 +64,9 @@ Elapsed-time notation that submits whole seconds. [Guide](../README.md#additiona
 - **Methods:** `checkValidity`, `editorLength`, `focus`, `markDirty`, `normalizeValue`, `presentValue`, `refresh`, `reportValidity`, `setCustomValidity`, `validateValue`
 - **Parts:** `input`
 
-## `h6-interval`
+## `hplus-interval`
 
-Two numeric boundaries with explicit form names and optional open ends. [Guide](../README.md#additional-value-contracts) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-interval)
+Two numeric boundaries with explicit form names and optional open ends. [Guide](../README.md#additional-value-contracts) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-interval)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `disabled`, `lower-label`, `lower-name`, `max`, `min`, `name`, `readonly`, `required`, `step`, `upper-label`, `upper-name`, `value`
@@ -74,9 +74,9 @@ Two numeric boundaries with explicit form names and optional open ends. [Guide](
 - **Methods:** `checkValidity`, `focus`, `reportValidity`, `setCustomValidity`
 - **Parts:** `control`, `input`, `lower-input`, `lower-label`, `separator`, `upper-input`, `upper-label`
 
-## `h6-segmented`
+## `hplus-segmented`
 
-Compact single selection using native radio inputs. [Guide](../README.md#additional-value-contracts) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-segmented)
+Compact single selection using native radio inputs. [Guide](../README.md#additional-value-contracts) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-segmented)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-label`, `aria-labelledby`, `disabled`, `name`, `required`, `value`
@@ -84,9 +84,9 @@ Compact single selection using native radio inputs. [Guide](../README.md#additio
 - **Methods:** `checkValidity`, `focus`, `reportValidity`, `setCustomValidity`
 - **Parts:** `control`, `option`
 
-## `h6-tags`
+## `hplus-tags`
 
-Add and remove tags that submit as repeated entries. [Guide](../README.md#current-value-contract) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-tags)
+Add and remove tags that submit as repeated entries. [Guide](../README.md#current-value-contract) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-tags)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `disabled`, `name`, `placeholder`, `readonly`, `required`, `value`
@@ -94,9 +94,9 @@ Add and remove tags that submit as repeated entries. [Guide](../README.md#curren
 - **Methods:** `checkValidity`, `focus`, `reportValidity`, `setCustomValidity`
 - **Parts:** `control`, `input`, `tokens`
 
-## `h6-toggle`
+## `hplus-toggle`
 
-Persistent pressed button with a checkbox-like form value. [Guide](INTERACTIONS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-toggle)
+Persistent pressed button with a checkbox-like form value. [Guide](INTERACTIONS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-toggle)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `disabled`, `pressed`, `required`, `value`
@@ -104,9 +104,9 @@ Persistent pressed button with a checkbox-like form value. [Guide](INTERACTIONS.
 - **Methods:** `checkValidity`, `focus`, `reportValidity`, `setCustomValidity`
 - **Parts:** `button`
 
-## `h6-accordion`
+## `hplus-accordion`
 
-Disclosure sections around ordinary form fields. [Guide](INTERACTIONS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-accordion)
+Disclosure sections around ordinary form fields. [Guide](INTERACTIONS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-accordion)
 
 - **Submits through its host:** no
 - **Attributes:** `dir`, `disabled`, `heading-level`, `multiple`, `value`
@@ -114,9 +114,9 @@ Disclosure sections around ordinary form fields. [Guide](INTERACTIONS.md) | [Sty
 - **Methods:** None
 - **Parts:** `content`, `heading`, `indicator`, `item`, `label`, `root`, `trigger`
 
-## `h6-tabs`
+## `hplus-tabs`
 
-Tabbed panels around ordinary form fields. [Guide](INTERACTIONS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-tabs)
+Tabbed panels around ordinary form fields. [Guide](INTERACTIONS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-tabs)
 
 - **Submits through its host:** no
 - **Attributes:** `activation-mode`, `aria-label`, `dir`, `disabled`, `orientation`, `value`
@@ -124,9 +124,9 @@ Tabbed panels around ordinary form fields. [Guide](INTERACTIONS.md) | [Styling r
 - **Methods:** None
 - **Parts:** `list`, `panel`, `panels`, `root`, `selected-tab`, `tab`
 
-## `h6-slider`
+## `hplus-slider`
 
-One bounded number chosen by pointer or keyboard. [Guide](NUMERIC-CHOICES.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-slider)
+One bounded number chosen by pointer or keyboard. [Guide](NUMERIC-CHOICES.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-slider)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `dir`, `disabled`, `lower-label`, `lower-name`, `max`, `min`, `name`, `orientation`, `readonly`, `required`, `step`, `upper-label`, `upper-name`, `value`
@@ -134,9 +134,9 @@ One bounded number chosen by pointer or keyboard. [Guide](NUMERIC-CHOICES.md) | 
 - **Methods:** `checkValidity`, `focus`, `reportValidity`, `setCustomValidity`
 - **Parts:** `control`, `range`, `root`, `thumb`, `track`, `value-text`
 
-## `h6-range-slider`
+## `hplus-range-slider`
 
-Two ordered boundaries with explicitly named form entries. [Guide](NUMERIC-CHOICES.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-range-slider)
+Two ordered boundaries with explicitly named form entries. [Guide](NUMERIC-CHOICES.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-range-slider)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `dir`, `disabled`, `lower-label`, `lower-name`, `max`, `min`, `name`, `orientation`, `readonly`, `required`, `step`, `upper-label`, `upper-name`, `value`
@@ -144,9 +144,9 @@ Two ordered boundaries with explicitly named form entries. [Guide](NUMERIC-CHOIC
 - **Methods:** `checkValidity`, `focus`, `reportValidity`, `setCustomValidity`
 - **Parts:** `control`, `lower-thumb`, `range`, `root`, `thumb`, `track`, `upper-thumb`, `value-text`
 
-## `h6-rating`
+## `hplus-rating`
 
-Clearable whole score with a separate hover preview. [Guide](NUMERIC-CHOICES.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-rating)
+Clearable whole score with a separate hover preview. [Guide](NUMERIC-CHOICES.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-rating)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `count`, `dir`, `disabled`, `readonly`, `required`, `value`
@@ -154,29 +154,29 @@ Clearable whole score with a separate hover preview. [Guide](NUMERIC-CHOICES.md)
 - **Methods:** `checkValidity`, `clear`, `focus`, `reportValidity`, `setCustomValidity`
 - **Parts:** `clear-button`, `control`, `icon`, `item`, `label`, `root`, `value-text`
 
-## `h6-select`
+## `hplus-select`
 
-Single selection from supplied options in a top-layer listbox. [Guide](SELECTION-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-select)
+Single selection from supplied options in a top-layer listbox. [Guide](SELECTION-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-select)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `dir`, `disabled`, `name`, `placeholder`, `readonly`, `required`, `value`
 - **Properties:** `defaultValue`, `disabled`, `form`, `labels`, `name`, `placeholder`, `queryText`, `readOnly`, `required`, `upgradedProperties`, `validationMessage`, `validity`, `value`, `willValidate`
-- **Methods:** `checkValidity`, `clear`, `focus`, `reportValidity`, `setCustomValidity`
+- **Methods:** `checkValidity`, `clear`, `connectMachine`, `createCollection`, `createMachine`, `focus`, `reportValidity`, `sendQuery`, `setCustomValidity`
 - **Parts:** `clear-button`, `content`, `control`, `empty`, `indicator`, `option`, `option-indicator`, `option-label`, `positioner`, `root`, `selected-option`, `trigger`, `value-text`
 
-## `h6-combobox`
+## `hplus-combobox`
 
-Searchable selection that keeps query and selected identifier apart. [Guide](SELECTION-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-combobox)
+Searchable selection that keeps query and selected identifier apart. [Guide](SELECTION-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-combobox)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `dir`, `disabled`, `name`, `placeholder`, `readonly`, `required`, `value`
 - **Properties:** `defaultValue`, `disabled`, `form`, `labels`, `name`, `placeholder`, `query`, `queryText`, `readOnly`, `required`, `upgradedProperties`, `validationMessage`, `validity`, `value`, `willValidate`
-- **Methods:** `checkValidity`, `clear`, `focus`, `reportValidity`, `setCustomValidity`
+- **Methods:** `checkValidity`, `clear`, `connectMachine`, `createCollection`, `createMachine`, `focus`, `reportValidity`, `sendQuery`, `setCustomValidity`
 - **Parts:** `clear-button`, `content`, `control`, `empty`, `indicator`, `input`, `option`, `option-indicator`, `option-label`, `positioner`, `root`, `selected-option`, `trigger`
 
-## `h6-date-picker`
+## `hplus-date-picker`
 
-Localized date editor and calendar with one ISO form entry. [Guide](DATE-PICKER.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-date-picker)
+Localized date editor and calendar with one ISO form entry. [Guide](DATE-PICKER.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-date-picker)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `dir`, `disabled`, `lang`, `locale`, `max`, `min`, `name`, `placeholder`, `readonly`, `required`, `value`
@@ -184,9 +184,9 @@ Localized date editor and calendar with one ISO form entry. [Guide](DATE-PICKER.
 - **Methods:** `checkValidity`, `clear`, `focus`, `hidePicker`, `reportValidity`, `setCustomValidity`, `showPicker`
 - **Parts:** `clear-button`, `content`, `control`, `day`, `day-view`, `grid`, `input`, `month`, `month-view`, `navigation`, `next-button`, `positioner`, `prev-button`, `root`, `today`, `trigger`, `view`, `view-button`, `weekday`, `year`, `year-view`
 
-## `h6-date-range-picker`
+## `hplus-date-range-picker`
 
-Two native editors and a range calendar with two named ISO entries. [Guide](DATE-RANGE-PICKER.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-date-range-picker)
+Two native editors and a range calendar with two named ISO entries. [Guide](DATE-RANGE-PICKER.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-date-range-picker)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `dir`, `disabled`, `end-label`, `end-name`, `lang`, `locale`, `max`, `min`, `name`, `placeholder`, `readonly`, `required`, `start-label`, `start-name`, `value`
@@ -194,9 +194,9 @@ Two native editors and a range calendar with two named ISO entries. [Guide](DATE
 - **Methods:** `checkValidity`, `clear`, `focus`, `hidePicker`, `reportValidity`, `setCustomValidity`, `showPicker`
 - **Parts:** `clear-button`, `content`, `control`, `day`, `day-view`, `end-field`, `end-input`, `end-label`, `grid`, `input`, `month`, `month-view`, `navigation`, `next-button`, `positioner`, `prev-button`, `root`, `start-field`, `start-input`, `start-label`, `today`, `trigger`, `view`, `view-button`, `weekday`, `year`, `year-view`
 
-## `h6-checkbox`
+## `hplus-checkbox`
 
-Native checked and mixed states with checkbox-like submission. [Guide](EVERYDAY-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-checkbox)
+Native checked and mixed states with checkbox-like submission. [Guide](EVERYDAY-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-checkbox)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `checked`, `disabled`, `indeterminate`, `readonly`, `required`, `value`
@@ -204,9 +204,9 @@ Native checked and mixed states with checkbox-like submission. [Guide](EVERYDAY-
 - **Methods:** `checkValidity`, `focus`, `reportValidity`, `setCustomValidity`
 - **Parts:** `control`, `indicator`, `input`, `label`, `root`
 
-## `h6-radio-group`
+## `hplus-radio-group`
 
-One supplied identifier, with descriptions and disabled options. [Guide](EVERYDAY-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-radio-group)
+One supplied identifier, with descriptions and disabled options. [Guide](EVERYDAY-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-radio-group)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `dir`, `disabled`, `name`, `orientation`, `required`, `value`
@@ -214,9 +214,9 @@ One supplied identifier, with descriptions and disabled options. [Guide](EVERYDA
 - **Methods:** `assign`, `checkValidity`, `focus`, `reportValidity`, `setCustomValidity`
 - **Parts:** `control`, `description`, `input`, `label`, `option`, `root`, `selected-option`
 
-## `h6-toggle-group`
+## `hplus-toggle-group`
 
-Single or multiple selection with repeated form entries. [Guide](EVERYDAY-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-toggle-group)
+Single or multiple selection with repeated form entries. [Guide](EVERYDAY-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-toggle-group)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `dir`, `disabled`, `multiple`, `name`, `orientation`, `required`, `value`
@@ -224,9 +224,9 @@ Single or multiple selection with repeated form entries. [Guide](EVERYDAY-CONTRO
 - **Methods:** `assign`, `checkValidity`, `focus`, `reportValidity`, `setCustomValidity`
 - **Parts:** `description`, `label`, `option`, `root`, `selected-option`
 
-## `h6-number-input`
+## `hplus-number-input`
 
-Localized numeric editing, canonical submission, and stepping. [Guide](EVERYDAY-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-number-input)
+Localized numeric editing, canonical submission, and stepping. [Guide](EVERYDAY-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-number-input)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `autocomplete`, `decrement-label`, `dir`, `disabled`, `increment-label`, `inputmode`, `lang`, `locale`, `max`, `maxlength`, `min`, `minlength`, `name`, `pattern`, `placeholder`, `readonly`, `required`, `step`, `value`
@@ -234,9 +234,9 @@ Localized numeric editing, canonical submission, and stepping. [Guide](EVERYDAY-
 - **Methods:** `checkValidity`, `editorLength`, `focus`, `markDirty`, `normalizeValue`, `presentValue`, `refresh`, `reportValidity`, `setCustomValidity`, `validateValue`
 - **Parts:** `control`, `decrement-trigger`, `increment-trigger`, `input`
 
-## `h6-password-input`
+## `hplus-password-input`
 
-Native password editing and a visibility button. [Guide](EVERYDAY-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#h6-password-input)
+Native password editing and a visibility button. [Guide](EVERYDAY-CONTROLS.md) | [Styling recipe](https://sebastian-software.github.io/htmlplus/demo/styling.html#hplus-password-input)
 
 - **Submits through its host:** yes
 - **Attributes:** `aria-describedby`, `aria-label`, `aria-labelledby`, `autocomplete`, `disabled`, `hide-label`, `inputmode`, `maxlength`, `minlength`, `name`, `pattern`, `placeholder`, `readonly`, `required`, `show-label`, `value`

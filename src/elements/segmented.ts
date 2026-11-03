@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Segmented } from "../segmented.js";
+import { HPlusSegmented } from "../segmented.js";
 
-export { H6Segmented };
+export { HPlusSegmented };
 
-define("h6-segmented", H6Segmented);
+define("hplus-segmented", HPlusSegmented);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-segmented": H6Segmented;
+    "hplus-segmented": HPlusSegmented;
   }
 }

@@ -23,7 +23,7 @@ template.innerHTML = `<style>
   @media (forced-colors: active) { button[data-pressed] { outline: 2px solid Highlight; } }
 </style><button part="button" type="button"><slot></slot></button>`;
 
-export class H6Toggle extends HTMLElement {
+export class HPlusToggle extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = [
     "pressed",

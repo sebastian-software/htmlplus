@@ -7,7 +7,7 @@ type ElementProps<Element> = OwnProps<Element> &
   Omit<DetailedHTMLProps<HTMLAttributes<Element>, Element>, keyof OwnProps<Element>> & { class?: string };
 
 type HtmlPlusElements = {
-  [Tag in keyof HTMLElementTagNameMap as Tag extends `h6-${string}` ? Tag : never]: ElementProps<
+  [Tag in keyof HTMLElementTagNameMap as Tag extends `hplus-${string}` ? Tag : never]: ElementProps<
     HTMLElementTagNameMap[Tag]
   >;
 };

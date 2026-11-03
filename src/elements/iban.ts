@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Iban } from "../text-fields.js";
+import { HPlusIban } from "../text-fields.js";
 
-export { H6Iban };
+export { HPlusIban };
 
-define("h6-iban", H6Iban);
+define("hplus-iban", HPlusIban);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-iban": H6Iban;
+    "hplus-iban": HPlusIban;
   }
 }

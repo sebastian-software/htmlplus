@@ -5,10 +5,10 @@ Checkbox, Radio Group, Number Input, Password Input, and Toggle Group use Zag 1.
 ## Checkbox and table selection
 
 ```html
-<h6-checkbox name="notifications" value="email" checked>
+<hplus-checkbox name="notifications" value="email" checked>
   Email notifications
-</h6-checkbox>
-<h6-checkbox id="select-all" indeterminate aria-label="Select all rows"></h6-checkbox>
+</hplus-checkbox>
+<hplus-checkbox id="select-all" indeterminate aria-label="Select all rows"></hplus-checkbox>
 ```
 
 `.checked` and `.indeterminate` are independent booleans, matching the native checkbox model. `indeterminate` displays a dash and exposes a mixed state to assistive technology. It does not change submission: the configured `value` (default `on`) contributes an entry only while checked. There is no automatic third submitted value.
@@ -23,11 +23,11 @@ An internal native checkbox provides interaction, focus, and accessible semantic
 
 ```html
 <label for="frequency">Notification frequency</label>
-<h6-radio-group id="frequency" name="frequency" value="weekly" required>
+<hplus-radio-group id="frequency" name="frequency" value="weekly" required>
   <option value="daily" data-description="A short summary every morning.">Daily</option>
   <option value="weekly" data-description="One digest each Friday.">Weekly</option>
   <option value="instant" disabled>Instant (unavailable)</option>
-</h6-radio-group>
+</hplus-radio-group>
 ```
 
 `.value` and `.defaultValue` are strings. Only the selected enabled identifier contributes an entry; empty, unknown, or disabled selections contribute none. Direct child options declare identifiers, labels, optional descriptions, and disabled state, with native defaults: a missing `value` uses the text, missing text uses the value as its label, and the first duplicate identifier wins. A disabled or removed selection reports `""` and returns with its option. Updating or reordering options preserves retained interaction nodes.
@@ -39,11 +39,11 @@ Native radio inputs are local to the shadow root; only the host contributes the 
 ## Toggle Group
 
 ```html
-<h6-toggle-group name="formats" value='["csv","json"]' multiple aria-label="Export formats">
+<hplus-toggle-group name="formats" value='["csv","json"]' multiple aria-label="Export formats">
   <option value="csv">CSV</option>
   <option value="json">JSON</option>
   <option value="xml">XML</option>
-</h6-toggle-group>
+</hplus-toggle-group>
 ```
 
 `.value` and `.defaultValue` are string arrays in both modes; declarative defaults use a JSON array. Without `multiple`, at most the first enabled selection contributes an entry and the active option may be cleared. With `multiple`, each selected enabled identifier contributes a repeated entry under `name`; duplicates are removed and supplied selection order is retained. `required` requires at least one enabled selection.
@@ -54,7 +54,7 @@ Zag uses a radio group with checked items in single mode and a group of pressed 
 
 ```html
 <label for="seats">Seats</label>
-<h6-number-input id="seats" name="seats" value="3" min="1" max="20" step="1" required></h6-number-input>
+<hplus-number-input id="seats" name="seats" value="3" min="1" max="20" step="1" required></hplus-number-input>
 ```
 
 `.value` is a canonical numeric string, or an empty string for empty/unparseable text. Assign canonical strings through `.value`, or numbers through `.valueAsNumber`. `.displayValue` and `.input` expose the native editor and its raw localized text. Empty/unparseable text produces `NaN` for `.valueAsNumber`; a partial draft remains visible and blocks submission when invalid. Group separators count as unparseable, so a mistaken decimal mark can never multiply a value. The host contributes one string entry, including an empty string while unanswered.
@@ -71,9 +71,9 @@ Arrow Up/Down and the +/- buttons use Zag stepping, including a held pointer pre
 
 ```html
 <label for="password">Password</label>
-<h6-password-input id="password" name="password" autocomplete="new-password"
+<hplus-password-input id="password" name="password" autocomplete="new-password"
   minlength="8" required show-label="Show password" hide-label="Hide password">
-</h6-password-input>
+</hplus-password-input>
 ```
 
 The control retains one native editor. `.value`, `.defaultValue`, `.displayValue`, `.input`, `required`, `readonly`, `pattern`, `minlength`, and `maxlength` follow the shared text-field contract. No whitespace or case normalization is applied. Use `autocomplete="new-password"` for a new password; the default is `current-password`. Like a native password field, the value is not stored in session-history form state, so back/forward navigation returns an empty field. Physical-device password-manager integration remains unverified.

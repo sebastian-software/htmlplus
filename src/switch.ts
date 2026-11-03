@@ -17,7 +17,7 @@ switchTemplate.innerHTML = `<style>
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style><span part="track" aria-hidden="true"><span part="thumb"></span></span>`;
 
-export class H6Switch extends HTMLElement {
+export class HPlusSwitch extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = ["checked", "disabled", "required", "value"];
   #internals = this.attachInternals();

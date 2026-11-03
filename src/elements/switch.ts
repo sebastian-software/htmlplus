@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Switch } from "../switch.js";
+import { HPlusSwitch } from "../switch.js";
 
-export { H6Switch };
+export { HPlusSwitch };
 
-define("h6-switch", H6Switch);
+define("hplus-switch", HPlusSwitch);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-switch": H6Switch;
+    "hplus-switch": HPlusSwitch;
   }
 }

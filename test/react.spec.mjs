@@ -7,7 +7,7 @@ const clearLog = (page) => page.getByRole("button", { name: "Clear log" }).click
 
 test.beforeEach(async ({ page }) => {
   await page.goto(url);
-  await page.waitForFunction(() => customElements.get("h6-switch") && window.hydrationErrors);
+  await page.waitForFunction(() => customElements.get("hplus-switch") && window.hydrationErrors);
   await expect(page.locator("#iban input")).toHaveValue("DE89 3704 0044 0532 0130 00");
 });
 

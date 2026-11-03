@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6PasswordInput } from "../password-input.js";
+import { HPlusPasswordInput } from "../password-input.js";
 
-export { H6PasswordInput };
+export { HPlusPasswordInput };
 
-define("h6-password-input", H6PasswordInput);
+define("hplus-password-input", HPlusPasswordInput);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-password-input": H6PasswordInput;
+    "hplus-password-input": HPlusPasswordInput;
   }
 }

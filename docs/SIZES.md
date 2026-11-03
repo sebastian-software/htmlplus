@@ -6,28 +6,28 @@ The last column is the share of the minified bytes that is html+'s own code, and
 
 | Element | Minified | Gzipped | Own code |
 | --- | ---: | ---: | ---: |
-| `h6-field` | 4.9 KB | 1.6 KB | 100% |
-| `h6-switch` | 6.9 KB | 2.4 KB | 100% |
-| `h6-segmented` | 9.3 KB | 3.3 KB | 100% |
-| `h6-interval` | 9.9 KB | 3.7 KB | 100% |
-| `h6-tags` | 12.1 KB | 4.3 KB | 100% |
-| `h6-otp` | 18.4 KB | 5.9 KB | 100% |
-| `h6-bic` | 18.9 KB | 6.1 KB | 100% |
-| `h6-duration` | 19.6 KB | 6.3 KB | 100% |
-| `h6-iban` | 20.8 KB | 6.7 KB | 100% |
-| `h6-toggle` | 27.7 KB | 9.9 KB | 33% |
-| `h6-accordion` | 34.0 KB | 12.4 KB | 30% |
-| `h6-checkbox` | 39.9 KB | 14.0 KB | 27% |
-| `h6-rating` | 40.2 KB | 14.0 KB | 33% |
-| `h6-tabs` | 40.5 KB | 14.5 KB | 23% |
-| `h6-password-input` | 44.1 KB | 14.8 KB | 52% |
-| `h6-toggle-group` | 53.2 KB | 17.8 KB | 27% |
-| `h6-radio-group` | 53.5 KB | 17.9 KB | 27% |
-| `h6-slider` | 54.8 KB | 18.8 KB | 25% |
-| `h6-range-slider` | 55.1 KB | 18.9 KB | 25% |
-| `h6-number-input` | 73.8 KB | 23.4 KB | 37% |
-| `h6-select` | 114.2 KB | 37.3 KB | 17% |
-| `h6-combobox` | 119.6 KB | 38.6 KB | 16% |
-| `h6-date-picker` | 154.2 KB | 49.5 KB | 17% |
-| `h6-date-range-picker` | 157.0 KB | 50.4 KB | 18% |
-| All elements | 431.8 KB | 123.2 KB | 35% |
+| `hplus-field` | 5.0 KB | 1.6 KB | 100% |
+| `hplus-switch` | 6.9 KB | 2.4 KB | 100% |
+| `hplus-segmented` | 9.3 KB | 3.3 KB | 100% |
+| `hplus-interval` | 9.9 KB | 3.7 KB | 100% |
+| `hplus-tags` | 12.1 KB | 4.3 KB | 100% |
+| `hplus-otp` | 18.4 KB | 5.9 KB | 100% |
+| `hplus-bic` | 18.9 KB | 6.1 KB | 100% |
+| `hplus-duration` | 19.6 KB | 6.3 KB | 100% |
+| `hplus-iban` | 20.8 KB | 6.7 KB | 100% |
+| `hplus-toggle` | 27.7 KB | 9.9 KB | 33% |
+| `hplus-accordion` | 34.0 KB | 12.4 KB | 30% |
+| `hplus-checkbox` | 39.9 KB | 14.0 KB | 27% |
+| `hplus-rating` | 40.2 KB | 14.0 KB | 33% |
+| `hplus-tabs` | 40.6 KB | 14.5 KB | 23% |
+| `hplus-password-input` | 44.1 KB | 14.8 KB | 52% |
+| `hplus-toggle-group` | 53.2 KB | 17.8 KB | 27% |
+| `hplus-radio-group` | 53.5 KB | 17.9 KB | 27% |
+| `hplus-slider` | 54.8 KB | 18.8 KB | 25% |
+| `hplus-range-slider` | 55.2 KB | 18.9 KB | 25% |
+| `hplus-number-input` | 73.8 KB | 23.4 KB | 37% |
+| `hplus-select` | 114.2 KB | 37.3 KB | 17% |
+| `hplus-combobox` | 119.7 KB | 38.6 KB | 16% |
+| `hplus-date-picker` | 154.2 KB | 49.5 KB | 17% |
+| `hplus-date-range-picker` | 157.0 KB | 50.4 KB | 18% |
+| All elements | 432.0 KB | 123.2 KB | 35% |

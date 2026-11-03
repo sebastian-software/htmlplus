@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Slider } from "../slider.js";
+import { HPlusSlider } from "../slider.js";
 
-export { H6Slider };
+export { HPlusSlider };
 
-define("h6-slider", H6Slider);
+define("hplus-slider", HPlusSlider);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-slider": H6Slider;
+    "hplus-slider": HPlusSlider;
   }
 }

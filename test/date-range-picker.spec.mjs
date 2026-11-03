@@ -1,6 +1,6 @@
 import { test, expect } from "playwright/test";
 const markup = `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width,initial-scale=1"><script type="module" src="/dist/src/index.js"></script><style>body{font:14px system-ui;margin:24px}form{max-width:360px}label{display:block;margin:12px 0}fieldset{border:0;padding:0;margin:0}#after{position:fixed;right:16px;top:16px}</style></head><body>
-<form id="form"><fieldset id="fields"><label for="range">Travel period</label><p id="hint">Choose your travel dates.</p><h6-date-range-picker id="range" name="period" value='["2028-02-28","2028-03-02"]' min="2028-02-01" max="2028-12-31" required aria-describedby="hint"></h6-date-range-picker></fieldset><button id="after" type="button">After range</button><button id="submit">Submit</button></form><script>window.events=[];window.submits=0;for(const type of ['input','change'])document.querySelector('form').addEventListener(type,e=>events.push(type));document.querySelector('form').addEventListener('submit',e=>{e.preventDefault();submits++});</script></body></html>`;
+<form id="form"><fieldset id="fields"><label for="range">Travel period</label><p id="hint">Choose your travel dates.</p><hplus-date-range-picker id="range" name="period" value='["2028-02-28","2028-03-02"]' min="2028-02-01" max="2028-12-31" required aria-describedby="hint"></hplus-date-range-picker></fieldset><button id="after" type="button">After range</button><button id="submit">Submit</button></form><script>window.events=[];window.submits=0;for(const type of ['input','change'])document.querySelector('form').addEventListener(type,e=>events.push(type));document.querySelector('form').addEventListener('submit',e=>{e.preventDefault();submits++});</script></body></html>`;
 async function bare(page) {
   await page.route("**/range-controls", (route) => route.fulfill({ contentType: "text/html", body: markup }));
   await page.goto("/range-controls");
@@ -20,7 +20,7 @@ test("two-step selection exposes the partial start, hover is a preview, and comp
     ["period.start", "2028-02-28"],
     ["period.end", "2028-03-02"],
   ]);
-  expect(await page.locator("h6-date-range-picker input[name],input[type=hidden]").count()).toBe(0);
+  expect(await page.locator("hplus-date-range-picker input[name],input[type=hidden]").count()).toBe(0);
   await open(page);
   await day(page, "2028-02-29").click();
   await expect(page.getByRole("dialog", { name: "Travel period calendar" })).toBeVisible();
@@ -295,7 +295,7 @@ test("labels, inclusive bounds, invalid configuration, nested themes, clearing, 
 test("range recipes and live playground expose two ISO entries in Light/Dark without theme-induced value changes", async ({
   page,
 }) => {
-  await page.goto("/demo/styling.html#h6-date-range-picker");
+  await page.goto("/demo/styling.html#hplus-date-range-picker");
   const before = await page
     .locator(".recipe-form")
     .evaluateAll((forms) => forms.map((form) => [...new FormData(form)]));
@@ -367,11 +367,11 @@ test("clearing a partial range restarts at the start, and invalid end dates reve
   expect(await entries(page)).toEqual([["period.start", "2028-02-10"]]);
   await page.keyboard.press("Escape");
   await page.locator("#form").evaluate((form) => {
-    const tabs = document.createElement("h6-tabs");
+    const tabs = document.createElement("hplus-tabs");
     tabs.setAttribute("aria-label", "Travel details");
     tabs.innerHTML =
       '<section data-value="first" data-label="Overview">Overview</section><section data-value="dates" data-label="Dates"></section>';
-    tabs.children[1].append(form.querySelector("h6-date-range-picker"));
+    tabs.children[1].append(form.querySelector("hplus-date-range-picker"));
     form.prepend(tabs);
   });
   await page.locator("#submit").click();

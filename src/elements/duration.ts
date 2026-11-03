@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Duration } from "../duration.js";
+import { HPlusDuration } from "../duration.js";
 
-export { H6Duration };
+export { HPlusDuration };
 
-define("h6-duration", H6Duration);
+define("hplus-duration", HPlusDuration);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-duration": H6Duration;
+    "hplus-duration": HPlusDuration;
   }
 }

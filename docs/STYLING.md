@@ -6,13 +6,13 @@ The playground and styling gallery share independent Light/Dark appearances, Lay
 
 Every component includes its neutral light base in shadow DOM. No external stylesheet, theme class, React, or Tailwind is required. Defaults are fallbacks at the point of use, not public declarations on `:host`, so a parent theme can flow into every component.
 
-`h6-field` applies that base to a slotted native input, textarea, or select. These controls remain in light DOM and accept ordinary application CSS. The optional `native.css` provides the same opt-in base without JavaScript and does not style unwrapped inputs. Shadow DOM does not remove browser defaults: the library sets specific properties rather than applying a global reset. See [native fields](NATIVE-FIELDS.md).
+`hplus-field` applies that base to a slotted native input, textarea, or select. These controls remain in light DOM and accept ordinary application CSS. The optional `native.css` provides the same opt-in base without JavaScript and does not style unwrapped inputs. Shadow DOM does not remove browser defaults: the library sets specific properties rather than applying a global reset. See [native fields](NATIVE-FIELDS.md).
 
 ```html
 <script type="module" src="./browser/index.js"></script>
 <form>
   <label for="account">Bank account</label>
-  <h6-iban id="account" name="iban" required></h6-iban>
+  <hplus-iban id="account" name="iban" required></hplus-iban>
 </form>
 ```
 
@@ -45,7 +45,7 @@ Both demos expose an independent Surface selector. `Layered` uses the built-in d
   --hp-shadow-popover: none;
 }
 
-h6-date-picker {
+hplus-date-picker {
   --hp-shadow-inset: inset 0 1px 2px rgb(0 0 0 / .12);
 }
 ```
@@ -80,7 +80,7 @@ Set public tokens on `:root`, a wrapper, or an individual host. More local decla
   --hp-ring: #15803d;
   --hp-radius: .625rem;
 }
-.checkout h6-otp { --hp-radius: 0; }
+.checkout hplus-otp { --hp-radius: 0; }
 ```
 
 `--hp-radius` defaults to `.625rem`. Derived sizes use the current shadcn factors: `sm` = 0.6, `md` = 0.8, `lg` = 1, `xl` = 1.4, `2xl` = 1.8, `3xl` = 2.2, `4xl` = 2.6. Editors and toggles use `md`; tag tokens and inner tabs/segments use `sm`; tab/segmented tracks use `lg`. Explicit `--hp-radius-sm`, `--hp-radius-md`, and `--hp-radius-lg` override those sizes. The larger sizes are reserved for future consumers. Values derive at the consuming element, so a locally overridden base takes effect without inheriting a stale computed scale from an ancestor. Explicit size overrides are inherited as supplied. Capsule switches and circular thumbs retain their functional shapes; use their parts for a different shape.
@@ -109,7 +109,7 @@ An existing shadcn application can load [shadcn.css](../demo/shadcn.css), also c
 <form class="hp-shadcn">
   <!-- Existing shadcn CSS supplies --background, --primary, --input, etc. -->
   <label for="account">Bank account</label>
-  <h6-iban id="account" name="iban"></h6-iban>
+  <hplus-iban id="account" name="iban"></hplus-iban>
   <section class="dark">
     <!-- Nested application theme tokens are resolved on each html+ host. -->
   </section>
@@ -128,42 +128,42 @@ The [recipe definitions](../demo/recipes.ts) are the single source for the galle
 
 | Element | Included variation | Public parts |
 | --- | --- | --- |
-| `h6-field` | Underlined native fields | No parts; use `h6-field > input`, `h6-field > textarea`, and `h6-field > select` |
-| `h6-date-range-picker` | Outlined range | Date Picker parts plus `start-field`, `end-field`, `start-input`, `end-input`, `start-label`, `end-label`, `range-start`, `range-end`, `in-range`, `preview-day` |
-| `h6-date-picker` | Framed calendar | `root`, `control`, `input`, `trigger`, `clear-button`, `positioner`, `content`, `navigation`, `prev-button`, `view-button`, `next-button`, `view`, `day-view`, `month-view`, `year-view`, `grid`, `weekday`, `day`, `selected-day`, `today`, `month`, `year` |
-| `h6-select` | Quiet surface | `root`, `control`, `trigger`, `value-text`, `indicator`, `clear-button`, `positioner`, `content`, `option`, `selected-option`, `option-label`, `option-indicator`, `empty` |
-| `h6-combobox` | Underlined search | Select parts with `input` instead of `value-text` |
-| `h6-slider` | Slim rail | `root`, `value-text`, `control`, `track`, `range`, `thumb` |
-| `h6-range-slider` | Square handles | Slider parts plus `lower-thumb`, `upper-thumb` |
-| `h6-rating` | Outlined score | `root`, `label`, `control`, `item`, `selected-item`, `icon`, `clear-button`, `value-text` |
-| `h6-iban` | Underlined editor with monospaced text | `input` |
-| `h6-bic` | Compact identifier field | `input` |
-| `h6-otp` | Underlined slots over one native editor | `control`, `slots`, `slot`, `filled-slot`, `active-slot`, `selected-slot`, `input` |
-| `h6-duration` | Quiet surface with tabular figures | `input` |
-| `h6-interval` | Compact numeric pair | `control`, `input`, `lower-input`, `upper-input`, `lower-label`, `upper-label`, `separator` |
-| `h6-tags` | Outlined, rounded tokens | `control`, `tokens`, `input`, `tag`, `tag-label`, `remove-button`, `remove-icon` |
-| `h6-switch` | Square track and thumb | `track`, `thumb` |
-| `h6-checkbox` | Outlined check | `root`, `input`, `control`, `indicator`, `label` |
-| `h6-radio-group` | Choice cards | `root`, `option`, `selected-option`, `input`, `control`, `label`, `description` |
-| `h6-toggle-group` | Joined toggles | `root`, `option`, `selected-option`, `label`, `description` |
-| `h6-number-input` | Tabular number | `control`, `input`, `increment-trigger`, `decrement-trigger` |
-| `h6-password-input` | Underlined password | `control`, `input`, `visibility-trigger`, `indicator` |
-| `h6-segmented` | Outlined choices with a dark selected option | `control`, `option`, `selected-option` |
-| `h6-toggle` | Pill with a light pressed state | `button` |
-| `h6-accordion` | Boxed disclosure sections | `root`, `item`, `heading`, `trigger`, `label`, `indicator`, `content` |
-| `h6-tabs` | Underlined selected tab | `root`, `list`, `tab`, `selected-tab`, `panels`, `panel` |
+| `hplus-field` | Underlined native fields | No parts; use `hplus-field > input`, `hplus-field > textarea`, and `hplus-field > select` |
+| `hplus-date-range-picker` | Outlined range | Date Picker parts plus `start-field`, `end-field`, `start-input`, `end-input`, `start-label`, `end-label`, `range-start`, `range-end`, `in-range`, `preview-day` |
+| `hplus-date-picker` | Framed calendar | `root`, `control`, `input`, `trigger`, `clear-button`, `positioner`, `content`, `navigation`, `prev-button`, `view-button`, `next-button`, `view`, `day-view`, `month-view`, `year-view`, `grid`, `weekday`, `day`, `selected-day`, `today`, `month`, `year` |
+| `hplus-select` | Quiet surface | `root`, `control`, `trigger`, `value-text`, `indicator`, `clear-button`, `positioner`, `content`, `option`, `selected-option`, `option-label`, `option-indicator`, `empty` |
+| `hplus-combobox` | Underlined search | Select parts with `input` instead of `value-text` |
+| `hplus-slider` | Slim rail | `root`, `value-text`, `control`, `track`, `range`, `thumb` |
+| `hplus-range-slider` | Square handles | Slider parts plus `lower-thumb`, `upper-thumb` |
+| `hplus-rating` | Outlined score | `root`, `label`, `control`, `item`, `selected-item`, `icon`, `clear-button`, `value-text` |
+| `hplus-iban` | Underlined editor with monospaced text | `input` |
+| `hplus-bic` | Compact identifier field | `input` |
+| `hplus-otp` | Underlined slots over one native editor | `control`, `slots`, `slot`, `filled-slot`, `active-slot`, `selected-slot`, `input` |
+| `hplus-duration` | Quiet surface with tabular figures | `input` |
+| `hplus-interval` | Compact numeric pair | `control`, `input`, `lower-input`, `upper-input`, `lower-label`, `upper-label`, `separator` |
+| `hplus-tags` | Outlined, rounded tokens | `control`, `tokens`, `input`, `tag`, `tag-label`, `remove-button`, `remove-icon` |
+| `hplus-switch` | Square track and thumb | `track`, `thumb` |
+| `hplus-checkbox` | Outlined check | `root`, `input`, `control`, `indicator`, `label` |
+| `hplus-radio-group` | Choice cards | `root`, `option`, `selected-option`, `input`, `control`, `label`, `description` |
+| `hplus-toggle-group` | Joined toggles | `root`, `option`, `selected-option`, `label`, `description` |
+| `hplus-number-input` | Tabular number | `control`, `input`, `increment-trigger`, `decrement-trigger` |
+| `hplus-password-input` | Underlined password | `control`, `input`, `visibility-trigger`, `indicator` |
+| `hplus-segmented` | Outlined choices with a dark selected option | `control`, `option`, `selected-option` |
+| `hplus-toggle` | Pill with a light pressed state | `button` |
+| `hplus-accordion` | Boxed disclosure sections | `root`, `item`, `heading`, `trigger`, `label`, `indicator`, `content` |
+| `hplus-tabs` | Underlined selected tab | `root`, `list`, `tab`, `selected-tab`, `panels`, `panel` |
 
 Target a public part directly. Shadow descendants are intentionally not a styling API:
 
 ```css
-h6-tags.outlined::part(tag) {
+hplus-tags.outlined::part(tag) {
   border: 1px solid var(--hp-border);
   border-radius: 999px;
   background: transparent;
 }
 ```
 
-Toggles expose `:state(pressed)`; Tabs expose `selected-tab` alongside `tab`. Their recipes follow those live states. Accordion and Tabs project author-owned sections; native inputs inside them can use `h6-field` for the shared base and ordinary application CSS for details. See the [interaction guide](INTERACTIONS.md).
+Toggles expose `:state(pressed)`; Tabs expose `selected-tab` alongside `tab`. Their recipes follow those live states. Accordion and Tabs project author-owned sections; native inputs inside them can use `hplus-field` for the shared base and ordinary application CSS for details. See the [interaction guide](INTERACTIONS.md).
 
 Switches and Checkboxes expose their live checked state through `:state(checked)`; Checkboxes add `:state(indeterminate)`. Use it instead of `[checked]`, which describes the initial default. Segmented choices expose `selected-option` on the currently selected option; it moves when selection changes by pointer, keyboard, assignment, or reset. It is also an `option` part. `::part(option):checked` cannot observe the adjacent private radio input.
 

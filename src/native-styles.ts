@@ -4,8 +4,8 @@ import { nativeFieldStyles } from "./native-field-styles.js";
 /** Optional styling for native elements; browser semantics remain intact. */
 export const nativeStyles = `
 @layer hp-native {
-  h6-field { display: block; min-width: 0; }
-  h6-field[hidden] { display: none; }
+  hplus-field { display: block; min-width: 0; }
+  hplus-field[hidden] { display: none; }
   ${nativeFieldStyles(false)}
   .hp-button {
     box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; gap: .5rem;

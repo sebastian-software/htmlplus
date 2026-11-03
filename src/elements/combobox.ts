@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Combobox } from "../combobox.js";
+import { HPlusCombobox } from "../combobox.js";
 
-export { H6Combobox };
+export { HPlusCombobox };
 
-define("h6-combobox", H6Combobox);
+define("hplus-combobox", HPlusCombobox);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-combobox": H6Combobox;
+    "hplus-combobox": HPlusCombobox;
   }
 }

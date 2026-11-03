@@ -348,7 +348,7 @@ class SliderControl extends HTMLElement {
   }
 }
 
-export class H6Slider extends SliderControl {
+export class HPlusSlider extends SliderControl {
   constructor() {
     super(false);
   }
@@ -356,7 +356,7 @@ export class H6Slider extends SliderControl {
     return this.values[0]!;
   }
   set value(value: number) {
-    if (typeof value !== "number" || !Number.isFinite(value)) throw new TypeError("h6-slider.value must be finite.");
+    if (typeof value !== "number" || !Number.isFinite(value)) throw new TypeError("hplus-slider.value must be finite.");
     this.values = [value];
   }
   get defaultValue(): number {
@@ -367,7 +367,7 @@ export class H6Slider extends SliderControl {
     this.setAttribute("value", String(value));
   }
 }
-export class H6RangeSlider extends SliderControl {
+export class HPlusRangeSlider extends SliderControl {
   constructor() {
     super(true);
   }
@@ -380,7 +380,7 @@ export class H6RangeSlider extends SliderControl {
       value.length !== 2 ||
       !value.every((item) => typeof item === "number" && Number.isFinite(item))
     )
-      throw new TypeError("h6-range-slider.value must be two finite numbers.");
+      throw new TypeError("hplus-range-slider.value must be two finite numbers.");
     if (value[0] > value[1]) throw new RangeError("The lower boundary must not exceed the upper boundary.");
     this.values = [...value];
   }

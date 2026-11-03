@@ -31,7 +31,7 @@ template.innerHTML = `<style>
 </style><div part="root"><span part="label"></span><div part="control"></div><button part="clear-button" type="button">Clear</button><span part="value-text" aria-hidden="true"></span></div>`;
 const starPath = "m12 3 2.78 5.63L21 9.54l-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.93 1.06-6.2L3 9.54l6.22-.91z";
 
-export class H6Rating extends HTMLElement {
+export class HPlusRating extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = [
     "value",
@@ -128,7 +128,7 @@ export class H6Rating extends HTMLElement {
   }
   set value(value: number | null) {
     if (value !== null && (typeof value !== "number" || !Number.isInteger(value) || value < 1 || value > this.count))
-      throw new RangeError("h6-rating.value must be null or a whole score between 1 and count.");
+      throw new RangeError("hplus-rating.value must be null or a whole score between 1 and count.");
     this.#dirty = true;
     this.#value = value;
     this.#sync();

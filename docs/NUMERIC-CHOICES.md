@@ -1,12 +1,12 @@
 # Numeric choices
 
-`h6-slider`, `h6-range-slider`, and `h6-rating` use Zag 1.46.0 through the vanilla adapter. The form-associated host owns submission, validity, reset/restoration, and public events. No hidden input or duplicate submission owner is rendered. All three include neutral styles, inherited `--hp-*` theme roles, individual styling recipes, and live form examples.
+`hplus-slider`, `hplus-range-slider`, and `hplus-rating` use Zag 1.46.0 through the vanilla adapter. The form-associated host owns submission, validity, reset/restoration, and public events. No hidden input or duplicate submission owner is rendered. All three include neutral styles, inherited `--hp-*` theme roles, individual styling recipes, and live form examples.
 
 ## Slider
 
 ```html
 <label for="volume">Volume</label>
-<h6-slider id="volume" name="volume" min="0" max="100" step="5" value="35"></h6-slider>
+<hplus-slider id="volume" name="volume" min="0" max="100" step="5" value="35"></hplus-slider>
 ```
 
 `.value` and `.defaultValue` are numbers. Defaults are `min=0`, `max=100`, `step=1`, and an initial value at `min`. The `value` attribute describes the reset default. A property assignment or user edit makes the current value dirty; subsequent default changes affect reset without overwriting the current value. Programmatic non-finite values throw. Values clamp and snap to steps anchored at `min`; a nonaligned maximum uses the last valid step below it. FormData contains the numeric string under the host's name.
@@ -19,13 +19,13 @@ Horizontal sliders support Left/Right, Home/End, Page Up/Down, and Shift with th
 
 ```html
 <label for="price">Price filter (USD)</label>
-<h6-range-slider id="price" name="price" value="[100,350]"
+<hplus-range-slider id="price" name="price" value="[100,350]"
   min="0" max="500" step="10"
   lower-name="price_min" upper-name="price_max"
-  lower-label="Minimum" upper-label="Maximum"></h6-range-slider>
+  lower-label="Minimum" upper-label="Maximum"></hplus-range-slider>
 ```
 
-`.value` and `.defaultValue` are readonly pairs of finite numbers. The initial default is `[min, max]`, normalized to the step grid. Declarative values use a JSON pair. Missing or malformed defaults fall back to the endpoints. Programmatic malformed pairs throw; inverted pairs throw rather than silently swapping boundary identities. Normalization clamps/snaps each boundary. Equal boundaries are allowed. This is a bounded interval, unlike the nullable endpoints in `h6-interval`.
+`.value` and `.defaultValue` are readonly pairs of finite numbers. The initial default is `[min, max]`, normalized to the step grid. Declarative values use a JSON pair. Missing or malformed defaults fall back to the endpoints. Programmatic malformed pairs throw; inverted pairs throw rather than silently swapping boundary identities. Normalization clamps/snaps each boundary. Equal boundaries are allowed. This is a bounded interval, unlike the nullable endpoints in `hplus-interval`.
 
 The host requires `name` to contribute entries. Default names are `name.min` and `name.max`; `lower-name` and `upper-name` override them. FormData contains two independent numeric strings, not JSON or bracket notation. JSON is used only for declarative defaults and internal restoration state.
 
@@ -35,7 +35,7 @@ Each thumb has a separate accessible name composed from the field label and `low
 
 ```html
 <label for="experience">Experience</label>
-<h6-rating id="experience" name="experience" count="5" required></h6-rating>
+<hplus-rating id="experience" name="experience" count="5" required></hplus-rating>
 ```
 
 `.value` and `.defaultValue` are a whole score from 1 through `count`, or `null` for unanswered. The default is unanswered, not a score of zero. The default count is five; this first scope supports 1–10 whole items. Invalid declarative count falls back to five; invalid property assignments throw. A missing, invalid, or out-of-scale default is unanswered. Reducing the count clamps an existing score to the new maximum without user events.

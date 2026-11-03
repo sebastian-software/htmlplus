@@ -56,7 +56,7 @@ template.innerHTML = `<style>
   button, input { font: inherit; color: inherit; }
   button { cursor: pointer; }
   [part=control] { display: flex; align-items: center; min-height: var(--hp-control-height, 2.5rem); border: 1px solid ${theme("input")}; border-radius: ${radius("md")}; background: ${theme("background")}; box-shadow: ${surfaceShadow("inset")}; }
-  :host(h6-select) [part=control] { box-shadow: ${surfaceShadow("raised")}; }
+  :host(hplus-select) [part=control] { box-shadow: ${surfaceShadow("raised")}; }
   [part=control]:focus-within { border-color: ${theme("ring")}; }
   [part=trigger], [part=input] { min-width: 0; border: 0; border-radius: inherit; background: transparent; outline: none; }
   [part=trigger] { display: flex; align-items: center; gap: .5rem; justify-content: space-between; flex: 1; min-height: calc(var(--hp-control-height, 2.5rem) - 2px); padding: .5rem .75rem; text-align: start; }
@@ -87,7 +87,7 @@ template.innerHTML = `<style>
 <div part="positioner" popover="manual" hidden><div part="content"><div part="empty" role="status">No options found.</div></div></div>`;
 
 /** Shared single-selection form boundary. Each subclass brings its own Zag machine, so neither loads the other's. */
-export abstract class H6Choice<Service> extends HTMLElement {
+export abstract class HPlusChoice<Service> extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = [
     "value",

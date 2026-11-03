@@ -1,13 +1,13 @@
 import * as passwordInput from "@zag-js/password-input";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { label, wrap } from "./compound-input.js";
-import { H6TextField } from "./text-fields.js";
+import { HPlusTextField } from "./text-fields.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
 import { visiblyInvalid } from "./touched.js";
 
-export class H6PasswordInput extends H6TextField {
-  static override observedAttributes = [...H6TextField.observedAttributes, "show-label", "hide-label"];
+export class HPlusPasswordInput extends HPlusTextField {
+  static override observedAttributes = [...HPlusTextField.observedAttributes, "show-label", "hide-label"];
   #id = interactionId("password");
   #machine?: InteractionMachine<passwordInput.Service, passwordInput.Props>;
   #bindings = new DomBindings();
