@@ -111,9 +111,10 @@ export class HPlusPasswordInput extends HPlusTextField {
     const api = passwordInput.connect(this.#machine.service, normalizeProps);
     this.#bindings.apply(this.#control, api.getControlProps());
     this.#bindings.apply(this.input, api.getInputProps());
-    // Native click handles keyboard, touch, and pointer exactly once.
+    // Our own click listener handles keyboard, touch, and pointer exactly once, so Zag's handlers would toggle twice.
     const props = api.getVisibilityTriggerProps();
     delete props.onpointerdown;
+    delete props.onclick;
     this.#bindings.apply(this.#trigger, props);
     this.#trigger.tabIndex = this.input.disabled ? -1 : 0;
     this.#trigger.removeAttribute("aria-expanded");
