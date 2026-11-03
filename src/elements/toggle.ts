@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Toggle } from "../toggle.js";
+import { HPlusToggle } from "../toggle.js";
 
-export { H6Toggle };
+export { HPlusToggle };
 
-define("h6-toggle", H6Toggle);
+define("hplus-toggle", HPlusToggle);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-toggle": H6Toggle;
+    "hplus-toggle": HPlusToggle;
   }
 }

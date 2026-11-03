@@ -4,7 +4,7 @@
 - Created: 2026-11-02
 - Updated: 2026-11-03
 - Lifecycle: living
-- Scope: package structure and framework integration; the final package name and element prefix stay open under ADR-0006
+- Scope: package structure and framework integration; the final package name stays open under ADR-0006
 
 ## Context
 

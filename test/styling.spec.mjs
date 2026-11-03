@@ -41,7 +41,7 @@ test("every element has two working previews, matching form values, and its own 
     expect(values[0]).toEqual(values[1]);
     if (name !== "Button") expect(values[0].length).toBeGreaterThan(0);
     expect(await page.locator("#recipe-code").innerText()).toContain(
-      name === "Button" ? ".hp-button" : name === "Native Field" ? "h6-field" : "::part(",
+      name === "Button" ? ".hp-button" : name === "Native Field" ? "hplus-field" : "::part(",
     );
     await expect(navigation.getByRole("link", { name, exact: true })).toHaveAttribute("aria-current", "page");
   }
@@ -61,7 +61,7 @@ test("deep links expose copyable HTML, actual preview CSS, and the shared base s
       },
     }),
   );
-  await page.goto("/demo/styling.html#h6-duration");
+  await page.goto("/demo/styling.html#hplus-duration");
   await expect(page.locator("#recipe-heading")).toHaveText("Duration");
   await page.getByRole("button", { name: "Copy CSS", exact: true }).click();
   await expect(page.locator("#copy-status")).toHaveText("Copied to clipboard.");
@@ -94,14 +94,14 @@ test("copy failure leaves selectable source and a useful status", async ({ page 
       },
     }),
   );
-  await page.goto("/demo/styling.html#h6-tags");
+  await page.goto("/demo/styling.html#hplus-tags");
   await page.getByRole("button", { name: "Copy CSS", exact: true }).click();
   await expect(page.locator("#copy-status")).toHaveText("Copy unavailable. Select and copy the code above.");
-  await expect(page.locator("#recipe-code")).toContainText("h6-tags.tags-outlined::part(tag)");
+  await expect(page.locator("#recipe-code")).toContainText("hplus-tags.tags-outlined::part(tag)");
 });
 
 test("selected option styling follows keyboard selection without changing the value contract", async ({ page }) => {
-  await page.goto("/demo/styling.html#h6-segmented");
+  await page.goto("/demo/styling.html#hplus-segmented");
   const variant = page.getByRole("region", { name: "Outlined choices preview", exact: true });
   await variant.getByRole("radio", { name: "Standard", exact: true }).focus();
   await variant.getByRole("radio", { name: "Standard", exact: true }).press("ArrowRight");
@@ -124,7 +124,7 @@ test("neutral defaults, focus, and recipe layout work on desktop and mobile", as
     "rgb(23, 23, 23)",
   );
   const before = await page.locator("#demo-form").evaluate((form) => [...new FormData(form)]);
-  await page.getByRole("link", { name: "Style h6-tags", exact: true }).click();
+  await page.getByRole("link", { name: "Style hplus-tags", exact: true }).click();
   await expect(page.locator("#recipe-heading")).toHaveText("Tags");
   await page.screenshot({ path: test.info().outputPath("styling-desktop.png"), fullPage: true });
   await page.getByRole("navigation", { name: "Components" }).getByRole("link", { name: "IBAN", exact: true }).click();

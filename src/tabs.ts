@@ -33,7 +33,7 @@ interface Entry {
   slot: HTMLSlotElement;
 }
 
-export class H6Tabs extends HTMLElement {
+export class HPlusTabs extends HTMLElement {
   static observedAttributes = ["value", "disabled", "orientation", "activation-mode", "dir", "aria-label"];
   #root = this.attachShadow({ mode: "open" });
   #container: HTMLDivElement;

@@ -57,8 +57,8 @@
   .quiet-button:hover { color:var(--accent); }
   .field label,.switch-field label { font-size:14px; line-height:20px; font-weight:500; cursor:pointer; }
   .field-heading code,.switch-control code { color:var(--muted-foreground); font-size:11px; line-height:16px; font-weight:400; }
-  h6-iban,h6-bic,h6-otp { display:block; }
-  .was-validated h6-iban:invalid::part(input),.was-validated h6-bic:invalid::part(input),.was-validated h6-otp:invalid::part(input) { border-color:var(--danger); }
+  hplus-iban,hplus-bic,hplus-otp { display:block; }
+  .was-validated hplus-iban:invalid::part(input),.was-validated hplus-bic:invalid::part(input),.was-validated hplus-otp:invalid::part(input) { border-color:var(--danger); }
   .feedback { font-size:12px; line-height:18px; color:var(--muted-foreground); margin-top:7px; min-height:17px; }
   .feedback[data-state=valid] { color:var(--success); }
   .feedback[data-state=invalid] { color:var(--danger); }

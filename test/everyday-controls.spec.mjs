@@ -28,7 +28,7 @@ test("table selection derives mixed state and submits only selected row identifi
 test("checkbox has independent checked/mixed states, one event pair, native labels, defaults, and restoration", async ({
   page,
 }) => {
-  const host = page.locator("h6-checkbox[value=filters]");
+  const host = page.locator("hplus-checkbox[value=filters]");
   await host.evaluate((control) => {
     window.controlEvents = [];
     for (const type of ["input", "change"])
@@ -60,7 +60,7 @@ test("checkbox has independent checked/mixed states, one event pair, native labe
     const label = document.createElement("label");
     label.htmlFor = "select-filters";
     label.textContent = "Choose filters";
-    const control = document.querySelector("h6-checkbox[value=filters]");
+    const control = document.querySelector("hplus-checkbox[value=filters]");
     control.id = label.htmlFor;
     document.body.append(label);
   });
@@ -224,7 +224,13 @@ test("password visibility works with keyboard without value events, preserves se
 test("all five controls retain errors, external form ownership, reset, fieldset disabling, and reconnects", async ({
   page,
 }) => {
-  const tags = ["h6-checkbox", "h6-radio-group", "h6-toggle-group", "h6-number-input", "h6-password-input"];
+  const tags = [
+    "hplus-checkbox",
+    "hplus-radio-group",
+    "hplus-toggle-group",
+    "hplus-number-input",
+    "hplus-password-input",
+  ];
   const before = await data(page);
   await page.getByLabel("Disable the fieldset").check();
   expect(await data(page)).toEqual([]);
@@ -295,11 +301,11 @@ test("native button stylesheet preserves submitter values, validation, external 
 
 test("new recipes support light/dark, local tokens, mobile, text scaling, and both surfaces", async ({ page }) => {
   for (const element of [
-    "h6-checkbox",
-    "h6-radio-group",
-    "h6-number-input",
-    "h6-password-input",
-    "h6-toggle-group",
+    "hplus-checkbox",
+    "hplus-radio-group",
+    "hplus-number-input",
+    "hplus-password-input",
+    "hplus-toggle-group",
     "button",
   ]) {
     await page.goto(`/demo/styling.html#${element}`);

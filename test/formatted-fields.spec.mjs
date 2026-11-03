@@ -10,7 +10,7 @@ test("IBAN groups defaults and assignments while keeping canonical submission an
   page,
 }) => {
   const input = page.getByRole("textbox", { name: "IBAN", exact: true });
-  const host = page.locator("h6-iban");
+  const host = page.locator("hplus-iban");
   await expect(input).toHaveValue("DE89 3704 0044 0532 0130 00");
   expect(await entry(page, "iban")).toBe("DE89370400440532013000");
   await host.evaluate((control) => {
@@ -49,13 +49,13 @@ test("IBAN native typing, separator deletion, middle edits, undo and redo retain
   await input.evaluate((editor) => editor.setSelectionRange(3, 3));
   await input.pressSequentially("9");
   await expect(input).toHaveValue("DE89 3704");
-  await expect(page.locator("h6-iban input")).toHaveCount(1);
+  await expect(page.locator("hplus-iban input")).toHaveCount(1);
 });
 
 test("OTP has one native editor, six aligned visual slots, native arrows, range selection, and deletion", async ({
   page,
 }) => {
-  const host = page.locator("h6-otp");
+  const host = page.locator("hplus-otp");
   const input = page.getByRole("textbox", { name: "Verification code", exact: true });
   await expect(host.locator("input")).toHaveCount(1);
   await expect(host.locator("[part~=slot]")).toHaveCount(6);
@@ -117,7 +117,7 @@ test("formatted paste retains zeros and native undo without duplicate value even
 test("four-digit PIN layout, reset, disabled fieldset, and long programmatic drafts remain inspectable", async ({
   page,
 }) => {
-  const host = page.locator("h6-otp");
+  const host = page.locator("hplus-otp");
   const input = host.locator("input");
   await host.evaluate((control) => {
     control.length = 4;
@@ -155,7 +155,7 @@ test("unavailable native formatting commands leave ordinary editing and canonica
 });
 
 test("slot geometry adapts to mobile, text scaling, local styles, Light/Dark and forced colors", async ({ page }) => {
-  await page.goto("/demo/styling.html#h6-otp");
+  await page.goto("/demo/styling.html#hplus-otp");
   await page.setViewportSize({ width: 320, height: 800 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   const base = page.getByRole("region", { name: "Base preview", exact: true });

@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6ToggleGroup } from "../choice-groups.js";
+import { HPlusToggleGroup } from "../choice-groups.js";
 
-export { H6ToggleGroup };
+export { HPlusToggleGroup };
 
-define("h6-toggle-group", H6ToggleGroup);
+define("hplus-toggle-group", HPlusToggleGroup);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-toggle-group": H6ToggleGroup;
+    "hplus-toggle-group": HPlusToggleGroup;
   }
 }

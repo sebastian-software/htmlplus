@@ -13,7 +13,7 @@ html+ is a prototype with twenty-four elements, a native Button family, a live p
 In order; each step can change the ones after it.
 
 1. **Close the evidence gaps that a release claim depends on.** Check physical-device OTP and password-manager autofill, the separate canonical submission mechanism on those devices, manual assistive-technology combinations, real browser back/forward restoration, and exact minimum browser versions.
-2. **Decide the prefix and package name.** See the open decisions below. Both are breaking changes for anyone already using the elements, so settle them before a release.
+2. **Decide the package name.** See the open decisions below. It is a breaking change for anyone already importing the package, so settle it before a release.
 3. **Make the first release decision.** Review actual integration effort, build output, and supported-browser evidence. Choose the release set and publish only supported behavior.
 4. **Add tag editing in place.** Tags currently add and remove only. Reassess the tag API (`.value` and `.defaultValue` arrays, JSON declarative defaults) at the same time.
 5. **Reduce the largest elements.** [Element sizes](SIZES.md) shows Select, Combobox, and both date pickers at 37 to 50 KB gzipped. Select and Combobox no longer load each other's machine. Most of what remains is Zag itself: the machine, Floating UI positioning, and dismissal layers. `htmlplus/iban` still loads the BIC and OTP code.
@@ -23,8 +23,7 @@ In order; each step can change the ones after it.
 
 ## Open decisions
 
-- **Element prefix.** `h6-` is provisional; [ADR-0006](adr/0006-project-identity.md) keeps the final prefix open.
-- **Package name and namespace.** `htmlplus` is a private local identifier, and that name on npm belongs to an unrelated third-party package. A public name, scope, and registration strategy are undecided.
+- **Package name and namespace.** `htmlplus` is a private local identifier. On npm, both `htmlplus` and `hplus` belong to unrelated third-party packages. A public name, scope, and registration strategy are undecided.
 - **Domain.** `htmlplus.dev` is reserved and not live yet. Pointing it at Pages is separate DNS and hosting work.
 - **Release set and browser floor.** Which elements the first package contains, and the minimum versions it claims.
 - **No-JavaScript and server rendering.** Whether form controls get a fallback or Declarative Shadow DOM output.

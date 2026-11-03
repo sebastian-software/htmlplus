@@ -51,7 +51,7 @@ test("toggle retains defaults, custom errors, external labels, form association,
     const label = document.createElement("label");
     label.htmlFor = "contract-toggle";
     label.textContent = "Pin item";
-    const host = document.createElement("h6-toggle");
+    const host = document.createElement("hplus-toggle");
     host.id = "contract-toggle";
     host.name = "pin";
     host.value = "yes";
@@ -241,12 +241,12 @@ test("nested closed sections reveal a form-associated field and preserve native 
   await page.evaluate(() => {
     const form = document.createElement("form");
     form.id = "nested-form";
-    form.innerHTML = `<h6-tabs id="nested-tabs" aria-label="Nested example">
+    form.innerHTML = `<hplus-tabs id="nested-tabs" aria-label="Nested example">
       <section data-value="first" data-label="First"><p>Overview</p></section>
-      <section data-value="second" data-label="Second"><h6-accordion id="nested-accordion">
-        <section data-value="code" data-label="Code"><label for="nested-code">Nested code</label><h6-otp id="nested-code" name="nested_code" required></h6-otp></section>
-      </h6-accordion></section>
-    </h6-tabs><button>Check nested</button>`;
+      <section data-value="second" data-label="Second"><hplus-accordion id="nested-accordion">
+        <section data-value="code" data-label="Code"><label for="nested-code">Nested code</label><hplus-otp id="nested-code" name="nested_code" required></hplus-otp></section>
+      </hplus-accordion></section>
+    </hplus-tabs><button>Check nested</button>`;
     form.addEventListener("submit", (event) => event.preventDefault());
     document.body.append(form);
   });
@@ -311,7 +311,7 @@ test("interaction base styles and icon metrics work without an application style
 test("new styling recipes use their displayed overrides and retain their form contracts on mobile", async ({
   page,
 }) => {
-  await page.goto("/demo/styling.html#h6-tabs");
+  await page.goto("/demo/styling.html#hplus-tabs");
   const variant = page.getByRole("region", { name: "Underline preview", exact: true });
   await variant.getByRole("tab", { name: "Receipts", exact: true }).click();
   const selected = variant.locator("[part~=selected-tab]");
@@ -319,9 +319,9 @@ test("new styling recipes use their displayed overrides and retain their form co
   await expect(variant.getByLabel("Underline form data")).toContainText("display_name");
   await page.setViewportSize({ width: 390, height: 844 });
   for (const [element, title] of [
-    ["h6-toggle", "Toggle"],
-    ["h6-accordion", "Accordion"],
-    ["h6-tabs", "Tabs"],
+    ["hplus-toggle", "Toggle"],
+    ["hplus-accordion", "Accordion"],
+    ["hplus-tabs", "Tabs"],
   ]) {
     await page.getByRole("navigation", { name: "Components" }).getByRole("link", { name: title, exact: true }).click();
     await expect(page.locator("#recipe-element")).toHaveText(`<${element}>`);

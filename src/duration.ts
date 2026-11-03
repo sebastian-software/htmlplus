@@ -1,10 +1,10 @@
-import { H6TextField } from "./text-fields.js";
+import { HPlusTextField } from "./text-fields.js";
 import type { FieldValidation } from "./validation.js";
 import { parseDuration } from "./duration-value.js";
 
 /** A fixed elapsed duration. Calendar months, dates, and time zones are excluded. */
-export class H6Duration extends H6TextField {
-  static override observedAttributes = [...H6TextField.observedAttributes, "min", "max"];
+export class HPlusDuration extends HPlusTextField {
+  static override observedAttributes = [...HPlusTextField.observedAttributes, "min", "max"];
   override normalizeValue(value: string): string {
     const seconds = parseDuration(value);
     return seconds === null ? value.trim() : String(seconds);

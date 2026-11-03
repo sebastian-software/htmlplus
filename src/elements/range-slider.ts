@@ -1,13 +1,13 @@
 import { define } from "../define.js";
-import { H6RangeSlider } from "../slider.js";
+import { HPlusRangeSlider } from "../slider.js";
 
-export { H6RangeSlider };
+export { HPlusRangeSlider };
 export type { RangeSliderValue } from "../slider.js";
 
-define("h6-range-slider", H6RangeSlider);
+define("hplus-range-slider", HPlusRangeSlider);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-range-slider": H6RangeSlider;
+    "hplus-range-slider": HPlusRangeSlider;
   }
 }

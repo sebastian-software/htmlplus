@@ -29,13 +29,13 @@ test("open popups have no automatically detectable WCAG A or AA violations", asy
     route.fulfill({
       contentType: "text/html",
       body: `<!doctype html><html lang="en"><head><title>Popups</title><script type="module" src="/dist/src/index.js"></script></head><body><main><form>
-    <label for="choice">Choice</label><h6-select id="choice" name="choice"><option value="a">Apple</option></h6-select>
-    <label for="date">Date</label><h6-date-picker id="date" name="date" value="2028-02-29"></h6-date-picker>
+    <label for="choice">Choice</label><hplus-select id="choice" name="choice"><option value="a">Apple</option></hplus-select>
+    <label for="date">Date</label><hplus-date-picker id="date" name="date" value="2028-02-29"></hplus-date-picker>
   </form></main></body></html>`,
     }),
   );
   await page.goto("/popup-accessibility");
-  await page.waitForFunction(() => customElements.get("h6-field"));
+  await page.waitForFunction(() => customElements.get("hplus-field"));
   await page.locator("#choice").evaluate((host) => host.shadowRoot.querySelector("[part=trigger]").click());
   await expect(page.locator("#choice [part=content]")).toBeVisible();
   expect(await violations(page)).toEqual([]);

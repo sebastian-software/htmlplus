@@ -2,7 +2,7 @@ import { test, expect } from "playwright/test";
 
 const options = `<option value="AT">Austria</option><option value="DE">Germany</option><option value="NL">Netherlands</option><option value="US">United States</option><option value="XX" disabled>Unavailable</option>`;
 const fixture = `<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width,initial-scale=1"><script type="module" src="/dist/src/index.js"></script><style>body{font:14px system-ui;margin:24px}form{max-width:340px}label{display:block;margin-block:16px 8px}fieldset{border:0;padding:0;margin:0}button{margin-block:8px}</style></head><body>
-<form id="form"><fieldset id="fields"><label for="select">Delivery country</label><h6-select id="select" name="select" value="DE" required>${options}</h6-select><label for="combo">Search country</label><p id="help">Choose a supplied country.</p><h6-combobox id="combo" name="combo" value="DE" required aria-describedby="help">${options}</h6-combobox></fieldset><button id="after" type="button">After fields</button><button id="submit">Submit</button></form>
+<form id="form"><fieldset id="fields"><label for="select">Delivery country</label><hplus-select id="select" name="select" value="DE" required>${options}</hplus-select><label for="combo">Search country</label><p id="help">Choose a supplied country.</p><hplus-combobox id="combo" name="combo" value="DE" required aria-describedby="help">${options}</hplus-combobox></fieldset><button id="after" type="button">After fields</button><button id="submit">Submit</button></form>
 <script>window.events=[];document.querySelector('form').addEventListener('input', e=>events.push([e.target.id,'input']));document.querySelector('form').addEventListener('change',e=>events.push([e.target.id,'change']));document.querySelector('form').addEventListener('submit',e=>e.preventDefault());</script></body></html>`;
 const entries = (page) => page.locator("#form").evaluate((form) => [...new FormData(form)]);
 async function bare(page) {
@@ -20,7 +20,9 @@ test("select commits a supplied identifier once, supports keyboard and clearing,
     ["combo", "DE"],
   ]);
   expect(
-    await page.locator("h6-select input, h6-select select, input[type=hidden], h6-combobox input[name]").count(),
+    await page
+      .locator("hplus-select input, hplus-select select, input[type=hidden], hplus-combobox input[name]")
+      .count(),
   ).toBe(0);
   const control = page.getByRole("combobox", { name: "Delivery country", exact: true });
   await control.click();
@@ -89,7 +91,7 @@ test("programmatic values, dirty defaults, reset, restore, fieldsets, readonly, 
 }) => {
   await bare(page);
   await page.evaluate(() => {
-    for (const host of document.querySelectorAll("h6-select,h6-combobox")) {
+    for (const host of document.querySelectorAll("hplus-select,hplus-combobox")) {
       host.value = "NL";
       host.defaultValue = "AT";
     }
@@ -104,7 +106,7 @@ test("programmatic values, dirty defaults, reset, restore, fieldsets, readonly, 
   await expect(page.locator("#combo input")).toBeDisabled();
   await page.locator("#fields").evaluate((fieldset) => (fieldset.disabled = false));
   await page.evaluate(() => {
-    for (const host of document.querySelectorAll("h6-select,h6-combobox")) host.readOnly = true;
+    for (const host of document.querySelectorAll("hplus-select,hplus-combobox")) host.readOnly = true;
   });
   await page.locator("#select [part=trigger]").click();
   await page.locator("#combo input").press("ArrowDown");
@@ -119,7 +121,7 @@ test("programmatic values, dirty defaults, reset, restore, fieldsets, readonly, 
     ["combo", "AT"],
   ]);
   await page.evaluate(() => {
-    for (const host of document.querySelectorAll("h6-select,h6-combobox")) {
+    for (const host of document.querySelectorAll("hplus-select,hplus-combobox")) {
       host.readOnly = false;
       host.formStateRestoreCallback('["US","United States"]');
       host.remove();
@@ -260,7 +262,7 @@ test("both recipes theme open popups in light and dark, retain values, and fit m
     ["select", "Shipping method"],
     ["combobox", "Destination country"],
   ]) {
-    await page.goto(`/demo/styling.html#h6-${tag}`);
+    await page.goto(`/demo/styling.html#hplus-${tag}`);
     const before = await page
       .locator(".recipe-form")
       .evaluateAll((forms) => forms.map((form) => [...new FormData(form)]));
@@ -297,12 +299,12 @@ test("new controls honor native invalid-field revelation and local shadcn popup 
     form.classList.add("hp-shadcn");
     form.style.setProperty("--popover", "#fef3c7");
     form.style.setProperty("--popover-foreground", "#78350f");
-    const tabs = document.createElement("h6-tabs");
+    const tabs = document.createElement("hplus-tabs");
     tabs.id = "tabs";
     tabs.setAttribute("aria-label", "Destinations");
     tabs.innerHTML =
       '<section data-value="a" data-label="First"><input name="ordinary" value="kept"></section><section data-value="b" data-label="Second"></section>';
-    const select = form.querySelector("h6-select");
+    const select = form.querySelector("hplus-select");
     select.value = "";
     tabs.children[1].append(select);
     form.prepend(tabs);

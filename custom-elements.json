@@ -9,8 +9,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Field",
-          "tagName": "h6-field",
+          "name": "HplusField",
+          "tagName": "hplus-field",
           "summary": "Shared base styling around a real light-DOM input, textarea, or select.",
           "attributes": [],
           "members": [
@@ -24,8 +24,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Switch",
-          "tagName": "h6-switch",
+          "name": "HplusSwitch",
+          "tagName": "hplus-switch",
           "summary": "On/off setting with a checkbox-like form value.",
           "attributes": [
             {
@@ -111,8 +111,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Iban",
-          "tagName": "h6-iban",
+          "name": "HplusIban",
+          "tagName": "hplus-iban",
           "summary": "IBAN editor with readable groups, canonical submission, and format checks.",
           "attributes": [
             {
@@ -289,8 +289,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Bic",
-          "tagName": "h6-bic",
+          "name": "HplusBic",
+          "tagName": "hplus-bic",
           "summary": "BIC/SWIFT editor with uppercase submission and structure checks.",
           "attributes": [
             {
@@ -467,8 +467,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Otp",
-          "tagName": "h6-otp",
+          "name": "HplusOtp",
+          "tagName": "hplus-otp",
           "summary": "One native verification-code editor with visual character slots.",
           "attributes": [
             {
@@ -661,8 +661,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Duration",
-          "tagName": "h6-duration",
+          "name": "HplusDuration",
+          "tagName": "hplus-duration",
           "summary": "Elapsed-time notation that submits whole seconds.",
           "attributes": [
             {
@@ -845,8 +845,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Interval",
-          "tagName": "h6-interval",
+          "name": "HplusInterval",
+          "tagName": "hplus-interval",
           "summary": "Two numeric boundaries with explicit form names and optional open ends.",
           "attributes": [
             {
@@ -984,8 +984,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Segmented",
-          "tagName": "h6-segmented",
+          "name": "HplusSegmented",
+          "tagName": "hplus-segmented",
           "summary": "Compact single selection using native radio inputs.",
           "attributes": [
             {
@@ -1077,8 +1077,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Tags",
-          "tagName": "h6-tags",
+          "name": "HplusTags",
+          "tagName": "hplus-tags",
           "summary": "Add and remove tags that submit as repeated entries.",
           "attributes": [
             {
@@ -1186,8 +1186,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Toggle",
-          "tagName": "h6-toggle",
+          "name": "HplusToggle",
+          "tagName": "hplus-toggle",
           "summary": "Persistent pressed button with a checkbox-like form value.",
           "attributes": [
             {
@@ -1283,8 +1283,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Accordion",
-          "tagName": "h6-accordion",
+          "name": "HplusAccordion",
+          "tagName": "hplus-accordion",
           "summary": "Disclosure sections around ordinary form fields.",
           "attributes": [
             {
@@ -1344,8 +1344,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Tabs",
-          "tagName": "h6-tabs",
+          "name": "HplusTabs",
+          "tagName": "hplus-tabs",
           "summary": "Tabbed panels around ordinary form fields.",
           "attributes": [
             {
@@ -1409,8 +1409,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Slider",
-          "tagName": "h6-slider",
+          "name": "HplusSlider",
+          "tagName": "hplus-slider",
           "summary": "One bounded number chosen by pointer or keyboard.",
           "attributes": [
             {
@@ -1575,8 +1575,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6RangeSlider",
-          "tagName": "h6-range-slider",
+          "name": "HplusRangeSlider",
+          "tagName": "hplus-range-slider",
           "summary": "Two ordered boundaries with explicitly named form entries.",
           "attributes": [
             {
@@ -1747,8 +1747,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Rating",
-          "tagName": "h6-rating",
+          "name": "HplusRating",
+          "tagName": "hplus-rating",
           "summary": "Clearable whole score with a separate hover preview.",
           "attributes": [
             {
@@ -1876,8 +1876,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Select",
-          "tagName": "h6-select",
+          "name": "HplusSelect",
+          "tagName": "hplus-select",
           "summary": "Single selection from supplied options in a top-layer listbox.",
           "attributes": [
             {
@@ -1978,11 +1978,27 @@
             },
             {
               "kind": "method",
+              "name": "connectMachine"
+            },
+            {
+              "kind": "method",
+              "name": "createCollection"
+            },
+            {
+              "kind": "method",
+              "name": "createMachine"
+            },
+            {
+              "kind": "method",
               "name": "focus"
             },
             {
               "kind": "method",
               "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "sendQuery"
             },
             {
               "kind": "method",
@@ -2034,8 +2050,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Combobox",
-          "tagName": "h6-combobox",
+          "name": "HplusCombobox",
+          "tagName": "hplus-combobox",
           "summary": "Searchable selection that keeps query and selected identifier apart.",
           "attributes": [
             {
@@ -2140,11 +2156,27 @@
             },
             {
               "kind": "method",
+              "name": "connectMachine"
+            },
+            {
+              "kind": "method",
+              "name": "createCollection"
+            },
+            {
+              "kind": "method",
+              "name": "createMachine"
+            },
+            {
+              "kind": "method",
               "name": "focus"
             },
             {
               "kind": "method",
               "name": "reportValidity"
+            },
+            {
+              "kind": "method",
+              "name": "sendQuery"
             },
             {
               "kind": "method",
@@ -2196,8 +2228,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6DatePicker",
-          "tagName": "h6-date-picker",
+          "name": "HplusDatePicker",
+          "tagName": "hplus-date-picker",
           "summary": "Localized date editor and calendar with one ISO form entry.",
           "attributes": [
             {
@@ -2406,8 +2438,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6DateRangePicker",
-          "tagName": "h6-date-range-picker",
+          "name": "HplusDateRangePicker",
+          "tagName": "hplus-date-range-picker",
           "summary": "Two native editors and a range calendar with two named ISO entries.",
           "attributes": [
             {
@@ -2654,8 +2686,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6Checkbox",
-          "tagName": "h6-checkbox",
+          "name": "HplusCheckbox",
+          "tagName": "hplus-checkbox",
           "summary": "Native checked and mixed states with checkbox-like submission.",
           "attributes": [
             {
@@ -2781,8 +2813,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6RadioGroup",
-          "tagName": "h6-radio-group",
+          "name": "HplusRadioGroup",
+          "tagName": "hplus-radio-group",
           "summary": "One supplied identifier, with descriptions and disabled options.",
           "attributes": [
             {
@@ -2918,8 +2950,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6ToggleGroup",
-          "tagName": "h6-toggle-group",
+          "name": "HplusToggleGroup",
+          "tagName": "hplus-toggle-group",
           "summary": "Single or multiple selection with repeated form entries.",
           "attributes": [
             {
@@ -3052,8 +3084,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6NumberInput",
-          "tagName": "h6-number-input",
+          "name": "HplusNumberInput",
+          "tagName": "hplus-number-input",
           "summary": "Localized numeric editing, canonical submission, and stepping.",
           "attributes": [
             {
@@ -3283,8 +3315,8 @@
         {
           "kind": "class",
           "customElement": true,
-          "name": "H6PasswordInput",
-          "tagName": "h6-password-input",
+          "name": "HplusPasswordInput",
+          "tagName": "hplus-password-input",
           "summary": "Native password editing and a visibility button.",
           "attributes": [
             {
@@ -3481,193 +3513,193 @@
       "exports": [
         {
           "kind": "custom-element-definition",
-          "name": "h6-field",
+          "name": "hplus-field",
           "declaration": {
-            "name": "H6Field",
+            "name": "HplusField",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-switch",
+          "name": "hplus-switch",
           "declaration": {
-            "name": "H6Switch",
+            "name": "HplusSwitch",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-iban",
+          "name": "hplus-iban",
           "declaration": {
-            "name": "H6Iban",
+            "name": "HplusIban",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-bic",
+          "name": "hplus-bic",
           "declaration": {
-            "name": "H6Bic",
+            "name": "HplusBic",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-otp",
+          "name": "hplus-otp",
           "declaration": {
-            "name": "H6Otp",
+            "name": "HplusOtp",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-duration",
+          "name": "hplus-duration",
           "declaration": {
-            "name": "H6Duration",
+            "name": "HplusDuration",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-interval",
+          "name": "hplus-interval",
           "declaration": {
-            "name": "H6Interval",
+            "name": "HplusInterval",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-segmented",
+          "name": "hplus-segmented",
           "declaration": {
-            "name": "H6Segmented",
+            "name": "HplusSegmented",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-tags",
+          "name": "hplus-tags",
           "declaration": {
-            "name": "H6Tags",
+            "name": "HplusTags",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-toggle",
+          "name": "hplus-toggle",
           "declaration": {
-            "name": "H6Toggle",
+            "name": "HplusToggle",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-accordion",
+          "name": "hplus-accordion",
           "declaration": {
-            "name": "H6Accordion",
+            "name": "HplusAccordion",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-tabs",
+          "name": "hplus-tabs",
           "declaration": {
-            "name": "H6Tabs",
+            "name": "HplusTabs",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-slider",
+          "name": "hplus-slider",
           "declaration": {
-            "name": "H6Slider",
+            "name": "HplusSlider",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-range-slider",
+          "name": "hplus-range-slider",
           "declaration": {
-            "name": "H6RangeSlider",
+            "name": "HplusRangeSlider",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-rating",
+          "name": "hplus-rating",
           "declaration": {
-            "name": "H6Rating",
+            "name": "HplusRating",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-select",
+          "name": "hplus-select",
           "declaration": {
-            "name": "H6Select",
+            "name": "HplusSelect",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-combobox",
+          "name": "hplus-combobox",
           "declaration": {
-            "name": "H6Combobox",
+            "name": "HplusCombobox",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-date-picker",
+          "name": "hplus-date-picker",
           "declaration": {
-            "name": "H6DatePicker",
+            "name": "HplusDatePicker",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-date-range-picker",
+          "name": "hplus-date-range-picker",
           "declaration": {
-            "name": "H6DateRangePicker",
+            "name": "HplusDateRangePicker",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-checkbox",
+          "name": "hplus-checkbox",
           "declaration": {
-            "name": "H6Checkbox",
+            "name": "HplusCheckbox",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-radio-group",
+          "name": "hplus-radio-group",
           "declaration": {
-            "name": "H6RadioGroup",
+            "name": "HplusRadioGroup",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-toggle-group",
+          "name": "hplus-toggle-group",
           "declaration": {
-            "name": "H6ToggleGroup",
+            "name": "HplusToggleGroup",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-number-input",
+          "name": "hplus-number-input",
           "declaration": {
-            "name": "H6NumberInput",
+            "name": "HplusNumberInput",
             "module": "lib/index.js"
           }
         },
         {
           "kind": "custom-element-definition",
-          "name": "h6-password-input",
+          "name": "hplus-password-input",
           "declaration": {
-            "name": "H6PasswordInput",
+            "name": "HplusPasswordInput",
             "module": "lib/index.js"
           }
         }

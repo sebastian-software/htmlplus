@@ -360,7 +360,7 @@ abstract class ChoiceGroup extends HTMLElement {
   }
 }
 
-export class H6RadioGroup extends ChoiceGroup {
+export class HPlusRadioGroup extends ChoiceGroup {
   constructor() {
     super(true);
   }
@@ -378,7 +378,7 @@ export class H6RadioGroup extends ChoiceGroup {
     this.setAttribute("value", value);
   }
 }
-export class H6ToggleGroup extends ChoiceGroup {
+export class HPlusToggleGroup extends ChoiceGroup {
   static override observedAttributes = [...ChoiceGroup.observedAttributes, "multiple"];
   constructor() {
     super(false);

@@ -84,7 +84,7 @@ h1 span { display: block; }
 .sheet-fields { display: flex; flex-direction: column; min-width: 0; }
 .box { padding: .625rem 1rem 1rem; border-block-end: 1px solid var(--dropout); }
 .box label { display: block; margin-block-end: .375rem; color: var(--dropout); font-size: .875rem; font-weight: 600; }
-.box h6-iban { font-size: 1.1875rem; }
+.box hplus-iban { font-size: 1.1875rem; }
 .box-inline { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .875rem; }
 .box-inline label { margin: 0; }
 .reset { align-self: start; margin: .875rem 1rem 1rem; padding: .4375rem .875rem; border: 1px solid var(--dropout); background: transparent; color: var(--text); font: inherit; font-size: .9375rem; cursor: pointer; }

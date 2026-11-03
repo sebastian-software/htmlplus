@@ -1,13 +1,13 @@
 # Date Range Picker
 
-`h6-date-range-picker` combines two native text editors with Zag 1.46.0's range calendar. A complete range contains two inclusive Gregorian calendar dates; a same-day range is valid. Applications own availability, booking rules, duration calculations, and persistence.
+`hplus-date-range-picker` combines two native text editors with Zag 1.46.0's range calendar. A complete range contains two inclusive Gregorian calendar dates; a same-day range is valid. Applications own availability, booking rules, duration calculations, and persistence.
 
 ```html
 <label for="period">Travel period</label>
-<h6-date-range-picker id="period" name="period"
+<hplus-date-range-picker id="period" name="period"
   value='["2026-10-28","2026-11-03"]'
   min="2026-10-01" max="2027-12-31" locale="en-US"
-  required></h6-date-range-picker>
+  required></hplus-date-range-picker>
 ```
 
 This displays `10/28/2026` and `11/03/2026`. Actual FormData contains `period.start=2026-10-28` and `period.end=2026-11-03`. Override the names with `start-name` / `end-name` attributes or `.startName` / `.endName`. A nonempty host `name` enables submission, including when overrides are supplied. There are no hidden or named shadow inputs.

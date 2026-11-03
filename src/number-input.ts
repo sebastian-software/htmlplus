@@ -2,7 +2,7 @@ import { NumberParser } from "@internationalized/number";
 import * as numberInput from "@zag-js/number-input";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { label, wrap } from "./compound-input.js";
-import { H6TextField } from "./text-fields.js";
+import { HPlusTextField } from "./text-fields.js";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
 import { visiblyInvalid } from "./touched.js";
@@ -15,9 +15,9 @@ function parseNumber(text: string, locale: string): number {
   return new NumberParser(locale, { useGrouping: false }).parse(text);
 }
 
-export class H6NumberInput extends H6TextField {
+export class HPlusNumberInput extends HPlusTextField {
   static override observedAttributes = [
-    ...H6TextField.observedAttributes,
+    ...HPlusTextField.observedAttributes,
     "min",
     "max",
     "step",

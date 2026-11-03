@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Otp } from "../text-fields.js";
+import { HPlusOtp } from "../text-fields.js";
 
-export { H6Otp };
+export { HPlusOtp };
 
-define("h6-otp", H6Otp);
+define("hplus-otp", HPlusOtp);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-otp": H6Otp;
+    "hplus-otp": HPlusOtp;
   }
 }

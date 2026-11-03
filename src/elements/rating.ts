@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Rating } from "../rating.js";
+import { HPlusRating } from "../rating.js";
 
-export { H6Rating };
+export { HPlusRating };
 
-define("h6-rating", H6Rating);
+define("hplus-rating", HPlusRating);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-rating": H6Rating;
+    "hplus-rating": HPlusRating;
   }
 }

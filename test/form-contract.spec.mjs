@@ -2,16 +2,16 @@ import { test, expect } from "playwright/test";
 
 const pageUrl = "http://127.0.0.1:48164/contract";
 const editors = [
-  ["h6-iban", "input"],
-  ["h6-bic", "input"],
-  ["h6-otp", "input"],
-  ["h6-duration", "input"],
-  ["h6-password-input", "input"],
-  ["h6-number-input", "input"],
-  ["h6-interval", "input"],
-  ["h6-combobox", "input"],
-  ["h6-date-picker", "input"],
-  ["h6-date-range-picker", "input"],
+  ["hplus-iban", "input"],
+  ["hplus-bic", "input"],
+  ["hplus-otp", "input"],
+  ["hplus-duration", "input"],
+  ["hplus-password-input", "input"],
+  ["hplus-number-input", "input"],
+  ["hplus-interval", "input"],
+  ["hplus-combobox", "input"],
+  ["hplus-date-picker", "input"],
+  ["hplus-date-range-picker", "input"],
 ];
 
 async function load(page, body, lang = "en-US") {
@@ -22,7 +22,7 @@ async function load(page, body, lang = "en-US") {
     }),
   );
   await page.goto(pageUrl);
-  await page.waitForFunction(() => customElements.get("h6-field"));
+  await page.waitForFunction(() => customElements.get("hplus-field"));
 }
 const submits = (page) => page.evaluate(() => window.submits);
 const entries = (page) => page.evaluate(() => [...new FormData(document.forms[0])]);
@@ -37,59 +37,65 @@ test.describe("implicit submission", () => {
   }
 
   test("validation still blocks the submission and reveals the field", async ({ page }) => {
-    await load(page, '<form><label>IBAN <h6-iban name="iban" required></h6-iban></label><button>Go</button></form>');
-    const input = page.locator("h6-iban input");
+    await load(
+      page,
+      '<form><label>IBAN <hplus-iban name="iban" required></hplus-iban></label><button>Go</button></form>',
+    );
+    const input = page.locator("hplus-iban input");
     await input.press("Enter");
-    await expect(page.locator("h6-iban")).toHaveAttribute("data-touched", "");
+    await expect(page.locator("hplus-iban")).toHaveAttribute("data-touched", "");
     expect(await submits(page)).toEqual([]);
   });
 
   test("change fires before submit, as with a native field", async ({ page }) => {
     await load(
       page,
-      '<form><label>Duration <h6-duration name="duration"></h6-duration></label><button>Go</button></form>',
+      '<form><label>Duration <hplus-duration name="duration"></hplus-duration></label><button>Go</button></form>',
     );
     await page.evaluate(() => {
       window.order = [];
       for (const type of ["change", "submit"]) document.addEventListener(type, () => order.push(type));
     });
-    const input = page.locator("h6-duration input");
+    const input = page.locator("hplus-duration input");
     await input.fill("90m");
     await input.press("Enter");
     await expect.poll(() => page.evaluate(() => window.order)).toEqual(["change", "submit"]);
   });
 
   test("a disabled default button, preventDefault, and a second editor stop it like native forms", async ({ page }) => {
-    await load(page, '<form><h6-duration aria-label="Time" name="a"></h6-duration><button disabled>Go</button></form>');
-    await page.locator("h6-duration input").press("Enter");
+    await load(
+      page,
+      '<form><hplus-duration aria-label="Time" name="a"></hplus-duration><button disabled>Go</button></form>',
+    );
+    await page.locator("hplus-duration input").press("Enter");
     await page.waitForTimeout(50);
     expect(await submits(page)).toEqual([]);
 
-    await load(page, '<form><h6-duration aria-label="Time" name="a"></h6-duration><button>Go</button></form>');
+    await load(page, '<form><hplus-duration aria-label="Time" name="a"></hplus-duration><button>Go</button></form>');
     await page.evaluate(() => document.addEventListener("keypress", (event) => event.preventDefault()));
-    await page.locator("h6-duration input").press("Enter");
+    await page.locator("hplus-duration input").press("Enter");
     await page.waitForTimeout(50);
     expect(await submits(page)).toEqual([]);
 
     await load(
       page,
-      '<form><h6-duration aria-label="Time" name="a"></h6-duration><input aria-label="Other" name="b"></form>',
+      '<form><hplus-duration aria-label="Time" name="a"></hplus-duration><input aria-label="Other" name="b"></form>',
     );
-    await page.locator("h6-duration input").press("Enter");
+    await page.locator("hplus-duration input").press("Enter");
     await page.waitForTimeout(50);
     expect(await submits(page)).toEqual([]);
 
-    await load(page, '<form><h6-duration aria-label="Time" name="a"></h6-duration></form>');
-    await page.locator("h6-duration input").press("Enter");
+    await load(page, '<form><hplus-duration aria-label="Time" name="a"></hplus-duration></form>');
+    await page.locator("hplus-duration input").press("Enter");
     await expect.poll(() => submits(page)).toEqual([null]);
   });
 
   test("Enter choosing a combobox option and Enter committing a tag do not submit", async ({ page }) => {
     await load(
       page,
-      '<form><h6-combobox aria-label="Fruit" name="fruit"><option value="a">Apple</option></h6-combobox><h6-tags aria-label="Tags" name="tags"></h6-tags><button>Go</button></form>',
+      '<form><hplus-combobox aria-label="Fruit" name="fruit"><option value="a">Apple</option></hplus-combobox><hplus-tags aria-label="Tags" name="tags"></hplus-tags><button>Go</button></form>',
     );
-    const combo = page.locator("h6-combobox input");
+    const combo = page.locator("hplus-combobox input");
     await combo.pressSequentially("App");
     await combo.press("ArrowDown");
     await combo.press("Enter");
@@ -97,7 +103,7 @@ test.describe("implicit submission", () => {
     expect(await entries(page)).toEqual([["fruit", "a"]]);
     expect(await submits(page)).toEqual([]);
 
-    const tags = page.locator("h6-tags input");
+    const tags = page.locator("hplus-tags input");
     await tags.fill("html");
     await tags.press("Enter");
     await page.waitForTimeout(50);
@@ -117,13 +123,17 @@ test.describe("number input separators", () => {
     ["de-DE", "1.234"],
   ]) {
     test(`${lang} keeps ${text} as an invalid draft`, async ({ page }) => {
-      await load(page, '<form><h6-number-input aria-label="Amount" name="amount"></h6-number-input></form>', lang);
-      const input = page.locator("h6-number-input input");
+      await load(
+        page,
+        '<form><hplus-number-input aria-label="Amount" name="amount"></hplus-number-input></form>',
+        lang,
+      );
+      const input = page.locator("hplus-number-input input");
       await input.pressSequentially(text);
-      await expect(page.locator("h6-number-input")).toHaveJSProperty("value", "");
+      await expect(page.locator("hplus-number-input")).toHaveJSProperty("value", "");
       await input.blur();
       await expect(input).toHaveValue(text);
-      expect(await page.locator("h6-number-input").evaluate((host) => host.validity.badInput)).toBe(true);
+      expect(await page.locator("hplus-number-input").evaluate((host) => host.validity.badInput)).toBe(true);
       expect(await page.evaluate(() => document.forms[0].checkValidity())).toBe(false);
     });
   }
@@ -131,10 +141,10 @@ test.describe("number input separators", () => {
   test("localized decimals stay valid after blur", async ({ page }) => {
     await load(
       page,
-      '<form><h6-number-input aria-label="Amount" name="amount" step="0.25"></h6-number-input></form>',
+      '<form><hplus-number-input aria-label="Amount" name="amount" step="0.25"></hplus-number-input></form>',
       "de-DE",
     );
-    const input = page.locator("h6-number-input input");
+    const input = page.locator("hplus-number-input input");
     await input.pressSequentially("3,75");
     await input.blur();
     await expect(input).toHaveValue("3,75");
@@ -147,7 +157,7 @@ test.describe("inherited language", () => {
     test(`an unusable lang="${lang}" keeps date fields working`, async ({ page }) => {
       await load(
         page,
-        '<form><h6-date-picker aria-label="Date" name="date" value="2028-02-29"></h6-date-picker><h6-date-range-picker aria-label="Range" name="range" value=\'["2028-02-28","2028-03-02"]\'></h6-date-range-picker></form>',
+        '<form><hplus-date-picker aria-label="Date" name="date" value="2028-02-29"></hplus-date-picker><hplus-date-range-picker aria-label="Range" name="range" value=\'["2028-02-28","2028-03-02"]\'></hplus-date-range-picker></form>',
         lang,
       );
       expect(await page.evaluate(() => document.forms[0].checkValidity())).toBe(true);
@@ -156,30 +166,30 @@ test.describe("inherited language", () => {
         ["range.start", "2028-02-28"],
         ["range.end", "2028-03-02"],
       ]);
-      await expect(page.locator("h6-date-picker [part=trigger]")).toBeEnabled();
+      await expect(page.locator("hplus-date-picker [part=trigger]")).toBeEnabled();
     });
   }
 
   test("the nearest usable ancestor language wins", async ({ page }) => {
     await load(
       page,
-      '<form><div lang="de_DE"><h6-date-picker aria-label="Date" name="date" value="2028-02-29"></h6-date-picker></div></form>',
+      '<form><div lang="de_DE"><hplus-date-picker aria-label="Date" name="date" value="2028-02-29"></hplus-date-picker></div></form>',
       "de-DE",
     );
-    await expect(page.locator("h6-date-picker input")).toHaveValue("29.02.2028");
+    await expect(page.locator("hplus-date-picker input")).toHaveValue("29.02.2028");
   });
 
   test("a disconnected element still reads the document language", async ({ page }) => {
     await load(page, "<form></form>", "de-DE");
-    expect(await page.evaluate(() => document.createElement("h6-date-picker").locale)).toBe("de-DE");
+    expect(await page.evaluate(() => document.createElement("hplus-date-picker").locale)).toBe("de-DE");
   });
 
   test("an invalid explicit locale remains a reported configuration error", async ({ page }) => {
     await load(
       page,
-      '<form><h6-date-picker aria-label="Date" name="date" value="2028-02-29" locale="de_DE"></h6-date-picker></form>',
+      '<form><hplus-date-picker aria-label="Date" name="date" value="2028-02-29" locale="de_DE"></hplus-date-picker></form>',
     );
-    expect(await page.locator("h6-date-picker").evaluate((host) => host.validity.customError)).toBe(true);
+    expect(await page.locator("hplus-date-picker").evaluate((host) => host.validity.customError)).toBe(true);
   });
 });
 
@@ -188,23 +198,23 @@ test("passwords stay out of session history while other fields are restored", as
   await page.route(pageUrl, (route) =>
     route.fulfill({
       contentType: "text/html",
-      body: '<!doctype html><html lang="en-US"><body><form action="/next"><h6-password-input aria-label="Password" name="password"></h6-password-input><h6-duration aria-label="Time" name="time"></h6-duration><input aria-label="Native" type="password" name="native"></form><script type="module" src="/dist/src/index.js"></script></body></html>',
+      body: '<!doctype html><html lang="en-US"><body><form action="/next"><hplus-password-input aria-label="Password" name="password"></hplus-password-input><hplus-duration aria-label="Time" name="time"></hplus-duration><input aria-label="Native" type="password" name="native"></form><script type="module" src="/dist/src/index.js"></script></body></html>',
     }),
   );
   await page.route("http://127.0.0.1:48164/next", (route) =>
     route.fulfill({ contentType: "text/html", body: "<!doctype html><title>Next</title>" }),
   );
   await page.goto(pageUrl);
-  await page.waitForFunction(() => customElements.get("h6-field"));
-  await page.locator("h6-password-input input").fill("s3cret");
-  await page.locator("h6-duration input").fill("90m");
+  await page.waitForFunction(() => customElements.get("hplus-field"));
+  await page.locator("hplus-password-input input").fill("s3cret");
+  await page.locator("hplus-duration input").fill("90m");
   await page.locator("input[name=native]").fill("s3cret");
   await page.goto("http://127.0.0.1:48164/next");
   await page.goBack();
-  await page.waitForFunction(() => customElements.get("h6-field"));
-  await expect(page.locator("h6-duration input")).toHaveValue("90m");
+  await page.waitForFunction(() => customElements.get("hplus-field"));
+  await expect(page.locator("hplus-duration input")).toHaveValue("90m");
   await expect(page.locator("input[name=native]")).toHaveValue("");
-  await expect(page.locator("h6-password-input input")).toHaveValue("");
+  await expect(page.locator("hplus-password-input input")).toHaveValue("");
   expect(await entries(page)).toEqual([
     ["password", ""],
     ["time", "5400"],
@@ -218,17 +228,17 @@ const isDisplayed = (page, selector) =>
 
 test.describe("properties assigned before upgrade", () => {
   const cases = [
-    ["h6-iban", "", "'DE89370400440532013000'", [["field", "DE89370400440532013000"]]],
-    ["h6-number-input", "", "5", [["field", "5"]]],
-    ["h6-select", fruit, "'b'", [["field", "b"]]],
-    ["h6-combobox", fruit, "'b'", [["field", "b"]]],
-    ["h6-radio-group", fruit, "'b'", [["field", "b"]]],
-    ["h6-segmented", fruit, "'b'", [["field", "b"]]],
-    ["h6-toggle-group", fruit, "['b']", [["field", "b"]]],
-    ["h6-tags", "", "['x']", [["field", "x"]]],
-    ["h6-date-picker", "", "'2028-02-29'", [["field", "2028-02-29"]]],
-    ["h6-rating", "", "3", [["field", "3"]]],
-    ["h6-slider", "", "7", [["field", "7"]]],
+    ["hplus-iban", "", "'DE89370400440532013000'", [["field", "DE89370400440532013000"]]],
+    ["hplus-number-input", "", "5", [["field", "5"]]],
+    ["hplus-select", fruit, "'b'", [["field", "b"]]],
+    ["hplus-combobox", fruit, "'b'", [["field", "b"]]],
+    ["hplus-radio-group", fruit, "'b'", [["field", "b"]]],
+    ["hplus-segmented", fruit, "'b'", [["field", "b"]]],
+    ["hplus-toggle-group", fruit, "['b']", [["field", "b"]]],
+    ["hplus-tags", "", "['x']", [["field", "x"]]],
+    ["hplus-date-picker", "", "'2028-02-29'", [["field", "2028-02-29"]]],
+    ["hplus-rating", "", "3", [["field", "3"]]],
+    ["hplus-slider", "", "7", [["field", "7"]]],
   ];
   for (const [tag, inner, value, expected] of cases) {
     test(`${tag}.value reaches the setter`, async ({ page }) => {
@@ -244,7 +254,7 @@ test.describe("properties assigned before upgrade", () => {
   test("state properties and the visible editor follow too", async ({ page }) => {
     await load(
       page,
-      `<form><h6-switch id="a" name="a"></h6-switch><h6-toggle id="b" name="b"></h6-toggle><h6-checkbox id="c" name="c"></h6-checkbox><h6-iban id="d" name="d"></h6-iban><h6-select id="e" name="e">${fruit}</h6-select></form>
+      `<form><hplus-switch id="a" name="a"></hplus-switch><hplus-toggle id="b" name="b"></hplus-toggle><hplus-checkbox id="c" name="c"></hplus-checkbox><hplus-iban id="d" name="d"></hplus-iban><hplus-select id="e" name="e">${fruit}</hplus-select></form>
       <script>a.checked = true; b.pressed = true; c.checked = true; d.value = 'de89370400440532013000'; e.value = 'b';</script>`,
     );
     expect(await entries(page)).toEqual([
@@ -261,9 +271,9 @@ test.describe("properties assigned before upgrade", () => {
 
 test.describe("field names", () => {
   for (const [tag, role] of [
-    ["h6-select", "combobox"],
-    ["h6-combobox", "combobox"],
-    ["h6-radio-group", "radiogroup"],
+    ["hplus-select", "combobox"],
+    ["hplus-combobox", "combobox"],
+    ["hplus-radio-group", "radiogroup"],
   ]) {
     test(`a wrapping label excludes ${tag} option text`, async ({ page }) => {
       await load(page, `<form><label>Fruit <${tag} name="field">${fruit}</${tag}></label></form>`);
@@ -272,13 +282,13 @@ test.describe("field names", () => {
   }
 
   for (const [tag, role, inner] of [
-    ["h6-iban", "textbox", ""],
-    ["h6-tags", "textbox", ""],
-    ["h6-select", "combobox", fruit],
-    ["h6-number-input", "spinbutton", ""],
-    ["h6-slider", "slider", ""],
-    ["h6-toggle", "button", ""],
-    ["h6-checkbox", "checkbox", ""],
+    ["hplus-iban", "textbox", ""],
+    ["hplus-tags", "textbox", ""],
+    ["hplus-select", "combobox", fruit],
+    ["hplus-number-input", "spinbutton", ""],
+    ["hplus-slider", "slider", ""],
+    ["hplus-toggle", "button", ""],
+    ["hplus-checkbox", "checkbox", ""],
   ]) {
     test(`${tag} follows label edits, sibling labels, and removal`, async ({ page }) => {
       await load(
@@ -300,23 +310,23 @@ test.describe("field names", () => {
   }
 
   test("a label added elsewhere is picked up on focus", async ({ page }) => {
-    await load(page, '<div id="elsewhere"></div><form><h6-iban id="control" name="field"></h6-iban></form>');
+    await load(page, '<div id="elsewhere"></div><form><hplus-iban id="control" name="field"></hplus-iban></form>');
     await page.locator("#elsewhere").evaluate((node) => {
       node.innerHTML = '<label for="control">Account</label>';
     });
-    await page.locator("h6-iban input").focus();
+    await page.locator("hplus-iban input").focus();
     await expect(page.getByRole("textbox", { name: "Account", exact: true })).toBeFocused();
   });
 
   test("Tags, Interval, and text fields honor references, including late ones", async ({ page }) => {
     await load(
       page,
-      '<form><span id="name">Named</span><span id="help">Helpful</span><h6-tags aria-labelledby="name" aria-describedby="help" name="tags"></h6-tags><h6-interval aria-labelledby="name" aria-describedby="help" name="range"></h6-interval><h6-iban id="late" name="iban"></h6-iban></form>',
+      '<form><span id="name">Named</span><span id="help">Helpful</span><hplus-tags aria-labelledby="name" aria-describedby="help" name="tags"></hplus-tags><hplus-interval aria-labelledby="name" aria-describedby="help" name="range"></hplus-interval><hplus-iban id="late" name="iban"></hplus-iban></form>',
     );
-    await expect(page.locator("h6-tags input")).toHaveAttribute("aria-label", "Named");
-    await expect(page.locator("h6-tags input")).toHaveAttribute("aria-description", "Helpful");
-    await expect(page.locator("h6-interval input").first()).toHaveAttribute("aria-label", "Named: From");
-    await expect(page.locator("h6-interval input").first()).toHaveAttribute("aria-description", "Helpful");
+    await expect(page.locator("hplus-tags input")).toHaveAttribute("aria-label", "Named");
+    await expect(page.locator("hplus-tags input")).toHaveAttribute("aria-description", "Helpful");
+    await expect(page.locator("hplus-interval input").first()).toHaveAttribute("aria-label", "Named: From");
+    await expect(page.locator("hplus-interval input").first()).toHaveAttribute("aria-description", "Helpful");
     await page.locator("#late").evaluate((host) => {
       host.setAttribute("aria-labelledby", "name");
       host.setAttribute("aria-describedby", "help");
@@ -327,17 +337,20 @@ test.describe("field names", () => {
       node.textContent = "Renamed";
     });
     await expect(page.locator("#late input")).toHaveAttribute("aria-label", "Renamed");
-    await expect(page.locator("h6-tags input")).toHaveAttribute("aria-label", "Renamed");
+    await expect(page.locator("hplus-tags input")).toHaveAttribute("aria-label", "Renamed");
   });
 });
 
 test.describe('step="any"', () => {
   test("Number Input has no step constraint and steps by one", async ({ page }) => {
-    await load(page, '<form><h6-number-input aria-label="Amount" name="amount" step="any"></h6-number-input></form>');
-    const input = page.locator("h6-number-input input");
+    await load(
+      page,
+      '<form><hplus-number-input aria-label="Amount" name="amount" step="any"></hplus-number-input></form>',
+    );
+    const input = page.locator("hplus-number-input input");
     await input.pressSequentially("1.5");
     await input.blur();
-    expect(await page.locator("h6-number-input").evaluate((host) => [host.validity.valid, host.step])).toEqual([
+    expect(await page.locator("hplus-number-input").evaluate((host) => [host.validity.valid, host.step])).toEqual([
       true,
       1,
     ]);
@@ -347,14 +360,15 @@ test.describe('step="any"', () => {
   });
 
   test("Slider keeps an unsnapped value and steps by one", async ({ page }) => {
-    await load(page, '<form><h6-slider aria-label="Level" name="level" step="any" value="1.5"></h6-slider></form>');
-    expect(await page.locator("h6-slider").evaluate((host) => [host.validity.valid, host.value, host.step])).toEqual([
-      true,
-      1.5,
-      1,
-    ]);
+    await load(
+      page,
+      '<form><hplus-slider aria-label="Level" name="level" step="any" value="1.5"></hplus-slider></form>',
+    );
+    expect(await page.locator("hplus-slider").evaluate((host) => [host.validity.valid, host.value, host.step])).toEqual(
+      [true, 1.5, 1],
+    );
     expect(await entries(page)).toEqual([["level", "1.5"]]);
-    await page.locator("h6-slider").evaluate((host) => {
+    await page.locator("hplus-slider").evaluate((host) => {
       host.value = 2;
     });
     await page.getByRole("slider").press("ArrowRight");
@@ -364,20 +378,20 @@ test.describe('step="any"', () => {
 
 test.describe("invalid presentation waits until touched", () => {
   const required = [
-    ["h6-iban", ""],
-    ["h6-number-input", ""],
-    ["h6-password-input", ""],
-    ["h6-interval", ""],
-    ["h6-tags", ""],
-    ["h6-select", fruit],
-    ["h6-combobox", fruit],
-    ["h6-date-picker", ""],
-    ["h6-date-range-picker", ""],
-    ["h6-toggle", ""],
-    ["h6-checkbox", ""],
-    ["h6-radio-group", fruit],
-    ["h6-toggle-group", fruit],
-    ["h6-rating", ""],
+    ["hplus-iban", ""],
+    ["hplus-number-input", ""],
+    ["hplus-password-input", ""],
+    ["hplus-interval", ""],
+    ["hplus-tags", ""],
+    ["hplus-select", fruit],
+    ["hplus-combobox", fruit],
+    ["hplus-date-picker", ""],
+    ["hplus-date-range-picker", ""],
+    ["hplus-toggle", ""],
+    ["hplus-checkbox", ""],
+    ["hplus-radio-group", fruit],
+    ["hplus-toggle-group", fruit],
+    ["hplus-rating", ""],
   ];
   for (const [tag, inner] of required) {
     test(`${tag} marks itself after a failed submit and reset clears it`, async ({ page }) => {
@@ -399,25 +413,25 @@ test.describe("invalid presentation waits until touched", () => {
   test("leaving a control marks it, but moving inside it does not", async ({ page }) => {
     await load(
       page,
-      '<form><h6-interval aria-label="Range" name="range" required></h6-interval><h6-tags aria-label="Tags" name="tags" required></h6-tags><button>Go</button></form>',
+      '<form><hplus-interval aria-label="Range" name="range" required></hplus-interval><hplus-tags aria-label="Tags" name="tags" required></hplus-tags><button>Go</button></form>',
     );
-    await page.locator("h6-interval input").first().focus();
+    await page.locator("hplus-interval input").first().focus();
     await page.keyboard.press("Tab");
-    await expect(page.locator("h6-interval input").nth(1)).toBeFocused();
-    expect(await isDisplayed(page, "h6-interval")).toBe(false);
+    await expect(page.locator("hplus-interval input").nth(1)).toBeFocused();
+    expect(await isDisplayed(page, "hplus-interval")).toBe(false);
     await page.keyboard.press("Tab");
-    await expect.poll(() => isDisplayed(page, "h6-interval")).toBe(true);
-    expect(await isDisplayed(page, "h6-tags")).toBe(false);
+    await expect.poll(() => isDisplayed(page, "hplus-interval")).toBe(true);
+    expect(await isDisplayed(page, "hplus-tags")).toBe(false);
     await page.keyboard.press("Tab");
-    await expect.poll(() => isDisplayed(page, "h6-tags")).toBe(true);
-    await expect(page.locator("h6-tags")).toHaveAttribute("data-touched", "");
+    await expect.poll(() => isDisplayed(page, "hplus-tags")).toBe(true);
+    await expect(page.locator("hplus-tags")).toHaveAttribute("data-touched", "");
   });
 
   for (const [tag, part, property] of [
-    ["h6-switch", "[part=track]", "borderTopColor"],
-    ["h6-toggle", "button", "borderTopColor"],
-    ["h6-rating", "[part=control]", "outlineStyle"],
-    ["h6-tags", "[part=control]", "borderTopColor"],
+    ["hplus-switch", "[part=track]", "borderTopColor"],
+    ["hplus-toggle", "button", "borderTopColor"],
+    ["hplus-rating", "[part=control]", "outlineStyle"],
+    ["hplus-tags", "[part=control]", "borderTopColor"],
   ]) {
     test(`${tag} has no destructive style until touched`, async ({ page }) => {
       await load(page, `<form><${tag} aria-label="Field" name="field" required></${tag}><button>Go</button></form>`);
@@ -436,9 +450,9 @@ test.describe("invalid presentation waits until touched", () => {
 });
 
 test.describe("shared option policy", () => {
-  for (const tag of ["h6-select", "h6-combobox", "h6-radio-group", "h6-segmented", "h6-toggle-group"]) {
+  for (const tag of ["hplus-select", "hplus-combobox", "hplus-radio-group", "hplus-segmented", "hplus-toggle-group"]) {
     const assign = (host, value) => {
-      host.value = host.localName === "h6-toggle-group" ? [value] : value;
+      host.value = host.localName === "hplus-toggle-group" ? [value] : value;
     };
     const current = (host) => [host.value].flat()[0] ?? "";
 
@@ -494,7 +508,7 @@ test.describe("non-string assignment", () => {
   test("null and undefined empty the value; other values use String()", async ({ page }) => {
     await load(
       page,
-      `<form><h6-iban id="iban"></h6-iban><h6-duration id="duration"></h6-duration><h6-number-input id="number"></h6-number-input><h6-date-picker id="date" value="2028-02-29"></h6-date-picker><h6-select id="select">${fruit}</h6-select><h6-segmented id="segmented">${fruit}</h6-segmented><h6-radio-group id="radio">${fruit}</h6-radio-group></form>`,
+      `<form><hplus-iban id="iban"></hplus-iban><hplus-duration id="duration"></hplus-duration><hplus-number-input id="number"></hplus-number-input><hplus-date-picker id="date" value="2028-02-29"></hplus-date-picker><hplus-select id="select">${fruit}</hplus-select><hplus-segmented id="segmented">${fruit}</hplus-segmented><hplus-radio-group id="radio">${fruit}</hplus-radio-group></form>`,
     );
     const assign = (selector, value) =>
       page.locator(selector).evaluate((host, value) => {
@@ -525,7 +539,7 @@ test.describe("format validity states", () => {
   test("Duration bounds use range states and ignore empty attributes", async ({ page }) => {
     await load(
       page,
-      '<form><h6-duration id="low" min="60" value="30"></h6-duration><h6-duration id="high" max="60" value="90"></h6-duration><h6-duration id="empty" min="" max="" value="90"></h6-duration><h6-duration id="bad" value="soon"></h6-duration></form>',
+      '<form><hplus-duration id="low" min="60" value="30"></hplus-duration><hplus-duration id="high" max="60" value="90"></hplus-duration><hplus-duration id="empty" min="" max="" value="90"></hplus-duration><hplus-duration id="bad" value="soon"></hplus-duration></form>',
     );
     const validity = (selector) =>
       page.locator(selector).evaluate((host) => ({
@@ -542,8 +556,8 @@ test.describe("format validity states", () => {
   });
 
   for (const [tag, value, message] of [
-    ["h6-iban", "DE89370400440532013001", /check digits/],
-    ["h6-bic", "DEUT12FF", /two-letter country code/],
+    ["hplus-iban", "DE89370400440532013001", /check digits/],
+    ["hplus-bic", "DEUT12FF", /two-letter country code/],
   ]) {
     test(`${tag} format errors use patternMismatch and survive clearing custom errors`, async ({ page }) => {
       await load(page, `<form><${tag} value="${value}"></${tag}></form>`);
@@ -568,18 +582,18 @@ test.describe("format validity states", () => {
 
 test.describe("editor and environment details", () => {
   test("IBAN maxlength limits the canonical value, not the grouped text", async ({ page }) => {
-    await load(page, '<form><h6-iban aria-label="IBAN" name="iban" maxlength="22"></h6-iban></form>');
-    const input = page.locator("h6-iban input");
+    await load(page, '<form><hplus-iban aria-label="IBAN" name="iban" maxlength="22"></hplus-iban></form>');
+    const input = page.locator("hplus-iban input");
     await input.pressSequentially("DE8937040044053201300099");
     await expect(input).toHaveValue("DE89 3704 0044 0532 0130 00");
     expect(await entries(page)).toEqual([["iban", "DE89370400440532013000"]]);
-    expect(await page.locator("h6-iban").evaluate((host) => host.validity.valid)).toBe(true);
+    expect(await page.locator("hplus-iban").evaluate((host) => host.validity.valid)).toBe(true);
   });
 
   test("Number Input steppers control the actual editor", async ({ page }) => {
-    await load(page, '<form><h6-number-input aria-label="Amount"></h6-number-input></form>');
+    await load(page, '<form><hplus-number-input aria-label="Amount"></hplus-number-input></form>');
     const resolved = await page
-      .locator("h6-number-input")
+      .locator("hplus-number-input")
       .evaluate((host) =>
         [...host.shadowRoot.querySelectorAll("[part$=-trigger]")].map(
           (button) => host.shadowRoot.getElementById(button.getAttribute("aria-controls")) === host.input,
@@ -591,23 +605,23 @@ test.describe("editor and environment details", () => {
   test("Slider follows an ancestor direction change", async ({ page }) => {
     await load(
       page,
-      '<form><div id="context"><h6-slider aria-label="Level" name="level" value="5"></h6-slider></div></form>',
+      '<form><div id="context"><hplus-slider aria-label="Level" name="level" value="5"></hplus-slider></div></form>',
     );
     await page.locator("#context").evaluate((node) => {
       node.dir = "rtl";
     });
-    await expect(page.locator("h6-slider [part=root]")).toHaveAttribute("dir", "rtl");
+    await expect(page.locator("hplus-slider [part=root]")).toHaveAttribute("dir", "rtl");
     await page.getByRole("slider").press("ArrowRight");
     expect(await entries(page)).toEqual([["level", "4"]]);
   });
 
   test("visibilitychange stays on the Password Input host", async ({ page }) => {
-    await load(page, '<form><h6-password-input aria-label="Password" name="secret"></h6-password-input></form>');
+    await load(page, '<form><hplus-password-input aria-label="Password" name="secret"></hplus-password-input></form>');
     await page.evaluate(() => {
       window.seen = [];
       document.addEventListener("visibilitychange", () => seen.push("document"));
       document
-        .querySelector("h6-password-input")
+        .querySelector("hplus-password-input")
         .addEventListener("visibilitychange", (event) => seen.push(event.detail.visible));
     });
     await page.getByRole("button", { name: "Show password" }).click();
@@ -616,7 +630,7 @@ test.describe("editor and environment details", () => {
 
   for (const [tag, inner, act] of [
     [
-      "h6-iban",
+      "hplus-iban",
       "",
       async (host) => {
         await host.locator("input").fill("DE");
@@ -624,7 +638,7 @@ test.describe("editor and environment details", () => {
       },
     ],
     [
-      "h6-interval",
+      "hplus-interval",
       "",
       async (host) => {
         await host.locator("input").first().fill("1");
@@ -632,14 +646,14 @@ test.describe("editor and environment details", () => {
       },
     ],
     [
-      "h6-segmented",
+      "hplus-segmented",
       fruit,
       async (host) => {
         await host.locator("[part=option]", { hasText: "Banana" }).click();
       },
     ],
     [
-      "h6-tags",
+      "hplus-tags",
       "",
       async (host) => {
         await host.locator("input").fill("x");
@@ -647,7 +661,7 @@ test.describe("editor and environment details", () => {
       },
     ],
     [
-      "h6-switch",
+      "hplus-switch",
       "",
       async (host) => {
         await host.click();
@@ -676,8 +690,8 @@ test.describe("editor and environment details", () => {
     await load(page, "<form></form>");
     const observes = (tag) =>
       page.evaluate((tag) => customElements.get(tag).observedAttributes.includes("multiple"), tag);
-    expect(await observes("h6-radio-group")).toBe(false);
-    expect(await observes("h6-toggle-group")).toBe(true);
+    expect(await observes("hplus-radio-group")).toBe(false);
+    expect(await observes("hplus-toggle-group")).toBe(true);
   });
 
   for (const [lang, value] of [
@@ -687,10 +701,10 @@ test.describe("editor and environment details", () => {
     test(`a ${lang} date survives an edit of its displayed text`, async ({ page }) => {
       await load(
         page,
-        `<form><h6-date-picker aria-label="Date" name="date" value="${value}"></h6-date-picker></form>`,
+        `<form><hplus-date-picker aria-label="Date" name="date" value="${value}"></hplus-date-picker></form>`,
         lang,
       );
-      const input = page.locator("h6-date-picker input");
+      const input = page.locator("hplus-date-picker input");
       await input.press("End");
       await input.pressSequentially(" ");
       await input.press("Backspace");
@@ -729,13 +743,13 @@ test("incompatible restoration state is ignored instead of throwing", async ({ p
     const form = document.forms[0];
     const result = [];
     for (const name of names) {
-      const element = document.createElement(`h6-${name}`);
+      const element = document.createElement(`hplus-${name}`);
       form.append(element);
       for (const state of ["5400", "not a value", "{}", "[1]", '["a","b","c","d"]', "null", ""]) {
         try {
           element.formStateRestoreCallback(state);
         } catch (error) {
-          result.push(`h6-${name} with ${state}: ${error.message}`);
+          result.push(`hplus-${name} with ${state}: ${error.message}`);
         }
       }
     }

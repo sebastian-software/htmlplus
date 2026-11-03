@@ -16,7 +16,7 @@ template.innerHTML = `<style>
 </style><input part="input" type="text">`;
 
 /** A native editor with a separate canonical value owned by ElementInternals. */
-export class H6TextField extends HTMLElement {
+export class HPlusTextField extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = [
     "value",
@@ -267,7 +267,7 @@ export class H6TextField extends HTMLElement {
   };
 }
 
-export class H6Iban extends H6TextField {
+export class HPlusIban extends HPlusTextField {
   #format = new NativeTextFormat(this.input, ibanFormat);
   protected override get defaultDisplayValue(): string {
     return groupedIban(this.defaultValue);
@@ -295,7 +295,7 @@ export class H6Iban extends H6TextField {
     return validateIban(value);
   }
 }
-export class H6Bic extends H6TextField {
+export class HPlusBic extends HPlusTextField {
   override normalizeValue(value: string): string {
     return normalizeIdentifier(value);
   }
@@ -303,8 +303,8 @@ export class H6Bic extends H6TextField {
     return validateBic(value);
   }
 }
-export class H6Otp extends H6TextField {
-  static override observedAttributes = [...H6TextField.observedAttributes, "length"];
+export class HPlusOtp extends HPlusTextField {
+  static override observedAttributes = [...HPlusTextField.observedAttributes, "length"];
   #presentation = new OtpPresentation(this.input);
   #format = new NativeTextFormat(this.input, (value, caret) => ({
     value: value.replace(/\s/g, "").slice(0, this.length),

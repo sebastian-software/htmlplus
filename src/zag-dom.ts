@@ -2,7 +2,7 @@ import { spreadProps } from "@zag-js/vanilla";
 
 let sequence = 0;
 export function interactionId(kind: string): string {
-  return `h6-${kind}-${++sequence}`;
+  return `hplus-${kind}-${++sequence}`;
 }
 
 export interface InteractionMachine<Service, Props> {

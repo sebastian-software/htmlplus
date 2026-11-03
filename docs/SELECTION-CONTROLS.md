@@ -1,21 +1,21 @@
 # Select and Combobox
 
-`h6-select` and `h6-combobox` use Zag 1.46.0 behind native form-associated custom elements. Both support one selected identifier from direct child options. Combobox adds an editable query over supplied option labels. Applications own the options and any remote requests.
+`hplus-select` and `hplus-combobox` use Zag 1.46.0 behind native form-associated custom elements. Both support one selected identifier from direct child options. Combobox adds an editable query over supplied option labels. Applications own the options and any remote requests.
 
 ```html
 <label for="shipping">Shipping method</label>
-<h6-select id="shipping" name="shipping" value="standard" required>
+<hplus-select id="shipping" name="shipping" value="standard" required>
   <option value="economy">Economy</option>
   <option value="standard">Standard</option>
   <option value="express">Express</option>
-</h6-select>
+</hplus-select>
 
 <label for="destination">Destination country</label>
-<h6-combobox id="destination" name="country" value="DE" required>
+<hplus-combobox id="destination" name="country" value="DE" required>
   <option value="AT">Austria</option>
   <option value="DE">Germany</option>
   <option value="NL">Netherlands</option>
-</h6-combobox>
+</hplus-combobox>
 ```
 
 ## Values, queries, and options

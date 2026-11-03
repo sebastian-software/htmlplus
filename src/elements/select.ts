@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Select } from "../select.js";
+import { HPlusSelect } from "../select.js";
 
-export { H6Select };
+export { HPlusSelect };
 
-define("h6-select", H6Select);
+define("hplus-select", HPlusSelect);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-select": H6Select;
+    "hplus-select": HPlusSelect;
   }
 }

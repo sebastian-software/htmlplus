@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Accordion } from "../accordion.js";
+import { HPlusAccordion } from "../accordion.js";
 
-export { H6Accordion };
+export { HPlusAccordion };
 
-define("h6-accordion", H6Accordion);
+define("hplus-accordion", HPlusAccordion);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-accordion": H6Accordion;
+    "hplus-accordion": HPlusAccordion;
   }
 }

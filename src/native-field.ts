@@ -5,7 +5,7 @@ const sheet = new CSSStyleSheet();
 sheet.replaceSync(`${hostStyles}:host { min-width: 0; }:host([hidden]) { display: none; }${nativeFieldStyles(true)}`);
 
 /** Presentation only: the original light-DOM control owns every native form behavior. */
-export class H6Field extends HTMLElement {
+export class HPlusField extends HTMLElement {
   constructor() {
     super();
     const root = this.attachShadow({ mode: "open" });

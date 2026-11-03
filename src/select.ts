@@ -1,10 +1,10 @@
 import * as select from "@zag-js/select";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
-import { H6Choice } from "./choice.js";
+import { HPlusChoice } from "./choice.js";
 import type { Choice, ChoiceApi, ChoiceCollection, ChoiceProps } from "./choice.js";
 import type { InteractionMachine } from "./zag-dom.js";
 
-export class H6Select extends H6Choice<select.Service> {
+export class HPlusSelect extends HPlusChoice<select.Service> {
   constructor() {
     super(false);
   }

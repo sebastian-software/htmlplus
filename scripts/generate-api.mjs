@@ -10,104 +10,107 @@ const port = 48166;
 
 const options = '<option value="a">One</option><option value="b">Two</option>';
 const elements = {
-  "h6-field": {
+  "hplus-field": {
     summary: "Shared base styling around a real light-DOM input, textarea, or select.",
     guide: "NATIVE-FIELDS.md",
     markup: "<input>",
   },
-  "h6-switch": {
+  "hplus-switch": {
     summary: "On/off setting with a checkbox-like form value.",
     guide: "../README.md#current-value-contract",
   },
-  "h6-iban": {
+  "hplus-iban": {
     summary: "IBAN editor with readable groups, canonical submission, and format checks.",
     guide: "FORMATTED-FIELDS.md",
   },
-  "h6-bic": {
+  "hplus-bic": {
     summary: "BIC/SWIFT editor with uppercase submission and structure checks.",
     guide: "../README.md#current-value-contract",
   },
-  "h6-otp": {
+  "hplus-otp": {
     summary: "One native verification-code editor with visual character slots.",
     guide: "FORMATTED-FIELDS.md",
   },
-  "h6-duration": {
+  "hplus-duration": {
     summary: "Elapsed-time notation that submits whole seconds.",
     guide: "../README.md#additional-value-contracts",
   },
-  "h6-interval": {
+  "hplus-interval": {
     summary: "Two numeric boundaries with explicit form names and optional open ends.",
     guide: "../README.md#additional-value-contracts",
   },
-  "h6-segmented": {
+  "hplus-segmented": {
     summary: "Compact single selection using native radio inputs.",
     guide: "../README.md#additional-value-contracts",
     markup: options,
   },
-  "h6-tags": {
+  "hplus-tags": {
     summary: "Add and remove tags that submit as repeated entries.",
     guide: "../README.md#current-value-contract",
   },
-  "h6-toggle": { summary: "Persistent pressed button with a checkbox-like form value.", guide: "INTERACTIONS.md" },
-  "h6-accordion": {
+  "hplus-toggle": { summary: "Persistent pressed button with a checkbox-like form value.", guide: "INTERACTIONS.md" },
+  "hplus-accordion": {
     summary: "Disclosure sections around ordinary form fields.",
     guide: "INTERACTIONS.md",
     markup: '<section data-value="one" data-label="One"><p>Content</p></section>',
   },
-  "h6-tabs": {
+  "hplus-tabs": {
     summary: "Tabbed panels around ordinary form fields.",
     guide: "INTERACTIONS.md",
     markup: '<section data-value="one" data-label="One"><p>Content</p></section>',
   },
-  "h6-slider": { summary: "One bounded number chosen by pointer or keyboard.", guide: "NUMERIC-CHOICES.md" },
-  "h6-range-slider": {
+  "hplus-slider": { summary: "One bounded number chosen by pointer or keyboard.", guide: "NUMERIC-CHOICES.md" },
+  "hplus-range-slider": {
     summary: "Two ordered boundaries with explicitly named form entries.",
     guide: "NUMERIC-CHOICES.md",
   },
-  "h6-rating": { summary: "Clearable whole score with a separate hover preview.", guide: "NUMERIC-CHOICES.md" },
-  "h6-select": {
+  "hplus-rating": { summary: "Clearable whole score with a separate hover preview.", guide: "NUMERIC-CHOICES.md" },
+  "hplus-select": {
     summary: "Single selection from supplied options in a top-layer listbox.",
     guide: "SELECTION-CONTROLS.md",
     markup: options,
     attributes: 'value="a"',
   },
-  "h6-combobox": {
+  "hplus-combobox": {
     summary: "Searchable selection that keeps query and selected identifier apart.",
     guide: "SELECTION-CONTROLS.md",
     markup: options,
     attributes: 'value="a"',
   },
-  "h6-date-picker": {
+  "hplus-date-picker": {
     summary: "Localized date editor and calendar with one ISO form entry.",
     guide: "DATE-PICKER.md",
     open: true,
   },
-  "h6-date-range-picker": {
+  "hplus-date-range-picker": {
     summary: "Two native editors and a range calendar with two named ISO entries.",
     guide: "DATE-RANGE-PICKER.md",
     open: true,
   },
-  "h6-checkbox": {
+  "hplus-checkbox": {
     summary: "Native checked and mixed states with checkbox-like submission.",
     guide: "EVERYDAY-CONTROLS.md",
   },
-  "h6-radio-group": {
+  "hplus-radio-group": {
     summary: "One supplied identifier, with descriptions and disabled options.",
     guide: "EVERYDAY-CONTROLS.md",
     markup: options,
     attributes: 'value="a"',
   },
-  "h6-toggle-group": {
+  "hplus-toggle-group": {
     summary: "Single or multiple selection with repeated form entries.",
     guide: "EVERYDAY-CONTROLS.md",
     markup: options,
     attributes: "value='[\"a\"]'",
   },
-  "h6-number-input": {
+  "hplus-number-input": {
     summary: "Localized numeric editing, canonical submission, and stepping.",
     guide: "EVERYDAY-CONTROLS.md",
   },
-  "h6-password-input": { summary: "Native password editing and a visibility button.", guide: "EVERYDAY-CONTROLS.md" },
+  "hplus-password-input": {
+    summary: "Native password editing and a visibility button.",
+    guide: "EVERYDAY-CONTROLS.md",
+  },
 };
 
 const server = spawn(process.execPath, ["scripts/serve.mjs", "--port", String(port)], { cwd: root, stdio: "ignore" });
@@ -130,7 +133,7 @@ try {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
-  await page.waitForFunction(() => customElements.get("h6-field"));
+  await page.waitForFunction(() => customElements.get("hplus-field"));
   surfaces = await page.evaluate(async (elements) => {
     const skip = new Set([
       "constructor",

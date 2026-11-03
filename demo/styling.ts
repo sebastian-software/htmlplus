@@ -43,7 +43,7 @@ function renderSource(): void {
       : format === "base"
         ? baseCss
         : format === "html"
-          ? `${["button", "h6-field"].includes(current.element) ? '<link rel="stylesheet" href="./dist/native.css">\n' : ""}<form>\n${markup(
+          ? `${["button", "hplus-field"].includes(current.element) ? '<link rel="stylesheet" href="./dist/native.css">\n' : ""}<form>\n${markup(
               current,
               current.className,
               "example-field",

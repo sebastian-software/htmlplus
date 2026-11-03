@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6RadioGroup } from "../choice-groups.js";
+import { HPlusRadioGroup } from "../choice-groups.js";
 
-export { H6RadioGroup };
+export { HPlusRadioGroup };
 
-define("h6-radio-group", H6RadioGroup);
+define("hplus-radio-group", HPlusRadioGroup);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-radio-group": H6RadioGroup;
+    "hplus-radio-group": HPlusRadioGroup;
   }
 }

@@ -23,7 +23,7 @@ template.innerHTML = `<style>${hostStyles}
 </style><label part="root"><input part="input"><span part="control" aria-hidden="true"><svg part="indicator" viewBox="0 0 16 16"><path></path></svg></span><span part="label"><slot></slot></span></label>`;
 
 /** Native checked and indeterminate remain independent, including submission. */
-export class H6Checkbox extends HTMLElement {
+export class HPlusCheckbox extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = [
     "checked",

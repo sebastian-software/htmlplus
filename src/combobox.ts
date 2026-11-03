@@ -1,10 +1,10 @@
 import * as combobox from "@zag-js/combobox";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
-import { H6Choice } from "./choice.js";
+import { HPlusChoice } from "./choice.js";
 import type { Choice, ChoiceApi, ChoiceCollection, ChoiceProps } from "./choice.js";
 import type { InteractionMachine } from "./zag-dom.js";
 
-export class H6Combobox extends H6Choice<combobox.Service> {
+export class HPlusCombobox extends HPlusChoice<combobox.Service> {
   constructor() {
     super(true);
   }

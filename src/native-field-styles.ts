@@ -6,7 +6,7 @@ const textInput =
 /** The same opt-in base works for slotted controls and the no-JavaScript stylesheet. */
 export function nativeFieldStyles(shadow: boolean): string {
   const select = (element: string, state = ""): string =>
-    shadow ? `::slotted(${element}:not([hidden])${state})` : `:where(h6-field) > ${element}:not([hidden])${state}`;
+    shadow ? `::slotted(${element}:not([hidden])${state})` : `:where(hplus-field) > ${element}:not([hidden])${state}`;
   const editors = (state = ""): string =>
     [textInput, "textarea", "select"].map((element) => select(element, state)).join(", ");
   return `

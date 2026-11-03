@@ -15,7 +15,7 @@ test("duration preserves native notation while validating and submitting seconds
   await page.getByRole("button", { name: "Submit demo" }).click();
   await expect(page.getByText("1 field needs attention", { exact: true })).toBeVisible();
   await input.fill("30s");
-  expect(await page.locator("h6-duration").evaluate((field) => field.checkValidity())).toBe(false);
+  expect(await page.locator("hplus-duration").evaluate((field) => field.checkValidity())).toBe(false);
   await input.fill("90m");
   await page.getByRole("button", { name: "Submit demo" }).click();
   await expect(page.getByRole("status")).toContainText("Captured 33 entries");
@@ -34,13 +34,13 @@ test("interval submits two explicit names and validates order, step, and missing
     ["budget_max", "950"],
   ]);
   await upper.fill("951");
-  expect(await page.locator("h6-interval").evaluate((field) => field.validity.stepMismatch)).toBe(true);
+  expect(await page.locator("hplus-interval").evaluate((field) => field.validity.stepMismatch)).toBe(true);
   await upper.fill("");
-  expect(await page.locator("h6-interval").evaluate((field) => field.validity.valueMissing)).toBe(true);
-  await page.locator("h6-interval").evaluate((field) => {
+  expect(await page.locator("hplus-interval").evaluate((field) => field.validity.valueMissing)).toBe(true);
+  await page.locator("hplus-interval").evaluate((field) => {
     field.required = false;
   });
-  expect(await page.locator("h6-interval").evaluate((field) => field.checkValidity())).toBe(true);
+  expect(await page.locator("hplus-interval").evaluate((field) => field.checkValidity())).toBe(true);
   expect((await data(page)).filter(([key]) => key.startsWith("budget"))).toEqual([["budget_min", "900"]]);
 });
 
@@ -51,7 +51,7 @@ test("segmented choices use native radio keys and submit identifiers exactly onc
   await standard.press("ArrowRight");
   await expect(page.getByRole("radio", { name: "Express", exact: true })).toBeChecked();
   expect((await data(page)).filter(([key]) => key === "delivery")).toEqual([["delivery", "express"]]);
-  await page.locator("h6-segmented").evaluate((field) => {
+  await page.locator("hplus-segmented").evaluate((field) => {
     field.value = "";
   });
   await page.getByRole("button", { name: "Submit demo" }).click();
@@ -64,7 +64,9 @@ test("segmented choices use native radio keys and submit identifiers exactly onc
 test("extended fields reset, disable, restore state, and retain explicit errors", async ({ page }) => {
   const defaults = await data(page);
   const result = await page.evaluate(() => {
-    const controls = ["h6-duration", "h6-interval", "h6-segmented"].map((name) => document.querySelector(name));
+    const controls = ["hplus-duration", "hplus-interval", "hplus-segmented"].map((name) =>
+      document.querySelector(name),
+    );
     controls[0].value = "5m";
     controls[1].value = [100, 150];
     controls[2].value = "economy";
@@ -82,11 +84,11 @@ test("extended fields reset, disable, restore state, and retain explicit errors"
   expect(await data(page)).toEqual([]);
   await page.getByLabel("Disable the fieldset").uncheck();
   const restored = await page.evaluate(() => {
-    const duration = document.querySelector("h6-duration");
+    const duration = document.querySelector("hplus-duration");
     duration.formStateRestoreCallback("2h 5m");
-    const interval = document.querySelector("h6-interval");
+    const interval = document.querySelector("hplus-interval");
     interval.formStateRestoreCallback('["400","600"]');
-    const segmented = document.querySelector("h6-segmented");
+    const segmented = document.querySelector("hplus-segmented");
     segmented.formStateRestoreCallback("express");
     return [duration.value, duration.displayValue, interval.value, segmented.value];
   });
@@ -95,7 +97,7 @@ test("extended fields reset, disable, restore state, and retain explicit errors"
 
 test("option updates remain safe and programmatic assignment emits no user events", async ({ page }) => {
   const result = await page.evaluate(async () => {
-    const control = document.querySelector("h6-segmented");
+    const control = document.querySelector("hplus-segmented");
     const counts = { input: 0, change: 0 };
     for (const type of ["input", "change"]) control.addEventListener(type, () => counts[type]++);
     control.value = "express";

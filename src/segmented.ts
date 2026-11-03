@@ -19,7 +19,7 @@ template.innerHTML = `<style>
 </style><div part="control"></div>`;
 
 /** A compact single choice, retaining native radio navigation inside the control. */
-export class H6Segmented extends HTMLElement {
+export class HPlusSegmented extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = ["value", "name", "disabled", "required", "aria-label", "aria-labelledby"];
   #internals = this.attachInternals();

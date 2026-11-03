@@ -33,13 +33,13 @@ export function App() {
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
   // React doesn't assign props to custom elements while hydrating, and the server can't render arrays as attributes.
-  const tagsRef = useCallback((field: HTMLElementTagNameMap["h6-tags"] | null) => {
+  const tagsRef = useCallback((field: HTMLElementTagNameMap["hplus-tags"] | null) => {
     if (field) field.value = initial.tags;
   }, []);
-  const budgetRef = useCallback((field: HTMLElementTagNameMap["h6-interval"] | null) => {
+  const budgetRef = useCallback((field: HTMLElementTagNameMap["hplus-interval"] | null) => {
     if (field) field.value = initial.budget;
   }, []);
-  const formatsRef = useCallback((field: HTMLElementTagNameMap["h6-toggle-group"] | null) => {
+  const formatsRef = useCallback((field: HTMLElementTagNameMap["hplus-toggle-group"] | null) => {
     if (field) field.value = initial.formats;
   }, []);
 
@@ -72,40 +72,40 @@ export function App() {
         {mounted && (
           <>
             <label htmlFor="iban">IBAN</label>
-            <h6-iban id="iban" name="iban" value={state.iban} {...bind("iban", (field: HTMLElementTagNameMap["h6-iban"]) => field.value)} />
+            <hplus-iban id="iban" name="iban" value={state.iban} {...bind("iban", (field: HTMLElementTagNameMap["hplus-iban"]) => field.value)} />
             <label htmlFor="amount">Amount</label>
-            <h6-number-input id="amount" name="amount" step={0.01} value={state.amount} {...bind("amount", (field: HTMLElementTagNameMap["h6-number-input"]) => field.value)} />
+            <hplus-number-input id="amount" name="amount" step={0.01} value={state.amount} {...bind("amount", (field: HTMLElementTagNameMap["hplus-number-input"]) => field.value)} />
             <label htmlFor="duration">Duration</label>
-            <h6-duration id="duration" name="duration" value={state.duration} {...bind("duration", (field: HTMLElementTagNameMap["h6-duration"]) => field.value)} />
+            <hplus-duration id="duration" name="duration" value={state.duration} {...bind("duration", (field: HTMLElementTagNameMap["hplus-duration"]) => field.value)} />
             <label htmlFor="date">Date</label>
-            <h6-date-picker id="date" name="date" value={state.date} {...bind("date", (field: HTMLElementTagNameMap["h6-date-picker"]) => field.value)} />
+            <hplus-date-picker id="date" name="date" value={state.date} {...bind("date", (field: HTMLElementTagNameMap["hplus-date-picker"]) => field.value)} />
             <label htmlFor="tags">Tags</label>
-            <h6-tags id="tags" name="tags" ref={tagsRef} value={state.tags} {...bind("tags", (field: HTMLElementTagNameMap["h6-tags"]) => [...field.value])} />
+            <hplus-tags id="tags" name="tags" ref={tagsRef} value={state.tags} {...bind("tags", (field: HTMLElementTagNameMap["hplus-tags"]) => [...field.value])} />
             <label htmlFor="budget">Budget</label>
-            <h6-interval id="budget" name="budget" ref={budgetRef} value={state.budget} {...bind("budget", (field: HTMLElementTagNameMap["h6-interval"]) => field.value as typeof initial.budget)} />
+            <hplus-interval id="budget" name="budget" ref={budgetRef} value={state.budget} {...bind("budget", (field: HTMLElementTagNameMap["hplus-interval"]) => field.value as typeof initial.budget)} />
             <label htmlFor="choice">Choice</label>
-            <h6-select id="choice" name="choice" value={state.choice} {...bind("choice", (field: HTMLElementTagNameMap["h6-select"]) => field.value)}>
+            <hplus-select id="choice" name="choice" value={state.choice} {...bind("choice", (field: HTMLElementTagNameMap["hplus-select"]) => field.value)}>
               <option value="a">Apple</option>
               <option value="b">Banana</option>
-            </h6-select>
+            </hplus-select>
             <label htmlFor="fruit">Fruit</label>
-            <h6-combobox id="fruit" name="fruit" value={state.fruit} {...bind("fruit", (field: HTMLElementTagNameMap["h6-combobox"]) => field.value)}>
+            <hplus-combobox id="fruit" name="fruit" value={state.fruit} {...bind("fruit", (field: HTMLElementTagNameMap["hplus-combobox"]) => field.value)}>
               <option value="a">Apple</option>
               <option value="b">Banana</option>
-            </h6-combobox>
+            </hplus-combobox>
             <label htmlFor="level">Level</label>
-            <h6-slider id="level" name="level" value={state.level} {...bind("level", (field: HTMLElementTagNameMap["h6-slider"]) => field.value)} />
+            <hplus-slider id="level" name="level" value={state.level} {...bind("level", (field: HTMLElementTagNameMap["hplus-slider"]) => field.value)} />
             <label htmlFor="formats">Formats</label>
-            <h6-toggle-group id="formats" name="formats" multiple ref={formatsRef} value={state.formats} {...bind("formats", (field: HTMLElementTagNameMap["h6-toggle-group"]) => [...(field.value as string[])])}>
+            <hplus-toggle-group id="formats" name="formats" multiple ref={formatsRef} value={state.formats} {...bind("formats", (field: HTMLElementTagNameMap["hplus-toggle-group"]) => [...(field.value as string[])])}>
               <option value="csv">CSV</option>
               <option value="json">JSON</option>
-            </h6-toggle-group>
+            </hplus-toggle-group>
             <label htmlFor="updates">Updates</label>
-            <h6-switch id="updates" name="updates" value="email" checked={state.updates} {...bind("updates", (field: HTMLElementTagNameMap["h6-switch"]) => field.checked)} />
+            <hplus-switch id="updates" name="updates" value="email" checked={state.updates} {...bind("updates", (field: HTMLElementTagNameMap["hplus-switch"]) => field.checked)} />
             {hydrated && (
               <>
                 <label htmlFor="fallback">Reset default</label>
-                <h6-iban id="fallback" name="fallback" defaultValue="AT611904300234573201" />
+                <hplus-iban id="fallback" name="fallback" defaultValue="AT611904300234573201" />
               </>
             )}
           </>

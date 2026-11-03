@@ -4,7 +4,7 @@
 
 html+ provides framework-independent form controls and core UI primitives. Components handle interaction, value formats, and form participation. Your application supplies the data, business rules, and workflows. [ADR-0007](docs/adr/0007-component-application-boundary.md) records that boundary: an IBAN field checks format and check digits, while the application verifies the account and starts the payment.
 
-**Status:** prototype. Element names and APIs may still change, and the `h6-` prefix is provisional. There is no npm package: `npm i htmlplus` installs an unrelated third-party package. The name `htmlplus.dev` is reserved and not live yet.
+**Status:** prototype. Element APIs may still change before a release. There is no npm package: `npm i htmlplus` installs an unrelated third-party package. The name `htmlplus.dev` is reserved and not live yet.
 
 **Try it:** [project site](https://sebastian-software.github.io/htmlplus/) · [form playground](https://sebastian-software.github.io/htmlplus/demo/) · [styling gallery](https://sebastian-software.github.io/htmlplus/demo/styling.html)
 
@@ -36,11 +36,11 @@ import "htmlplus/switch";
 ```html
 <form>
   <label for="account">IBAN</label>
-  <h6-iban id="account" name="iban" required></h6-iban>
+  <hplus-iban id="account" name="iban" required></hplus-iban>
   <label for="topics">Topics</label>
-  <h6-tags id="topics" name="topics" value='["html", "forms"]'></h6-tags>
+  <hplus-tags id="topics" name="topics" value='["html", "forms"]'></hplus-tags>
   <label for="updates">Product updates</label>
-  <h6-switch id="updates" name="updates" value="email"></h6-switch>
+  <hplus-switch id="updates" name="updates" value="email"></hplus-switch>
   <button>Submit</button>
 </form>
 ```
@@ -56,7 +56,7 @@ import "htmlplus/switch";
 
 Each entry is safe to import during server rendering, where it does nothing. Without a bundler, use the prebuilt modules in `browser/`, such as `<script type="module" src="/htmlplus/browser/elements/iban.js"></script>`. Keep that folder together with its `chunks/`, and keep `THIRD_PARTY_NOTICES.txt` with the distributed modules.
 
-Each element has a built-in neutral base, so no stylesheet is required. Customize it with inherited `--hp-*` tokens, CSS parts, and ordinary CSS on wrapped native fields. Optional `themes.css` adds Light/Dark palettes, `shadcn.css` connects an existing shadcn theme, and `native.css` styles `h6-field` and `<button class="hp-button">` without JavaScript. See the [styling guide](docs/STYLING.md).
+Each element has a built-in neutral base, so no stylesheet is required. Customize it with inherited `--hp-*` tokens, CSS parts, and ordinary CSS on wrapped native fields. Optional `themes.css` adds Light/Dark palettes, `shadcn.css` connects an existing shadcn theme, and `native.css` styles `hplus-field` and `<button class="hp-button">` without JavaScript. See the [styling guide](docs/STYLING.md).
 
 ## Elements
 
@@ -64,30 +64,30 @@ There are twenty-one form controls using `ElementInternals`, plus Accordion, Tab
 
 | Element | Behavior | Reference |
 | --- | --- | --- |
-| [`h6-field`](docs/NATIVE-FIELDS.md) | Shared base styling around a real light-DOM input, textarea, or select | [API](docs/ELEMENTS.md#h6-field) |
-| [`h6-switch`](#current-value-contract) | On/off setting with a checkbox-like form value | [API](docs/ELEMENTS.md#h6-switch) |
-| [`h6-checkbox`](docs/EVERYDAY-CONTROLS.md#checkbox-and-table-selection) | Independent checked and mixed states; checkbox-like submission | [API](docs/ELEMENTS.md#h6-checkbox) |
-| [`h6-toggle`](docs/INTERACTIONS.md#toggle-a-form-field-with-a-pressed-state) | Pressed button with a checkbox-like form contribution | [API](docs/ELEMENTS.md#h6-toggle) |
-| [`h6-iban`](docs/FORMATTED-FIELDS.md#iban) | Grouped display, whitespace-free submission, ten national formats, and check digits | [API](docs/ELEMENTS.md#h6-iban) |
-| [`h6-bic`](#current-value-contract) | Uppercase submission and 8- or 11-character structure checks | [API](docs/ELEMENTS.md#h6-bic) |
-| [`h6-otp`](docs/FORMATTED-FIELDS.md#otp-and-pin-presentation) | Character slots over one native editor, autofill hints, and preserved leading zeros | [API](docs/ELEMENTS.md#h6-otp) |
-| [`h6-password-input`](docs/EVERYDAY-CONTROLS.md#password-input) | Native password editing and a keyboard-accessible visibility button | [API](docs/ELEMENTS.md#h6-password-input) |
-| [`h6-number-input`](docs/EVERYDAY-CONTROLS.md#number-input) | Localized editing, canonical numeric submission, constraints, and stepping | [API](docs/ELEMENTS.md#h6-number-input) |
-| [`h6-duration`](#additional-value-contracts) | Notation such as `1h 30m` or `01:30`, submitted as whole seconds | [API](docs/ELEMENTS.md#h6-duration) |
-| [`h6-interval`](#additional-value-contracts) | Two numeric editors with named boundaries and optional open ends | [API](docs/ELEMENTS.md#h6-interval) |
-| [`h6-slider`](docs/NUMERIC-CHOICES.md#slider) | One bounded number by pointer or keyboard | [API](docs/ELEMENTS.md#h6-slider) |
-| [`h6-range-slider`](docs/NUMERIC-CHOICES.md#range-slider) | Two stable thumbs with explicitly named form entries | [API](docs/ELEMENTS.md#h6-range-slider) |
-| [`h6-rating`](docs/NUMERIC-CHOICES.md#rating) | Clearable whole score, hover preview, and an unanswered state | [API](docs/ELEMENTS.md#h6-rating) |
-| [`h6-segmented`](#additional-value-contracts) | Compact single selection using native radio inputs | [API](docs/ELEMENTS.md#h6-segmented) |
-| [`h6-radio-group`](docs/EVERYDAY-CONTROLS.md#radio-group) | One identifier with descriptions and disabled options | [API](docs/ELEMENTS.md#h6-radio-group) |
-| [`h6-toggle-group`](docs/EVERYDAY-CONTROLS.md#toggle-group) | Single or multiple selection with repeated form entries | [API](docs/ELEMENTS.md#h6-toggle-group) |
-| [`h6-select`](docs/SELECTION-CONTROLS.md) | Single selection from supplied options in a top-layer listbox | [API](docs/ELEMENTS.md#h6-select) |
-| [`h6-combobox`](docs/SELECTION-CONTROLS.md) | Searchable selection; query text never becomes a form entry | [API](docs/ELEMENTS.md#h6-combobox) |
-| [`h6-tags`](#current-value-contract) | Add and remove tags that submit as repeated entries | [API](docs/ELEMENTS.md#h6-tags) |
-| [`h6-date-picker`](docs/DATE-PICKER.md) | Localized editor and calendar with strict date-only submission | [API](docs/ELEMENTS.md#h6-date-picker) |
-| [`h6-date-range-picker`](docs/DATE-RANGE-PICKER.md) | Two editors, range selection, and two named ISO entries | [API](docs/ELEMENTS.md#h6-date-range-picker) |
-| [`h6-accordion`](docs/INTERACTIONS.md#accordion-disclosure-sections) | Disclosure sections; contained fields keep their own form values | [API](docs/ELEMENTS.md#h6-accordion) |
-| [`h6-tabs`](docs/INTERACTIONS.md#tabs-one-visible-panel) | Linked panels; contained fields keep their own form values | [API](docs/ELEMENTS.md#h6-tabs) |
+| [`hplus-field`](docs/NATIVE-FIELDS.md) | Shared base styling around a real light-DOM input, textarea, or select | [API](docs/ELEMENTS.md#hplus-field) |
+| [`hplus-switch`](#current-value-contract) | On/off setting with a checkbox-like form value | [API](docs/ELEMENTS.md#hplus-switch) |
+| [`hplus-checkbox`](docs/EVERYDAY-CONTROLS.md#checkbox-and-table-selection) | Independent checked and mixed states; checkbox-like submission | [API](docs/ELEMENTS.md#hplus-checkbox) |
+| [`hplus-toggle`](docs/INTERACTIONS.md#toggle-a-form-field-with-a-pressed-state) | Pressed button with a checkbox-like form contribution | [API](docs/ELEMENTS.md#hplus-toggle) |
+| [`hplus-iban`](docs/FORMATTED-FIELDS.md#iban) | Grouped display, whitespace-free submission, ten national formats, and check digits | [API](docs/ELEMENTS.md#hplus-iban) |
+| [`hplus-bic`](#current-value-contract) | Uppercase submission and 8- or 11-character structure checks | [API](docs/ELEMENTS.md#hplus-bic) |
+| [`hplus-otp`](docs/FORMATTED-FIELDS.md#otp-and-pin-presentation) | Character slots over one native editor, autofill hints, and preserved leading zeros | [API](docs/ELEMENTS.md#hplus-otp) |
+| [`hplus-password-input`](docs/EVERYDAY-CONTROLS.md#password-input) | Native password editing and a keyboard-accessible visibility button | [API](docs/ELEMENTS.md#hplus-password-input) |
+| [`hplus-number-input`](docs/EVERYDAY-CONTROLS.md#number-input) | Localized editing, canonical numeric submission, constraints, and stepping | [API](docs/ELEMENTS.md#hplus-number-input) |
+| [`hplus-duration`](#additional-value-contracts) | Notation such as `1h 30m` or `01:30`, submitted as whole seconds | [API](docs/ELEMENTS.md#hplus-duration) |
+| [`hplus-interval`](#additional-value-contracts) | Two numeric editors with named boundaries and optional open ends | [API](docs/ELEMENTS.md#hplus-interval) |
+| [`hplus-slider`](docs/NUMERIC-CHOICES.md#slider) | One bounded number by pointer or keyboard | [API](docs/ELEMENTS.md#hplus-slider) |
+| [`hplus-range-slider`](docs/NUMERIC-CHOICES.md#range-slider) | Two stable thumbs with explicitly named form entries | [API](docs/ELEMENTS.md#hplus-range-slider) |
+| [`hplus-rating`](docs/NUMERIC-CHOICES.md#rating) | Clearable whole score, hover preview, and an unanswered state | [API](docs/ELEMENTS.md#hplus-rating) |
+| [`hplus-segmented`](#additional-value-contracts) | Compact single selection using native radio inputs | [API](docs/ELEMENTS.md#hplus-segmented) |
+| [`hplus-radio-group`](docs/EVERYDAY-CONTROLS.md#radio-group) | One identifier with descriptions and disabled options | [API](docs/ELEMENTS.md#hplus-radio-group) |
+| [`hplus-toggle-group`](docs/EVERYDAY-CONTROLS.md#toggle-group) | Single or multiple selection with repeated form entries | [API](docs/ELEMENTS.md#hplus-toggle-group) |
+| [`hplus-select`](docs/SELECTION-CONTROLS.md) | Single selection from supplied options in a top-layer listbox | [API](docs/ELEMENTS.md#hplus-select) |
+| [`hplus-combobox`](docs/SELECTION-CONTROLS.md) | Searchable selection; query text never becomes a form entry | [API](docs/ELEMENTS.md#hplus-combobox) |
+| [`hplus-tags`](#current-value-contract) | Add and remove tags that submit as repeated entries | [API](docs/ELEMENTS.md#hplus-tags) |
+| [`hplus-date-picker`](docs/DATE-PICKER.md) | Localized editor and calendar with strict date-only submission | [API](docs/ELEMENTS.md#hplus-date-picker) |
+| [`hplus-date-range-picker`](docs/DATE-RANGE-PICKER.md) | Two editors, range selection, and two named ISO entries | [API](docs/ELEMENTS.md#hplus-date-range-picker) |
+| [`hplus-accordion`](docs/INTERACTIONS.md#accordion-disclosure-sections) | Disclosure sections; contained fields keep their own form values | [API](docs/ELEMENTS.md#hplus-accordion) |
+| [`hplus-tabs`](docs/INTERACTIONS.md#tabs-one-visible-panel) | Linked panels; contained fields keep their own form values | [API](docs/ELEMENTS.md#hplus-tabs) |
 
 Actions stay real buttons: the [native Button family](docs/EVERYDAY-CONTROLS.md#native-buttons) is `<button class="hp-button">` styled by `native.css`.
 
@@ -107,7 +107,7 @@ Physical devices, OTP autofill, password managers, manual assistive-technology c
 
 ## Size
 
-[Element sizes](docs/SIZES.md) lists what each element costs on its own, from about 2 KB gzipped for `h6-switch` to about 50 KB for `h6-date-range-picker`. All twenty-four elements together are about 120 KB, and importing only the ones a page uses keeps the rest out of its bundle.
+[Element sizes](docs/SIZES.md) lists what each element costs on its own, from about 2 KB gzipped for `hplus-switch` to about 50 KB for `hplus-date-range-picker`. All twenty-four elements together are about 120 KB, and importing only the ones a page uses keeps the rest out of its bundle.
 
 ## Current value contract
 
@@ -126,14 +126,14 @@ Text fields are IBAN, BIC, OTP, Duration, Number Input, and Password Input. Thei
 ## Additional value contracts
 
 ```html
-<h6-duration name="duration" value="1h 30m" min="60"></h6-duration>
-<h6-interval name="budget" lower-name="budget_min" upper-name="budget_max"
-  value="[200,800]" min="0" max="10000" step="50" required></h6-interval>
-<h6-segmented name="delivery" value="standard" required>
+<hplus-duration name="duration" value="1h 30m" min="60"></hplus-duration>
+<hplus-interval name="budget" lower-name="budget_min" upper-name="budget_max"
+  value="[200,800]" min="0" max="10000" step="50" required></hplus-interval>
+<hplus-segmented name="delivery" value="standard" required>
   <option value="economy">Economy</option>
   <option value="standard">Standard</option>
   <option value="express">Express</option>
-</h6-segmented>
+</hplus-segmented>
 ```
 
 - **Duration:** `.value` is seconds as a string, and `.displayValue` is the editor text. Bare integers are seconds. `HH:MM[:SS]` means hours, minutes, and optional seconds; units accept whole `h`, `m`, and `s` in that order. Fractions, negatives, unsafe integers, and calendar units are rejected. `min` and `max` are in seconds; empty attributes are ignored. An optional empty field submits an empty string, like a native text input.
@@ -151,11 +151,11 @@ Native Field and the Button family keep native behavior without JavaScript, and 
 Before upgrade, an element has no shadow root or layout, and child `<option>` elements can show as plain text. html+ ships no pre-upgrade CSS. Use `:defined` to reserve space and hide raw options, adjusting the selectors to the elements you use:
 
 ```css
-:is(h6-iban, h6-select, h6-combobox):not(:defined) {
+:is(hplus-iban, hplus-select, hplus-combobox):not(:defined) {
   display: block;
   min-height: var(--hp-control-height, 2.5rem);
 }
-:is(h6-select, h6-combobox, h6-segmented, h6-radio-group, h6-toggle-group):not(:defined) > option {
+:is(hplus-select, hplus-combobox, hplus-segmented, hplus-radio-group, hplus-toggle-group):not(:defined) > option {
   display: none;
 }
 ```

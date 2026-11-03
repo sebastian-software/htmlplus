@@ -6,7 +6,7 @@ These three elements use Zag 1.46.0 through its official vanilla adapter. Their 
 
 ```html
 <form>
-  <h6-toggle name="priority" value="yes">Priority handling</h6-toggle>
+  <hplus-toggle name="priority" value="yes">Priority handling</hplus-toggle>
   <button>Submit</button>
 </form>
 ```
@@ -19,7 +19,7 @@ The shadow control is a native `type="button"` with `aria-pressed`. Enter, Space
 - User activation emits one bubbling, composed `input` event followed by one `change` event on the host. Assignments, reset, and restoration do not emit user events.
 - The public part is `button`; `:state(pressed)` exposes the current state. The default attribute `[pressed]` describes a default, not a styling hook for the live state.
 
-This is a pressed button, while `h6-switch` represents an on/off setting with switch semantics.
+This is a pressed button, while `hplus-switch` represents an on/off setting with switch semantics.
 
 ## Shared section markup
 
@@ -32,14 +32,14 @@ Neither component is form-associated. A host `name` does not submit section iden
 ## Accordion: disclosure sections
 
 ```html
-<h6-accordion value='["delivery"]'>
+<hplus-accordion value='["delivery"]'>
   <section data-value="delivery" data-label="Delivery">
     <label>Delivery note <input name="delivery_note" value="Ring the bell"></label>
   </section>
   <section data-value="gift" data-label="Gift">
     <label>Gift message <input name="gift_message" value="Enjoy your gift!"></label>
   </section>
-</h6-accordion>
+</hplus-accordion>
 ```
 
 `.value` is an array of expanded identifiers. The `value` attribute accepts a JSON string array and updates current view state when changed. Unknown identifiers and duplicates are removed. One section can open by default; add `multiple` to allow several. Every section can close, including the last open section. The initial default without `value` is all closed.
@@ -53,14 +53,14 @@ Parts: `root`, `item`, `heading`, `trigger`, `label`, `indicator`, and `content`
 ## Tabs: one visible panel
 
 ```html
-<h6-tabs value="profile" aria-label="Contact details">
+<hplus-tabs value="profile" aria-label="Contact details">
   <section data-value="profile" data-label="Profile">
     <label>Display name <input name="display_name" value="Ada Lovelace"></label>
   </section>
   <section data-value="receipts" data-label="Receipts">
     <label>Receipt email <input name="receipt_email" type="email" value="ada@example.test"></label>
   </section>
-</h6-tabs>
+</hplus-tabs>
 ```
 
 `.value` is the selected identifier; changing the `value` attribute updates it. An unknown/missing selection falls back to the first enabled section, then the first section if all are disabled. An empty component has an empty string value. Programmatic selection can reveal a disabled section. `disabled` prevents tab activation and does not disable contained fields.

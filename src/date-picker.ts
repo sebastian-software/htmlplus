@@ -18,7 +18,7 @@ const firstDate = parseCalendarDate("0001-01-01")!;
 const lastDate = parseCalendarDate("9999-12-31")!;
 
 /** Native editor and form owner around Zag's calendar navigation and popup behavior. */
-export class H6DatePicker extends HTMLElement {
+export class HPlusDatePicker extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = [
     "value",

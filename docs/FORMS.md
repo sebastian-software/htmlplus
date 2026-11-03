@@ -2,7 +2,7 @@
 
 The twenty-one form controls are form-associated custom elements, so they use the same validation API as native fields: `validity`, `validationMessage`, `willValidate`, `checkValidity()`, `reportValidity()`, and `setCustomValidity()`. An invalid control blocks submission, and `form.reportValidity()` or a submit attempt shows the browser's validation UI.
 
-Accordion, Tabs, and Native Field have no validity of their own. Accordion and Tabs reveal the section holding the first invalid field; see the [interaction guide](INTERACTIONS.md#validation-styling-and-evidence). Inside `h6-field`, the native control validates itself and its invalid border follows `:user-invalid` or `aria-invalid="true"`; see [native fields](NATIVE-FIELDS.md#boundaries).
+Accordion, Tabs, and Native Field have no validity of their own. Accordion and Tabs reveal the section holding the first invalid field; see the [interaction guide](INTERACTIONS.md#validation-styling-and-evidence). Inside `hplus-field`, the native control validates itself and its invalid border follows `:user-invalid` or `aria-invalid="true"`; see [native fields](NATIVE-FIELDS.md#boundaries).
 
 ## When errors appear
 
@@ -11,7 +11,7 @@ A control is invalid as soon as its value is, but it doesn't look invalid straig
 Built-in destructive styling and the inner control's `aria-invalid` both wait for `data-touched`. Use the same condition for your own styles:
 
 ```css
-h6-iban[data-touched]:invalid::part(input) {
+hplus-iban[data-touched]:invalid::part(input) {
   border-color: var(--hp-destructive);
 }
 ```
@@ -24,7 +24,7 @@ Controls don't render error text. Read `.validationMessage` and put it where you
 
 ```html
 <label for="account">IBAN</label>
-<h6-iban id="account" name="iban" required aria-describedby="account-error"></h6-iban>
+<hplus-iban id="account" name="iban" required aria-describedby="account-error"></hplus-iban>
 <p id="account-error"></p>
 ```
 
@@ -55,15 +55,15 @@ Custom errors take precedence over every other flag. While one is set, the other
 
 | Element | Flags besides `customError` |
 | --- | --- |
-| `h6-iban`, `h6-bic` | `valueMissing`, `patternMismatch` (format and check digits), `tooShort`, `tooLong` |
-| `h6-otp`, `h6-password-input` | `valueMissing`, `patternMismatch`, `tooShort`, `tooLong` |
-| `h6-duration` | `valueMissing`, `badInput`, `rangeUnderflow`, `rangeOverflow`, `patternMismatch`, `tooShort`, `tooLong` |
-| `h6-number-input` | `valueMissing`, `badInput`, `rangeUnderflow`, `rangeOverflow`, `stepMismatch` |
-| `h6-interval` | `valueMissing`, `badInput`, `rangeUnderflow`, `rangeOverflow`, `stepMismatch`, from its native inputs |
-| `h6-date-picker`, `h6-date-range-picker` | `valueMissing`, `badInput`, `rangeUnderflow`, `rangeOverflow` |
-| `h6-switch`, `h6-checkbox`, `h6-toggle`, `h6-tags`, `h6-rating` | `valueMissing` |
-| `h6-segmented`, `h6-radio-group`, `h6-toggle-group`, `h6-select`, `h6-combobox` | `valueMissing` |
-| `h6-slider`, `h6-range-slider` | None; a valid slider always has a number, so `required` adds nothing |
+| `hplus-iban`, `hplus-bic` | `valueMissing`, `patternMismatch` (format and check digits), `tooShort`, `tooLong` |
+| `hplus-otp`, `hplus-password-input` | `valueMissing`, `patternMismatch`, `tooShort`, `tooLong` |
+| `hplus-duration` | `valueMissing`, `badInput`, `rangeUnderflow`, `rangeOverflow`, `patternMismatch`, `tooShort`, `tooLong` |
+| `hplus-number-input` | `valueMissing`, `badInput`, `rangeUnderflow`, `rangeOverflow`, `stepMismatch` |
+| `hplus-interval` | `valueMissing`, `badInput`, `rangeUnderflow`, `rangeOverflow`, `stepMismatch`, from its native inputs |
+| `hplus-date-picker`, `hplus-date-range-picker` | `valueMissing`, `badInput`, `rangeUnderflow`, `rangeOverflow` |
+| `hplus-switch`, `hplus-checkbox`, `hplus-toggle`, `hplus-tags`, `hplus-rating` | `valueMissing` |
+| `hplus-segmented`, `hplus-radio-group`, `hplus-toggle-group`, `hplus-select`, `hplus-combobox` | `valueMissing` |
+| `hplus-slider`, `hplus-range-slider` | None; a valid slider always has a number, so `required` adds nothing |
 
 Some conditions report `customError` without an application setting one, and `setCustomValidity("")` doesn't clear them:
 
@@ -135,14 +135,14 @@ import "htmlplus/iban";
 
 export function Account() {
   const [iban, setIban] = useState("");
-  return <h6-iban name="iban" value={iban} onInput={(event) => setIban(event.currentTarget.value)} />;
+  return <hplus-iban name="iban" value={iban} onInput={(event) => setIban(event.currentTarget.value)} />;
 }
 ```
 
 - **`onInput` and `onChange` keep their native meaning.** `onInput` fires per edit. `onChange` fires when the edit is committed, as on a native field, and not per keystroke as on a React `<input>`.
 - **`value` is the current value, not the reset default.** It sets the property. Use `defaultValue` for what form reset returns to.
 - **Controlled fields keep what the person is typing.** While an editor has focus, assigning the value it already holds leaves its text, caret, and undo alone. So `1h 30m` stays readable while state holds `5400`, and `3.` or an incomplete date survives the round trip.
-- **Arrays work as props.** `h6-tags`, `h6-interval`, and the other array values take `value={array}` directly.
+- **Arrays work as props.** `hplus-tags`, `hplus-interval`, and the other array values take `value={array}` directly.
 
 ### Server rendering
 
@@ -152,11 +152,11 @@ Entries do nothing on the server, so `react-dom/server` renders plain tags and t
 - Arrays can't be attributes, so they're missing until the next update. Assign them once in a ref callback:
 
 ```tsx
-const tagsRef = useCallback((field: HTMLElementTagNameMap["h6-tags"] | null) => {
+const tagsRef = useCallback((field: HTMLElementTagNameMap["hplus-tags"] | null) => {
   if (field) field.value = initialTags;
 }, []);
 
-return <h6-tags ref={tagsRef} name="tags" value={tags} />;
+return <hplus-tags ref={tagsRef} name="tags" value={tags} />;
 ```
 
 Elements rendered only on the client, after hydration, need neither workaround.

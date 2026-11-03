@@ -46,7 +46,7 @@ test("native enhanced fields normalize, retain leading zeros, and block invalid 
 });
 
 test("switch labels and keyboard activation follow checkbox submission and fieldset disabling", async ({ page }) => {
-  const control = page.locator("h6-switch");
+  const control = page.locator("hplus-switch");
   await page.getByText("Product updates", { exact: true }).click();
   expect((await data(page)).some(([name]) => name === "updates")).toBe(false);
   await control.focus();
@@ -70,7 +70,7 @@ test("switch labels and keyboard activation follow checkbox submission and field
 test("native reset restores initial text values, switch state, and tag defaults", async ({ page }) => {
   await page.getByRole("textbox", { name: "IBAN", exact: true }).fill("NL91ABNA0417164300");
   await page.getByRole("button", { name: "Remove html", exact: true }).click();
-  await page.locator("h6-switch").click();
+  await page.locator("hplus-switch").click();
   await page.getByRole("button", { name: "Reset form", exact: true }).click();
   await expect(page.getByRole("textbox", { name: "IBAN", exact: true })).toHaveValue("DE89 3704 0044 0532 0130 00");
   await expect(page.getByRole("button", { name: "Remove html", exact: true })).toBeVisible();
@@ -103,7 +103,7 @@ test("programmatic defaults and external form association keep native semantics"
   const result = await page.evaluate(() => {
     const form = document.createElement("form");
     form.id = "external-form";
-    const control = document.createElement("h6-switch");
+    const control = document.createElement("hplus-switch");
     control.setAttribute("form", form.id);
     control.setAttribute("name", "outside");
     document.body.append(form, control);
@@ -112,7 +112,7 @@ test("programmatic defaults and external form association keep native semantics"
     const before = new FormData(form).has("outside");
     form.reset();
     const after = new FormData(form).get("outside");
-    const tags = document.querySelector("h6-tags");
+    const tags = document.querySelector("hplus-tags");
     tags.value = ["changed"];
     tags.defaultValue = ["new-default"];
     const current = tags.value;
@@ -136,9 +136,9 @@ test("the mobile layout and alternate CSS theme preserve the same form values", 
 
 test("custom errors persist until explicitly cleared and initialization can precede connection", async ({ page }) => {
   const result = await page.evaluate(async () => {
-    const iban = document.querySelector("h6-iban");
-    const tags = document.querySelector("h6-tags");
-    const toggle = document.querySelector("h6-switch");
+    const iban = document.querySelector("hplus-iban");
+    const tags = document.querySelector("hplus-tags");
+    const toggle = document.querySelector("hplus-switch");
     iban.setCustomValidity("Account needs review.");
     tags.setCustomValidity("Choose a different topic.");
     toggle.setCustomValidity("This preference needs review.");
@@ -146,7 +146,7 @@ test("custom errors persist until explicitly cleared and initialization can prec
     await Promise.resolve();
     const messages = [iban.validationMessage, tags.validationMessage, toggle.validationMessage];
     for (const control of [iban, tags, toggle]) control.setCustomValidity("");
-    const detached = document.createElement("h6-iban");
+    const detached = document.createElement("hplus-iban");
     detached.value = "nl91 abna 0417 1643 00";
     document.body.append(detached);
     return {

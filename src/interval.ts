@@ -26,7 +26,7 @@ template.innerHTML = `<style>
 </style><div part="control"><label><span part="lower-label">From</span><input part="input lower-input" type="number"></label><span part="separator" aria-hidden="true">–</span><label><span part="upper-label">To</span><input part="input upper-input" type="number"></label></div>`;
 
 /** Two numeric boundaries, serialized under explicit, independent field names. */
-export class H6Interval extends HTMLElement {
+export class HPlusInterval extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = [
     "value",
@@ -88,7 +88,7 @@ export class H6Interval extends HTMLElement {
     return this.#inputs.map((input) => (input.value === "" ? null : input.valueAsNumber)) as unknown as IntervalValue;
   }
   set value(value: IntervalValue) {
-    if (!pair(value)) throw new TypeError("h6-interval.value must be [number | null, number | null].");
+    if (!pair(value)) throw new TypeError("hplus-interval.value must be [number | null, number | null].");
     this.#dirty = true;
     const unchanged = value[0] === this.value[0] && value[1] === this.value[1];
     if (!unchanged || !this.#inputs.some(isEditing)) this.#write(value);
@@ -103,7 +103,7 @@ export class H6Interval extends HTMLElement {
     }
   }
   set defaultValue(value: IntervalValue) {
-    if (!pair(value)) throw new TypeError("h6-interval.defaultValue must contain two finite numbers or nulls.");
+    if (!pair(value)) throw new TypeError("hplus-interval.defaultValue must contain two finite numbers or nulls.");
     this.setAttribute("value", JSON.stringify(value));
   }
   get name(): string {

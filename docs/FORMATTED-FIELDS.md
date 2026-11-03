@@ -6,7 +6,7 @@ Formatting is presentation and editing behavior, separate from validation and su
 
 ```html
 <label for="account">IBAN</label>
-<h6-iban id="account" name="iban" value="DE89370400440532013000" required></h6-iban>
+<hplus-iban id="account" name="iban" value="DE89370400440532013000" required></hplus-iban>
 ```
 
 The editor displays `DE89 3704 0044 0532 0130 00`; FormData receives `DE89370400440532013000`. Defaults and silent `.value` assignments use uppercase groups of four. `.value` remains canonical, `.displayValue` returns the current editor string, and `.defaultValue` describes the declared default. `minlength` and `maxlength` count the canonical value, not generated separators. Format errors report `patternMismatch`; check digits must be 02–98 and satisfy mod-97. Only AT, BE, CH, DE, ES, FR, GB, IE, IT, and NL are supported: a well-formed IBAN from any other country fails validation with `patternMismatch` and blocks submission.
@@ -19,10 +19,10 @@ The browser retains the native caret, selection, horizontal scrolling, copy/cut,
 
 ```html
 <label for="verification">Verification code</label>
-<h6-otp id="verification" name="code" value="004271" length="6" required></h6-otp>
+<hplus-otp id="verification" name="code" value="004271" length="6" required></hplus-otp>
 
 <label for="pin">Four-digit code</label>
-<h6-otp id="pin" name="pin" length="4" autocomplete="off" required></h6-otp>
+<hplus-otp id="pin" name="pin" length="4" autocomplete="off" required></hplus-otp>
 ```
 
 `length` defaults to six and accepts integers from one through twelve; unsupported values fall back to six. It controls the number of decorative cells, default numeric pattern, and default native maximum length. Set `pattern`, `inputmode`, and `autocomplete` explicitly for other character policies. An explicit pattern or maximum length remains the caller's policy when length changes.

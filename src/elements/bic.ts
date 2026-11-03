@@ -1,12 +1,12 @@
 import { define } from "../define.js";
-import { H6Bic } from "../text-fields.js";
+import { HPlusBic } from "../text-fields.js";
 
-export { H6Bic };
+export { HPlusBic };
 
-define("h6-bic", H6Bic);
+define("hplus-bic", HPlusBic);
 
 declare global {
   interface HTMLElementTagNameMap {
-    "h6-bic": H6Bic;
+    "hplus-bic": HPlusBic;
   }
 }
