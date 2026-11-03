@@ -1,5 +1,5 @@
 import { define } from "../define.js";
-import { H6Select } from "../selection.js";
+import { H6Select } from "../select.js";
 
 export { H6Select };
 

@@ -25,6 +25,7 @@ User-visible changes to html+. No package has been published yet, so everything 
 - IBAN and BIC format errors report `patternMismatch`; Duration bounds report `rangeUnderflow` and `rangeOverflow`.
 - Host `change` events are composed on every control. Password Input's `visibilitychange` no longer bubbles.
 - Browser modules are minified.
+- Select and Combobox each load only their own Zag machine, about 5 KB gzipped less each.
 
 ### Fixed
 
