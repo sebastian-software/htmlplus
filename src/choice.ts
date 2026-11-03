@@ -1,6 +1,5 @@
-import * as select from "@zag-js/select";
-import * as combobox from "@zag-js/combobox";
-import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
+import type { spreadProps } from "@zag-js/vanilla";
+import type { Props as SelectProps } from "@zag-js/select";
 import { DomBindings, direction, interactionId } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
 import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
@@ -13,7 +12,41 @@ import { radius, theme, surfaceShadow } from "./theme.js";
 import { isEditing } from "./editing.js";
 import { enableImplicitSubmission } from "./implicit-submission.js";
 
-type Choice = ReturnType<typeof readOptionChoices>[number];
+export type Choice = ReturnType<typeof readOptionChoices>[number];
+type Attributes = Parameters<typeof spreadProps>[1];
+/** One collection class serves both machines, so the type import loads no machine code. */
+export type ChoiceCollection = SelectProps["collection"];
+
+/** The parts of a connected Zag select or combobox that the shared boundary renders. */
+export interface ChoiceApi {
+  readonly open: boolean;
+  setOpen(open: boolean): void;
+  getRootProps(): Attributes;
+  getControlProps(): Attributes;
+  getTriggerProps(): Attributes;
+  getPositionerProps(): Attributes;
+  getContentProps(): Attributes;
+  getItemProps(props: { item: Choice }): Attributes;
+  getInputProps?(): Attributes;
+}
+
+/** Props both machines accept; Combobox adds its own when it creates the machine. */
+export interface ChoiceProps {
+  id?: string;
+  getRootNode?: () => ShadowRoot;
+  collection?: ChoiceCollection;
+  value?: string[];
+  disabled?: boolean;
+  readOnly?: boolean;
+  required?: boolean;
+  invalid?: boolean;
+  dir?: "ltr" | "rtl";
+  inputValue?: string;
+  placeholder?: string;
+  positioning?: Record<string, unknown>;
+  onValueChange?: (details: { value: string[] }) => void;
+  onOpenChange?: (details: { open: boolean; reason?: string }) => void;
+}
 
 const template = document.createElement("template");
 template.innerHTML = `<style>
@@ -53,8 +86,8 @@ template.innerHTML = `<style>
 </style><div part="root"><div part="control"></div></div>
 <div part="positioner" popover="manual" hidden><div part="content"><div part="empty" role="status">No options found.</div></div></div>`;
 
-/** Shared single-selection form boundary; each subclass uses its own Zag machine. */
-class H6Choice extends HTMLElement {
+/** Shared single-selection form boundary. Each subclass brings its own Zag machine, so neither loads the other's. */
+export abstract class H6Choice<Service> extends HTMLElement {
   static formAssociated = true;
   static observedAttributes = [
     "value",
@@ -79,8 +112,7 @@ class H6Choice extends HTMLElement {
   #positioner: HTMLElement;
   #content: HTMLElement;
   #empty: HTMLElement;
-  #select?: InteractionMachine<select.Service, select.Props>;
-  #combo?: InteractionMachine<combobox.Service, combobox.Props>;
+  #machine?: InteractionMachine<Service, ChoiceProps>;
   #bindings = new DomBindings();
   #options: Choice[] = [];
   #items = new Map<string, HTMLElement>();
@@ -127,7 +159,7 @@ class H6Choice extends HTMLElement {
         this.#composing = false;
         this.#query = this.#input!.value;
         this.#sync();
-        this.#combo?.service.send({ type: "INPUT.CHANGE", value: this.#query, src: "input-change" });
+        if (this.#machine) this.sendQuery(this.#machine.service, this.#query);
       });
       // Native blur/change is query editing, not a second selection commit.
       this.#input.addEventListener("change", (event) => event.stopPropagation());
@@ -160,6 +192,11 @@ class H6Choice extends HTMLElement {
   protected get upgradedProperties(): readonly string[] {
     return ["value"];
   }
+  protected abstract createMachine(props: ChoiceProps): InteractionMachine<Service, ChoiceProps>;
+  protected abstract connectMachine(service: Service): ChoiceApi;
+  protected abstract createCollection(items: Choice[]): ChoiceCollection;
+  /** Combobox forwards composed text to its machine; Select has no query. */
+  protected sendQuery(_service: Service, _query: string): void {}
   connectedCallback(): void {
     this.#labelContext.connect();
     this.#readOptions();
@@ -171,46 +208,36 @@ class H6Choice extends HTMLElement {
       attributes: true,
       attributeFilter: ["value", "label", "disabled"],
     });
-    const props = {
+    const props: ChoiceProps = {
       id: interactionId(this.#editable ? "combobox" : "select"),
       getRootNode: () => this.shadowRoot!,
-      collection: select.collection({ items: this.#options }),
+      collection: this.createCollection(this.#options),
       value: this.value ? [this.value] : [],
       disabled: this.#disabled,
       readOnly: this.readOnly,
       dir: direction(this),
       positioning: {
-        strategy: "fixed" as const,
-        placement: "bottom-start" as const,
+        strategy: "fixed",
+        placement: "bottom-start",
         sameWidth: true,
         gutter: 6,
         overflowPadding: 8,
       },
-      onValueChange: ({ value }: { value: string[] }) => this.#choose(value[0] ?? ""),
+      onValueChange: ({ value }) => this.#choose(value[0] ?? ""),
     };
     if (this.#editable) {
-      this.#combo = new VanillaMachine(combobox.machine, {
-        ...props,
-        inputValue: this.#query,
-        selectionBehavior: "preserve",
-        inputBehavior: "none",
-        allowCustomValue: false,
-        onOpenChange: ({ open, reason }) => {
-          if (open && reason !== "input-change") {
-            this.#filtering = false;
-            this.#updateMachine();
-          }
-        },
-      });
-      this.#combo.subscribe(() => this.#render());
-      this.#render();
-      this.#combo.start();
-    } else {
-      this.#select = new VanillaMachine(select.machine, props);
-      this.#select.subscribe(() => this.#render());
-      this.#render();
-      this.#select.start();
+      props.inputValue = this.#query;
+      props.onOpenChange = ({ open, reason }) => {
+        if (open && reason !== "input-change") {
+          this.#filtering = false;
+          this.#updateMachine();
+        }
+      };
     }
+    this.#machine = this.createMachine(props);
+    this.#machine.subscribe(() => this.#render());
+    this.#render();
+    this.#machine.start();
     this.#sync();
     queueMicrotask(() => {
       if (this.isConnected) this.#render();
@@ -220,10 +247,8 @@ class H6Choice extends HTMLElement {
     this.#labelContext.disconnect();
     this.#observer.disconnect();
     this.#hidePopup();
-    this.#select?.stop();
-    this.#combo?.stop();
-    this.#select = undefined;
-    this.#combo = undefined;
+    this.#machine?.stop();
+    this.#machine = undefined;
     this.#bindings.clear();
   }
   attributeChangedCallback(name: string): void {
@@ -407,25 +432,23 @@ class H6Choice extends HTMLElement {
     this.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
   }
   #close(): void {
-    this.#select && select.connect(this.#select.service, normalizeProps).setOpen(false);
-    this.#combo && combobox.connect(this.#combo.service, normalizeProps).setOpen(false);
+    if (this.#machine) this.connectMachine(this.#machine.service).setOpen(false);
   }
   #updateMachine(): void {
-    const props = {
+    const props: ChoiceProps = {
       value: this.value ? [this.value] : [],
-      collection: select.collection({ items: this.#visibleOptions }),
+      collection: this.createCollection(this.#visibleOptions),
       disabled: this.#disabled,
       readOnly: this.readOnly,
       required: this.required,
       invalid: visiblyInvalid(this),
       dir: direction(this),
     };
-    this.#select?.updateProps(props);
-    this.#combo?.updateProps({
-      ...props,
-      ...(!this.#composing ? { inputValue: this.#query } : {}),
-      placeholder: this.placeholder,
-    });
+    if (this.#editable) {
+      if (!this.#composing) props.inputValue = this.#query;
+      props.placeholder = this.placeholder;
+    }
+    this.#machine?.updateProps(props);
   }
   #sync(): void {
     const value = this.value;
@@ -447,12 +470,8 @@ class H6Choice extends HTMLElement {
     this.#positioner.hidden = true;
   }
   #render(): void {
-    const api = this.#select
-      ? select.connect(this.#select.service, normalizeProps)
-      : this.#combo
-        ? combobox.connect(this.#combo.service, normalizeProps)
-        : undefined;
-    if (!api) return;
+    if (!this.#machine) return;
+    const api = this.connectMachine(this.#machine.service);
     this.#bindings.apply(this.#root, api.getRootProps());
     this.#bindings.apply(this.#control, api.getControlProps());
     this.#bindings.apply(this.#trigger, api.getTriggerProps());
@@ -460,8 +479,8 @@ class H6Choice extends HTMLElement {
     this.#bindings.apply(this.#content, api.getContentProps());
     const label = fieldLabel(this, this.labels, "Choose an option");
     const target = this.#input ?? this.#trigger;
-    if (this.#input && this.#combo) {
-      const props = combobox.connect(this.#combo.service, normalizeProps).getInputProps();
+    if (this.#input && api.getInputProps) {
+      const props = api.getInputProps();
       // The native editor owns live text and undo; normalized defaultValue must not rewrite it during renders.
       delete props.value;
       delete props.name;
@@ -524,25 +543,5 @@ class H6Choice extends HTMLElement {
       this.#hidePopup();
       this.#internals.states.delete("open");
     }
-  }
-}
-
-export class H6Select extends H6Choice {
-  constructor() {
-    super(false);
-  }
-}
-export class H6Combobox extends H6Choice {
-  constructor() {
-    super(true);
-  }
-  protected override get upgradedProperties(): readonly string[] {
-    return ["value", "query"];
-  }
-  get query(): string {
-    return this.queryText;
-  }
-  set query(value: string) {
-    this.queryText = value;
   }
 }

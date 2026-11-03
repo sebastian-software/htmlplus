@@ -1,5 +1,5 @@
 import { define } from "../define.js";
-import { H6Combobox } from "../selection.js";
+import { H6Combobox } from "../combobox.js";
 
 export { H6Combobox };
 

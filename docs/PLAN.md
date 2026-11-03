@@ -1,6 +1,6 @@
 # Project plan
 
-Updated: 2026-11-02.
+Updated: 2026-11-03.
 
 This file holds status, open decisions, and next steps. Rationale belongs in the [living ADRs](adr/README.md), element behavior in the guides, terminology in the [glossary](../GLOSSARY.md), and user-visible changes in the [changelog](../CHANGELOG.md). Git keeps the earlier delivery notes.
 
@@ -16,7 +16,7 @@ In order; each step can change the ones after it.
 2. **Decide the prefix and package name.** See the open decisions below. Both are breaking changes for anyone already using the elements, so settle them before a release.
 3. **Make the first release decision.** Review actual integration effort, build output, and supported-browser evidence. Choose the release set and publish only supported behavior.
 4. **Add tag editing in place.** Tags currently add and remove only. Reassess the tag API (`.value` and `.defaultValue` arrays, JSON declarative defaults) at the same time.
-5. **Reduce the largest elements.** [Element sizes](SIZES.md) shows Select, Combobox, and both date pickers at 43 to 50 KB gzipped. Select and Combobox share one class and so load both Zag machines; separating them is the first step.
+5. **Reduce the largest elements.** [Element sizes](SIZES.md) shows Select, Combobox, and both date pickers at 37 to 50 KB gzipped. Select and Combobox no longer load each other's machine. Most of what remains is Zag itself: the machine, Floating UI positioning, and dismissal layers. `htmlplus/iban` still loads the BIC and OTP code.
 6. **Extend IBAN coverage to the full registry.** The ten hand-authored profiles reject every other country. Review the registry's licensing and update process before bundling national-format data, and plan for its ongoing data management.
 7. **Add message-framework integration.** Interface labels and validation messages are English. Palamedes is the named candidate; components already accept its language through `lang` or `locale`, but no adapter exists. See [ADR-0011](adr/0011-functional-locale-context.md).
 8. **Assess larger form components in separate slices:** [file picker and dropzone (#2)](https://github.com/sebastian-software/htmlplus/issues/2), [color picker (#3)](https://github.com/sebastian-software/htmlplus/issues/3), and [hierarchical selection with a Tree View (#4)](https://github.com/sebastian-software/htmlplus/issues/4).

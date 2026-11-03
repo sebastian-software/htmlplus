@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-11-02
-- Updated: 2026-11-02
+- Updated: 2026-11-03
 - Lifecycle: living
 - Scope: package structure and framework integration; the final package name and element prefix stay open under ADR-0006
 
@@ -34,7 +34,7 @@ A framework writes back the value a person just produced. So while an editor has
 - Import-time side effects are the contract, so a file that registers an element must stay listed in `sideEffects`.
 - Importing a class by value on a server fails, because the empty module has no exports. Use `import type`, or a dynamic import in browser-only code.
 - React doesn't assign props to custom elements during hydration, so arrays need a ref callback there. [Forms and validation](../FORMS.md#server-rendering) has the pattern.
-- Select and Combobox share one class and therefore both Zag machines. Separating them is the obvious next size reduction.
+- An element must not import another element's Zag machine. Select and Combobox share a form boundary without machine code, and each subclass brings its own machine.
 
 ## Evidence and review triggers
 
@@ -43,3 +43,4 @@ A framework writes back the value a person just produced. So while an editor has
 ## Changes
 
 - 2026-11-02: Accepted one registering import per element, two builds, empty server entries, and React 19 without wrappers.
+- 2026-11-03: Select and Combobox no longer load each other's Zag machine, which saves about 5 KB gzipped on each.

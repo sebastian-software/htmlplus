@@ -13,7 +13,8 @@ const limits = {
   all: 135_000,
   "date-range-picker": 55_000,
   "date-picker": 55_000,
-  select: 45_000,
+  select: 40_000,
+  combobox: 40_000,
   iban: 8_000,
   switch: 3_500,
 };

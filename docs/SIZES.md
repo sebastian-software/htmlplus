@@ -15,19 +15,19 @@ The last column is the share of the minified bytes that is html+'s own code, and
 | `h6-bic` | 18.9 KB | 6.1 KB | 100% |
 | `h6-duration` | 19.6 KB | 6.3 KB | 100% |
 | `h6-iban` | 20.8 KB | 6.7 KB | 100% |
-| `h6-toggle` | 27.1 KB | 9.7 KB | 33% |
-| `h6-accordion` | 33.4 KB | 12.2 KB | 31% |
-| `h6-checkbox` | 39.1 KB | 13.7 KB | 28% |
-| `h6-rating` | 39.4 KB | 13.8 KB | 33% |
-| `h6-tabs` | 39.6 KB | 14.2 KB | 24% |
-| `h6-password-input` | 42.9 KB | 14.3 KB | 53% |
-| `h6-toggle-group` | 52.1 KB | 17.5 KB | 28% |
-| `h6-radio-group` | 52.4 KB | 17.5 KB | 28% |
-| `h6-slider` | 54.2 KB | 18.6 KB | 25% |
-| `h6-range-slider` | 54.5 KB | 18.7 KB | 26% |
-| `h6-number-input` | 73.2 KB | 23.2 KB | 37% |
-| `h6-select` | 140.1 KB | 42.7 KB | 14% |
-| `h6-combobox` | 140.2 KB | 42.7 KB | 14% |
-| `h6-date-picker` | 151.8 KB | 48.7 KB | 17% |
-| `h6-date-range-picker` | 154.6 KB | 49.5 KB | 18% |
-| All elements | 425.8 KB | 120.2 KB | 35% |
+| `h6-toggle` | 27.7 KB | 9.9 KB | 33% |
+| `h6-accordion` | 34.0 KB | 12.4 KB | 30% |
+| `h6-checkbox` | 39.9 KB | 14.0 KB | 27% |
+| `h6-rating` | 40.2 KB | 14.0 KB | 33% |
+| `h6-tabs` | 40.5 KB | 14.5 KB | 23% |
+| `h6-password-input` | 44.1 KB | 14.8 KB | 52% |
+| `h6-toggle-group` | 53.2 KB | 17.8 KB | 27% |
+| `h6-radio-group` | 53.5 KB | 17.9 KB | 27% |
+| `h6-slider` | 54.8 KB | 18.8 KB | 25% |
+| `h6-range-slider` | 55.1 KB | 18.9 KB | 25% |
+| `h6-number-input` | 73.8 KB | 23.4 KB | 37% |
+| `h6-select` | 114.2 KB | 37.3 KB | 17% |
+| `h6-combobox` | 119.6 KB | 38.6 KB | 16% |
+| `h6-date-picker` | 154.2 KB | 49.5 KB | 17% |
+| `h6-date-range-picker` | 157.0 KB | 50.4 KB | 18% |
+| All elements | 431.8 KB | 123.2 KB | 35% |
