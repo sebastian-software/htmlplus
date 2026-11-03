@@ -3,7 +3,7 @@ import { CalendarDate } from "@internationalized/date";
 import { VanillaMachine, normalizeProps } from "@zag-js/vanilla";
 import { dateTextFormat, parseCalendarDate } from "./date-value.js";
 import type { DateTextFormat } from "./date-value.js";
-import { DomBindings, direction, interactionId } from "./zag-dom.js";
+import { DomBindings, anchoredPositioning, direction, interactionId, positionerProps } from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
 import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
 import { textValue, upgradeProperties } from "./upgrade.js";
@@ -159,7 +159,7 @@ export class HPlusDatePicker extends HTMLElement {
       fixedWeeks: true,
       defaultFocusedValue: this.#focusDate,
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      positioning: { strategy: "fixed", placement: "bottom-start", gutter: 6, overflowPadding: 8 },
+      positioning: anchoredPositioning,
       onValueChange: ({ value }) => {
         if (this.#disabled || this.readOnly || this.#config.message) return;
         const before = this.value,
@@ -453,7 +453,7 @@ export class HPlusDatePicker extends HTMLElement {
     this.#bindings.apply(this.#root, api.getRootProps());
     this.#bindings.apply(this.#control, api.getControlProps());
     this.#bindings.apply(this.#trigger, api.getTriggerProps());
-    this.#bindings.apply(this.#positioner, api.getPositionerProps());
+    this.#bindings.apply(this.#positioner, positionerProps(api.getPositionerProps()));
     this.#bindings.apply(this.#content, api.getContentProps());
     this.#bindings.apply(this.#navigation, api.getViewControlProps({ view: api.view }));
     this.#bindings.apply(this.#previous, api.getPrevTriggerProps({ view: api.view }));

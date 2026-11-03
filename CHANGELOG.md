@@ -27,6 +27,7 @@ User-visible changes to html+. No package has been published yet, so everything 
 - Host `change` events are composed on every control. Password Input's `visibilitychange` no longer bubbles.
 - Browser modules are minified.
 - Select and Combobox each load only their own Zag machine, about 5 KB gzipped less each.
+- Select, Combobox, Date Picker, and Date Range Picker place their popups with CSS anchor positioning instead of Floating UI. The prebuilt `browser/` modules no longer include Floating UI, about 9.5 KB gzipped less each.
 
 ### Fixed
 

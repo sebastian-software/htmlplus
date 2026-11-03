@@ -44,7 +44,7 @@ Applied to the current catalog:
 | Keep on Zag | Combobox, Date Picker, Date Range Picker, Slider, Range Slider, Number Input | Substantial keyboard, pointer, calendar, or stepping behavior with no Baseline equivalent |
 | Keep on Zag for now | Select | Reassess a shadow-local native `<select>` once customizable `<select>` is Baseline; Firefox lacks it today |
 | Move to the platform | Toggle, Checkbox, Radio Group, Toggle Group, Tabs, Accordion, Password Input, Rating | Native buttons, inputs, and `<details name>` carry most of the behavior; the remaining keyboard rules are small |
-| Replace inside Zag elements | Floating UI positioning | Use core anchor positioning on the shadow-local popovers, if Zag lets positioning be left out of the bundle |
+| Replace inside Zag elements | Floating UI positioning | Core anchor positioning places the shadow-local popovers; the html+ builds replace `@zag-js/popper` with a stub |
 
 **Bind Zag completely, unless a contract says otherwise.** Bind every prop and handler that a prop getter returns. Leave one out only when it would take over something html+ owns: the native editor's text, undo, and composition (ADR-0003), form submission (ADR-0001), or an ID html+ assigns. Add missing behavior by wrapping Zag's handler and calling it, never by replacing it. A test records the handler names of every getter that html+ filters, so an upgrade that adds a handler fails with a clear message.
 
@@ -67,7 +67,9 @@ Applied to the current catalog:
 
 Baseline status comes from web-features 3.45.0 on 2026-11-03. Popovers became Baseline on 2025-01-27, invoker commands on 2025-12-12, `<details name>` on 2024-09-03, and `:state()` on 2024-05-17. Anchor positioning as a whole is not Baseline only because of the `anchor-valid` and `anchor-visible` values of `position-visibility`, which only Safari 27 supports. Customizable `<select>` ships in Chrome 135 and Safari 27, but not in Firefox ([bug 1944403](https://bugzilla.mozilla.org/show_bug.cgi?id=1944403)).
 
-Revisit when a needed feature becomes Baseline, when Zag's positioning cannot be left out, or when a moved element loses behavior its tests cover.
+Anchor positioning, 2026-11-03: Zag's machines import `@zag-js/popper` statically, and it brings Floating UI. A no-op `updatePosition` keeps it from running, and dropping the positioner's `style` prop keeps its placement styles off. The html+ builds alias the package to a stub, which saves about 25 KB minified, or 9.5 KB gzipped, on each popup element. A bundler resolving `lib/` still includes the unused code; leaving it out there needs an alias in the application or an upstream change in Zag. `position-try-order: most-height` behaved differently in WebKit, so the fallbacks are ordered instead: flip to any side where the full popup fits, then shrink below. Chromium and WebKit pass the popup tests and place squeezed, edge, and right-to-left popups identically.
+
+Revisit when a needed feature becomes Baseline, when the stub no longer matches what Zag imports from `@zag-js/popper`, or when a moved element loses behavior its tests cover.
 
 ## References
 
@@ -79,3 +81,4 @@ Revisit when a needed feature becomes Baseline, when Zag's positioning cannot be
 ## Changes
 
 - 2026-11-03: Accepted platform first and the current Baseline as the browser floor, after a survey of headless libraries found no better framework-independent fit than Zag.
+- 2026-11-03: Recorded the anchor positioning result: the popups no longer use Floating UI, and the html+ builds replace `@zag-js/popper` with a stub.

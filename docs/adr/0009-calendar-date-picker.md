@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-24
-- Updated: 2026-11-02
+- Updated: 2026-11-03
 - Lifecycle: living
 - Scope: one Gregorian calendar date; ADR-0010 defines the separate range field
 
@@ -18,7 +18,7 @@ Follow [ADR-0011](0011-functional-locale-context.md): explicit `locale` override
 
 Do not bind the native editor through Zag's `getInputProps` or register it in the machine's `[data-part=input]` lookup. In the installed version, native input binding filters characters, blur parsing can constrain or substitute a date, and selected-value effects synchronize editor strings. Those behaviors conflict with ADR-0003's raw editing contract, particularly for incomplete dates and undo. html+ owns input parsing, constraints, commit events, and editor focus. The installed effects safely handle an empty editor lookup, and calendar final-focus actions fall back to the real calendar trigger. This fallback is intentional and verified. No fake or hidden input is introduced.
 
-Reuse ADR-0008's shadow-local manual-popover strategy, with a calendar-width surface rather than a control-width listbox. Zag owns open state and collision-aware fixed placement; the native top layer preserves theme inheritance and escapes clipping. Present the popup as a nonmodal dialog containing the calendar grid. Use native editor semantics and a labeled button for opening; Alt+ArrowDown and F4 are editor shortcuts. All IDs and ARIA relationships remain in one shadow root.
+Reuse ADR-0008's shadow-local manual-popover strategy, with a calendar-width surface rather than a control-width listbox. Zag owns open state, and CSS anchor positioning places the popup under [ADR-0013](0013-platform-first.md). The native top layer preserves theme inheritance and escapes clipping. Present the popup as a nonmodal dialog containing the calendar grid. Use native editor semantics and a labeled button for opening; Alt+ArrowDown and F4 are editor shortcuts. All IDs and ARIA relationships remain in one shadow root.
 
 ## Consequences and alternatives
 
@@ -56,3 +56,5 @@ Revisit on changed Zag editor-lookup/final-focus assumptions, date-model upgrade
 - 2026-10-29: Replaced the explicit en-US default and fixed Latin digits with ADR-0011's inherited language context, Intl digits and week information, and silent dynamic formatting.
 
 - 2026-11-02: Dropped machine-specific test wording and the pointer to suite results in the project plan.
+
+- 2026-11-03: CSS anchor positioning replaces Zag's Floating UI placement under ADR-0013.

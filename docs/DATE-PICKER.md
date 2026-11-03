@@ -35,7 +35,7 @@ The host exposes `name`, `form`, `labels`, `disabled`, `readOnly`, `required`, `
 
 ## Popup and styles
 
-The calendar reuses the shadow-local manual Popover API strategy from Select/Combobox. Zag owns calendar focus, navigation, dismissal, and fixed placement through Floating UI. The native top layer escapes clipping ancestors while preserving inherited theme tokens and same-root ARIA references. The popup is a nonmodal dialog containing a calendar grid. The native editor is deliberately outside Zag's input lookup, so its automatic input synchronization and blur correction cannot rewrite native editing history. See [ADR-0009](adr/0009-calendar-date-picker.md).
+The calendar reuses the shadow-local manual Popover API strategy from Select/Combobox. Zag owns calendar focus, navigation, and dismissal, and CSS anchor positioning places the popup. The native top layer escapes clipping ancestors while preserving inherited theme tokens and same-root ARIA references. The popup is a nonmodal dialog containing a calendar grid. The native editor is deliberately outside Zag's input lookup, so its automatic input synchronization and blur correction cannot rewrite native editing history. See [ADR-0009](adr/0009-calendar-date-picker.md).
 
 Every Date Picker includes the neutral base. `--hp-popover` / `--hp-popover-foreground` style the popup; primary colors style the selected day, accent colors style hover, and ring colors show keyboard focus. The shadcn adapter resolves those tokens on each host. `:state(selected)` and `:state(open)` describe current state.
 

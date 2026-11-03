@@ -28,6 +28,8 @@ await build({
   platform: "browser",
   target: "es2022",
   chunkNames: "chunks/[name]-[hash]",
+  // Anchor positioning places popups, so Floating UI stays out of the bundle.
+  alias: { "@zag-js/popper": "./src/zag-popper.ts" },
   banner: { js: "/*! Third-party license notices: THIRD_PARTY_NOTICES.txt */" },
   define: { "process.env.NODE_ENV": '"production"' },
 });

@@ -1,5 +1,6 @@
 import type * as datePicker from "@zag-js/date-picker";
 import { parseCalendarDate } from "./date-value.js";
+import { anchoredPopupStyles } from "./zag-dom.js";
 import type { DomBindings } from "./zag-dom.js";
 import { hostStyles } from "./styles.js";
 import { theme, radius, surfaceShadow } from "./theme.js";
@@ -34,8 +35,9 @@ calendarTemplate.innerHTML = `<style>
   [part=control][data-disabled] { opacity: .5; }
   button:disabled { cursor: not-allowed; }
   :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }
-  [part=positioner] { inset: auto; margin: 0; padding: 0; border: 0; max-width: calc(100vw - 1rem); overflow: visible; background: transparent; color: inherit; }
-  [part=content] { width: min(20rem, calc(100vw - 1rem)); padding: .75rem; max-height: var(--available-height, calc(100vh - 1rem)); overflow: auto; overscroll-behavior: contain; border: 1px solid ${theme("border")}; border-radius: ${radius("lg")}; background: ${theme("popover")}; color: ${theme("popover-foreground")}; box-shadow: ${surfaceShadow("popover")}; outline: none; }
+${anchoredPopupStyles}
+  [part=positioner] { padding: 0; border: 0; max-width: calc(100vw - 1rem); overflow: visible; background: transparent; color: inherit; }
+  [part=content] { width: min(20rem, calc(100vw - 1rem)); padding: .75rem; overflow: auto; overscroll-behavior: contain; border: 1px solid ${theme("border")}; border-radius: ${radius("lg")}; background: ${theme("popover")}; color: ${theme("popover-foreground")}; box-shadow: ${surfaceShadow("popover")}; outline: none; }
   [part=navigation] { display: grid; grid-template-columns: 2rem minmax(0, 1fr) 2rem; align-items: center; gap: .25rem; margin-bottom: .5rem; }
   [part=view-button] { min-width: 0; min-height: 2rem; padding: .25rem; border-radius: ${radius("sm")}; font-weight: 500; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   [part=grid] { width: 100%; border-collapse: separate; border-spacing: .125rem; table-layout: fixed; }
