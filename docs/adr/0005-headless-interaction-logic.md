@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-11-02
+- Updated: 2026-11-03
 - Lifecycle: living
 - Scope: Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, Date Range Picker, Checkbox, Radio Group, Toggle Group, Number Input, and Password Input
 - Implementation: fifteen Zag-backed elements, split browser modules, live examples, and twenty-five styling recipes
@@ -18,6 +18,8 @@ The existing contract remains ordinary HTML forms, native custom elements, shado
 Use Zag 1.46.0 for these fifteen elements: Toggle, Accordion, Tabs, Slider, Range Slider, Rating, Select, Combobox, Date Picker, Date Range Picker, Checkbox, Radio Group, Toggle Group, Number Input, and Password Input. Use it through its official `@zag-js/vanilla` adapter. Keep html+'s public API as ordinary elements, properties, DOM events, attributes, CSS parts, and tokens. Zag machine types, generated IDs, and callback names stay implementation details.
 
 Adopt per component after checking its actual DOM assumptions. The initial slice implemented Toggle, Accordion, and Tabs; the numeric slice adds Slider, Range Slider, and Rating. Toggle retains a native button; Accordion/Tabs generate native button triggers in shadow DOM and project caller-owned light-DOM sections. Native details/summary would be a smaller disclosure baseline but would not exercise the requested common behavior foundation and deliberate shadow styling surface. Native range remains a smaller single-thumb alternative; the explicit Zag direction shares the slider machine across one and two thumbs. ADR-0008 records the Select/Combobox slice; ADR-0010 adds range mode using the same dependency; ADR-0009 records the Date Picker slice and its native-input boundary. Do not migrate the earlier eight controls simply to standardize on one engine.
+
+[ADR-0013](0013-platform-first.md) narrows this decision. Zag stays where it supplies substantial behavior that no Baseline feature covers: Combobox, both date pickers, both sliders, Number Input, and for now Select. Toggle, Checkbox, Radio Group, Toggle Group, Tabs, Accordion, Password Input, and Rating move to native elements and focused html+ code, one slice at a time. Until each slice lands, this record still describes how that element works.
 
 Responsibilities are divided as follows:
 
@@ -137,3 +139,5 @@ Revisit on an adapter/machine contract change, a supported-browser failure, edit
 - 2026-10-29: Extended Zag adoption to Checkbox, Radio Group, Toggle Group, Number Input, and Password Input, keeping native editors outside machine input lookup and adding a native click handler for the visibility action.
 
 - 2026-11-02: Corrected the scope and decision to all fifteen elements. Removed the isolated probe, kept its evidence here, and changed the upgrade check to rerunning the browser suite.
+
+- 2026-11-03: ADR-0013 narrows Zag to the elements whose behavior no Baseline feature covers, and requires binding every Zag prop unless a contract says otherwise. Eight simple controls move to the platform in later slices.

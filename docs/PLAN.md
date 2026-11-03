@@ -12,20 +12,21 @@ html+ is a prototype with twenty-four elements, a native Button family, a live p
 
 In order; each step can change the ones after it.
 
-1. **Close the evidence gaps that a release claim depends on.** Check physical-device OTP and password-manager autofill, the separate canonical submission mechanism on those devices, manual assistive-technology combinations, real browser back/forward restoration, and exact minimum browser versions.
+1. **Close the evidence gaps that a release claim depends on.** Check physical-device OTP and password-manager autofill, the separate canonical submission mechanism on those devices, manual assistive-technology combinations, and real browser back/forward restoration. The browser floor is the current Baseline under [ADR-0013](adr/0013-platform-first.md).
 2. **Decide the package name.** See the open decisions below. It is a breaking change for anyone already importing the package, so settle it before a release.
 3. **Make the first release decision.** Review actual integration effort, build output, and supported-browser evidence. Choose the release set and publish only supported behavior.
 4. **Add tag editing in place.** Tags currently add and remove only. Reassess the tag API (`.value` and `.defaultValue` arrays, JSON declarative defaults) at the same time.
-5. **Reduce the largest elements.** [Element sizes](SIZES.md) shows Select, Combobox, and both date pickers at 37 to 50 KB gzipped. Select and Combobox no longer load each other's machine. Most of what remains is Zag itself: the machine, Floating UI positioning, and dismissal layers. `htmlplus/iban` still loads the BIC and OTP code.
-6. **Extend IBAN coverage to the full registry.** The ten hand-authored profiles reject every other country. Review the registry's licensing and update process before bundling national-format data, and plan for its ongoing data management.
-7. **Add message-framework integration.** Interface labels and validation messages are English. Palamedes is the named candidate; components already accept its language through `lang` or `locale`, but no adapter exists. See [ADR-0011](adr/0011-functional-locale-context.md).
-8. **Assess larger form components in separate slices:** [file picker and dropzone (#2)](https://github.com/sebastian-software/htmlplus/issues/2), [color picker (#3)](https://github.com/sebastian-software/htmlplus/issues/3), and [hierarchical selection with a Tree View (#4)](https://github.com/sebastian-software/htmlplus/issues/4).
+5. **Reduce the largest elements.** [Element sizes](SIZES.md) shows Select, Combobox, and both date pickers at 37 to 50 KB gzipped. Select and Combobox no longer load each other's machine. Most of what remains is Zag itself: the machine, Floating UI positioning, and dismissal layers. First check whether Zag lets positioning be left out of the bundle, then replace Floating UI with CSS anchor positioning. `htmlplus/iban` still loads the BIC and OTP code.
+6. **Move simple controls to the platform.** Under [ADR-0013](adr/0013-platform-first.md), rebuild Toggle, Checkbox, Radio Group, Toggle Group, Tabs, Accordion, Password Input, and Rating on native elements, one element per slice, with their current browser tests as the contract. For the elements that keep Zag, add the test that records the handler names of every filtered prop getter. Align the build target with Baseline.
+7. **Extend IBAN coverage to the full registry.** The ten hand-authored profiles reject every other country. Review the registry's licensing and update process before bundling national-format data, and plan for its ongoing data management.
+8. **Add message-framework integration.** Interface labels and validation messages are English. Palamedes is the named candidate; components already accept its language through `lang` or `locale`, but no adapter exists. See [ADR-0011](adr/0011-functional-locale-context.md).
+9. **Assess larger form components in separate slices:** [file picker and dropzone (#2)](https://github.com/sebastian-software/htmlplus/issues/2), [color picker (#3)](https://github.com/sebastian-software/htmlplus/issues/3), and [hierarchical selection with a Tree View (#4)](https://github.com/sebastian-software/htmlplus/issues/4).
 
 ## Open decisions
 
 - **Package name and namespace.** `htmlplus` is a private local identifier. On npm, both `htmlplus` and `hplus` belong to unrelated third-party packages. A public name, scope, and registration strategy are undecided.
 - **Domain.** `htmlplus.dev` is reserved and not live yet. Pointing it at Pages is separate DNS and hosting work.
-- **Release set and browser floor.** Which elements the first package contains, and the minimum versions it claims.
+- **Release set.** Which elements the first package contains. The browser floor is decided: the current Baseline, under [ADR-0013](adr/0013-platform-first.md).
 - **No-JavaScript and server rendering.** Whether form controls get a fallback or Declarative Shadow DOM output.
 - **Date scope.** Time selection, unavailable-day APIs, alternate calendars, and localized action labels. [ADR-0009](adr/0009-calendar-date-picker.md) and [ADR-0010](adr/0010-calendar-date-ranges.md) define the current boundary.
 - **Half-score ratings.** Zag supports them, but keyboard and value semantics need agreement first.
