@@ -1,6 +1,13 @@
 import type { spreadProps } from "@zag-js/vanilla";
 import type { Props as SelectProps } from "@zag-js/select";
-import { DomBindings, direction, interactionId } from "./zag-dom.js";
+import {
+  DomBindings,
+  anchoredPopupStyles,
+  anchoredPositioning,
+  direction,
+  interactionId,
+  positionerProps,
+} from "./zag-dom.js";
 import type { InteractionMachine } from "./zag-dom.js";
 import { LabelContext, fieldLabel, referencedText } from "./field-label.js";
 import { readOptionChoices, enabledChoice } from "./option-choices.js";
@@ -73,8 +80,9 @@ template.innerHTML = `<style>
   [part=control][data-disabled] { opacity: .5; cursor: not-allowed; }
   button:disabled { cursor: not-allowed; }
   :host([data-touched]:invalid) [part=control] { border-color: ${theme("destructive")}; }
-  [part=positioner] { inset: auto; margin: 0; padding: 0; border: 0; overflow: visible; background: transparent; color: inherit; max-width: calc(100vw - 1rem); }
-  [part=content] { width: 100%; min-width: 0; max-height: min(18rem, var(--available-height, 18rem)); margin: 0; padding: .25rem; overflow: auto; overscroll-behavior: contain; list-style: none; outline: none; border: 1px solid ${theme("border")}; border-radius: ${radius("md")}; background: ${theme("popover")}; color: ${theme("popover-foreground")}; box-shadow: ${surfaceShadow("popover")}; }
+${anchoredPopupStyles}
+  [part=positioner] { width: anchor-size(width); padding: 0; border: 0; overflow: visible; background: transparent; color: inherit; max-width: calc(100vw - 1rem); }
+  [part=content] { width: 100%; min-width: 0; max-height: 18rem; margin: 0; padding: .25rem; overflow: auto; overscroll-behavior: contain; list-style: none; outline: none; border: 1px solid ${theme("border")}; border-radius: ${radius("md")}; background: ${theme("popover")}; color: ${theme("popover-foreground")}; box-shadow: ${surfaceShadow("popover")}; }
   [part~=option] { display: flex; align-items: center; gap: .5rem; min-height: 2.25rem; padding: .5rem .625rem; border-radius: ${radius("sm")}; cursor: default; overflow-wrap: anywhere; }
   [part~=option][data-highlighted] { background: ${theme("accent")}; color: ${theme("accent-foreground")}; }
   [part~=option][data-disabled] { opacity: .5; }
@@ -216,13 +224,7 @@ export abstract class HPlusChoice<Service> extends HTMLElement {
       disabled: this.#disabled,
       readOnly: this.readOnly,
       dir: direction(this),
-      positioning: {
-        strategy: "fixed",
-        placement: "bottom-start",
-        sameWidth: true,
-        gutter: 6,
-        overflowPadding: 8,
-      },
+      positioning: anchoredPositioning,
       onValueChange: ({ value }) => this.#choose(value[0] ?? ""),
     };
     if (this.#editable) {
@@ -475,7 +477,7 @@ export abstract class HPlusChoice<Service> extends HTMLElement {
     this.#bindings.apply(this.#root, api.getRootProps());
     this.#bindings.apply(this.#control, api.getControlProps());
     this.#bindings.apply(this.#trigger, api.getTriggerProps());
-    this.#bindings.apply(this.#positioner, api.getPositionerProps());
+    this.#bindings.apply(this.#positioner, positionerProps(api.getPositionerProps()));
     this.#bindings.apply(this.#content, api.getContentProps());
     const label = fieldLabel(this, this.labels, "Choose an option");
     const target = this.#input ?? this.#trigger;

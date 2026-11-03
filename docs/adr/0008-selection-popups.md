@@ -16,7 +16,7 @@ Use `@zag-js/select` and `@zag-js/combobox` at the same pinned 1.46.0 version as
 
 A Combobox query is separate from its selected identifier. User edits immediately invalidate the previous selection. Exact label text, blur, and undo do not silently establish a new selection. The machine receives controlled selection/query state with preserved query behavior; the native editor is stable, and the binding excludes normalized default-value writes during renders. Typing preserves text, selection, native undo, and composition. Choosing an option deliberately sets its label and commits its identifier.
 
-Keep the popup in the same shadow root as its trigger/editor. Use a native `popover="manual"` positioner for the top layer, with Zag/Floating UI fixed positioning, shared control width, and viewport collision handling. Zag owns open state and keyboard/outside dismissal. Mirror that state into native show/hide operations instead of introducing independent native auto-popover dismissal. Tab closes the Combobox popup without committing a suggestion. This avoids a document-body portal, clipping by ancestors, lost inherited theme tokens, and cross-root ARIA IDs.
+Keep the popup in the same shadow root as its trigger/editor. Use a native `popover="manual"` positioner for the top layer, placed with CSS anchor positioning at the control's width. It flips to another side where it fits and shrinks only when no side fits. Zag's own placement is turned off, so Floating UI never runs. Zag owns open state and keyboard/outside dismissal. Mirror that state into native show/hide operations instead of introducing independent native auto-popover dismissal. Tab closes the Combobox popup without committing a suggestion. This avoids a document-body portal, clipping by ancestors, lost inherited theme tokens, and cross-root ARIA IDs.
 
 Both controls include neutral styling, `--hp-*` themes, shadcn adapter coverage, a Base and styled recipe, and live FormData examples. Popover colors now have real component consumers rather than only reserved palette entries.
 
@@ -36,7 +36,7 @@ Integrated Chromium and WebKit checks exercise form values and event counts, kno
 
 CI covers Chromium, Firefox, and WebKit. Physical-device interaction/autofill, manual assistive-technology coverage, and real history restoration remain unverified. Date Picker has since completed its separate integration under ADR-0009.
 
-Under [ADR-0013](0013-platform-first.md), core CSS anchor positioning is Baseline and should replace Floating UI on these popovers if Zag lets positioning be left out of the bundle. Select should move to a shadow-local native `<select>` once customizable `<select>` is Baseline.
+Zag imports Floating UI statically, so only the html+ builds leave it out, by replacing `@zag-js/popper` with a stub. A bundler resolving `lib/` still includes it, unused. Under [ADR-0013](0013-platform-first.md), Select should move to a shadow-local native `<select>` once customizable `<select>` is Baseline.
 
 Revisit on changes to Zag's omitted-hidden-control assumptions, Popover API behavior, focus/dismissal regressions, theme inheritance, or supported-browser requirements. Multiple selection, remote integration, grouped options, and virtualization require explicit additional scope and evidence.
 
@@ -60,6 +60,6 @@ Revisit on changes to Zag's omitted-hidden-control assumptions, Popover API beha
 
 - 2026-11-02: A disabled or removed selected option now reports an empty value but keeps the stored selection, which returns with its option. Select, Combobox, Segmented, Radio Group, and Toggle Group share one native-default option policy, replacing the earlier rule that an invalidated selection stays cleared.
 
-- 2026-11-03: Following ADR-0013, anchor positioning is the intended replacement for Floating UI, and native customizable `<select>` the intended Select once it is Baseline.
+- 2026-11-03: Following ADR-0013, CSS anchor positioning replaces Floating UI placement, and native customizable `<select>` is the intended Select once it is Baseline.
 
 - 2026-11-02: Dropped machine-specific test wording and the pointer to suite results in the project plan.

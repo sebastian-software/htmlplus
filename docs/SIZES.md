@@ -26,8 +26,8 @@ The last column is the share of the minified bytes that is html+'s own code, and
 | `hplus-slider` | 54.8 KB | 18.8 KB | 25% |
 | `hplus-range-slider` | 55.2 KB | 18.9 KB | 25% |
 | `hplus-number-input` | 73.8 KB | 23.4 KB | 37% |
-| `hplus-select` | 114.2 KB | 37.3 KB | 17% |
-| `hplus-combobox` | 119.7 KB | 38.6 KB | 16% |
-| `hplus-date-picker` | 154.2 KB | 49.5 KB | 17% |
-| `hplus-date-range-picker` | 157.0 KB | 50.4 KB | 18% |
-| All elements | 432.0 KB | 123.2 KB | 35% |
+| `hplus-select` | 114.7 KB | 37.5 KB | 17% |
+| `hplus-combobox` | 120.1 KB | 38.8 KB | 17% |
+| `hplus-date-picker` | 154.6 KB | 49.7 KB | 17% |
+| `hplus-date-range-picker` | 157.4 KB | 50.6 KB | 18% |
+| All elements | 432.2 KB | 123.4 KB | 35% |
