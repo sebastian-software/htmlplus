@@ -23,6 +23,8 @@ export class H6Combobox extends H6Choice<combobox.Service> {
       selectionBehavior: "preserve",
       inputBehavior: "none",
       allowCustomValue: false,
+      // The visible empty state already announces itself, so Zag only announces the count.
+      translations: { noResults: "", resultsCount: (count) => (count === 1 ? "1 option" : `${count} options`) },
     } as combobox.Props);
   }
   protected connectMachine(service: combobox.Service): ChoiceApi {
