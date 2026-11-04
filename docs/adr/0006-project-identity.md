@@ -2,7 +2,7 @@
 
 - Status: accepted
 - Created: 2026-10-23
-- Updated: 2026-11-03
+- Updated: 2026-11-04
 - Lifecycle: living
 
 ## Context and decision
@@ -15,7 +15,7 @@ Use `htmlplus` where a machine-friendly identifier is needed, including the priv
 
 - Update the prototype's identity consistently while preserving the native form and CSS contracts. Public CSS tokens keep the accepted `--hp-` prefix; [ADR-0002](0002-css-styling-contract.md) owns that contract.
 - The rename from `h6-` is a breaking change with no aliases. Nothing is published, so no compatibility layer is needed.
-- `htmlplus` is currently a private local package identifier. On npm, `htmlplus` and `hplus` both belong to unrelated third-party packages, so the element prefix does not decide the package name. A public package name or scope is undecided.
+- `htmlplus` is currently a private local package identifier. On npm, the unscoped names `htmlplus` and `hplus` both belong to unrelated third-party packages. The project owner holds the npm organization `hplus`, so public packages can use the `@hplus/` scope, which matches the element prefix. The package names inside that scope, such as one combined package or one package per element, are undecided.
 - The static export uses relative asset URLs, with the project site at its root and the playground under `/demo/`. `/htmlplus/` is the local repository-subpath compatibility fixture; custom-domain hosting can serve the same artifact at `/`.
 - Domain DNS and hosting configuration require separate deployment work. Recording the domain does not establish that a site is deployed there.
 - Repository work continues in US English.
@@ -35,3 +35,5 @@ Use `htmlplus` where a machine-friendly identifier is needed, including the priv
 - 2026-11-02: Recorded that htmlplus.dev is reserved and not live, that the npm name belongs to a third party, and the export layout with the project site at its root.
 
 - 2026-11-03: Accepted `hplus-` as the element prefix and `HPlus` for class names, replacing the provisional `h6-` and `H6`. Recorded that `hplus` on npm also belongs to a third party.
+
+- 2026-11-04: Recorded that the project owner holds the npm organization `hplus`, which makes `@hplus/` the available package scope. The package names inside it remain open.
