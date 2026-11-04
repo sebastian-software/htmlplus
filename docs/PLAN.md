@@ -1,6 +1,6 @@
 # Project plan
 
-Updated: 2026-11-03.
+Updated: 2026-11-04.
 
 This file holds status, open decisions, and next steps. Rationale belongs in the [living ADRs](adr/README.md), element behavior in the guides, terminology in the [glossary](../GLOSSARY.md), and user-visible changes in the [changelog](../CHANGELOG.md). Git keeps the earlier delivery notes.
 
@@ -24,7 +24,7 @@ In order; each step can change the ones after it.
 
 ## Open decisions
 
-- **Package name and namespace.** `htmlplus` is a private local identifier. On npm, both `htmlplus` and `hplus` belong to unrelated third-party packages. A public name, scope, and registration strategy are undecided.
+- **Package name.** `htmlplus` is a private local identifier. On npm, the unscoped `htmlplus` and `hplus` belong to unrelated third-party packages, but the project owner holds the `hplus` organization, so the scope is `@hplus/`. Still open: one combined package or one package per element, and the names inside the scope. See [ADR-0006](adr/0006-project-identity.md).
 - **Domain.** `htmlplus.dev` is reserved and not live yet. Pointing it at Pages is separate DNS and hosting work.
 - **Release set.** Which elements the first package contains. The browser floor is decided: the current Baseline, under [ADR-0013](adr/0013-platform-first.md).
 - **No-JavaScript and server rendering.** Whether form controls get a fallback or Declarative Shadow DOM output.
