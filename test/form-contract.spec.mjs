@@ -28,6 +28,60 @@ const submits = (page) => page.evaluate(() => window.submits);
 const entries = (page) => page.evaluate(() => [...new FormData(document.forms[0])]);
 
 test.describe("implicit submission", () => {
+  for (const external of [false, true]) {
+    test(`Enter activates the first image submitter${external ? " outside the form" : ""}`, async ({ page }) => {
+      const image =
+        '<input type="image" name="go" alt="Go" form="target" formaction="/image" formmethod="post" formnovalidate>';
+      const observations = [];
+      for (const field of [
+        '<input aria-label="Time" name="field">',
+        '<hplus-duration aria-label="Time" name="field"></hplus-duration>',
+      ]) {
+        await load(
+          page,
+          `${external ? image : ""}<form id="target">${field}${external ? "" : image}<button name="ordinary">Go</button></form>`,
+        );
+        await page.evaluate(() =>
+          document.addEventListener("submit", (event) => {
+            window.imageSubmit = {
+              name: event.submitter.name,
+              action: event.submitter.getAttribute("formaction"),
+              method: event.submitter.formMethod,
+              noValidate: event.submitter.formNoValidate,
+              coordinates: [...new FormData(event.target, event.submitter)].filter(([name]) => name.startsWith("go.")),
+            };
+          }),
+        );
+        await page.locator('input[aria-label="Time"], hplus-duration input').press("Enter");
+        await expect.poll(() => submits(page)).toEqual(["go"]);
+        observations.push(await page.evaluate(() => window.imageSubmit));
+      }
+      expect(observations[1]).toEqual(observations[0]);
+      expect(observations[1]).toEqual({
+        name: "go",
+        action: "/image",
+        method: "post",
+        noValidate: true,
+        coordinates: [
+          ["go.x", "0"],
+          ["go.y", "0"],
+        ],
+      });
+    });
+  }
+
+  test("a disabled default image button blocks Enter like a native form", async ({ page }) => {
+    for (const field of ['<input aria-label="Time">', '<hplus-duration aria-label="Time"></hplus-duration>']) {
+      await load(
+        page,
+        `<form>${field}<input type="image" name="image" alt="Go" disabled><button name="ordinary">Go</button></form>`,
+      );
+      await page.locator('input[aria-label="Time"], hplus-duration input').press("Enter");
+      await page.waitForTimeout(50);
+      expect(await submits(page)).toEqual([]);
+    }
+  });
+
   for (const [tag, editor] of editors) {
     test(`Enter in ${tag} activates the default button`, async ({ page }) => {
       await load(page, `<form><label>Field <${tag} name="field"></${tag}></label><button name="go">Go</button></form>`);

@@ -21,9 +21,14 @@ function blocksImplicitSubmission(element: Element): boolean {
 
 function submitImplicitly(form: HTMLFormElement): void {
   const fields = Array.from(form.elements);
-  const button = fields.find(
+  // Image inputs are omitted from form.elements. Search the tree so external
+  // form-associated buttons also keep their native document order.
+  const root = form.getRootNode() as Document | DocumentFragment | Element;
+  const button = Array.from(root.querySelectorAll("button, input")).find(
     (element): element is HTMLButtonElement | HTMLInputElement =>
-      (element instanceof HTMLButtonElement || element instanceof HTMLInputElement) && element.type === "submit",
+      (element instanceof HTMLButtonElement || element instanceof HTMLInputElement) &&
+      element.form === form &&
+      (element.type === "submit" || element.type === "image"),
   );
   if (button) {
     if (!button.disabled) button.click();
