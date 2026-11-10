@@ -9,25 +9,25 @@ The last column is the share of the minified bytes that is html+'s own code, and
 | `hplus-field` | 5.0 KB | 1.6 KB | 100% |
 | `hplus-switch` | 6.9 KB | 2.4 KB | 100% |
 | `hplus-segmented` | 9.3 KB | 3.3 KB | 100% |
-| `hplus-interval` | 9.9 KB | 3.7 KB | 100% |
+| `hplus-interval` | 10.0 KB | 3.8 KB | 100% |
 | `hplus-tags` | 12.1 KB | 4.3 KB | 100% |
-| `hplus-otp` | 18.4 KB | 5.9 KB | 100% |
-| `hplus-bic` | 18.9 KB | 6.1 KB | 100% |
-| `hplus-duration` | 19.6 KB | 6.3 KB | 100% |
-| `hplus-iban` | 20.8 KB | 6.7 KB | 100% |
+| `hplus-otp` | 18.5 KB | 5.9 KB | 100% |
+| `hplus-bic` | 19.0 KB | 6.2 KB | 100% |
+| `hplus-duration` | 19.7 KB | 6.4 KB | 100% |
+| `hplus-iban` | 20.9 KB | 6.8 KB | 100% |
 | `hplus-toggle` | 27.7 KB | 9.9 KB | 33% |
 | `hplus-accordion` | 34.0 KB | 12.4 KB | 30% |
 | `hplus-checkbox` | 39.9 KB | 14.0 KB | 27% |
 | `hplus-rating` | 40.2 KB | 14.0 KB | 33% |
 | `hplus-tabs` | 40.6 KB | 14.5 KB | 23% |
-| `hplus-password-input` | 44.1 KB | 14.8 KB | 52% |
+| `hplus-password-input` | 44.2 KB | 14.8 KB | 52% |
 | `hplus-toggle-group` | 53.2 KB | 17.8 KB | 27% |
 | `hplus-radio-group` | 53.5 KB | 17.9 KB | 27% |
 | `hplus-slider` | 54.8 KB | 18.8 KB | 25% |
 | `hplus-range-slider` | 55.2 KB | 18.9 KB | 25% |
-| `hplus-number-input` | 73.8 KB | 23.4 KB | 37% |
+| `hplus-number-input` | 73.9 KB | 23.5 KB | 37% |
 | `hplus-select` | 114.7 KB | 37.5 KB | 17% |
-| `hplus-combobox` | 120.1 KB | 38.8 KB | 17% |
-| `hplus-date-picker` | 154.6 KB | 49.7 KB | 17% |
-| `hplus-date-range-picker` | 157.4 KB | 50.6 KB | 18% |
-| All elements | 432.2 KB | 123.4 KB | 35% |
+| `hplus-combobox` | 120.2 KB | 38.8 KB | 17% |
+| `hplus-date-picker` | 154.7 KB | 49.7 KB | 17% |
+| `hplus-date-range-picker` | 157.5 KB | 50.6 KB | 18% |
+| All elements | 432.3 KB | 123.4 KB | 35% |
